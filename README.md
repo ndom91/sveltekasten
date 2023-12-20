@@ -31,7 +31,7 @@ $ cp .env.example .env
 $ vim .env
 ```
 
-In this environment variables file, make sure to at least fill in the `DATABASE_URL`, `NEXTAUTH_URL` and `NEXTAUTH_SECRET`. The rest of the environment variables depend on the services / features you want to use. For example, Google/Github for OAuth login and/or Supabase for object storage.
+In this environment variables file, make sure to at least fill in the `DATABASE_URL`, `AUTH_SECRET` and `GITHUB_ID`, `GITHUB_SECRET`. The rest of the environment variables depend on the services / features you want to use. For example, Google/Github for OAuth login and/or Supabase for object storage.
 
 4. Start the server!
 
