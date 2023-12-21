@@ -9,6 +9,7 @@ specifiers:
   '@sveltejs/kit': 2.0.4
   '@sveltejs/package': 2.2.4
   '@sveltejs/vite-plugin-svelte': ^3.0.1
+  '@tailwindcss/forms': ^0.5.7
   '@typescript-eslint/eslint-plugin': 6.15.0
   '@typescript-eslint/parser': 6.15.0
   autoprefixer: ^10.4.16
@@ -39,6 +40,7 @@ devDependencies:
   '@sveltejs/kit': 2.0.4_lkcrjppopeqy6ifnqvydddwmbi
   '@sveltejs/package': 2.2.4_kqsrqwd26dbwf5akdyijl2j4ju
   '@sveltejs/vite-plugin-svelte': 3.0.1_svelte@4.2.8+vite@4.5.1
+  '@tailwindcss/forms': 0.5.7_tailwindcss@3.4.0
   '@typescript-eslint/eslint-plugin': 6.15.0_6airgfur4cim7d6dzxc5qxbguu
   '@typescript-eslint/parser': 6.15.0_xdgzedli73k7lw4xlyzszm74om
   autoprefixer: 10.4.16_postcss@8.4.32
@@ -542,6 +544,15 @@ packages:
       vitefu: 0.2.5_vite@4.5.1
     transitivePeerDependencies:
       - supports-color
+
+  /@tailwindcss/forms/0.5.7_tailwindcss@3.4.0:
+    resolution: {integrity: sha512-QE7X69iQI+ZXwldE+rzasvbJiyV/ju1FGHH0Qn2W3FKbuYtqp8LKcy6iSw79fVUT5/Vvf+0XgLCeYVG+UV6hOw==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0 || >= 3.0.0-alpha.1'
+    dependencies:
+      mini-svg-data-uri: 1.4.4
+      tailwindcss: 3.4.0_ts-node@10.9.2
+    dev: true
 
   /@tsconfig/node10/1.0.9:
     resolution: {integrity: sha512-jNsYVVxU8v5g43Erja32laIDHXeoNvFEpX33OK4d6hljo3jDhCBDhx5dhCCTMWUojscpAagGiRkBKxpdl9fxqA==}
@@ -1563,6 +1574,11 @@ packages:
   /min-indent/1.0.1:
     resolution: {integrity: sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==}
     engines: {node: '>=4'}
+    dev: true
+
+  /mini-svg-data-uri/1.4.4:
+    resolution: {integrity: sha512-r9deDe9p5FJUPZAk3A59wGH7Ii9YrjjWw0jmw/liSbHl2CHiyXj6FcDXDu2K3TjVAXqiJdaw3xxwlZZr9E6nHg==}
+    hasBin: true
     dev: true
 
   /minimatch/3.1.2:

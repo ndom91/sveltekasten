@@ -8,11 +8,6 @@
   <Header />
 
   <slot />
-  <!-- {#if $page.data.session}{:else} -->
-  <!--   <span class="notSignedInText"> You are not signed in </span> -->
-  <!---->
-  <!--   <a href="/login" class="buttonPrimary" data-sveltekit-reload> Sign in </a> -->
-  <!-- {/if} -->
 </div>
 
 <style>
