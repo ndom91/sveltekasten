@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { signIn, signOut } from "@auth/sveltekit/client"
+  import { signIn } from "@auth/sveltekit/client"
   import { page } from "$app/stores"
-  // import logo from "$lib/assets/logo.png"
 
   let email = ""
 
@@ -12,18 +11,10 @@
   const handleGithubSignIn = () => {
     signIn("github", { callbackUrl: "/" })
   }
-
-  const handleSignOut = () => {
-    signOut()
-  }
 </script>
 
-<div
-  class="flex z-20 w-[22rem] flex-col items-center justify-center text-xl md:ml-[15%]"
->
-  <h2
-    class="mb-4 flex items-center space-x-2 text-3xl font-light text-slate-600"
-  >
+<div class="z-20 flex w-[22rem] flex-col items-center justify-center text-xl md:ml-[15%]">
+  <h2 class="mb-4 flex items-center space-x-2 text-3xl font-light text-slate-600">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -41,27 +32,17 @@
   <div class="m-8 flex w-full flex-col gap-2 rounded bg-white p-6 shadow-lg">
     {#if !$page.data.session?.user}
       <form on:submit={handleEmailSignIn}>
-        <input
-          class="w-full"
-          type="email"
-          placeholder="example@gmail.com"
-          bind:value={email}
-        />
-        <button class="bg-slate-800 text-white mt-2 w-full h-12"
-          >Continue</button
-        >
+        <input class="w-full" type="email" placeholder="example@gmail.com" bind:value={email} />
+        <button class="mt-2 h-12 w-full bg-slate-800 text-white">Continue</button>
       </form>
 
-      <div class="my-4 flex gap-2 items-center">
-        <div class="flex-1 h-[1px] bg-black" />
+      <div class="my-4 flex items-center gap-2">
+        <div class="h-[1px] flex-1 bg-black" />
         <span class="text-sm leading-4">OR</span>
-        <div class="flex-1 h-[1px] bg-black" />
+        <div class="h-[1px] flex-1 bg-black" />
       </div>
 
-      <button
-        class="w-full h-12 border border-gray-500"
-        on:click={handleGithubSignIn}
-      >
+      <button class="h-12 w-full border border-gray-500" on:click={handleGithubSignIn}>
         Continue with Github
       </button>
     {/if}

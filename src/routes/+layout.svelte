@@ -1,17 +1,9 @@
 <script lang="ts">
-  import Header from "$lib/components/Header.svelte"
-  import { page } from "$app/stores"
+  import Sidebar from "$lib/components/Sidebar.svelte"
   import "$lib/styles/style.css"
 </script>
 
-<div class="layout">
-  <Header />
-
+<div class="px-8">
+  <Sidebar />
   <slot />
 </div>
-
-<style>
-  .layout {
-    padding: 0 2rem;
-  }
-</style>

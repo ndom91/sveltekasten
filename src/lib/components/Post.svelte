@@ -1,19 +1,17 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
-  import type { Post } from "@prisma/client";
+  import { goto } from "$app/navigation"
+  import type { Post } from "@prisma/client"
 
   export let post: Post & {
     author?: {
-      name: string;
-    } | null;
-  };
+      name: string
+    } | null
+  }
 </script>
 
-<div class="post" on:click={() => goto(`/p/${post.id}`)}>
+<div role="tab" class="post" on:click={() => goto(`/p/${post.id}`)}>
   <h2>{post.title}</h2>
-  <small
-    >{post.author?.name ? `By ${post.author.name}` : "Unknown author"}</small
-  >
+  <small>{post.author?.name ? `By ${post.author.name}` : "Unknown author"}</small>
   <p>{@html post.content}</p>
 </div>
 

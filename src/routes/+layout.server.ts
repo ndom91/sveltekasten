@@ -1,4 +1,3 @@
-import { page, navigating } from '$app/stores';
 import { redirect } from '@sveltejs/kit';
 
 export const load = async (event) => {

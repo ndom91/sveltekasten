@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { page } from "$app/stores"
+  // import { page } from "$app/stores"
 </script>
 
 <div>
-  <h1>My Blog</h1>
+  <h1>Briefkasten</h1>
   <main>
     <div></div>
   </main>
