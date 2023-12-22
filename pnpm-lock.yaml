@@ -1,9 +1,9 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@auth/core': ^0.18.6
-  '@auth/prisma-adapter': ^1.0.11
-  '@auth/sveltekit': ^0.4.0
+  '@auth/core': ^0.19.0
+  '@auth/prisma-adapter': ^1.0.12
+  '@auth/sveltekit': ^0.5.0
   '@prisma/client': 5.7.1
   '@sveltejs/adapter-auto': 2.1.1
   '@sveltejs/kit': 2.0.4
@@ -34,9 +34,9 @@ specifiers:
   vite: 4.5.1
 
 dependencies:
-  '@auth/core': 0.18.6
-  '@auth/prisma-adapter': 1.0.11_@prisma+client@5.7.1
-  '@auth/sveltekit': 0.4.0_het3rafjvdxevbu4hb5x2bj4ga
+  '@auth/core': 0.19.0
+  '@auth/prisma-adapter': 1.0.12_@prisma+client@5.7.1
+  '@auth/sveltekit': 0.5.0_het3rafjvdxevbu4hb5x2bj4ga
   '@prisma/client': 5.7.1_prisma@5.7.1
   clsx: 2.0.0
   lucide-svelte: 0.299.0_svelte@4.2.8
@@ -86,8 +86,8 @@ packages:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.20
 
-  /@auth/core/0.18.6:
-    resolution: {integrity: sha512-AI7tnyNOg5zVS2elA44O03MWS6jyp69S8habJts63IyiCIoSkhqcZX4EcEJ0287m0hxzOltPCV9Zq2aqXbrNSA==}
+  /@auth/core/0.19.0:
+    resolution: {integrity: sha512-BkFg2SoNftMN6A2Sn2g1lLFLTO74qMtFKsZmSCEF9d1csqSaEXIv50k6OrfniODWi5tZP8bcfSxGodv75khlOA==}
     peerDependencies:
       nodemailer: ^6.8.0
     peerDependenciesMeta:
@@ -103,24 +103,24 @@ packages:
       preact-render-to-string: 5.2.3_preact@10.11.3
     dev: false
 
-  /@auth/prisma-adapter/1.0.11_@prisma+client@5.7.1:
-    resolution: {integrity: sha512-xKk/rdU6xd3AzEEkZ4jLyYza7WRC9wktG45IilQ3zslyWor4MM5x03gXff6JiihvV1PLB5Q9qvmVfNRk0TG1EQ==}
+  /@auth/prisma-adapter/1.0.12_@prisma+client@5.7.1:
+    resolution: {integrity: sha512-vLsbIgvpJUVpQLCDvSG16bg/uisf6y2TYHzgR1zriwMu3WdrhuG2RxrypNHNdhJZoGW0mL57QEvGVh+C9AtsRA==}
     peerDependencies:
       '@prisma/client': '>=2.26.0 || >=3 || >=4 || >=5'
     dependencies:
-      '@auth/core': 0.18.6
+      '@auth/core': 0.19.0
       '@prisma/client': 5.7.1_prisma@5.7.1
     transitivePeerDependencies:
       - nodemailer
     dev: false
 
-  /@auth/sveltekit/0.4.0_het3rafjvdxevbu4hb5x2bj4ga:
-    resolution: {integrity: sha512-3mX14XZo8TDhivD2uvn4kGr8e4okpRPNBazRjNqBr8orOTi0hWic5I9eaYTR1nsK/ktHGnJ5lZ9iZ9npDCZyaA==}
+  /@auth/sveltekit/0.5.0_het3rafjvdxevbu4hb5x2bj4ga:
+    resolution: {integrity: sha512-oSfeevQE06KSpA2gucwDarXLzJ6rA/s9XWsH3cq6vrEgxxgeFS+t3CB2QuJHzoBg3UXRkg6EBpxrPY/9tCkYrA==}
     peerDependencies:
-      '@sveltejs/kit': ^1.0.0
+      '@sveltejs/kit': ^1.0.0 || ^2.0.0
       svelte: ^3.54.0 || ^4.0.0
     dependencies:
-      '@auth/core': 0.18.6
+      '@auth/core': 0.19.0
       '@sveltejs/kit': 2.0.4_lkcrjppopeqy6ifnqvydddwmbi
       svelte: 4.2.8
     transitivePeerDependencies:
