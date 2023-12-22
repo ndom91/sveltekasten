@@ -4,7 +4,7 @@
 
 <div>
   <h1>Briefkasten</h1>
-  <main>
+  <main class="text-xs">
     <div></div>
   </main>
 </div>

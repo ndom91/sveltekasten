@@ -2,12 +2,16 @@
 // for information about these interfaces
 // and what to do when importing types
 declare namespace App {
-	interface Locals {
+  interface Locals {
     getSession: () => Promise<Session>
+    providers: {
+      id: string
+      name: string
+    }[]
   }
-	// interface Platform {}
-	// interface PrivateEnv {}
-	// interface PublicEnv {}
+  // interface Platform {}
+  // interface PrivateEnv {}
+  // interface PublicEnv {}
 }
 
 declare module "@auth/core/types" {  // I'm using PNPM but this seems to be working fine

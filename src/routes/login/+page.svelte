@@ -8,11 +8,15 @@
     signIn("email", { email, callbackUrl: "/" })
   }
 
-  const handleGithubSignIn = () => {
-    signIn("github", { callbackUrl: "/" })
+  const handleSignIn = (provider) => {
+    signIn(provider, { callbackUrl: "/" })
   }
 </script>
 
+<div
+  class="fixed left-0 top-0 z-[5] min-h-full min-w-full object-contain"
+  style="background: linear-gradient(220.55deg, #565656 0%, #181818 100%);"
+/>
 <div class="z-20 flex w-[22rem] flex-col items-center justify-center text-xl md:ml-[15%]">
   <h2 class="mb-4 flex items-center space-x-2 text-3xl font-light text-slate-600">
     <svg
@@ -38,13 +42,20 @@
 
       <div class="my-4 flex items-center gap-2">
         <div class="h-[1px] flex-1 bg-black" />
-        <span class="text-sm leading-4">OR</span>
+        <span class="text-xs uppercase leading-4">or continue with</span>
         <div class="h-[1px] flex-1 bg-black" />
       </div>
 
-      <button class="h-12 w-full border border-gray-500" on:click={handleGithubSignIn}>
-        Continue with Github
-      </button>
+      {#if $page.data.providers}
+        {#each $page.data.providers as provider}
+          <button
+            class="h-12 w-full border border-gray-500"
+            on:click={() => handleSignIn(provider.id)}
+          >
+            Continue with {provider.name}
+          </button>
+        {/each}
+      {/if}
     {/if}
   </div>
 </div>

@@ -1,13 +1,3 @@
-<div class="layout">
+<div class="flex h-full w-full max-w-full">
   <slot />
 </div>
-
-<style>
-  .layout {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-  }
-</style>

@@ -1,4 +1,6 @@
 import { SvelteKitAuth } from '@auth/sveltekit';
+import type { Handle } from "@sveltejs/kit";
+import { sequence } from "@sveltejs/kit/hooks";
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import type { Provider } from "@auth/core/providers"
 import prisma from "$lib/prisma";
@@ -84,7 +86,14 @@ if (SMTP_HOST && SMTP_USER && SMTP_PASSWORD) {
   }))
 }
 
-export const handle = SvelteKitAuth({
+const handleGlobal: Handle = async ({ event, resolve }) => {
+  // @ts-expect-error
+  event.locals.providers = providers.map(provider => ({ id: provider.id as string, name: provider.name }))
+  const response = await resolve(event);
+  return response;
+};
+
+export const handleAuth = SvelteKitAuth({
   providers,
   callbacks: {
     // @ts-expect-error
@@ -104,3 +113,5 @@ export const handle = SvelteKitAuth({
     signIn: '/login',
   }
 })
+
+export const handle = sequence(handleAuth, handleGlobal)

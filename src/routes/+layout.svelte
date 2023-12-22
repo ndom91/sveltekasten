@@ -1,9 +1,10 @@
 <script lang="ts">
   import Sidebar from "$lib/components/Sidebar.svelte"
+  import { page } from "$app/stores"
   import "$lib/styles/style.css"
 </script>
 
-<div class="px-8">
+{#if $page.url.pathname !== "/login"}
   <Sidebar />
-  <slot />
-</div>
+{/if}
+<slot />

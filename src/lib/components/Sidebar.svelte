@@ -12,7 +12,7 @@
     {#if $page.data.session?.user}
       <img
         alt="User Avatar"
-        src={!$page.data.session?.user.image ||
+        src={$page.data.session?.user.image ||
           `https://unavatar.io/${$page.data.session?.user.email}?fallback=https://source.boringavatars.com/marble/120/${$page.data.session?.user.email}?colors=264653r,2a9d8f,e9c46a,f4a261,e76f51`}
         class="h-12 w-12 rounded"
       />
