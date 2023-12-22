@@ -1,10 +1,20 @@
 <script lang="ts">
-  import Sidebar from "$lib/components/Sidebar.svelte"
+  import Navbar from "$lib/components/Navbar.svelte"
   import { page } from "$app/stores"
   import "$lib/styles/style.css"
+  import { setContext } from "svelte"
+  import { writable } from "svelte/store"
+
+  // Create a writable store
+  const openSheetStore = writable(false)
+  // $: openSheetStore.set(false)
+
+  setContext("openSheet", openSheetStore)
 </script>
 
-{#if $page.url.pathname !== "/login"}
-  <Sidebar />
-{/if}
-<slot />
+<div class="mx-auto max-w-7xl">
+  {#if $page.url.pathname !== "/login"}
+    <Navbar />
+  {/if}
+  <slot />
+</div>
