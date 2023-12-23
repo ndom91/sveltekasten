@@ -12,7 +12,7 @@
   setContext("openSheet", openSheetStore)
 </script>
 
-<div class="mx-auto max-w-7xl">
+<div>
   {#if $page.url.pathname !== "/login"}
     <Navbar />
   {/if}

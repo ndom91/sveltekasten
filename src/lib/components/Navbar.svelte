@@ -26,7 +26,7 @@
   }
 </script>
 
-<nav class="*:gap-6 *:flex *:items-center flex w-full items-center justify-between py-8">
+<nav class="*:gap-6 *:flex *:items-center flex w-full items-center justify-between py-8 max-w-7xl mx-auto">
   <ModeWatcher />
   <div class="">
     <a class:active={$page.url.pathname === "/"} href="/">Home</a>

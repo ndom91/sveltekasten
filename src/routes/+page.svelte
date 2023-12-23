@@ -3,7 +3,7 @@
   import CreateSidebar from "$lib/components/CreateSidebar.svelte"
 </script>
 
-<div>
+<div class="max-w-7xl mx-auto">
   <h1>Briefkasten</h1>
   <CreateSidebar />
   <main class="">
