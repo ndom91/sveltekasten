@@ -2,19 +2,14 @@
   import Navbar from "$lib/components/Navbar.svelte"
   import { page } from "$app/stores"
   import "$lib/styles/style.css"
-  import { setContext } from "svelte"
-  import { writable } from "svelte/store"
+  import type { PageData } from "./$types";
 
-  // Create a writable store
-  const openSheetStore = writable(false)
-  // $: openSheetStore.set(false)
-
-  setContext("openSheet", openSheetStore)
+  export let data: PageData;
 </script>
 
 <div>
   {#if $page.url.pathname !== "/login"}
-    <Navbar />
+    <Navbar formData={data.form} />
   {/if}
   <slot />
 </div>

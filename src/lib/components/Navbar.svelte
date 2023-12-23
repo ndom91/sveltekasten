@@ -3,27 +3,15 @@
   import { page } from "$app/stores"
   import { signOut } from "@auth/sveltekit/client"
   import { ModeWatcher, mode, toggleMode } from "mode-watcher"
-  import * as Avatar from "$lib/components/ui/avatar"
-  import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import { Skeleton } from "$lib/components/ui/skeleton"
   import { Button } from "$lib/components/ui/button"
-  import { getContext } from "svelte"
+  import * as Avatar from "$lib/components/ui/avatar"
+  import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
+  import * as Popover from "$lib/components/ui/popover";
+  import QuickAddForm from "$lib/components/QuickAddForm.svelte"
 
   let darkMode = $mode === "dark"
-
-  // // Retrieve user store from context
-  // let settings = getContext("globalsettings")
-  // // $: settings.set({ openSheet })
-  // const setSheet = () => {
-  //   $page.data.openSheet = !$page.data.openSheet
-  // }
-
-  let openSheet = getContext("openSheet")
-  console.log("SET", openSheet)
-
-  const updateSheetStore = () => {
-    $openSheet = true
-  }
+  export let formData
 </script>
 
 <nav class="*:gap-6 *:flex *:items-center flex w-full items-center justify-between py-8 max-w-7xl mx-auto">
@@ -35,7 +23,14 @@
   </div>
   <div class="">
     {#if $page.data.session?.user}
-      <Button variant="outline" on:click={updateSheetStore}>New Bookmark</Button>
+      <Popover.Root>
+        <Popover.Trigger>
+          <Button variant="outline">Quick Add</Button>
+        </Popover.Trigger>
+        <Popover.Content transition={blur}>
+          <QuickAddForm form={formData} />
+        </Popover.Content>
+      </Popover.Root>
       <DropdownMenu.Root loop closeOnItemClick={false}>
         <DropdownMenu.Trigger
           class="rounded-full outline-none focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 focus:ring-offset-white focus:dark:ring-offset-slate-800"

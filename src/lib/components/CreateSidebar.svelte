@@ -1,6 +1,6 @@
 <script lang="ts">
   import * as Sheet from "$lib/components/ui/sheet"
-  import { openSheet, page } from "$app/stores"
+  import { page } from "$app/stores"
   import { getContext } from "svelte"
 
   // let openSheet = false
@@ -14,7 +14,7 @@
   // let openSheet = getContext("openSheet") as boolean
 </script>
 
-<Sheet.Root bind:open={openSheet}>
+<Sheet.Root>
   <Sheet.Trigger>Open</Sheet.Trigger>
   <Sheet.Content>
     <Sheet.Header>
