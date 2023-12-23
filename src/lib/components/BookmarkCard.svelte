@@ -1,15 +1,21 @@
 <script lang="ts">
-  import * as Card from "$lib/components/ui/card";
-  
-  export let bookmark
+  import * as Card from "$lib/components/ui/card"
+  import type { Bookmark } from "$lib/types"
+
+  export let bookmark: Bookmark
+  // console.log("bookmark", bookmark)
 </script>
 
-<Card.Root>
+<Card.Root
+  class={`flex flex-col bg-gradient-to-b from-[${
+    bookmark.metadata?.logo?.background_color.toLowerCase() || "#ccc"
+  }]`}
+>
   <Card.Header>
     <Card.Title>{bookmark.title}</Card.Title>
-    <Card.Description>{bookmark.desc}</Card.Description>
+    <Card.Description class="line-clamp-2">{bookmark.desc}</Card.Description>
   </Card.Header>
-  <Card.Content>
+  <Card.Content class="flex-grow">
     <img src={bookmark.image} alt="Bookmark Screenshot" class="aspect-video object-fill" />
   </Card.Content>
   <Card.Footer>

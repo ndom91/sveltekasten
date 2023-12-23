@@ -1,28 +1,24 @@
 <script lang="ts">
-  import { page } from "$app/stores";
-  import * as Form from "$lib/components/ui/form";
-  import * as Popover from "$lib/components/ui/popover";
-  import * as Command from "$lib/components/ui/command";
-  import { Button } from "$lib/components/ui/button";
-  import { languages, formSchema as schema, type FormSchema } from "../../../routes/schema";
-  import type { SuperValidated } from "sveltekit-superforms";
+  import * as Form from "$lib/components/ui/form"
+  import * as Popover from "$lib/components/ui/popover"
+  import * as Command from "$lib/components/ui/command"
+  import { Button } from "$lib/components/ui/button"
+  import { languages, formSchema as schema, type FormSchema } from "../../../routes/schema"
+  import type { SuperValidated } from "sveltekit-superforms"
 
-  import { cn } from "$lib/utils";
-  import { tick } from "svelte";
-  import { Check, ChevronsUpDown } from "lucide-svelte";
-  
-  let open = false;
-  // We want to refocus the trigger button when the user selects
-  // an item from the list so users can continue navigating the
-  // rest of the form with the keyboard.
+  import { cn } from "$lib/utils"
+  import { tick } from "svelte"
+  import { Check, ChevronsUpDown } from "lucide-svelte"
+
+  let open = false
   function closeAndFocusTrigger(triggerId: string) {
-    open = false;
+    open = false
     tick().then(() => {
-      document.getElementById(triggerId)?.focus();
-    });
+      document.getElementById(triggerId)?.focus()
+    })
   }
 
-  export let form: SuperValidated<FormSchema>;
+  export let form: SuperValidated<FormSchema>
 </script>
 
 <Form.Root {schema} {form} let:config debug={false} action="/quick-add">
@@ -50,7 +46,7 @@
   <Form.Field {config} name="tags" let:setValue let:value>
     <Form.Item>
       <Form.Label>Tags</Form.Label>
-       <Popover.Root bind:open let:ids>
+      <Popover.Root bind:open let:ids>
         <Popover.Trigger asChild let:builder>
           <Form.Control id={ids.trigger} let:attrs>
             <Button
@@ -59,13 +55,9 @@
               variant="outline"
               role="combobox"
               type="button"
-              class={cn(
-                "w-full justify-between",
-                !value && "text-muted-foreground"
-              )}
+              class={cn("w-full justify-between", !value && "text-muted-foreground")}
             >
-              {languages.find((f) => f.value === value)?.label ??
-                "Select language"}
+              {languages.find((f) => f.value === value)?.label ?? "Select language"}
               <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </Form.Control>
@@ -79,16 +71,12 @@
                 <Command.Item
                   value={language.value}
                   onSelect={() => {
-                    console.log("on select firing");
-                    setValue(language.value);
-                    closeAndFocusTrigger(ids.trigger);
+                    setValue(language.value)
+                    closeAndFocusTrigger(ids.trigger)
                   }}
                 >
                   <Check
-                    class={cn(
-                      "mr-2 h-4 w-4",
-                      language.value !== value && "text-transparent"
-                    )}
+                    class={cn("mr-2 h-4 w-4", language.value !== value && "text-transparent")}
                   />
                   {language.label}
                 </Command.Item>

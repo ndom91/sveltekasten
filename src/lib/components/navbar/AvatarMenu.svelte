@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from "$app/stores"
   import { blur } from "svelte/transition"
+  import { signOut } from "@auth/sveltekit/client"
   import * as Avatar from "$lib/components/ui/avatar"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import { Skeleton } from "$lib/components/ui/skeleton"
@@ -27,7 +28,7 @@
   <DropdownMenu.Content transition={blur} transitionConfig={{ delay: 0, duration: 250 }}>
     <DropdownMenu.Group>
       <DropdownMenu.Label class="line-clamp-1 w-full justify-end truncate"
-        >{$page.data.session?.user.eame ?? $page.data.session?.user.email}</DropdownMenu.Label
+        >{$page.data.session?.user.name ?? $page.data.session?.user.email}</DropdownMenu.Label
       >
       <DropdownMenu.Separator />
       <DropdownMenu.CheckboxItem
@@ -35,12 +36,9 @@
         onCheckedChange={toggleMode}
         bind:checked={darkMode}>Dark Mode</DropdownMenu.CheckboxItem
       >
-      <DropdownMenu.Item href="/settings" class="justify-end">User Settings</DropdownMenu.Item
-      >
+      <DropdownMenu.Item href="/settings" class="justify-end">User Settings</DropdownMenu.Item>
       <DropdownMenu.Separator />
-      <DropdownMenu.Item class="justify-end" on:click={() => signOut()}
-        >Signout</DropdownMenu.Item
-      >
+      <DropdownMenu.Item class="justify-end" on:click={() => signOut()}>Signout</DropdownMenu.Item>
     </DropdownMenu.Group>
   </DropdownMenu.Content>
 </DropdownMenu.Root>
