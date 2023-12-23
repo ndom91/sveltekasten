@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Navbar from "$lib/components/Navbar.svelte"
   import { page } from "$app/stores"
+  import { Navbar } from "$lib/components/navbar"
   import "$lib/styles/style.css"
   import type { PageData } from "./$types";
 
