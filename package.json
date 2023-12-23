@@ -43,6 +43,7 @@
     "@prisma/client": "5.7.1",
     "bits-ui": "^0.11.8",
     "clsx": "^2.0.0",
+    "cmdk-sv": "^0.0.12",
     "formsnap": "^0.4.1",
     "lucide-svelte": "^0.299.0",
     "mode-watcher": "^0.1.2",
