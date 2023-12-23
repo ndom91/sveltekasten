@@ -19,6 +19,7 @@ model Bookmark {
   desc        String?      @db.Text
   category    Category?    @relation(fields: [categoryId], references: [id], onDelete: SetNull, onUpdate: Cascade)
   categoryId  String?
+  metadata    Json?
   tags        TagsOnBookmarks[]
   user        User?        @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId      String
