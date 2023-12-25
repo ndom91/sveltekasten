@@ -10,6 +10,7 @@ import {
   GOOGLE_ID,
   GOOGLE_SECRET,
   AUTH_SECRET,
+  AUTH_TRUST_HOST,
   SMTP_HOST,
   SMTP_PORT,
   SMTP_USER,
@@ -109,6 +110,7 @@ export const handleAuth = SvelteKitAuth({
   },
   adapter: PrismaAdapter(prisma),
   secret: AUTH_SECRET,
+  trustHost: AUTH_TRUST_HOST,
   pages: {
     signIn: '/login',
   }

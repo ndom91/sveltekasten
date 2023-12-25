@@ -79,3 +79,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+textarea {
+  form-sizing: content;
+}

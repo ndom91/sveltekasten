@@ -4,7 +4,9 @@
   import { Button } from "$lib/components/ui/button"
   import type { PageData } from "./$types"
   import * as Popover from "$lib/components/ui/popover"
+  import * as Tooltip from "$lib/components/ui/tooltip"
   import { QuickAddForm, AvatarMenu } from "$lib/components/navbar"
+  import { Plus } from "lucide-svelte"
 
   export let formData: PageData.form
 </script>
@@ -20,8 +22,17 @@
   <div class="">
     {#if $page.data.session?.user}
       <Popover.Root>
-        <Popover.Trigger>
-          <Button variant="outline">Quick Add</Button>
+        <Popover.Trigger tabindex={-1}>
+          <Tooltip.Root>
+            <Tooltip.Trigger tabindex={-1}>
+              <Button variant="outline" class="size-11 rounded-full p-0">
+                <Plus class="size-4" />
+              </Button>
+            </Tooltip.Trigger>
+            <Tooltip.Content>
+              <p>Quick add Bookmark</p>
+            </Tooltip.Content>
+          </Tooltip.Root>
         </Popover.Trigger>
         <Popover.Content
           transition={blur}
