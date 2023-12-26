@@ -1,11 +1,22 @@
 <script lang="ts">
   import * as Card from "$lib/components/ui/card"
+  import { Button } from "$lib/components/ui/button"
   import type { Bookmark } from "$lib/types"
-  import { ActionButton } from "$lib/components/bookmark-card"
   import { Trash } from "lucide-svelte"
+  import DeleteDialog from "./DeleteDialog.svelte"
 
   export let bookmark: Bookmark
-  // console.log("bookmark", bookmark)
+
+  let isDeleteDialogOpen = false
+
+  // @ts-expect-error
+  const handleDialogOpen = (targetState) => {
+    isDeleteDialogOpen = targetState
+  }
+
+  const handleDelete = () => {
+    console.log("Deleting..")
+  }
 </script>
 
 <Card.Root
@@ -19,11 +30,11 @@
         <span>
           {bookmark.title}
         </span>
-        <ActionButton class="size-10">
-          <Trash />
-        </ActionButton>
+        <Button variant="ghost" size="icon" on:click={() => handleDialogOpen(true)}>
+          <Trash className="h-4 w-4" />
+        </Button>
       </Card.Title>
-      <Card.Description class="line-clamp-2">{bookmark.desc}</Card.Description>
+      <Card.Description class="line-clamp-2 break-words">{bookmark.desc}</Card.Description>
     </div>
   </Card.Header>
   <Card.Content class="flex-grow">
@@ -31,13 +42,14 @@
       <img
         src={bookmark.image}
         alt="Bookmark Screenshot"
-        class="aspect-video rounded-md object-cover"
+        class="max-w-56 aspect-video rounded-md object-cover"
       />
     </div>
   </Card.Content>
   <Card.Footer>
     <p>{bookmark.url}</p>
   </Card.Footer>
+  <DeleteDialog open={isDeleteDialogOpen} on:close={handleDialogOpen} on:submit={handleDelete} />
 </Card.Root>
 
 <style>
