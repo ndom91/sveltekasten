@@ -9,8 +9,18 @@
   import { Plus } from "lucide-svelte"
 
   export let formData: PageData.form
+
+  let open = false
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.repeat) return
+    if (event.altKey && event.code === "KeyN") {
+      open = !open
+    }
+  }
 </script>
 
+<svelte:window on:keydown={handleKeyDown} />
 <nav
   class="*:gap-6 *:flex *:items-center mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-8"
 >
@@ -21,7 +31,7 @@
   </div>
   <div class="">
     {#if $page.data.session?.user}
-      <Popover.Root>
+      <Popover.Root {open}>
         <Popover.Trigger tabindex={-1}>
           <Tooltip.Root>
             <Tooltip.Trigger tabindex={-1}>

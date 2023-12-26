@@ -1,6 +1,6 @@
 import type { Actions } from './$types'
-import { fail } from "@sveltejs/kit";
-import { superValidate } from "sveltekit-superforms/server";
+import { fail, error } from "@sveltejs/kit";
+import { message, superValidate } from "sveltekit-superforms/server";
 import { formSchema } from "../schema";
 import prisma from '$lib/prisma';
 
@@ -126,11 +126,9 @@ export const actions: Actions = {
         form,
         bookmark: upsertBookmarkRes
       };
-    } catch (error) {
-      console.error(error)
-      return {
-        message: String(error)
-      }
+    } catch (err) {
+      console.error(err)
+      error(500, { message: 'Failed to add bookmark' })
     }
   }
 };

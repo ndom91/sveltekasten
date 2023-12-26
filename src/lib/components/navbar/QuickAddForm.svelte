@@ -4,11 +4,15 @@
   import * as Command from "$lib/components/ui/command"
   import { Button } from "$lib/components/ui/button"
   import { languages, formSchema as schema, type FormSchema } from "../../../routes/schema"
+  import toast from "svelte-french-toast"
+
   import type { SuperValidated } from "sveltekit-superforms"
+  import { type FormOptions } from "formsnap"
 
   import { cn } from "$lib/utils"
   import { tick } from "svelte"
   import { Check, ChevronsUpDown } from "lucide-svelte"
+  import LoadingSpinner from "../LoadingSpinner.svelte"
 
   let open = false
   function closeAndFocusTrigger(triggerId: string) {
@@ -18,10 +22,24 @@
     })
   }
 
+  const options: FormOptions<typeof schema> = {
+    validators: schema,
+    onError: (e) => {
+      toast.error(e.result.error.message)
+    },
+    onUpdated({ form }) {
+      if (form.message) {
+        // Display the message using a toast library
+        toast.success(form.message.text)
+        open = false
+      }
+    },
+  }
+
   export let form: SuperValidated<FormSchema>
 </script>
 
-<Form.Root {schema} {form} let:config debug={false} action="/quick-add">
+<Form.Root debug={false} {options} {schema} {form} let:submitting let:config action="/quick-add">
   <Form.Field {config} name="title">
     <Form.Item>
       <Form.Label>Title</Form.Label>
@@ -95,5 +113,10 @@
       <Form.Validation />
     </Form.Item>
   </Form.Field>
-  <Form.Button class="w-full">Submit</Form.Button>
+  <Form.Button disabled={submitting} class="w-full">
+    {#if submitting}
+      <LoadingSpinner size="small" />
+    {/if}
+    <span>Submit</span>
+  </Form.Button>
 </Form.Root>
