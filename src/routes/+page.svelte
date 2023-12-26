@@ -5,7 +5,7 @@
 
 <div class="mx-auto max-w-7xl px-4">
   <main class="">
-    <div class="grid grid-flow-col grid-cols-3 gap-2">
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
       {#each $page.data.bookmarks as bookmark}
         <BookmarkCard {bookmark} />
       {/each}

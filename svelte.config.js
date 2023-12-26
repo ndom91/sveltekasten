@@ -6,6 +6,13 @@ const config = {
   preprocess: vitePreprocess(),
   kit: {
     adapter: adapter(),
+    alias: {
+      $: 'src',
+      $stores: 'src/stores',
+      $assets: 'src/lib/assets',
+      $lib: 'src/lib',
+      $zod: 'src/lib/prismaTypes',
+    }
   },
   vitePlugin: {
     inspector: true

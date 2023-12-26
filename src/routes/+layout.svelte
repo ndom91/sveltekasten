@@ -1,13 +1,17 @@
 <script lang="ts">
   import { page } from "$app/stores"
+  import { Toaster } from "svelte-french-toast"
   import { Navbar } from "$lib/components/navbar"
-  import "$lib/styles/style.css"
-  import type { PageData } from "./$types";
 
-  export let data: PageData;
+  import type { PageData } from "./$types"
+
+  import "$lib/styles/style.css"
+
+  export let data: PageData
 </script>
 
 <div>
+  <Toaster />
   {#if $page.url.pathname !== "/login"}
     <Navbar formData={data.form} />
   {/if}

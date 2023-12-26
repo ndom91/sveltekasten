@@ -12,8 +12,6 @@ export const load: LayoutServerLoad = async (event) => {
 
   return {
     form: await superValidate(formSchema),
-    session: {
-      ...session
-    }
+    session
   };
 };

@@ -8,6 +8,7 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "db:push": "npx prisma db push",
+    "db:migrate": "npx prisma migrate dev",
     "db:studio": "npx prisma studio"
   },
   "devDependencies": {
@@ -47,10 +48,12 @@
     "formsnap": "^0.4.1",
     "lucide-svelte": "^0.299.0",
     "mode-watcher": "^0.1.2",
+    "svelte-french-toast": "^1.2.0",
     "sveltekit-superforms": "^1.13.1",
     "tailwind-merge": "^2.2.0",
     "tailwind-variants": "^0.1.19",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "zod-prisma-types": "^3.1.6"
   },
   "prettier": {
     "semi": false,
