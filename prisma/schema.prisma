@@ -10,6 +10,11 @@ datasource db {
   relationMode        = "prisma"
 }
 
+generator zod {
+  provider = "zod-prisma-types"
+  output = "../src/lib/prismaTypes"
+}
+
 model Bookmark {
   id          String       @id @default(cuid())
   title       String?
