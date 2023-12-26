@@ -1,21 +1,34 @@
 <script lang="ts">
   import * as Card from "$lib/components/ui/card"
+  import { AspectRatio } from "$lib/components/ui/aspect-ratio"
+
   import { Button } from "$lib/components/ui/button"
   import type { Bookmark } from "$lib/types"
-  import { Trash } from "lucide-svelte"
+  import { Trash, Pencil } from "lucide-svelte"
   import DeleteDialog from "./DeleteDialog.svelte"
+  import EditDialog from "./EditDialog.svelte"
 
   export let bookmark: Bookmark
 
   let isDeleteDialogOpen = false
+  let isEditDialogOpen = false
 
   // @ts-expect-error
   const handleDialogOpen = (targetState) => {
     isDeleteDialogOpen = targetState
   }
 
+  // @ts-expect-error
+  const handleEditOpen = (targetState) => {
+    isEditDialogOpen = targetState
+  }
+
   const handleDelete = () => {
     console.log("Deleting..")
+  }
+
+  const handleEdit = () => {
+    console.log("Submitting Edit..")
   }
 </script>
 
@@ -30,26 +43,32 @@
         <span>
           {bookmark.title}
         </span>
-        <Button variant="ghost" size="icon" on:click={() => handleDialogOpen(true)}>
-          <Trash className="h-4 w-4" />
-        </Button>
+        <div class="flex">
+          <Button variant="ghost" size="icon" on:click={() => handleEditOpen(true)}>
+            <Pencil className="h-4 w-4" strokeWidth={1.5} />
+          </Button>
+          <Button variant="ghost" size="icon" on:click={() => handleDialogOpen(true)}>
+            <Trash className="h-4 w-4" strokeWidth={1.5} color="#fca5a5" />
+          </Button>
+        </div>
       </Card.Title>
       <Card.Description class="line-clamp-2 break-words">{bookmark.desc}</Card.Description>
     </div>
   </Card.Header>
   <Card.Content class="flex-grow">
-    <div class="relative flex">
+    <AspectRatio ratio={16 / 9} class="rounded-md bg-muted">
       <img
         src={bookmark.image}
         alt="Bookmark Screenshot"
-        class="max-w-56 aspect-video rounded-md object-cover"
+        class="h-full w-full rounded-md object-cover"
       />
-    </div>
+    </AspectRatio>
   </Card.Content>
   <Card.Footer>
     <p>{bookmark.url}</p>
   </Card.Footer>
   <DeleteDialog open={isDeleteDialogOpen} on:close={handleDialogOpen} on:submit={handleDelete} />
+  <EditDialog open={isEditDialogOpen} on:close={handleEditOpen} on:submit={handleEdit} {bookmark} />
 </Card.Root>
 
 <style>
