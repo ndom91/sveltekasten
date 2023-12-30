@@ -1,10 +1,8 @@
 <script lang="ts">
   import { blur } from "svelte/transition"
   import { page } from "$app/stores"
-  import { Button } from "$lib/components/ui/button"
   import type { PageData } from "./$types"
-  import * as Popover from "$lib/components/ui/popover"
-  import * as Tooltip from "$lib/components/ui/tooltip"
+  import { Button, Tooltip, Modal } from "flowbite-svelte"
   import { QuickAddForm, AvatarMenu } from "$lib/components/navbar"
   import { Plus } from "lucide-svelte"
 
@@ -31,29 +29,21 @@
   </div>
   <div class="">
     {#if $page.data.session?.user}
-      <Popover.Root {open}>
-        <Popover.Trigger tabindex={-1}>
-          <Tooltip.Root>
-            <Tooltip.Trigger tabindex={-1}>
-              <Button variant="outline" class="size-11 rounded-full p-0">
-                <Plus class="size-4" />
-              </Button>
-            </Tooltip.Trigger>
-            <Tooltip.Content>
-              <p>Quick add Bookmark</p>
-            </Tooltip.Content>
-          </Tooltip.Root>
-        </Popover.Trigger>
-        <Popover.Content
-          transition={blur}
-          transitionConfig={{ delay: 0, duration: 250 }}
-          sideOffset={15}
-          alignOffset={15}
-        >
-          <QuickAddForm form={formData} />
-        </Popover.Content>
-      </Popover.Root>
-      <AvatarMenu />
+      <Button
+        id="quick-add"
+        variant="outline"
+        class="size-11 rounded-full p-0"
+        on:click={() => (open = !open)}
+      >
+        <Plus class="size-4" />
+      </Button>
+      <Tooltip triggeredBy="#quick-add">
+        <p>Quick add Bookmark</p>
+      </Tooltip>
+      <Modal bind:open outsideclose>
+        <QuickAddForm form={formData} />
+      </Modal>
+      <!-- <AvatarMenu /> -->
     {/if}
   </div>
 </nav>

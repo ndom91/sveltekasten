@@ -9,7 +9,7 @@ import {
   GITHUB_SECRET,
   GOOGLE_ID,
   GOOGLE_SECRET,
-  AUTH_SECRET,
+  // AUTH_SECRET,
   AUTH_TRUST_HOST,
   SMTP_HOST,
   SMTP_PORT,
@@ -109,7 +109,7 @@ export const handleAuth = SvelteKitAuth({
     strategy: 'jwt',
   },
   adapter: PrismaAdapter(prisma),
-  secret: AUTH_SECRET,
+  // secret: AUTH_SECRET,
   trustHost: AUTH_TRUST_HOST,
   pages: {
     signIn: '/login',

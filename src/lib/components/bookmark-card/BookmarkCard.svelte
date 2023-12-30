@@ -1,8 +1,5 @@
 <script lang="ts">
-  import * as Card from "$lib/components/ui/card"
-  import { AspectRatio } from "$lib/components/ui/aspect-ratio"
-
-  import { Button } from "$lib/components/ui/button"
+  import { Button, Card } from "flowbite-svelte"
   import type { Bookmark } from "$lib/types"
   import { Trash, Pencil } from "lucide-svelte"
   import DeleteDialog from "./DeleteDialog.svelte"
@@ -32,52 +29,37 @@
   }
 </script>
 
-<Card.Root
+<Card
   class={`flex flex-col bg-gradient-to-b to-current from-[${
     bookmark.metadata?.logo?.background_color.toLowerCase() || "#ccc"
   }]`}
 >
-  <Card.Header class="adaptive-glass">
-    <div class="">
-      <Card.Title class="flex items-center justify-between">
-        <span>
-          {bookmark.title}
-        </span>
-        <div class="flex">
-          <Button variant="ghost" size="icon" on:click={() => handleEditOpen(true)}>
-            <Pencil className="h-4 w-4" strokeWidth={1.5} />
-          </Button>
-          <Button variant="ghost" size="icon" on:click={() => handleDialogOpen(true)}>
-            <Trash className="h-4 w-4" strokeWidth={1.5} color="#fca5a5" />
-          </Button>
-        </div>
-      </Card.Title>
-      <Card.Description class="line-clamp-2 break-words">{bookmark.desc}</Card.Description>
+  <div class="adaptive-glass">
+    <div class="flex items-center justify-between">
+      <span>
+        {bookmark.title}
+      </span>
+      <div class="flex gap-2">
+        <Button color="alternative" size="xs" on:click={() => handleEditOpen(true)}>
+          <Pencil className="size-3" strokeWidth={1.5} />
+        </Button>
+        <Button color="alternative" size="xs" on:click={() => handleDialogOpen(true)}>
+          <Trash className="size-3" strokeWidth={1.5} color="#fca5a5" />
+        </Button>
+      </div>
     </div>
-  </Card.Header>
-  <Card.Content class="flex-grow">
-    <AspectRatio ratio={16 / 9} class="rounded-md bg-muted">
-      <img
-        src={bookmark.image}
-        alt="Bookmark Screenshot"
-        class="h-full w-full rounded-md object-cover"
-      />
-    </AspectRatio>
-  </Card.Content>
-  <Card.Footer>
+    <div class="line-clamp-2 break-words">{bookmark.desc}</div>
+  </div>
+  <div class="flex-grow">
+    <img
+      src={bookmark.image}
+      alt="Bookmark Screenshot"
+      class="aspect-video h-full w-full rounded-md object-cover"
+    />
+  </div>
+  <div>
     <p>{bookmark.url}</p>
-  </Card.Footer>
+  </div>
   <DeleteDialog open={isDeleteDialogOpen} on:close={handleDialogOpen} on:submit={handleDelete} />
   <EditDialog open={isEditDialogOpen} on:close={handleEditOpen} on:submit={handleEdit} {bookmark} />
-</Card.Root>
-
-<style>
-  .adaptive-glass {
-    --glass-lightness: 100%;
-    background: hsl(0 0% var(--glass-lightness) / 50%);
-    backdrop-filter: blur(40px);
-    @media (prefers-color-scheme: dark) {
-      --glass-lightness: 0%;
-    }
-  }
-</style>
+</Card>

@@ -1,11 +1,12 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte"
 
-  import * as Dialog from "$lib/components/ui/alert-dialog"
+  // import * as Dialog from "$lib/components/ui/alert-dialog"
+  // import { Input } from "$lib/components/ui/input"
+  // import { Label } from "$lib/components/ui/label"
+  // import { Button } from "$lib/components/ui/button"
 
-  import { Input } from "$lib/components/ui/input"
-  import { Label } from "$lib/components/ui/label"
-  import { Button } from "$lib/components/ui/button"
+  import { Modal, Button, Input, Label } from "flowbite-svelte"
 
   import type { Bookmark } from "../../types"
 
@@ -23,14 +24,12 @@
   }
 </script>
 
-<Dialog.Root bind:open onOpenChange={() => handleClose(!open)}>
-  <Dialog.Content class="sm:max-w-[425px]">
-    <Dialog.Header>
-      <Dialog.Title>Edit bookmark</Dialog.Title>
-      <Dialog.Description>
-        Make changes to your bookmark here. Click save when you're done.
-      </Dialog.Description>
-    </Dialog.Header>
+<Modal bind:open onOpenChange={() => handleClose(!open)}>
+  <svelte:fragment slot="header">
+    <div>Edit bookmark</div>
+    <div>Make changes to your bookmark here. Click save when you're done.</div>
+  </svelte:fragment>
+  <div class="sm:max-w-[425px]">
     <div class="grid gap-4 py-4">
       <div class="grid grid-cols-4 items-center gap-4">
         <Label class="text-right">Title</Label>
@@ -49,8 +48,8 @@
         <Input id="image" value={bookmark.image} class="col-span-3" />
       </div>
     </div>
-    <Dialog.Footer>
-      <Button type="submit" on:click={handleSubmit}>Save changes</Button>
-    </Dialog.Footer>
-  </Dialog.Content>
-</Dialog.Root>
+  </div>
+  <svelte:fragment slot="footer">
+    <Button color="primary" type="submit" on:click={handleSubmit}>Save changes</Button>
+  </svelte:fragment>
+</Modal>

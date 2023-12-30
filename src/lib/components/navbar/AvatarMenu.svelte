@@ -2,9 +2,11 @@
   import { page } from "$app/stores"
   import { blur } from "svelte/transition"
   import { signOut } from "@auth/sveltekit/client"
-  import * as Avatar from "$lib/components/ui/avatar"
-  import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
-  import { Skeleton } from "$lib/components/ui/skeleton"
+  // import * as Avatar from "$lib/components/ui/avatar"
+  // import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
+  // import { Skeleton } from "$lib/components/ui/skeleton"
+
+  import { Avatar, Dropdown, Skeleton } from "flowbite-svelte"
   import { ModeWatcher, mode, toggleMode } from "mode-watcher"
 
   let darkMode = $mode === "dark"

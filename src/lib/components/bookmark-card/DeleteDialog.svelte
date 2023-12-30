@@ -1,13 +1,14 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte"
-
-  import * as AlertDialog from "$lib/components/ui/alert-dialog"
+  import { Modal, Button } from "flowbite-svelte"
+  import { AlertTriangle } from "lucide-svelte"
 
   export let open = false
 
   const dispatch = createEventDispatcher<{ close: boolean; submit: null }>()
   const handleClose = () => {
     dispatch("close", false)
+    open = false
   }
 
   const handleSubmit = () => {
@@ -15,18 +16,13 @@
   }
 </script>
 
-<AlertDialog.Root bind:open>
-  <AlertDialog.Content>
-    <AlertDialog.Header>
-      <AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
-      <AlertDialog.Description>
-        This action cannot be undone. This will permanently delete your account and remove your data
-        from our servers.
-      </AlertDialog.Description>
-    </AlertDialog.Header>
-    <AlertDialog.Footer>
-      <AlertDialog.Cancel on:click={handleClose}>Cancel</AlertDialog.Cancel>
-      <AlertDialog.Action on:click={handleSubmit}>Continue</AlertDialog.Action>
-    </AlertDialog.Footer>
-  </AlertDialog.Content>
-</AlertDialog.Root>
+<Modal bind:open size="xs" outsideclose>
+  <div class="text-center">
+    <AlertTriangle stroke="#000" class="size-32 mx-auto mb-4 text-black dark:text-gray-200" />
+    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+      Are you sure you want to delete this bookmark?
+    </h3>
+    <Button on:click={handleSubmit} color="red" class="me-2">Yes, I'm sure</Button>
+    <Button on:click={handleClose} color="alternative">No, cancel</Button>
+  </div>
+</Modal>
