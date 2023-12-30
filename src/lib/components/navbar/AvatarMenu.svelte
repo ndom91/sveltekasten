@@ -2,45 +2,39 @@
   import { page } from "$app/stores"
   import { blur } from "svelte/transition"
   import { signOut } from "@auth/sveltekit/client"
-  // import * as Avatar from "$lib/components/ui/avatar"
-  // import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
-  // import { Skeleton } from "$lib/components/ui/skeleton"
 
-  import { Avatar, Dropdown, Skeleton } from "flowbite-svelte"
-  import { ModeWatcher, mode, toggleMode } from "mode-watcher"
+  import {
+    Avatar,
+    Button,
+    Checkbox,
+    DarkMode,
+    Dropdown,
+    DropdownItem,
+    DropdownDivider,
+    DropdownHeader,
+    Skeleton,
+  } from "flowbite-svelte"
 
-  let darkMode = $mode === "dark"
+  // let darkMode = $mode === "dark"
 </script>
 
-<ModeWatcher />
-<DropdownMenu.Root loop closeOnItemClick={false}>
-  <DropdownMenu.Trigger
-    class="rounded-full outline-none focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 focus:ring-offset-white focus:dark:ring-offset-slate-800"
-  >
-    <Avatar.Root class="rounded-full outline-none focus:outline-none focus:ring-gray-200">
-      <Avatar.Image
-        src={$page.data.session?.user.image ||
-          `https://unavatar.io/${$page.data.session?.user.email}?fallback=https://source.boringavatars.com/marble/120/${$page.data.session?.user.email}?colors=264653r,2a9d8f,e9c46a,f4a261,e76f51`}
-        class="rounded focus:outline-none focus:ring-gray-200"
-        alt="User Avatar"
-      />
-      <Avatar.Fallback><Skeleton class="h-full w-full rounded-full" /></Avatar.Fallback>
-    </Avatar.Root>
-  </DropdownMenu.Trigger>
-  <DropdownMenu.Content transition={blur} transitionConfig={{ delay: 0, duration: 250 }}>
-    <DropdownMenu.Group>
-      <DropdownMenu.Label class="line-clamp-1 w-full justify-end truncate"
-        >{$page.data.session?.user.name ?? $page.data.session?.user.email}</DropdownMenu.Label
-      >
-      <DropdownMenu.Separator />
-      <DropdownMenu.CheckboxItem
-        class="justify-end"
-        onCheckedChange={toggleMode}
-        bind:checked={darkMode}>Dark Mode</DropdownMenu.CheckboxItem
-      >
-      <DropdownMenu.Item href="/settings" class="justify-end">User Settings</DropdownMenu.Item>
-      <DropdownMenu.Separator />
-      <DropdownMenu.Item class="justify-end" on:click={() => signOut()}>Signout</DropdownMenu.Item>
-    </DropdownMenu.Group>
-  </DropdownMenu.Content>
-</DropdownMenu.Root>
+<Avatar
+  src={$page.data.session?.user.image ||
+    `https://unavatar.io/${$page.data.session?.user.email}?fallback=https://source.boringavatars.com/marble/120/${$page.data.session?.user.email}?colors=264653r,2a9d8f,e9c46a,f4a261,e76f51`}
+  rounded={true}
+  class="size-12 rounded-full hover:cursor-pointer"
+  id="user-avatar"
+  alt="User Avatar"
+/>
+<Dropdown triggeredBy="#user-avatar">
+  <DropdownHeader>
+    <span class="block text-sm text-gray-900 dark:text-white">{$page.data.session?.user.name}</span>
+    <span class="block truncate text-sm font-medium">{$page.data.session?.user.email}</span>
+  </DropdownHeader>
+  <DropdownItem>
+    Dark Mode
+    <DarkMode btnClass="size-6" />
+  </DropdownItem>
+  <DropdownItem><a href="/settings">Settings</a></DropdownItem>
+  <DropdownItem slot="footer" on:click={() => signOut()}>Sign out</DropdownItem>
+</Dropdown>

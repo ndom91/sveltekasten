@@ -14,9 +14,11 @@
   export let bookmark: Bookmark
 
   const dispatch = createEventDispatcher<{ close: boolean; submit: null }>()
-  const handleClose = (target = false) => {
-    dispatch("close", target)
+  const handleClose = () => {
+    open = false
   }
+
+  console.log("editDialog.open", open)
 
   // @ts-expect-error
   const handleSubmit = (data) => {
@@ -24,11 +26,7 @@
   }
 </script>
 
-<Modal bind:open onOpenChange={() => handleClose(!open)}>
-  <svelte:fragment slot="header">
-    <div>Edit bookmark</div>
-    <div>Make changes to your bookmark here. Click save when you're done.</div>
-  </svelte:fragment>
+<Modal bind:open title="Edit Bookmark" on:close={handleClose}>
   <div class="sm:max-w-[425px]">
     <div class="grid gap-4 py-4">
       <div class="grid grid-cols-4 items-center gap-4">
@@ -50,6 +48,7 @@
     </div>
   </div>
   <svelte:fragment slot="footer">
-    <Button color="primary" type="submit" on:click={handleSubmit}>Save changes</Button>
+    <Button color="dark" type="submit" on:click={handleSubmit}>Save changes</Button>
+    <Button on:click={() => handleClose(false)} color="alternative">No, cancel</Button>
   </svelte:fragment>
 </Modal>

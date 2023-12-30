@@ -43,7 +43,7 @@
       <Modal bind:open outsideclose>
         <QuickAddForm form={formData} />
       </Modal>
-      <!-- <AvatarMenu /> -->
+      <AvatarMenu />
     {/if}
   </div>
 </nav>

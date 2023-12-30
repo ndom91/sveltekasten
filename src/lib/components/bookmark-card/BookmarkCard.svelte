@@ -10,46 +10,46 @@
   let isDeleteDialogOpen = false
   let isEditDialogOpen = false
 
-  // @ts-expect-error
-  const handleDialogOpen = (targetState) => {
-    isDeleteDialogOpen = targetState
+  const handleDialogOpen = () => {
+    isDeleteDialogOpen = true
   }
 
-  // @ts-expect-error
-  const handleEditOpen = (targetState) => {
-    isEditDialogOpen = targetState
+  const handleEditOpen = () => {
+    isEditDialogOpen = true
   }
 
   const handleDelete = () => {
     console.log("Deleting..")
+    isDeleteDialogOpen = false
   }
 
   const handleEdit = () => {
     console.log("Submitting Edit..")
+    isEditDialogOpen = false
+    // TODO: Submit Edit
+    // and toast on success
   }
 </script>
 
 <Card
-  class={`flex flex-col bg-gradient-to-b to-current from-[${
+  class={`flex gap-4 flex-col bg-gradient-to-b to-current from-[${
     bookmark.metadata?.logo?.background_color.toLowerCase() || "#ccc"
   }]`}
 >
-  <div class="adaptive-glass">
-    <div class="flex items-center justify-between">
-      <span>
-        {bookmark.title}
-      </span>
-      <div class="flex gap-2">
-        <Button color="alternative" size="xs" on:click={() => handleEditOpen(true)}>
-          <Pencil className="size-3" strokeWidth={1.5} />
-        </Button>
-        <Button color="alternative" size="xs" on:click={() => handleDialogOpen(true)}>
-          <Trash className="size-3" strokeWidth={1.5} color="#fca5a5" />
-        </Button>
-      </div>
+  <div class="flex items-center justify-between">
+    <span>
+      {bookmark.title}
+    </span>
+    <div class="flex gap-2">
+      <Button color="alternative" size="xs" on:click={handleEditOpen}>
+        <Pencil className="size-3" strokeWidth={1.5} />
+      </Button>
+      <Button color="alternative" size="xs" on:click={handleDialogOpen}>
+        <Trash className="size-3" strokeWidth={1.5} color="#fca5a5" />
+      </Button>
     </div>
-    <div class="line-clamp-2 break-words">{bookmark.desc}</div>
   </div>
+  <div class="line-clamp-2 break-words">{bookmark.desc}</div>
   <div class="flex-grow">
     <img
       src={bookmark.image}
@@ -60,6 +60,6 @@
   <div>
     <p>{bookmark.url}</p>
   </div>
-  <DeleteDialog open={isDeleteDialogOpen} on:close={handleDialogOpen} on:submit={handleDelete} />
-  <EditDialog open={isEditDialogOpen} on:close={handleEditOpen} on:submit={handleEdit} {bookmark} />
+  <DeleteDialog bind:open={isDeleteDialogOpen} on:submit={handleDelete} />
+  <EditDialog bind:open={isEditDialogOpen} on:submit={handleEdit} {bookmark} />
 </Card>

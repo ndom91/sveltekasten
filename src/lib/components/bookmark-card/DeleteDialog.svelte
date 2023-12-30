@@ -7,7 +7,6 @@
 
   const dispatch = createEventDispatcher<{ close: boolean; submit: null }>()
   const handleClose = () => {
-    dispatch("close", false)
     open = false
   }
 
