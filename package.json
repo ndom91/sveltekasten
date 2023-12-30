@@ -12,6 +12,8 @@
     "db:studio": "npx prisma studio"
   },
   "devDependencies": {
+    "@melt-ui/pp": "^0.2.0",
+    "@melt-ui/svelte": "^0.66.4",
     "@sveltejs/adapter-auto": "2.1.1",
     "@sveltejs/kit": "2.0.4",
     "@sveltejs/package": "2.2.4",
@@ -23,8 +25,6 @@
     "eslint": "8.56.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-svelte": "2.35.1",
-    "flowbite": "^2.2.1",
-    "flowbite-svelte": "^0.44.21",
     "postcss": "^8.4.32",
     "prettier": "3.1.1",
     "prettier-plugin-svelte": "3.1.2",
@@ -44,6 +44,8 @@
     "@auth/sveltekit": "^0.5.0",
     "@prisma/client": "5.7.1",
     "clsx": "^2.0.0",
+    "flowbite": "^2.2.1",
+    "flowbite-svelte": "^0.44.21",
     "formsnap": "^0.4.1",
     "lucide-svelte": "^0.299.0",
     "svelte-french-toast": "^1.2.0",

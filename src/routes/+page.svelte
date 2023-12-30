@@ -1,13 +1,14 @@
 <script lang="ts">
   import { page } from "$app/stores"
-  import { BookmarkCard } from "$lib/components/bookmark-card"
+  // import { BookmarkCard } from "$lib/components/bookmark-card"
 </script>
 
 <div class="mx-auto max-w-7xl px-4">
   <main class="">
     <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
       {#each $page.data.bookmarks as bookmark}
-        <BookmarkCard {bookmark} />
+        <div>{bookmark.title}</div>
+        <!-- <BookmarkCard {bookmark} /> -->
       {/each}
     </div>
   </main>

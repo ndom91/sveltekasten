@@ -1,12 +1,12 @@
 import prisma from '$lib/prisma';
 import type { PageServerLoad } from './$types'
 
-export const load: PageServerLoad = async () => {
-  // @ts-expect-error
-  const response = await prisma.post.findMany({
-    where: { published: false },
-    include: { author: true },
+export const load: PageServerLoad = async (event) => {
+  const session = await event.locals.getSession();
+
+  const response = await prisma.category.findMany({
+    where: { userId: session.user.userId },
   })
 
-  return { drafts: response };
+  return { categories: response };
 };
