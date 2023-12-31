@@ -27,9 +27,9 @@
   </DropdownMenu.Trigger>
   <DropdownMenu.Content transition={blur} transitionConfig={{ delay: 0, duration: 250 }}>
     <DropdownMenu.Group>
-      <DropdownMenu.Label class="line-clamp-1 w-full justify-end truncate"
-        >{$page.data.session?.user.name ?? $page.data.session?.user.email}</DropdownMenu.Label
-      >
+      <DropdownMenu.Label class="line-clamp-1 w-full justify-end truncate">
+        {$page.data.session?.user.name ?? $page.data.session?.user.email}
+      </DropdownMenu.Label>
       <DropdownMenu.Separator />
       <DropdownMenu.CheckboxItem
         class="justify-end"

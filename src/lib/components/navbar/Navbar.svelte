@@ -32,18 +32,22 @@
   <div class="">
     {#if $page.data.session?.user}
       <Popover.Root {open}>
-        <Popover.Trigger tabindex={-1}>
-          <Tooltip.Root>
-            <Tooltip.Trigger tabindex={-1}>
-              <Button variant="outline" class="size-11 rounded-full p-0">
+        <Tooltip.Root>
+          <Popover.Trigger asChild let:builder={popoverBuilder}>
+            <Tooltip.Trigger asChild let:builder={tooltipBuilder}>
+              <Button
+                builders={[popoverBuilder, tooltipBuilder]}
+                variant="outline"
+                class="size-11 rounded-full p-0"
+              >
                 <Plus class="size-4" />
               </Button>
             </Tooltip.Trigger>
-            <Tooltip.Content>
-              <p>Quick add Bookmark</p>
-            </Tooltip.Content>
-          </Tooltip.Root>
-        </Popover.Trigger>
+          </Popover.Trigger>
+          <Tooltip.Content>
+            <p>Quick add Bookmark</p>
+          </Tooltip.Content>
+        </Tooltip.Root>
         <Popover.Content
           transition={blur}
           transitionConfig={{ delay: 0, duration: 250 }}
@@ -57,9 +61,3 @@
     {/if}
   </div>
 </nav>
-
-<style>
-  .active {
-    @apply font-bold;
-  }
-</style>
