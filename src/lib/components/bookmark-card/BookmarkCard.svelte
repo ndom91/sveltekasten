@@ -13,14 +13,12 @@
   let isDeleteDialogOpen = false
   let isEditDialogOpen = false
 
-  // @ts-expect-error
-  const handleDialogOpen = (targetState) => {
-    isDeleteDialogOpen = targetState
+  const handleDialogOpen = () => {
+    isDeleteDialogOpen = true
   }
 
-  // @ts-expect-error
-  const handleEditOpen = (targetState) => {
-    isEditDialogOpen = targetState
+  const handleEditOpen = () => {
+    isEditDialogOpen = true
   }
 
   const handleDelete = () => {
@@ -44,11 +42,11 @@
           {bookmark.title}
         </span>
         <div class="flex">
-          <Button variant="ghost" size="icon" on:click={() => handleEditOpen(true)}>
-            <Pencil className="h-4 w-4" strokeWidth={1.5} />
+          <Button variant="ghost" size="icon" on:click={handleEditOpen}>
+            <Pencil className="size-4" strokeWidth={1.5} />
           </Button>
-          <Button variant="ghost" size="icon" on:click={() => handleDialogOpen(true)}>
-            <Trash className="h-4 w-4" strokeWidth={1.5} color="#fca5a5" />
+          <Button variant="ghost" size="icon" on:click={handleDialogOpen}>
+            <Trash className="size-4" strokeWidth={1.5} color="#fca5a5" />
           </Button>
         </div>
       </Card.Title>
@@ -67,17 +65,6 @@
   <Card.Footer>
     <p>{bookmark.url}</p>
   </Card.Footer>
-  <DeleteDialog open={isDeleteDialogOpen} on:close={handleDialogOpen} on:submit={handleDelete} />
-  <EditDialog open={isEditDialogOpen} on:close={handleEditOpen} on:submit={handleEdit} {bookmark} />
+  <DeleteDialog bind:open={isDeleteDialogOpen} on:submit={handleDelete} />
+  <EditDialog bind:open={isEditDialogOpen} on:submit={handleEdit} {bookmark} />
 </Card.Root>
-
-<style>
-  .adaptive-glass {
-    --glass-lightness: 100%;
-    background: hsl(0 0% var(--glass-lightness) / 50%);
-    backdrop-filter: blur(40px);
-    @media (prefers-color-scheme: dark) {
-      --glass-lightness: 0%;
-    }
-  }
-</style>

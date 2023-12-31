@@ -7,9 +7,10 @@
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-    "db:push": "npx prisma db push",
-    "db:migrate": "npx prisma migrate dev",
-    "db:studio": "npx prisma studio"
+    "db:push": "pnpm dlx prisma db push",
+    "db:migrate": "pnpm dlx prisma migrate dev",
+    "db:studio": "pnpm dlx prisma studio",
+    "postinstall": "pnpm dlx prisma generate"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "2.1.1",
@@ -28,7 +29,7 @@
     "prettier": "3.1.1",
     "prettier-plugin-svelte": "3.1.2",
     "prisma": "5.7.1",
-    "svelte": "4.2.8",
+    "svelte": "5.0.0-next.27",
     "svelte-check": "3.6.2",
     "tailwindcss": "^3.4.0",
     "ts-node": "10.9.2",
@@ -72,5 +73,6 @@
         }
       }
     ]
-  }
+  },
+  "packageManager": "pnpm@8.12.1+sha256.28ca61ece5a496148b73fabc9afb820f9c3fec4f55f04ce45a2cea0a5219f2e1"
 }
