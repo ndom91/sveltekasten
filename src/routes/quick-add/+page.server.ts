@@ -1,6 +1,6 @@
 import type { Actions } from './$types'
 import { fail, error } from "@sveltejs/kit";
-import { message, superValidate } from "sveltekit-superforms/server";
+import { superValidate } from "sveltekit-superforms/server";
 import { formSchema } from "../schema";
 import prisma from '$lib/prisma';
 

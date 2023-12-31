@@ -1,21 +1,14 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte"
-
+  import { enhance } from "$app/forms"
+  import { form_action } from "$lib/form_action"
+  import { buttonVariants } from "$lib/components/ui/button"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
 
   export let open = false
-
-  const dispatch = createEventDispatcher<{ close: boolean; submit: null }>()
-  const handleClose = () => {
-    dispatch("close", false)
-  }
-
-  const handleSubmit = () => {
-    dispatch("submit")
-  }
+  export let bookmarkId: string
 </script>
 
-<AlertDialog.Root bind:open>
+<AlertDialog.Root bind:open closeOnOutsideClick closeOnEscape>
   <AlertDialog.Content>
     <AlertDialog.Header>
       <AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
@@ -25,8 +18,15 @@
       </AlertDialog.Description>
     </AlertDialog.Header>
     <AlertDialog.Footer>
-      <AlertDialog.Cancel on:click={handleClose}>Cancel</AlertDialog.Cancel>
-      <AlertDialog.Action on:click={handleSubmit}>Continue</AlertDialog.Action>
+      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+      <AlertDialog.Action asChild>
+        <form action="?/deleteBookmark" method="post" use:enhance={form_action()}>
+          <input type="hidden" name="bookmarkId" value={bookmarkId} />
+          <button class={buttonVariants({ variant: "destructive" })} type="submit">
+            Continue
+          </button>
+        </form>
+      </AlertDialog.Action>
     </AlertDialog.Footer>
   </AlertDialog.Content>
 </AlertDialog.Root>

@@ -1,12 +1,11 @@
 <script lang="ts">
   import * as Card from "$lib/components/ui/card"
   import { AspectRatio } from "$lib/components/ui/aspect-ratio"
-
   import { Button } from "$lib/components/ui/button"
-  import type { Bookmark } from "$lib/types"
   import { Trash, Pencil } from "lucide-svelte"
   import DeleteDialog from "./DeleteDialog.svelte"
   import EditDialog from "./EditDialog.svelte"
+  import type { Bookmark } from "$lib/types"
 
   export let bookmark: Bookmark
 
@@ -19,14 +18,6 @@
 
   const handleEditOpen = () => {
     isEditDialogOpen = true
-  }
-
-  const handleDelete = () => {
-    console.log("Deleting..")
-  }
-
-  const handleEdit = () => {
-    console.log("Submitting Edit..")
   }
 </script>
 
@@ -65,6 +56,6 @@
   <Card.Footer>
     <p>{bookmark.url}</p>
   </Card.Footer>
-  <DeleteDialog bind:open={isDeleteDialogOpen} on:submit={handleDelete} />
-  <EditDialog bind:open={isEditDialogOpen} on:submit={handleEdit} {bookmark} />
+  <DeleteDialog bind:open={isDeleteDialogOpen} bookmarkId={bookmark.id} />
+  <EditDialog bind:open={isEditDialogOpen} {bookmark} />
 </Card.Root>

@@ -35,6 +35,7 @@ type BookmarkMetadata = {
 }
 
 export type Bookmark = {
+  id: string
   title: string
   desc: string
   url: string | undefined

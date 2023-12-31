@@ -1,18 +1,16 @@
 <script lang="ts">
+  import { cn } from "$lib/utils"
   import * as Form from "$lib/components/ui/form"
   import * as Popover from "$lib/components/ui/popover"
   import * as Command from "$lib/components/ui/command"
   import { Button } from "$lib/components/ui/button"
   import { languages, formSchema as schema, type FormSchema } from "../../../routes/schema"
-  import toast from "svelte-french-toast"
 
+  import { tick } from "svelte"
+  import toast from "svelte-french-toast"
   import type { SuperValidated } from "sveltekit-superforms"
   import { type FormOptions } from "formsnap"
-
-  import { cn } from "$lib/utils"
-  import { tick } from "svelte"
-  import { Check, ChevronsUpDown } from "lucide-svelte"
-  import LoadingSpinner from "../LoadingSpinner.svelte"
+  import { Check, ChevronsUpDown, Loader2 } from "lucide-svelte"
 
   let open = false
   function closeAndFocusTrigger(triggerId: string) {
@@ -39,25 +37,34 @@
   export let form: SuperValidated<FormSchema>
 </script>
 
-<Form.Root debug={false} {options} {schema} {form} let:submitting let:config action="/quick-add">
+<Form.Root
+  debug={true}
+  {options}
+  {schema}
+  {form}
+  let:submitting
+  let:config
+  method="post"
+  action="?/quick-add"
+>
   <Form.Field {config} name="title">
     <Form.Item>
       <Form.Label>Title</Form.Label>
-      <Form.Input />
+      <Form.Input name="title" />
       <Form.Validation />
     </Form.Item>
   </Form.Field>
   <Form.Field {config} name="url">
     <Form.Item>
       <Form.Label>URL</Form.Label>
-      <Form.Input />
+      <Form.Input name="url" />
       <Form.Validation />
     </Form.Item>
   </Form.Field>
   <Form.Field {config} name="category">
     <Form.Item>
       <Form.Label>Category</Form.Label>
-      <Form.Input />
+      <Form.Input name="category" />
       <Form.Validation />
     </Form.Item>
   </Form.Field>
@@ -109,13 +116,13 @@
   <Form.Field {config} name="description">
     <Form.Item>
       <Form.Label>Description</Form.Label>
-      <Form.Textarea />
+      <Form.Textarea name="description" />
       <Form.Validation />
     </Form.Item>
   </Form.Field>
   <Form.Button disabled={submitting} class="w-full">
     {#if submitting}
-      <LoadingSpinner size="small" />
+      <Loader2 class="mr-2 h-4 w-4 animate-spin" />
     {/if}
     <span>Submit</span>
   </Form.Button>
