@@ -46,7 +46,7 @@
     "bits-ui": "^0.13.0",
     "clsx": "^2.0.0",
     "cmdk-sv": "^0.0.12",
-    "formsnap": "^0.4.1",
+    "formsnap": "^0.4.2",
     "lucide-svelte": "^0.299.0",
     "mode-watcher": "^0.1.2",
     "svelte-french-toast": "^1.2.0",
