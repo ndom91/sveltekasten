@@ -45,7 +45,7 @@
   let:submitting
   let:config
   method="post"
-  action="?/quick-add"
+  action="?/quickAdd"
 >
   <Form.Field {config} name="title">
     <Form.Item>

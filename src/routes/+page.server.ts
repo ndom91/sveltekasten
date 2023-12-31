@@ -54,8 +54,7 @@ export const actions: Actions = {
     });
     return { message: 'Updated Bookmark' }
   },
-  quickAdd: async () => {
-
+  quickAdd: async (event) => {
     const form = await superValidate(event, formSchema);
     if (!form.valid) {
       return fail(400, {
