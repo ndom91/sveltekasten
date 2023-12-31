@@ -2,18 +2,15 @@
   import { page } from "$app/stores"
   import { Toaster } from "svelte-french-toast"
   import { Navbar } from "$lib/components/navbar"
-
-  import type { PageData } from "./$types"
+  import Sidebar from "$lib/components/UserSidebar.svelte"
 
   import "$lib/styles/style.css"
-
-  export let data: PageData
 </script>
 
-<div>
+<div class="flex">
   <Toaster />
   {#if $page.url.pathname !== "/login"}
-    <Navbar formData={data.form} />
+    <Sidebar />
   {/if}
   <slot />
 </div>

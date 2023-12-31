@@ -178,7 +178,7 @@ export const actions: Actions = {
       };
     } catch (err) {
       console.error(err)
-      error(500, { message: 'Failed to add bookmark' })
+      fail(500, { message: 'Failed to add bookmark' })
     }
   }
 }

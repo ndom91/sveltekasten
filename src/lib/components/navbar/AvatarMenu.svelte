@@ -34,8 +34,10 @@
       <DropdownMenu.CheckboxItem
         class="justify-end"
         onCheckedChange={toggleMode}
-        bind:checked={darkMode}>Dark Mode</DropdownMenu.CheckboxItem
+        bind:checked={darkMode}
       >
+        Dark Mode
+      </DropdownMenu.CheckboxItem>
       <DropdownMenu.Item href="/settings" class="justify-end">User Settings</DropdownMenu.Item>
       <DropdownMenu.Separator />
       <DropdownMenu.Item class="justify-end" on:click={() => signOut()}>Signout</DropdownMenu.Item>

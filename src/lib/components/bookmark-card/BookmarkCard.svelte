@@ -2,7 +2,7 @@
   import * as Card from "$lib/components/ui/card"
   import { AspectRatio } from "$lib/components/ui/aspect-ratio"
   import { Button } from "$lib/components/ui/button"
-  import { Trash, Pencil } from "lucide-svelte"
+  import { Trash, Pencil, ExternalLink } from "lucide-svelte"
   import DeleteDialog from "./DeleteDialog.svelte"
   import EditDialog from "./EditDialog.svelte"
   import type { Bookmark } from "$lib/types"
@@ -33,11 +33,14 @@
           {bookmark.title}
         </span>
         <div class="flex">
+          <Button variant="ghost" size="icon" href={bookmark.url} target="_blank">
+            <ExternalLink class="size-5" strokeWidth={1.5} />
+          </Button>
           <Button variant="ghost" size="icon" on:click={handleEditOpen}>
-            <Pencil className="size-4" strokeWidth={1.5} />
+            <Pencil class="size-5" strokeWidth={1.5} />
           </Button>
           <Button variant="ghost" size="icon" on:click={handleDialogOpen}>
-            <Trash className="size-4" strokeWidth={1.5} color="#fca5a5" />
+            <Trash class="size-5" strokeWidth={1.5} color="#fca5a5" />
           </Button>
         </div>
       </Card.Title>
@@ -54,7 +57,7 @@
     </AspectRatio>
   </Card.Content>
   <Card.Footer>
-    <p>{bookmark.url}</p>
+    <p class="text-sm text-muted">{bookmark.url}</p>
   </Card.Footer>
   <DeleteDialog bind:open={isDeleteDialogOpen} bookmarkId={bookmark.id} />
   <EditDialog bind:open={isEditDialogOpen} {bookmark} />

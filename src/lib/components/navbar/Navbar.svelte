@@ -2,13 +2,12 @@
   import { blur } from "svelte/transition"
   import { page } from "$app/stores"
   import { Button } from "$lib/components/ui/button"
-  import type { PageData } from "./$types"
   import * as Popover from "$lib/components/ui/popover"
   import * as Tooltip from "$lib/components/ui/tooltip"
   import { QuickAddForm, AvatarMenu } from "$lib/components/navbar"
   import { Plus } from "lucide-svelte"
-
-  export let formData: PageData.form
+  // import type { SuperValidated } from "sveltekit-superforms"
+  // import type { FormSchema } from "../../../routes/schema"
 
   let open = false
 
@@ -54,7 +53,7 @@
           sideOffset={15}
           alignOffset={15}
         >
-          <QuickAddForm form={formData} />
+          <QuickAddForm />
         </Popover.Content>
       </Popover.Root>
       <AvatarMenu />
