@@ -2,17 +2,17 @@
   import { page } from "$app/stores"
   import { Button } from "$lib/components/ui/button"
   import { AvatarMenu } from "$lib/components/navbar"
-  import { Menu, Home, Package, Tags } from "lucide-svelte"
+  import { Home, Package, Tags } from "lucide-svelte"
   import Logo from "$lib/assets/Logo.svelte"
   import { cn } from "$lib/utils"
+  import { createUI } from "$state/ui.svelte"
 
-  let expanded = false
+  const ui = createUI()
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.repeat) return
-    console.log(event.code)
     if (event.code === "BracketLeft") {
-      expanded = !expanded
+      ui.toggleUserSidebar()
     }
   }
 </script>
@@ -21,30 +21,32 @@
 <aside
   class={cn(
     "space-between relative flex h-full h-screen flex-grow flex-col bg-white shadow transition-width dark:bg-zinc-900",
-    expanded ? "w-96" : "w-24",
+    ui.userSidebarOpen ? "w-[clamp(10vw,_20rem,_30vw)]" : "w-24",
   )}
 >
-  <div class={cn(expanded ? "p-6" : "p-6")}>
-    <Button size="icon" variant="ghost" on:click={() => (expanded = !expanded)}>
+  <div class={cn(ui.userSidebarOpen ? "p-6" : "p-6")}>
+    <Button size="icon" variant="ghost" on:click={ui.toggleUserSidebar}>
       <Logo class="size-8 text-zinc-50" />
       <span class="sr-only">Toggle navigation menu</span>
     </Button>
-    <nav class={cn("mt-10 flex flex-col gap-4", expanded ? "items-start" : "items-center")}>
+    <nav
+      class={cn("mt-10 flex flex-col gap-4", ui.userSidebarOpen ? "items-start" : "items-center")}
+    >
       <a class="flex items-center gap-2 font-semibold" href="/">
         <Home class="h-6 w-6" />
-        {#if expanded}
+        {#if ui.userSidebarOpen}
           <span>Home</span>
         {/if}
       </a>
       <a class="flex items-center gap-2 font-semibold" href="/categories">
         <Package class="h-6 w-6" />
-        {#if expanded}
+        {#if ui.userSidebarOpen}
           <span>Categories</span>
         {/if}
       </a>
       <a class="flex items-center gap-2 font-semibold" href="/tags">
         <Tags class="h-6 w-6" />
-        {#if expanded}
+        {#if ui.userSidebarOpen}
           <span>Tags</span>
         {/if}
       </a>
@@ -53,11 +55,11 @@
   <div
     class={cn(
       "absolute bottom-0 mb-4 flex w-full items-center",
-      expanded ? "justify-start p-6" : "justify-center p-6",
+      ui.userSidebarOpen ? "justify-start p-6" : "justify-center p-6",
     )}
   >
     <AvatarMenu />
-    {#if expanded}
+    {#if ui.userSidebarOpen}
       <span class="text-md ml-2 flex items-center justify-start truncate">
         {$page.data.session?.user?.name.split(" ")[0] ?? ""}
       </span>

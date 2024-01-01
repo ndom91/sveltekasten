@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from "$app/stores"
   import { Toaster } from "svelte-french-toast"
-  // import { Navbar } from "$lib/components/navbar"
+  import { Navbar } from "$lib/components/navbar"
   import Sidebar from "$lib/components/UserSidebar.svelte"
   import MetadataSidebar from "$/lib/components/MetadataSidebar.svelte"
 
@@ -13,7 +13,10 @@
   {#if $page.url.pathname !== "/login"}
     <Sidebar />
   {/if}
-  <slot />
+  <div class="flex w-full flex-grow flex-col">
+    <Navbar />
+    <slot />
+  </div>
   {#if $page.url.pathname !== "/login"}
     <MetadataSidebar />
   {/if}

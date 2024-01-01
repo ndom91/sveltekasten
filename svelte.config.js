@@ -12,6 +12,7 @@ const config = {
       $assets: 'src/lib/assets',
       $lib: 'src/lib',
       $zod: 'src/lib/prismaTypes',
+      $state: 'src/state',
     }
   },
   vitePlugin: {

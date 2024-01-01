@@ -4,11 +4,12 @@
   import { Button } from "$lib/components/ui/button"
   import * as Popover from "$lib/components/ui/popover"
   import * as Tooltip from "$lib/components/ui/tooltip"
-  import { QuickAddForm, AvatarMenu } from "$lib/components/navbar"
-  import { Plus } from "lucide-svelte"
-  // import type { SuperValidated } from "sveltekit-superforms"
-  // import type { FormSchema } from "../../../routes/schema"
+  import { QuickAddForm } from "$lib/components/navbar"
+  import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
+  import { Plus, ArrowBigLeftDash, ArrowBigRightDash } from "lucide-svelte"
+  import { createUI } from "$state/ui.svelte"
 
+  const ui = createUI()
   let open = false
 
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -20,43 +21,52 @@
 </script>
 
 <svelte:window on:keydown={handleKeyDown} />
-<nav
-  class="*:gap-6 *:flex *:items-center mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-8"
->
-  <div class="">
-    <a class:active={$page.url.pathname === "/"} href="/">Home</a>
-    <a class:active={$page.url.pathname === "/tags"} href="/tags">Tags</a>
-    <a class:active={$page.url.pathname === "/categories"} href="/categories">Categories</a>
-  </div>
-  <div class="">
-    {#if $page.data.session?.user}
-      <Popover.Root {open}>
-        <Tooltip.Root>
-          <Popover.Trigger asChild let:builder={popoverBuilder}>
-            <Tooltip.Trigger asChild let:builder={tooltipBuilder}>
-              <Button
-                builders={[popoverBuilder, tooltipBuilder]}
-                variant="outline"
-                class="size-11 rounded-full p-0"
-              >
-                <Plus class="size-4" />
-              </Button>
-            </Tooltip.Trigger>
-          </Popover.Trigger>
-          <Tooltip.Content>
-            <p>Quick add Bookmark</p>
-          </Tooltip.Content>
-        </Tooltip.Root>
-        <Popover.Content
-          transition={blur}
-          transitionConfig={{ delay: 0, duration: 250 }}
-          sideOffset={15}
-          alignOffset={15}
-        >
-          <QuickAddForm />
-        </Popover.Content>
-      </Popover.Root>
-      <AvatarMenu />
-    {/if}
-  </div>
+<nav class="mx-auto flex w-full items-center justify-end gap-4 p-4">
+  <Popover.Root {open}>
+    <Tooltip.Root>
+      <Popover.Trigger asChild let:builder={popoverBuilder}>
+        <Tooltip.Trigger asChild let:builder={tooltipBuilder}>
+          <Button
+            builders={[popoverBuilder, tooltipBuilder]}
+            variant="outline"
+            class="size-11 rounded-full p-0"
+          >
+            <Plus class="size-4" />
+          </Button>
+        </Tooltip.Trigger>
+      </Popover.Trigger>
+      <Tooltip.Content>
+        <p>Quick add Bookmark</p>
+      </Tooltip.Content>
+    </Tooltip.Root>
+    <Popover.Content
+      transition={blur}
+      transitionConfig={{ delay: 0, duration: 250 }}
+      sideOffset={15}
+      alignOffset={15}
+    >
+      <QuickAddForm />
+    </Popover.Content>
+  </Popover.Root>
+  <Tooltip.Root>
+    <Tooltip.Trigger asChild let:builder={tooltipBuilder}>
+      <Button
+        builders={[tooltipBuilder]}
+        variant="ghost"
+        class="size-11 rounded-full p-0"
+        on:click={ui.toggleMetadataSidebar}
+      >
+        {#if ui.metadataSidebarOpen}
+          <ArrowBigLeftDash class="size-6" />
+        {:else}
+          <ArrowBigRightDash class="size-6" />
+        {/if}
+      </Button>
+    </Tooltip.Trigger>
+    <Tooltip.Content>
+      <p>
+        Toggle Sidebar <KeyboardIndicator key="]" />
+      </p>
+    </Tooltip.Content>
+  </Tooltip.Root>
 </nav>
