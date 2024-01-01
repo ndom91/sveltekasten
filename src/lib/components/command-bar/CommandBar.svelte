@@ -58,10 +58,10 @@
     </Command.Group>
     <Command.Separator />
     <Command.Group heading="Actions">
+      <Command.Item onSelect={toggleDarkMode}>Toggle Dark Mode</Command.Item>
       <Command.Item onSelect={openQuickAdd}>New Bookmark</Command.Item>
       <Command.Item>Delete Bookmark</Command.Item>
       <Command.Item>Edit Bookmark</Command.Item>
-      <Command.Item onSelect={toggleDarkMode}>Toggle Dark Mode</Command.Item>
     </Command.Group>
   </Command.List>
 </Command.Dialog>
