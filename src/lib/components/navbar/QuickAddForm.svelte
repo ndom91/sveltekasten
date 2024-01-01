@@ -9,11 +9,11 @@
   // import { languages, formSchema as schema, type FormSchema } from "../../../routes/schema"
   import { superForm } from "sveltekit-superforms/client"
   import SuperDebug from "sveltekit-superforms/client/SuperDebug.svelte"
-
+  import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
   import toast from "svelte-french-toast"
-  import { Loader2 } from "lucide-svelte"
+  import { createUI } from "$state/ui.svelte"
 
-  let open = false
+  const ui = createUI()
 
   const { form, errors, constraints, enhance, submitting, delayed } = superForm($page.data.form, {
     onUpdated: ({ form }) => {
@@ -21,7 +21,7 @@
       if (form.message?.text) {
         toast.success(form.message.text)
       }
-      open = false
+      ui.toggleQuickAdd()
     },
   })
 </script>
@@ -93,7 +93,7 @@
 
   <Button type="submit" disabled={$submitting || $delayed}>
     {#if $submitting || $delayed}
-      <Loader2 class="mr-2 h-4 w-4 animate-spin text-muted" color="#27272a" />
+      <LoadingIndicator />
     {/if}
     Submit
   </Button>

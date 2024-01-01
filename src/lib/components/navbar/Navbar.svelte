@@ -5,16 +5,16 @@
   import * as Tooltip from "$lib/components/ui/tooltip"
   import { QuickAddForm } from "$lib/components/navbar"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
-  import { Plus, ArrowBigLeftDash, ArrowBigRightDash } from "lucide-svelte"
+  import { Plus } from "lucide-svelte"
   import { createUI } from "$state/ui.svelte"
 
   const ui = createUI()
-  let open = false
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.repeat) return
     if (event.altKey && event.code === "KeyN") {
-      open = !open
+      event.preventDefault()
+      ui.toggleQuickAdd()
     }
   }
 </script>
@@ -23,7 +23,7 @@
 <nav
   class="mx-auto flex w-full items-center justify-end gap-4 border-b border-b-zinc-100 p-4 dark:border-b-zinc-900"
 >
-  <Popover.Root {open}>
+  <Popover.Root open={ui.quickAddOpen}>
     <Tooltip.Root>
       <Popover.Trigger asChild let:builder={popoverBuilder}>
         <Tooltip.Trigger asChild let:builder={tooltipBuilder}>

@@ -10,6 +10,7 @@ const searchRecents = persisted<string[]>('svelte:recent-searches', []);
 let metadataSidebarOpen = $state(false);
 let metadataSidebarData = $state({})
 let userSidebarOpen = $state(false);
+let quickAddOpen = $state(false);
 
 export function createUI() {
   return {
@@ -24,9 +25,11 @@ export function createUI() {
     get metadataSidebarOpen() { return metadataSidebarOpen },
     get metadataSidebarData() { return metadataSidebarData },
     get userSidebarOpen() { return userSidebarOpen },
+    get quickAddOpen() { return quickAddOpen },
     toggleMetadataSidebar: (target?: boolean) => metadataSidebarOpen = target ? target : !metadataSidebarOpen,
     // @ts-expect-error
     setMetadataSidebarData: (data) => metadataSidebarData = data,
     toggleUserSidebar: () => userSidebarOpen = !userSidebarOpen,
+    toggleQuickAdd: (target?: boolean) => quickAddOpen = target ? target : !quickAddOpen
   }
 }

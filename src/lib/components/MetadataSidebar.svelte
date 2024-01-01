@@ -8,6 +8,7 @@
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.repeat) return
     if (event.code === "BracketRight") {
+      event.preventDefault()
       ui.toggleMetadataSidebar()
     }
   }
