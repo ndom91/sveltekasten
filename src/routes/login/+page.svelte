@@ -8,11 +8,11 @@
   let email = ""
 
   const handleEmailSignIn = () => {
-    signIn("email", { email, callbackUrl: "/" })
+    signIn("email", { email, callbackUrl: "/dashboard" })
   }
 
   const handleSignIn = (provider: string) => {
-    signIn(provider, { callbackUrl: "/" })
+    signIn(provider, { callbackUrl: "/dashboard" })
   }
 
   const providerButtonStyles = (provider: string): string => {

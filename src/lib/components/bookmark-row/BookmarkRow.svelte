@@ -1,53 +1,60 @@
 <script lang="ts">
-  import { Button } from "$lib/components/ui/button"
-  import { blur } from "svelte/transition"
-  import { Trash, Pencil, ExternalLink } from "lucide-svelte"
-  import DeleteDialog from "./DeleteDialog.svelte"
   import type { Bookmark } from "$lib/types"
   import { format } from "date-fns"
   import * as Table from "$lib/components/ui/table"
+  import { createUI } from "$state/ui.svelte"
+
+  const ui = createUI()
 
   export let bookmark: Bookmark
 
-  let buttonGroup: HTMLElement
   let isDeleteDialogOpen = false
   let isEditDialogOpen = false
   let isOptionsOpen = false
 
-  const handleDialogOpen = () => {
+  const handleDeleteDialogOpen = () => {
     isDeleteDialogOpen = true
   }
-  const handleEditOpen = () => {
+  const handleEditDialogOpen = () => {
     isEditDialogOpen = true
+    ui.setMetadataSidebarData(bookmark)
+    ui.toggleMetadataSidebar(true)
   }
   const openButtonGroup = () => {
     isOptionsOpen = true
   }
   const closeButtonGroup = (e: MouseEvent) => {
-    console.log(e)
-    if (e.relatedTarget !== buttonGroup) {
-      isOptionsOpen = false
-    }
+    isOptionsOpen = false
   }
+
+  export const ssr = false
 </script>
 
-<Table.Row class="relative">
-  <!-- @TODO: Fix AlertDialog svg breaking bug -->
-  <!-- <DeleteDialog bind:open={isDeleteDialogOpen} bookmarkId={bookmark.id} /> -->
+<Table.Row
+  class="relative"
+  on:mouseleave={(e) => closeButtonGroup(e)}
+  on:mouseenter={openButtonGroup}
+>
+  {#await import("./DeleteDialog.svelte") then { default: DeleteDialog }}
+    <svelte:component this={DeleteDialog} bind:open={isDeleteDialogOpen} bookmarkId={bookmark.id} />
+  {/await}
   <Table.Cell class="font-medium">
     <img src={bookmark.image} alt="Bookmark Screenshot" class="size-12 rounded-md object-cover" />
   </Table.Cell>
   <Table.Cell>
-    <div role="group" on:mouseleave={(e) => closeButtonGroup(e)} on:mouseenter={openButtonGroup}>
-      <span>
-        {bookmark.title}
-      </span>
-      <p class="line-clamp-2 break-words">{bookmark.desc}</p>
-      <p class="text-sm text-muted">{bookmark.url}</p>
-    </div>
+    <span>
+      {bookmark.title}
+    </span>
+    <p class="line-clamp-2 break-words">{bookmark.desc}</p>
+    <p class="flex items-center justify-start gap-2 text-sm text-muted">
+      {#if bookmark.metadata.logo?.url}
+        <img src={bookmark.metadata.logo.url} alt="URL Favicon" class="size-4 rounded-full" />
+      {/if}
+      {bookmark.url}
+    </p>
   </Table.Cell>
   <Table.Cell title={bookmark.createdAt}>
-    <div role="group" on:mouseleave={(e) => closeButtonGroup(e)} on:mouseenter={openButtonGroup}>
+    <div>
       <div>
         {format(bookmark.createdAt, "pp")}
       </div>
@@ -56,21 +63,13 @@
       </div>
     </div>
   </Table.Cell>
-  {#if isOptionsOpen}
-    <div
-      bind:this={buttonGroup}
-      transition:blur
-      class="absolute right-4 top-4 flex rounded-xl bg-zinc-200 bg-opacity-75 p-2 transition dark:bg-zinc-950"
-    >
-      <Button variant="ghost" size="icon" href={bookmark.url} target="_blank">
-        <ExternalLink class="size-5" strokeWidth={1.5} />
-      </Button>
-      <Button variant="ghost" size="icon" on:click={handleEditOpen}>
-        <Pencil class="size-5" strokeWidth={1.5} />
-      </Button>
-      <Button variant="ghost" size="icon" on:click={handleDialogOpen}>
-        <Trash class="size-5" strokeWidth={1.5} color="#fca5a5" />
-      </Button>
-    </div>
-  {/if}
+  {#await import("./BookmarkActions.svelte") then { default: Actions }}
+    <svelte:component
+      this={Actions}
+      {handleEditDialogOpen}
+      {handleDeleteDialogOpen}
+      {isOptionsOpen}
+      url={bookmark.url ?? ""}
+    />
+  {/await}
 </Table.Row>

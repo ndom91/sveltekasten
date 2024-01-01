@@ -1,9 +1,9 @@
 import prisma from "$lib/prisma";
 import type { Actions } from "./$types"
 import type { PageServerLoad } from './$types'
-import { fail, error } from "@sveltejs/kit";
-import { message, superValidate } from "sveltekit-superforms/server";
-import { formSchema } from "./schema";
+import { fail } from "@sveltejs/kit";
+import { superValidate } from "sveltekit-superforms/server";
+import { formSchema } from "../schema";
 
 export const actions: Actions = {
   deleteBookmark: async ({ request }) => {
@@ -81,7 +81,7 @@ export const actions: Actions = {
           url,
           title: title,
           // title: title ? title : metadata.title,
-          image: metadata.image.url,
+          image: metadata.image?.url ? metadata.image.url : metadata.logo?.url,
           // imageBlur: metadata.imageBlur,
           desc: description?.length ? description : metadata.description,
           // desc: description,

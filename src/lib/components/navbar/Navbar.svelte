@@ -21,7 +21,9 @@
 </script>
 
 <svelte:window on:keydown={handleKeyDown} />
-<nav class="mx-auto flex w-full items-center justify-end gap-4 p-4">
+<nav
+  class="mx-auto flex w-full items-center justify-end gap-4 border-b border-b-zinc-200 p-4 dark:border-b-zinc-900"
+>
   <Popover.Root {open}>
     <Tooltip.Root>
       <Popover.Trigger asChild let:builder={popoverBuilder}>
@@ -52,7 +54,7 @@
     <Tooltip.Trigger asChild let:builder={tooltipBuilder}>
       <Button
         builders={[tooltipBuilder]}
-        variant="ghost"
+        variant="outline"
         class="size-11 rounded-full p-0"
         on:click={ui.toggleMetadataSidebar}
       >

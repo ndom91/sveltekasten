@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { ActionData } from "./$types"
   import { enhance } from "$app/forms"
   import { form_action } from "$lib/form_action"
   import { buttonVariants } from "$lib/components/ui/button"
@@ -6,6 +7,11 @@
 
   export let open = false
   export let bookmarkId: string
+
+  export let form: ActionData
+  if ($form?.type === "success") {
+    open = false
+  }
 </script>
 
 <AlertDialog.Root bind:open closeOnOutsideClick closeOnEscape>

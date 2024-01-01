@@ -32,7 +32,7 @@
     <nav
       class={cn("mt-10 flex flex-col gap-4", ui.userSidebarOpen ? "items-start" : "items-center")}
     >
-      <a class="flex items-center gap-2 font-semibold" href="/">
+      <a class="flex items-center gap-2 font-semibold" href="/dashboard">
         <Home class="h-6 w-6" />
         {#if ui.userSidebarOpen}
           <span>Home</span>
