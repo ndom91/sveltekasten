@@ -114,3 +114,28 @@
 textarea {
   form-sizing: content;
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 100vh;
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #3c3b3b3b;
+  border-radius: 100vh;
+  transition: all 250ms ease-in-out;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #3c3b3b4b;
+  cursor: pointer;
+}

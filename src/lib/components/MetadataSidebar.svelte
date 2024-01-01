@@ -28,6 +28,7 @@
         <Label for="title">Title</Label>
         <input
           type="text"
+          id="title"
           name="title"
           bind:value={ui.metadataSidebarData.title}
           class={cn(
@@ -36,10 +37,11 @@
         />
       </div>
       <div class="flex flex-col gap-2">
-        <Label for="title">URL</Label>
+        <Label for="url">URL</Label>
         <input
           type="text"
-          name="title"
+          id="url"
+          name="url"
           bind:value={ui.metadataSidebarData.url}
           class={cn(
             "flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
@@ -47,9 +49,10 @@
         />
       </div>
       <div class="flex flex-col gap-2">
-        <Label for="title">Description</Label>
+        <Label for="description">Description</Label>
         <input
           type="text"
+          id="description"
           name="description"
           bind:value={ui.metadataSidebarData.description}
           class={cn(
@@ -58,9 +61,10 @@
         />
       </div>
       <div class="flex flex-col gap-2">
-        <Label for="title">Category</Label>
+        <Label for="category">Category</Label>
         <input
           type="text"
+          id="category"
           name="category"
           bind:value={ui.metadataSidebarData.category}
           class={cn(
@@ -69,13 +73,13 @@
         />
       </div>
       <hr class="px-8 text-zinc-50" />
-      <div class="flex min-h-0 flex-grow flex-col items-start">
-        <Label for="title">Metadata</Label>
-        <pre class="min-h-full max-w-full flex-grow overflow-auto">{JSON.stringify(
-            ui.metadataSidebarData.metadata,
-            null,
-            2,
-          )}</pre>
+      <div class="mb-2 flex min-h-0 flex-grow flex-col items-start gap-2">
+        <Label for="metadata">Metadata</Label>
+        <textarea
+          id="metadata"
+          class="min-h-full w-full max-w-full flex-grow overflow-auto rounded-md border border-input bg-transparent px-3 py-2 font-mono text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          >{JSON.stringify(ui.metadataSidebarData.metadata, null, 2)}</textarea
+        >
       </div>
     </div>
   {/if}
