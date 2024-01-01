@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores"
+  import * as Tooltip from "$lib/components/ui/tooltip"
   import { Button } from "$lib/components/ui/button"
   import { AvatarMenu } from "$lib/components/navbar"
   import { Home, Package, Tags } from "lucide-svelte"
@@ -31,24 +32,45 @@
     </Button>
     <nav
       class={cn(
-        "mt-10 flex flex-col gap-4",
+        "mt-10 flex flex-col gap-6",
         ui.userSidebarOpen ? "items-start pl-2" : "items-center",
       )}
     >
       <a class="flex items-center gap-2 font-semibold" href="/dashboard">
-        <Home class="h-6 w-6" />
+        <Tooltip.Root>
+          <Tooltip.Trigger>
+            <Home class="h-6 w-6" />
+          </Tooltip.Trigger>
+          <Tooltip.Content side="right">
+            <p>Dashboard</p>
+          </Tooltip.Content>
+        </Tooltip.Root>
         {#if ui.userSidebarOpen}
           <span>Home</span>
         {/if}
       </a>
       <a class="flex items-center gap-2 font-semibold" href="/categories">
-        <Package class="h-6 w-6" />
+        <Tooltip.Root>
+          <Tooltip.Trigger>
+            <Package class="h-6 w-6" />
+          </Tooltip.Trigger>
+          <Tooltip.Content side="right">
+            <p>Categories</p>
+          </Tooltip.Content>
+        </Tooltip.Root>
         {#if ui.userSidebarOpen}
           <span>Categories</span>
         {/if}
       </a>
       <a class="flex items-center gap-2 font-semibold" href="/tags">
-        <Tags class="h-6 w-6" />
+        <Tooltip.Root>
+          <Tooltip.Trigger>
+            <Tags class="h-6 w-6" />
+          </Tooltip.Trigger>
+          <Tooltip.Content side="right">
+            <p>Tags</p>
+          </Tooltip.Content>
+        </Tooltip.Root>
         {#if ui.userSidebarOpen}
           <span>Tags</span>
         {/if}
@@ -63,8 +85,8 @@
   >
     <AvatarMenu />
     {#if ui.userSidebarOpen}
-      <span class="text-md ml-2 flex items-center justify-start truncate">
-        {$page.data.session?.user?.name.split(" ")[0] ?? ""}
+      <span class="text-md ml-4 flex items-center justify-start truncate">
+        {$page.data.session?.user?.name ?? ""}
       </span>
     {/if}
   </div>

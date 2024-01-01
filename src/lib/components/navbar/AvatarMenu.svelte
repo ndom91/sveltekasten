@@ -7,11 +7,11 @@
   import { Skeleton } from "$lib/components/ui/skeleton"
   import { ModeWatcher, mode, toggleMode } from "mode-watcher"
 
-  let darkMode = $mode === "dark"
+  $: isDarkMode = $mode === "dark"
 </script>
 
 <ModeWatcher />
-<DropdownMenu.Root loop closeOnItemClick={false}>
+<DropdownMenu.Root closeOnItemClick={false}>
   <DropdownMenu.Trigger
     class="rounded-full outline-none focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 focus:ring-offset-white focus:dark:ring-offset-slate-800"
   >
@@ -27,20 +27,28 @@
   </DropdownMenu.Trigger>
   <DropdownMenu.Content transition={blur} transitionConfig={{ delay: 0, duration: 250 }}>
     <DropdownMenu.Group>
-      <DropdownMenu.Label class="line-clamp-1 w-full justify-end truncate">
+      <DropdownMenu.Label class="line-clamp-1 w-full justify-start truncate">
         {$page.data.session?.user.name ?? $page.data.session?.user.email}
       </DropdownMenu.Label>
       <DropdownMenu.Separator />
       <DropdownMenu.CheckboxItem
-        class="justify-end"
+        class="flex-row-reverse justify-start hover:cursor-pointer"
         onCheckedChange={toggleMode}
-        bind:checked={darkMode}
+        bind:checked={isDarkMode}
       >
-        Dark Mode
+        {#if isDarkMode}
+          Dark
+        {:else}
+          Light
+        {/if} Mode
       </DropdownMenu.CheckboxItem>
-      <DropdownMenu.Item href="/settings" class="justify-end">User Settings</DropdownMenu.Item>
+      <DropdownMenu.Item href="/settings" class="justify-start hover:cursor-pointer"
+        >User Settings</DropdownMenu.Item
+      >
       <DropdownMenu.Separator />
-      <DropdownMenu.Item class="justify-end" on:click={() => signOut()}>Signout</DropdownMenu.Item>
+      <DropdownMenu.Item class="justify-start hover:cursor-pointer" on:click={() => signOut()}
+        >Signout</DropdownMenu.Item
+      >
     </DropdownMenu.Group>
   </DropdownMenu.Content>
 </DropdownMenu.Root>
