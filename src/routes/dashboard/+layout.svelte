@@ -2,6 +2,8 @@
   import { Navbar } from "$lib/components/navbar"
   import Sidebar from "$lib/components/UserSidebar.svelte"
   import MetadataSidebar from "$/lib/components/MetadataSidebar.svelte"
+
+  import "$lib/styles/style.css"
 </script>
 
 <div class="flex">

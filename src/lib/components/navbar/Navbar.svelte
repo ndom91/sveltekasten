@@ -1,6 +1,5 @@
 <script lang="ts">
   import { blur } from "svelte/transition"
-  import { page } from "$app/stores"
   import { Button } from "$lib/components/ui/button"
   import * as Popover from "$lib/components/ui/popover"
   import * as Tooltip from "$lib/components/ui/tooltip"
@@ -22,7 +21,7 @@
 
 <svelte:window on:keydown={handleKeyDown} />
 <nav
-  class="mx-auto flex w-full items-center justify-end gap-4 border-b border-b-zinc-200 p-4 dark:border-b-zinc-900"
+  class="mx-auto flex w-full items-center justify-end gap-4 border-b border-b-zinc-100 p-4 dark:border-b-zinc-900"
 >
   <Popover.Root {open}>
     <Tooltip.Root>
@@ -33,7 +32,7 @@
             variant="outline"
             class="size-11 rounded-full p-0"
           >
-            <Plus class="size-4" />
+            <Plus class="size-5" />
           </Button>
         </Tooltip.Trigger>
       </Popover.Trigger>
@@ -56,12 +55,42 @@
         builders={[tooltipBuilder]}
         variant="outline"
         class="size-11 rounded-full p-0"
-        on:click={ui.toggleMetadataSidebar}
+        on:click={() => ui.toggleMetadataSidebar()}
       >
         {#if ui.metadataSidebarOpen}
-          <ArrowBigLeftDash class="size-6" />
+          <svg
+            class="size-5"
+            data-slot="icon"
+            fill="none"
+            stroke-width="1.5"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+            ></path>
+          </svg>
         {:else}
-          <ArrowBigRightDash class="size-6" />
+          <svg
+            class="size-5"
+            data-slot="icon"
+            fill="none"
+            stroke-width="1.5"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
+            ></path>
+          </svg>
         {/if}
       </Button>
     </Tooltip.Trigger>

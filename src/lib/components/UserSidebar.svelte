@@ -21,16 +21,19 @@
 <aside
   class={cn(
     "space-between relative flex h-full h-screen flex-grow flex-col bg-white shadow transition-width dark:bg-zinc-900",
-    ui.userSidebarOpen ? "w-[clamp(10vw,_20rem,_30vw)]" : "w-24",
+    ui.userSidebarOpen ? "w-[clamp(10vw,_20rem,_30vw)]" : "w-20",
   )}
 >
-  <div class={cn(ui.userSidebarOpen ? "p-6" : "p-6")}>
-    <Button size="icon" variant="ghost" on:click={ui.toggleUserSidebar}>
-      <Logo class="size-8 text-zinc-50" />
+  <div class="p-4">
+    <Button class="mx-auto" size="icon" variant="ghost" on:click={ui.toggleUserSidebar}>
+      <Logo class="size-8 text-zinc-800 dark:text-zinc-50" />
       <span class="sr-only">Toggle navigation menu</span>
     </Button>
     <nav
-      class={cn("mt-10 flex flex-col gap-4", ui.userSidebarOpen ? "items-start" : "items-center")}
+      class={cn(
+        "mt-10 flex flex-col gap-4",
+        ui.userSidebarOpen ? "items-start pl-2" : "items-center",
+      )}
     >
       <a class="flex items-center gap-2 font-semibold" href="/dashboard">
         <Home class="h-6 w-6" />
