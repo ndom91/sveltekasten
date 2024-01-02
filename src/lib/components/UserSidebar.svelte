@@ -46,6 +46,7 @@
           <Tooltip.Trigger>
             <svg
               class="size-6"
+              aria-label="home"
               data-slot="icon"
               fill="none"
               stroke-width="1.5"
@@ -69,12 +70,13 @@
           <span>Home</span>
         {/if}
       </a>
-      <a class="flex items-center gap-2 font-semibold" href="/categories">
+      <a class="flex items-center gap-2 font-semibold" href="/dashboard/categories">
         <Tooltip.Root>
           <Tooltip.Trigger>
             <svg
               class="size-6"
               data-slot="icon"
+              aria-label="package"
               fill="none"
               stroke-width="1.5"
               stroke="currentColor"
@@ -97,13 +99,14 @@
           <span>Categories</span>
         {/if}
       </a>
-      <a class="flex items-center gap-2 font-semibold" href="/tags">
+      <a class="flex items-center gap-2 font-semibold" href="/dashboard/tags">
         <Tooltip.Root>
           <Tooltip.Trigger>
             <svg
               class="size-6"
               data-slot="icon"
               fill="none"
+              aria-label="tag"
               stroke-width="1.5"
               stroke="currentColor"
               viewBox="0 0 24 24"
