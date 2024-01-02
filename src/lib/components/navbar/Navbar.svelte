@@ -9,12 +9,17 @@
   import { useInterface } from "$state/ui.svelte"
 
   const ui = useInterface()
+  let searchInputEl: HTMLInputElement
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.repeat) return
     if (event.altKey && event.code === "KeyN") {
       event.preventDefault()
       ui.toggleQuickAdd()
+    }
+    if (event.code === "Slash") {
+      event.preventDefault()
+      searchInputEl.focus()
     }
   }
 </script>
@@ -23,6 +28,35 @@
 <nav
   class="mx-auto flex w-full items-center justify-end gap-4 border-b border-b-zinc-100 p-4 dark:border-b-zinc-900"
 >
+  <div class="relative">
+    <input
+      type="text"
+      id="search"
+      name="search"
+      bind:this={searchInputEl}
+      bind:value={ui.searchQuery}
+      spellcheck="false"
+      aria-label="Search"
+      class={"flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 pl-10 pr-10 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}
+    />
+    <svg
+      class="size-4 absolute left-3 top-3"
+      data-slot="icon"
+      fill="none"
+      stroke-width="1.5"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      ></path>
+    </svg>
+    <KeyboardIndicator key="/" class="absolute right-3 top-2 text-xs" />
+  </div>
   <Popover.Root open={ui.quickAddOpen}>
     <Tooltip.Root>
       <Popover.Trigger asChild let:builder={popoverBuilder}>

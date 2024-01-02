@@ -19,6 +19,7 @@ export function useInterface() {
     // Search
     get searching() { return searching },
     get searchQuery() { return searchQuery },
+    set searchQuery(query) { searchQuery = query },
     get searchRecents() { return searchRecents },
     updateSearchQuery: (e: string) => searchQuery = e,
 
