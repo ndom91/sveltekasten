@@ -6,7 +6,8 @@ import { superValidate } from "sveltekit-superforms/server";
 import { formSchema } from "../schema";
 
 export const actions: Actions = {
-  deleteBookmark: async ({ request }) => {
+  deleteBookmark: async ({ request, locals }) => {
+    const session = await locals.getSession()
     const data = await request.formData();
     const bookmarkId = data.get('bookmarkId')?.toString() || ''
 
@@ -16,12 +17,14 @@ export const actions: Actions = {
 
     await prisma.bookmark.delete({
       where: {
-        id: bookmarkId
+        id: bookmarkId,
+        userId: session.user.userId,
       }
     });
     return { message: 'Deleted Bookmark' }
   },
-  editBookmark: async ({ request }) => {
+  editBookmark: async ({ request, locals }) => {
+    const session = await locals.getSession()
     const data = await request.formData();
     const id = data.get('id')?.toString() || ''
     const title = data.get('title')?.toString() || ''
@@ -41,6 +44,7 @@ export const actions: Actions = {
         desc,
         url,
         image,
+        userId: session.user.userId,
       },
       update: {
         title,
@@ -49,7 +53,8 @@ export const actions: Actions = {
         image,
       },
       where: {
-        id
+        id,
+        userId: session.user.userId,
       }
     });
     return { message: 'Updated Bookmark' }
@@ -184,11 +189,15 @@ export const actions: Actions = {
 }
 
 export const load: PageServerLoad = async (event) => {
-  const session = await event.locals.getSession();
+  try {
+    const session = await event.locals.getSession();
 
-  const response = await prisma.bookmark.findMany({
-    where: { userId: session.user.userId },
-  })
+    const response = await prisma.bookmark.findMany({
+      where: { userId: session.user.userId },
+    })
 
-  return { bookmarks: response };
+    return { bookmarks: response };
+  } catch (error) {
+    return { bookmarks: [], error }
+  }
 };

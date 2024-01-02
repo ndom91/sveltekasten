@@ -38,6 +38,7 @@ export type Bookmark = {
   id: string
   title: string
   desc: string
+  description?: string
   url: string | undefined
   image: string | undefined
   category: string | undefined

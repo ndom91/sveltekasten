@@ -3,7 +3,8 @@ import type { Actions } from "../$types"
 import { fail, redirect } from '@sveltejs/kit';
 
 export const actions: Actions = {
-  default: async ({ request }) => {
+  default: async ({ request, locals }) => {
+    const session = await locals.getSession()
     const data = await request.formData();
 
     let title = data.get("title")

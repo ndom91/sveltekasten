@@ -2,10 +2,10 @@
   import * as Command from "$lib/components/ui/command"
   import { goto } from "$app/navigation"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
-  import { createUI } from "$state/ui.svelte"
+  import { useInterface } from "$state/ui.svelte"
   import { toggleMode } from "mode-watcher"
 
-  const ui = createUI()
+  const ui = useInterface()
 
   let isCommandOpen = false
 

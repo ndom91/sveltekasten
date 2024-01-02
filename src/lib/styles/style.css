@@ -115,6 +115,11 @@ textarea {
   form-sizing: content;
 }
 
+
+table tr {
+  @apply border-b-0 !important;
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 12px;

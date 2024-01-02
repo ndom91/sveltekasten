@@ -6,9 +6,9 @@
   import { Home, Package, Tags } from "lucide-svelte"
   import Logo from "$lib/assets/Logo.svelte"
   import { cn } from "$lib/utils"
-  import { createUI } from "$state/ui.svelte"
+  import { useInterface } from "$state/ui.svelte"
 
-  const ui = createUI()
+  const ui = useInterface()
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.repeat) return
@@ -21,7 +21,7 @@
 <svelte:window on:keydown={handleKeyDown} />
 <aside
   class={cn(
-    "space-between relative flex h-full h-screen flex-grow flex-col bg-white shadow transition-width dark:bg-zinc-900",
+    "space-between relative flex h-screen flex-grow flex-col border-r bg-white shadow transition-width dark:border-r-zinc-800 dark:bg-zinc-900",
     ui.userSidebarOpen ? "w-[clamp(10vw,_20rem,_30vw)]" : "w-20",
   )}
 >
@@ -30,9 +30,15 @@
       <Logo class="size-8 text-zinc-800 dark:text-zinc-50" />
       <span class="sr-only">Toggle navigation menu</span>
     </Button>
+    <div
+      class={cn(
+        "mx-auto my-4 w-2/3 rounded-full border-b-2 border-zinc-100 dark:border-zinc-800",
+        ui.userSidebarOpen ? "mx-0 w-full" : "",
+      )}
+    />
     <nav
       class={cn(
-        "mt-10 flex flex-col gap-6",
+        "mt-6 flex flex-col gap-6",
         ui.userSidebarOpen ? "items-start pl-2" : "items-center",
       )}
     >
@@ -79,15 +85,23 @@
   </div>
   <div
     class={cn(
-      "absolute bottom-0 mb-4 flex w-full items-center",
-      ui.userSidebarOpen ? "justify-start p-6" : "justify-center p-6",
+      "absolute bottom-0 mb-4 flex w-full flex-col justify-center",
+      ui.userSidebarOpen ? "items-start p-4" : "items-center p-4",
     )}
   >
-    <AvatarMenu />
-    {#if ui.userSidebarOpen}
-      <span class="text-md ml-4 flex items-center justify-start truncate">
-        {$page.data.session?.user?.name ?? ""}
-      </span>
-    {/if}
+    <div
+      class={cn(
+        "mx-auto my-4 w-2/3 rounded-full border-b-2 border-zinc-100 dark:border-zinc-800",
+        ui.userSidebarOpen ? "mx-0 w-full" : "",
+      )}
+    />
+    <div class="flex">
+      <AvatarMenu />
+      {#if ui.userSidebarOpen}
+        <span class="text-md ml-4 flex items-center justify-start truncate">
+          {$page.data.session?.user?.name ?? ""}
+        </span>
+      {/if}
+    </div>
   </div>
 </aside>

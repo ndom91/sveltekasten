@@ -2,9 +2,9 @@
   import type { Bookmark } from "$lib/types"
   import { format } from "date-fns"
   import * as Table from "$lib/components/ui/table"
-  import { createUI } from "$state/ui.svelte"
+  import { useInterface } from "$state/ui.svelte"
 
-  const ui = createUI()
+  const ui = useInterface()
 
   export let bookmark: Bookmark
 
@@ -19,6 +19,7 @@
     isEditDialogOpen = true
     ui.setMetadataSidebarData(bookmark)
     ui.toggleMetadataSidebar(true)
+    ui.toggleMetadataSidebarEditMode(false)
   }
   const openButtonGroup = () => {
     isOptionsOpen = true
@@ -26,8 +27,6 @@
   const closeButtonGroup = (e: MouseEvent) => {
     isOptionsOpen = false
   }
-
-  export const ssr = false
 </script>
 
 <Table.Row

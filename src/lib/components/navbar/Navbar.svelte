@@ -5,10 +5,10 @@
   import * as Tooltip from "$lib/components/ui/tooltip"
   import { QuickAddForm } from "$lib/components/navbar"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
-  import { Plus, Trash } from "lucide-svelte"
-  import { createUI } from "$state/ui.svelte"
+  import { Plus } from "lucide-svelte"
+  import { useInterface } from "$state/ui.svelte"
 
-  const ui = createUI()
+  const ui = useInterface()
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.repeat) return

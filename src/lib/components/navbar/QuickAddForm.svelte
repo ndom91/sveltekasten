@@ -11,9 +11,9 @@
   import SuperDebug from "sveltekit-superforms/client/SuperDebug.svelte"
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
   import toast from "svelte-french-toast"
-  import { createUI } from "$state/ui.svelte"
+  import { useInterface } from "$state/ui.svelte"
 
-  const ui = createUI()
+  const ui = useInterface()
 
   const { form, errors, constraints, enhance, submitting, delayed } = superForm($page.data.form, {
     onUpdated: ({ form }) => {
@@ -93,7 +93,7 @@
 
   <Button type="submit" disabled={$submitting || $delayed}>
     {#if $submitting || $delayed}
-      <LoadingIndicator />
+      <LoadingIndicator class="mr-2" />
     {/if}
     Submit
   </Button>

@@ -4,11 +4,11 @@
   import * as Table from "$lib/components/ui/table"
 </script>
 
-<div class="mx-auto p-4">
-  <main class="align-start flex flex-col justify-start gap-2">
+<main class="mx-auto w-full p-4">
+  <div class="align-start flex flex-col justify-start gap-2">
     <Table.Root>
       <Table.Header>
-        <Table.Row>
+        <Table.Row class="rounded-md">
           <Table.Head class="w-24 text-left"></Table.Head>
           <Table.Head class="text-center">Bookmark</Table.Head>
           <Table.Head class="w-32 text-center">Date</Table.Head>
@@ -20,5 +20,5 @@
         {/each}
       </Table.Body>
     </Table.Root>
-  </main>
-</div>
+  </div>
+</main>

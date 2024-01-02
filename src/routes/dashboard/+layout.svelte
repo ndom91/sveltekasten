@@ -7,7 +7,7 @@
   import "$lib/styles/style.css"
 </script>
 
-<div class="flex">
+<div class="flex w-full">
   <CommandBar />
   <Sidebar />
   <div class="flex w-full flex-grow flex-col">
