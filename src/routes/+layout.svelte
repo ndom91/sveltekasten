@@ -4,7 +4,5 @@
   import "$lib/styles/style.css"
 </script>
 
-<div class="flex">
-  <Toaster />
-  <slot />
-</div>
+<Toaster />
+<slot />

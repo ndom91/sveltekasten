@@ -8,6 +8,7 @@
   import { form_action } from "$lib/form_action"
   import { useInterface } from "$state/ui.svelte"
   import { format } from "date-fns"
+  import toast from "svelte-french-toast"
 
   const ui = useInterface()
 
@@ -20,6 +21,12 @@
   }
 
   const isEditMode = $derived(ui.metadataSidebarEditMode !== true)
+
+  const copyColor = (e: MouseEvent, color: string) => {
+    e.preventDefault()
+    toast.success(`Copied ${color} clipboard!`)
+    navigator.clipboard.writeText(color)
+  }
 </script>
 
 <svelte:window on:keydown={handleKeyDown} />
@@ -34,7 +41,7 @@
       method="post"
       action="/dashboard?/saveMetadataEdits"
       use:enhance={form_action()}
-      class="flex items-center justify-start gap-4"
+      class="flex h-full items-center justify-start gap-4"
     >
       <input type="hidden" name="id" value={ui.metadataSidebarData.bookmark.id} />
       <div class="flex h-full flex-col gap-4 p-6">
@@ -80,8 +87,8 @@
             readonly={!isEditMode}
             bind:value={ui.metadataSidebarData.bookmark.title}
             class={cn(
-              "flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-              !isEditMode && "text-muted",
+              "flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+              !isEditMode ? "cursor-default text-muted" : "bg-zinc-100 dark:bg-zinc-950",
             )}
           />
         </div>
@@ -95,9 +102,9 @@
               readonly={!isEditMode}
               bind:value={ui.metadataSidebarData.bookmark.url}
               class={cn(
-                "flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+                "flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                 ui.metadataSidebarData.bookmark.metadata?.logo?.url && "pl-10",
-                !isEditMode && "text-muted",
+                !isEditMode ? "cursor-default text-muted" : "bg-zinc-100 dark:bg-zinc-950",
               )}
             />
             {#if ui.metadataSidebarData.bookmark.metadata?.logo?.url}
@@ -118,8 +125,8 @@
             readonly={!isEditMode}
             bind:value={ui.metadataSidebarData.bookmark.desc}
             class={cn(
-              "flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-              !isEditMode && "text-muted",
+              "flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+              !isEditMode ? "cursor-default text-muted" : "bg-zinc-100 dark:bg-zinc-950",
             )}
           />
         </div>
@@ -134,7 +141,7 @@
             }))}
             onSelectedChange={(e) => (ui.metadataSidebarData.bookmark.categoryId = e.value)}
           >
-            <Select.Trigger class="w-full">
+            <Select.Trigger class="w-full enabled:bg-zinc-950 disabled:cursor-default">
               <Select.Value placeholder="Category" />
             </Select.Trigger>
             <Select.Input />
@@ -181,6 +188,20 @@
               <span>
                 {format(ui.metadataSidebarData.bookmark.metadata?.date, "dd MMM yyyy")}
               </span>
+            {/if}
+          </div>
+          <div class="flex w-full justify-between text-sm">
+            <span class="font-bold">Colors</span>
+            {#if ui.metadataSidebarData.bookmark.metadata?.logo?.palette}
+              <div class="flex gap-1">
+                {#each ui.metadataSidebarData.bookmark.metadata?.logo?.palette as color}
+                  <button
+                    onclick={(e) => copyColor(e, color)}
+                    class="size-4 rounded-full"
+                    style={`background-color: ${color}`}
+                  />
+                {/each}
+              </div>
             {/if}
           </div>
         </div>
