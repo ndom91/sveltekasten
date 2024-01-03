@@ -24,40 +24,35 @@ export const actions: Actions = {
     });
     return { type: "success", message: 'Deleted Bookmark' }
   },
-  editBookmark: async ({ request, locals }) => {
+  saveMetadataEdits: async ({ request, locals }) => {
     const session = await locals.getSession()
     const data = await request.formData();
+
     const id = data.get('id')?.toString() || ''
     const title = data.get('title')?.toString() || ''
     const url = data.get('url')?.toString() || ''
-    const image = data.get('image')?.toString() || ''
     const desc = data.get('description')?.toString() || ''
-    // const category = data.get('category')?.toString() || ''
-    // const tags = data.get('tags')
+    const categoryId = data.get('categoryId')?.toString() || ''
+    // @TODO: Support updating image
+    // const image = data.get('image')?.toString() || ''
 
     if (!id) {
-      return fail(400)
+      return fail(400, { type: 'error', message: 'Missing bookmark id' })
     }
 
-    await prisma.bookmark.upsert({
-      create: {
+    await prisma.bookmark.update({
+      data: {
         title,
         desc,
         url,
-        image,
-        userId: session.user.userId,
-      },
-      update: {
-        title,
-        desc,
-        url,
-        image,
+        categoryId,
       },
       where: {
         id,
         userId: session.user.userId,
       }
     });
+
     return { type: "success", message: 'Updated Bookmark' }
   },
   quickAdd: async (event) => {
@@ -194,11 +189,25 @@ export const load: PageServerLoad = async (event) => {
   try {
     const session = await event.locals.getSession();
 
-    const response = await prisma.bookmark.findMany({
+    const bookmarksResponse = await prisma.bookmark.findMany({
+      where: { userId: session.user.userId },
+      include: {
+        category: true,
+        tags: { include: { tag: true } },
+      },
+    })
+    const categoriesResponse = await prisma.category.findMany({
+      where: { userId: session.user.userId },
+    })
+    const tagsResponse = await prisma.tag.findMany({
       where: { userId: session.user.userId },
     })
 
-    return { bookmarks: response };
+    return {
+      bookmarks: bookmarksResponse,
+      categories: categoriesResponse,
+      tags: tagsResponse,
+    };
   } catch (error) {
     return { bookmarks: [], error }
   }
