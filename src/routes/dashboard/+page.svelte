@@ -2,13 +2,11 @@
   import { BookmarkRow } from "$lib/components/bookmark-row"
   import * as Table from "$lib/components/ui/table"
   import { useInterface } from "$state/ui.svelte"
-  import type { Bookmark } from "$lib/types"
   import EmptyIllustration from "$lib/assets/empty-state.png"
   import Arrow from "$lib/assets/arrow.svg"
-  import KeyboardIndicator from "$/lib/components/KeyboardIndicator.svelte"
+  import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
 
   const ui = useInterface()
-
   const { data } = $props()
 
   let activeBookmarks = $derived(() => {

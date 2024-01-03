@@ -5,11 +5,9 @@
   import * as Dialog from "$lib/components/ui/alert-dialog"
   import { Input } from "$lib/components/ui/input"
   import { Label } from "$lib/components/ui/label"
+  import type { Bookmark } from "$zod"
 
-  import type { Bookmark } from "../../types"
-
-  export let open = false
-  export let bookmark: Bookmark
+  let { open, bookmark } = $props<{ open: boolean; bookmark: Bookmark }>()
 </script>
 
 <Dialog.Root bind:open closeOnOutsideClick closeOnEscape>

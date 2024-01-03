@@ -5,10 +5,12 @@
   import { buttonVariants } from "$lib/components/ui/button"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
 
-  export let open = false
-  export let bookmarkId: string
+  let { form, open, bookmarkId } = $props<{
+    form?: ActionData
+    open: boolean
+    bookmarkId: string
+  }>()
 
-  export let form: ActionData
   if ($form?.type === "success") {
     open = false
   }
