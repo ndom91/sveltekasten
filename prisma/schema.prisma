@@ -119,6 +119,7 @@ model User {
   bookmarks     Bookmark[]
   feeds         Feed[]
   tags          Tag[]
+  feedEntries   FeedEntry[]
   categories    Category[]
 }
 
@@ -136,9 +137,30 @@ model Feed {
   url         String
   user        User         @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId      String
+  modified    DateTime?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+  feedEntries FeedEntry[]
 
   @@unique([url, userId])
   @@index([userId])
+}
+
+model FeedEntry {
+  id          String       @id @default(cuid())
+  title       String
+  link        String
+  description String?
+  language    String?
+  copyright   String?
+  modified    DateTime?
+  feed        Feed         @relation(fields: [feedId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  feedId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId      String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([userId])
+  @@index([feedId])
 }
