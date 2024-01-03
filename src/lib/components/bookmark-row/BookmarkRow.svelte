@@ -1,6 +1,8 @@
 <script lang="ts">
+  import { page } from "$app/stores"
   import { format } from "date-fns"
   import * as Table from "$lib/components/ui/table"
+  import { Badge } from "$lib/components/ui/badge"
   import { useInterface } from "$state/ui.svelte"
   import type { Bookmark } from "$zod"
 
@@ -9,15 +11,17 @@
   const { bookmark } = $props<{ bookmark: Bookmark }>()
 
   let isDeleteDialogOpen = $state(false)
-  let isEditDialogOpen = $state(false)
   let isOptionsOpen = $state(false)
 
   const handleDeleteDialogOpen = () => {
     isDeleteDialogOpen = true
   }
-  const handleEditDialogOpen = () => {
-    isEditDialogOpen = true
-    ui.setMetadataSidebarData(bookmark)
+  const handleMetadataSidebarOpen = () => {
+    ui.setMetadataSidebarData({
+      bookmark,
+      categories: $page.data.categories,
+      tags: $page.data.tags,
+    })
     ui.toggleMetadataSidebar(true)
     ui.toggleMetadataSidebarEditMode(false)
   }
@@ -45,7 +49,14 @@
       {#if bookmark.metadata?.logo?.url}
         <img src={bookmark.metadata?.logo?.url} alt="URL Favicon" class="size-4 rounded-full" />
       {/if}
-      {bookmark.url}
+      <span>
+        {bookmark.url}
+      </span>
+      {#if bookmark.category?.name}
+        <Badge color="blue">
+          {bookmark.category?.name}
+        </Badge>
+      {/if}
     </p>
   </Table.Cell>
   <Table.Cell title={String(bookmark.createdAt)}>
@@ -61,7 +72,7 @@
   {#await import("./BookmarkActions.svelte") then { default: Actions }}
     <svelte:component
       this={Actions}
-      {handleEditDialogOpen}
+      {handleMetadataSidebarOpen}
       {handleDeleteDialogOpen}
       {isOptionsOpen}
       url={bookmark.url ?? ""}

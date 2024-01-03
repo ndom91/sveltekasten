@@ -4,7 +4,7 @@
 
   export let isOptionsOpen: boolean
   export let url: string
-  export let handleEditDialogOpen: () => void
+  export let handleMetadataSidebarOpen: () => void
   export let handleDeleteDialogOpen: () => void
 </script>
 
@@ -32,7 +32,7 @@
       ></path>
     </svg>
   </Button>
-  <Button variant="ghost" size="icon" on:click={handleEditDialogOpen}>
+  <Button variant="ghost" size="icon" on:click={handleMetadataSidebarOpen}>
     <svg
       class="size-5 text-zinc-900 dark:text-zinc-100"
       data-slot="icon"
