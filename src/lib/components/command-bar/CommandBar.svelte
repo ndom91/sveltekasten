@@ -11,21 +11,21 @@
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.repeat) return
-    if (event.ctrlKey && event.code === "KeyK") {
+    if ((event.ctrlKey || event.metaKey) && event.code === "KeyK") {
       event.preventDefault()
       isCommandOpen = !isCommandOpen
     }
-    if (event.ctrlKey && event.code === "KeyD") {
+    if ((event.ctrlKey || event.metaKey) && event.code === "KeyD") {
       event.preventDefault()
       goto("/dashboard")
     }
-    if (event.ctrlKey && event.code === "KeyC") {
+    if ((event.ctrlKey || event.metaKey) && event.code === "KeyC") {
       event.preventDefault()
-      goto("/categories")
+      goto("/dashboard/categories")
     }
-    if (event.ctrlKey && event.code === "KeyT") {
+    if ((event.ctrlKey || event.metaKey) && event.code === "KeyT") {
       event.preventDefault()
-      goto("/tags")
+      goto("/dashboard/tags")
     }
   }
 
