@@ -1,66 +1,68 @@
 <script lang="ts">
-  import type { ActionData } from "./$types";
+  import * as Table from "$lib/components/ui/table"
+  import { enhance } from "$app/forms"
+  import { form_action } from "$lib/form_action"
+  import { Button } from "$lib/components/ui/button"
+  import { Input } from "$lib/components/ui/input"
+  import { format } from "date-fns"
 
-  export let form: ActionData;
+  let { data } = $props()
 </script>
 
-<div class="page">
-  <form method="post">
-    <h1>Create Draft</h1>
-    {#if form?.missing}<p class="error">Missing field required!</p>{/if}
-    <input
-      name="title"
-      placeholder="Title"
-      type="text"
-      value={form?.title ?? ""}
-    />
-    <input
-      name="authorEmail"
-      placeholder="Author email address"
-      type="email"
-      value={form?.authorEmail ?? ""}
-    />
-    <textarea
-      name="content"
-      cols="50"
-      placeholder="Content"
-      rows="8"
-      value={form?.content ?? ""}
-    />
-    <button type="submit">Create</button>
-    <a class="back" href="/"> or Cancel </a>
-  </form>
-</div>
-
-<style>
-  .page {
-    background: white;
-    padding: 3rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  input[type="text"],
-  input[type="email"],
-  textarea {
-    width: 100%;
-    padding: 0.5rem;
-    margin: 0.5rem 0;
-    border-radius: 0.25rem;
-    border: 0.125rem solid rgba(0, 0, 0, 0.2);
-  }
-
-  button[type="submit"] {
-    background: #ececec;
-    border: 0;
-    padding: 1rem 2rem;
-  }
-
-  .back {
-    margin-left: 1rem;
-  }
-  .error {
-    color: red;
-  }
-</style>
+<main class="mx-auto w-full p-4">
+  <div class="align-start flex flex-col justify-start gap-2">
+    <Table.Root>
+      <Table.Header>
+        <Table.Row>
+          <Table.Head class="min-w-48 w-1/4">Name</Table.Head>
+          <Table.Head>Emoji</Table.Head>
+          <Table.Head class="text-right">Created At</Table.Head>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        {#each data.tags as tag (tag.id)}
+          <Table.Row>
+            <Table.Cell class="font-medium">{tag.name}</Table.Cell>
+            <Table.Cell>{tag.emoji}</Table.Cell>
+            <Table.Cell class="text-right">{format(tag.createdAt, "d MMM yyyy")}</Table.Cell>
+          </Table.Row>
+        {/each}
+      </Table.Body>
+    </Table.Root>
+    <form
+      method="post"
+      action="?/createTag"
+      use:enhance={form_action()}
+      class="flex items-center justify-start gap-4"
+    >
+      <div class="flex gap-2">
+        <svg
+          class="size-6"
+          data-slot="icon"
+          fill="none"
+          stroke-width="1.5"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 10.5v6m3-3H9m4.06-7.19-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z"
+          ></path>
+        </svg>
+        <span> Create New </span>
+      </div>
+      <Input class="w-48" placeholder="Name" id="name" name="name" type="text" />
+      <Input
+        class="w-48"
+        placeholder="Emoji"
+        id="emoji"
+        name="emoji"
+        type="text"
+      />
+      <Button variant="secondary" type="submit" class="w-24">Create</Button>
+    </form>
+  </div>
+</main>

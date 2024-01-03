@@ -180,7 +180,7 @@ export const actions: Actions = {
       return {
         form,
         bookmark: upsertBookmarkRes,
-        message: "Added Successfully"
+        message: "Added Successfully",
         type: "success",
       };
     } catch (err) {

@@ -1,28 +1,49 @@
-import prisma from "$lib/prisma";
-import type { Actions } from "../$types"
-import { fail, redirect } from '@sveltejs/kit';
+import prisma from '$lib/prisma';
+import { fail } from "@sveltejs/kit";
+import { Prisma } from "@prisma/client"
+import { TagCreateInputSchema } from '$zod'
+import type { Actions, PageServerLoad } from './$types'
+import type { ZodError } from 'zod';
+
+export const load: PageServerLoad = async ({ locals }) => {
+  const session = await locals.getSession()
+
+  const response = await prisma.tag.findMany({
+    where: { userId: session.user.userId }
+  })
+
+  return { tags: response };
+};
 
 export const actions: Actions = {
-  default: async ({ request, locals }) => {
+  createTag: async ({ request, locals }) => {
     const session = await locals.getSession()
-    const data = await request.formData();
+    const formData = Object.fromEntries(await request.formData())
+    const { name, emoji } = formData as { name: string, emoji: string }
 
-    let title = data.get("title")
-    let content = data.get("content")
-    let authorEmail = data.get("authorEmail")
+    try {
+      TagCreateInputSchema.parse(formData)
 
-    if (!title || !content || !authorEmail) {
-      return fail(400, { content, authorEmail, title, missing: true });
+      await prisma.tag.create({
+        data: {
+          name,
+          emoji,
+          userId: session.user.userId,
+        }
+      })
+
+      return { message: 'Tag Created', type: "success", form: formData }
+    } catch (err: ZodError | any) {
+      if (err instanceof Prisma.PrismaClientKnownRequestError) {
+        if (err.code === 'P2002') {
+          console.log(
+            'There is a unique constraint violation, tag could not be created'
+          )
+        }
+      }
+      const { fieldErrors: errors } = err.flatten();
+
+      return fail(500, { message: 'Error', type: "error", errors, data: { name, emoji } })
     }
-
-    await prisma.post.create({
-      data: {
-        title,
-        content,
-        author: { connect: { email: authorEmail } }
-      },
-    });
-
-    throw redirect(303, `/drafts`)
-  }
-};
+  },
+}
