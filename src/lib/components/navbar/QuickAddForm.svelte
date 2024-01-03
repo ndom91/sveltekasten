@@ -17,7 +17,6 @@
 
   const { form, errors, constraints, enhance, submitting, delayed } = superForm($page.data.form, {
     onUpdated: ({ form }) => {
-      console.log("onUpdated.form.message", form.message)
       if (form.message?.text) {
         toast.success(form.message.text)
       }

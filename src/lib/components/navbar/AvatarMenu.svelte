@@ -7,13 +7,13 @@
   import { Skeleton } from "$lib/components/ui/skeleton"
   import { ModeWatcher, mode, toggleMode } from "mode-watcher"
 
-  $: isDarkMode = $mode === "dark"
+  let isDarkMode = $derived($mode === "dark")
 </script>
 
 <ModeWatcher />
 <DropdownMenu.Root closeOnItemClick={false}>
   <DropdownMenu.Trigger
-    class="rounded-full outline-none focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 focus:ring-offset-white focus:dark:ring-offset-slate-800"
+    class="rounded-full outline-none transition duration-300 focus:outline-none focus:ring-2 focus:ring-zinc-200 dark:focus:ring-zinc-500"
   >
     <Avatar.Root class="rounded-full outline-none focus:outline-none focus:ring-gray-200">
       <Avatar.Image
@@ -32,15 +32,11 @@
       </DropdownMenu.Label>
       <DropdownMenu.Separator />
       <DropdownMenu.CheckboxItem
-        class="flex-row-reverse justify-start hover:cursor-pointer"
+        class="justify-start hover:cursor-pointer"
         onCheckedChange={toggleMode}
-        bind:checked={isDarkMode}
+        checked={isDarkMode}
       >
-        {#if isDarkMode}
-          Dark
-        {:else}
-          Light
-        {/if} Mode
+        Dark Mode
       </DropdownMenu.CheckboxItem>
       <DropdownMenu.Item href="/settings" class="justify-start hover:cursor-pointer"
         >User Settings</DropdownMenu.Item

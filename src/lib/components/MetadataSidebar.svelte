@@ -20,7 +20,7 @@
 <svelte:window on:keydown={handleKeyDown} />
 <aside
   class={cn(
-    "space-between relative flex h-screen flex-grow flex-col border-l bg-white shadow transition-width dark:border-l-zinc-800 dark:bg-zinc-900",
+    "space-between relative flex h-screen flex-grow flex-col border-l bg-zinc-50 transition-width dark:border-l-zinc-800 dark:bg-zinc-900",
     ui.metadataSidebarOpen ? "display-block w-[clamp(10vw,_25rem,_35vw)]" : "display-none w-0",
   )}
 >
@@ -82,7 +82,8 @@
             readonly={!ui.metadataSidebarEditMode}
             bind:value={ui.metadataSidebarData.url}
             class={cn(
-              "flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 pl-10 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+              "flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+              ui.metadataSidebarData.metadata?.logo?.url && "pl-10",
             )}
           />
           {#if ui.metadataSidebarData.metadata?.logo?.url}

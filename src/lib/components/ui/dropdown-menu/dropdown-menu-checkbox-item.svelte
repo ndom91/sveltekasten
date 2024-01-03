@@ -28,7 +28,18 @@
 >
   <span class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
     <DropdownMenuPrimitive.CheckboxIndicator>
-      <Check class="h-4 w-4 text-black" />
+      <svg
+        class="size-5"
+        data-slot="icon"
+        fill="none"
+        stroke-width="1.5"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"></path>
+      </svg>
     </DropdownMenuPrimitive.CheckboxIndicator>
   </span>
   <slot />
