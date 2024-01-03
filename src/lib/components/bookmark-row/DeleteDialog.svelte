@@ -11,9 +11,11 @@
     bookmarkId: string
   }>()
 
-  if ($form?.type === "success") {
-    open = false
-  }
+  $effect(() => {
+    if ($form?.type === "success") {
+      open = false
+    }
+  })
 </script>
 
 <AlertDialog.Root bind:open closeOnOutsideClick closeOnEscape>

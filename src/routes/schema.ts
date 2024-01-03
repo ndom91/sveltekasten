@@ -18,14 +18,10 @@ export const formSchema = z.object({
   title: z.string({ required_error: "A title is required" }).min(2).max(100),
   url: z.string().url().max(100),
   description: z.string().min(3).max(500).optional(),
-  category: z.string().min(2).max(50).optional(),
+  // category: z.string().min(2).max(50).optional(),
+  categoryId: z.string().min(2).max(50).optional(),
   // tags: z.array(z.string().min(2).max(50)).optional(),
-  tags: z.enum(
-    languages.map((f) => f.value) as [Language, ...Language[]],
-    {
-      errorMap: () => ({ message: "Please select a valid language." })
-    }
-  ).optional()
+  tags: z.array(z.string().min(2).max(50)).optional(),
 });
 
 export type FormSchema = typeof formSchema;

@@ -65,7 +65,7 @@ export const actions: Actions = {
 
     try {
       const session = await event.locals.getSession()
-      const { title, url, description, category, tags } = form.data
+      const { title, url, description, categoryId, tags } = form.data
       const { userId } = session.user
 
       const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(url)}&palette=true`)
@@ -81,24 +81,18 @@ export const actions: Actions = {
         create: {
           url,
           title: title,
-          // title: title ? title : metadata.title,
           image: metadata.image?.url ? metadata.image.url : metadata.logo?.url,
-          // imageBlur: metadata.imageBlur,
           desc: description?.length ? description : metadata.description,
-          // desc: description,
           metadata,
           user: {
             connect: {
               id: userId,
             },
           },
-          category: category
+          category: categoryId
             ? {
               connect: {
-                name_userId: {
-                  name: category,
-                  userId,
-                },
+                id: categoryId,
               },
             }
             : {},
@@ -112,13 +106,10 @@ export const actions: Actions = {
           title,
           metadata,
           desc: description,
-          category: category
+          category: categoryId
             ? {
               connect: {
-                name_userId: {
-                  name: category,
-                  userId,
-                },
+                id: categoryId,
               },
             }
             : {},
