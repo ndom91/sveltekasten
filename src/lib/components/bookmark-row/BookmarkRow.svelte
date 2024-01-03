@@ -33,7 +33,11 @@
   }
 </script>
 
-<Table.Row class="relative" on:mouseleave={closeButtonGroup} on:mouseenter={openButtonGroup}>
+<Table.Row
+  class="relative hover:bg-zinc-900"
+  on:mouseleave={closeButtonGroup}
+  on:mouseenter={openButtonGroup}
+>
   {#await import("./DeleteDialog.svelte") then { default: DeleteDialog }}
     <svelte:component this={DeleteDialog} bind:open={isDeleteDialogOpen} bookmarkId={bookmark.id} />
   {/await}

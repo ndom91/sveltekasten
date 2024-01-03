@@ -157,7 +157,7 @@
             class={cn("w-full rounded-full border-b-2 border-zinc-100 px-8 dark:border-zinc-800")}
           />
           <div class="mb-2 flex min-h-0 flex-col items-start gap-2">
-            <Label for="metadata">Cover Photo</Label>
+            <h2>Cover Photo</h2>
             <img
               src={ui.metadataSidebarData.bookmark.metadata?.image?.url}
               alt="Bookmark Screenshot"
@@ -169,7 +169,7 @@
           class={cn("w-full rounded-full border-b-2 border-zinc-100 px-8 dark:border-zinc-800")}
         />
         <div class="mb-2 flex min-h-0 flex-grow flex-col items-start gap-2">
-          <Label class="mb-2" for="metadata">Metadata</Label>
+          <h2>Metadata</h2>
           <div class="flex w-full justify-between text-sm">
             <span class="font-bold">Language</span>
             <span>

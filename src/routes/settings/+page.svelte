@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { Navbar } from "$lib/components/navbar"
   import Sidebar from "$lib/components/UserSidebar.svelte"
-  import MetadataSidebar from "$/lib/components/MetadataSidebar.svelte"
+  import { Navbar } from "$lib/components/navbar"
   import { CommandBar } from "$lib/components/command-bar"
 </script>
 
@@ -9,8 +8,7 @@
   <CommandBar />
   <Sidebar />
   <div class="flex w-full flex-grow flex-col">
-    <Navbar />
+    <Navbar simple={true} />
     <slot />
   </div>
-  <MetadataSidebar />
 </div>
