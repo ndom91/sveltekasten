@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { page } from "$app/stores"
   import { BookmarkRow } from "$lib/components/bookmark-row"
   import * as Table from "$lib/components/ui/table"
   import { useInterface } from "$state/ui.svelte"
@@ -10,14 +9,15 @@
 
   const ui = useInterface()
 
-  let activeBookmarks = $derived<() => Bookmark[]>(() => {
-    if (!ui.searchQuery) return $page.data.bookmarks
-    return $page.data.bookmarks?.filter((bookmark: Bookmark) => {
+  const { data } = $props()
+
+  let activeBookmarks = $derived(() => {
+    if (!ui.searchQuery) return data.bookmarks
+    return data.bookmarks?.filter((bookmark) => {
       const query = ui.searchQuery.toLowerCase()
       return (
-        bookmark.title.toLowerCase().includes(query) ||
-        bookmark.desc.toLowerCase().includes(query) ||
-        bookmark.description?.toLowerCase().includes(query) ||
+        bookmark.title?.toLowerCase().includes(query) ||
+        bookmark.desc?.toLowerCase().includes(query) ||
         bookmark.url?.toLowerCase().includes(query)
       )
     })
@@ -26,7 +26,7 @@
 
 <main class="mx-auto w-full p-4">
   <div class="align-start flex flex-col justify-start gap-2">
-    {#if $page.data.bookmarks}
+    {#if data.bookmarks}
       <Table.Root>
         <Table.Header>
           <Table.Row class="rounded-md">
