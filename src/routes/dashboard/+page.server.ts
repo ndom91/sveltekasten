@@ -1,4 +1,5 @@
 import prisma from "$lib/prisma";
+import { dev } from "$app/environment"
 import type { Actions } from "./$types"
 import type { PageServerLoad } from './$types'
 import { fail } from "@sveltejs/kit";
@@ -21,7 +22,7 @@ export const actions: Actions = {
         userId: session.user.userId,
       }
     });
-    return { message: 'Deleted Bookmark' }
+    return { type: "success", message: 'Deleted Bookmark' }
   },
   editBookmark: async ({ request, locals }) => {
     const session = await locals.getSession()
@@ -57,7 +58,7 @@ export const actions: Actions = {
         userId: session.user.userId,
       }
     });
-    return { message: 'Updated Bookmark' }
+    return { type: "success", message: 'Updated Bookmark' }
   },
   quickAdd: async (event) => {
     const form = await superValidate(event, formSchema);
@@ -72,11 +73,11 @@ export const actions: Actions = {
       const { title, url, description, category, tags } = form.data
       const { userId } = session.user
 
-      const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(url)}&palette=true&audio=true&video=true`)
+      const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(url)}&palette=true`)
       const metadataResponse = await res.json()
       const metadata = metadataResponse.data
 
-      console.log('URL METADATA', metadata)
+      dev && console.log('quickAdd.url.metadataResponse', metadata)
 
       const upsertBookmarkRes = await prisma.bookmark.upsert({
         include: {
@@ -180,6 +181,7 @@ export const actions: Actions = {
         form,
         bookmark: upsertBookmarkRes,
         message: "Added Successfully"
+        type: "success",
       };
     } catch (err) {
       console.error(err)
