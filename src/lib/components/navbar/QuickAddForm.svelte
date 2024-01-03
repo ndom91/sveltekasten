@@ -25,7 +25,7 @@
   })
 </script>
 
-<form method="post" action="?/quickAdd" use:enhance class="flex flex-col gap-2">
+<form method="post" action="/dashboard?/quickAdd" use:enhance class="flex flex-col gap-2">
   <div class="align-start flex flex-col gap-2">
     <Label for="title">Title</Label>
     <input

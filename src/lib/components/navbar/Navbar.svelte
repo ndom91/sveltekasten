@@ -11,7 +11,7 @@
   let searchInputEl: HTMLInputElement
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.repeat) return
+    if (event.repeat || event.target instanceof HTMLInputElement) return
     if (event.altKey && event.code === "KeyN") {
       event.preventDefault()
       ui.toggleQuickAdd(true)

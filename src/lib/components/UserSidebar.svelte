@@ -10,7 +10,7 @@
   const ui = useInterface()
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.repeat) return
+    if (event.repeat || event.target instanceof HTMLInputElement) return
     if (event.code === "BracketLeft") {
       ui.toggleUserSidebar()
     }
