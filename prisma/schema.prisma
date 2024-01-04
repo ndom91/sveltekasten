@@ -117,9 +117,10 @@ model User {
   accounts      Account[]
   sessions      Session[]
   bookmarks     Bookmark[]
-  feeds         Feed[]
   tags          Tag[]
+  feeds         Feed[]
   feedEntries   FeedEntry[]
+  feedMedia     FeedEntryMedia[]
   categories    Category[]
 }
 
@@ -137,7 +138,7 @@ model Feed {
   url         String
   user        User         @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId      String
-  modified    DateTime?
+  lastFetched DateTime?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   feedEntries FeedEntry[]
@@ -152,15 +153,34 @@ model FeedEntry {
   link        String
   description String?
   language    String?
-  copyright   String?
-  modified    DateTime?
+  author      String?
+  ingested    DateTime?
   feed        Feed         @relation(fields: [feedId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   feedId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId      String
+  feedMedia   FeedEntryMedia[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([userId])
+  @@index([feedId])
+}
+
+model FeedEntryMedia {
+  id          String       @id @default(cuid())
+  href        String
+  title       String?
+  medium      String?
+  height      Int?
+  width       Int?
+  feedEntry   FeedEntry    @relation(fields: [feedEntryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  feedEntryId String
   user        User         @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId      String
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 
   @@index([userId])
-  @@index([feedId])
+  @@index([feedEntryId])
 }
