@@ -122,8 +122,8 @@ table tr {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 12px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 /* Track */

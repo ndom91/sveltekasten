@@ -81,6 +81,40 @@
             variant="ghost"
             builders={[tooltipBuilder]}
             class="relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-300 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0 dark:focus:ring-zinc-800"
+            href="/dashboard/feeds"
+          >
+            <svg
+              class="size-6"
+              aria-label="feeds"
+              data-slot="icon"
+              fill="none"
+              stroke-width="1.5"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12.75 19.5v-.75a7.5 7.5 0 0 0-7.5-7.5H4.5m0-6.75h.75c7.87 0 14.25 6.38 14.25 14.25v.75M6 18.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+              ></path>
+            </svg>
+            {#if ui.userSidebarOpen}
+              <span class="ml-4 text-lg font-normal">Feeds</span>
+            {/if}
+          </Button>
+        </Tooltip.Trigger>
+        <Tooltip.Content side="right">
+          <p>RSS Feeds</p>
+        </Tooltip.Content>
+      </Tooltip.Root>
+      <Tooltip.Root>
+        <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
+          <Button
+            variant="ghost"
+            builders={[tooltipBuilder]}
+            class="relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-300 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0 dark:focus:ring-zinc-800"
             href="/dashboard/categories"
           >
             <svg

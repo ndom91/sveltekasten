@@ -200,6 +200,6 @@ export const load: PageServerLoad = async (event) => {
       tags: tagsResponse,
     };
   } catch (error) {
-    return { bookmarks: [], error }
+    return { bookmarks: [], error: error.message }
   }
 };
