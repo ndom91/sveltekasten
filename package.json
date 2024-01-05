@@ -10,6 +10,7 @@
     "db:push": "pnpm dlx prisma db push",
     "db:migrate": "pnpm dlx prisma migrate dev",
     "db:studio": "pnpm dlx prisma studio",
+    "db:generate": "pnpm dlx prisma generate",
     "postinstall": "pnpm dlx prisma generate"
   },
   "devDependencies": {
@@ -39,7 +40,6 @@
   },
   "type": "module",
   "dependencies": {
-    "@auth/core": "^0.19.0",
     "@auth/prisma-adapter": "^1.0.12",
     "@auth/sveltekit": "^0.5.0",
     "@prisma/client": "5.7.1",

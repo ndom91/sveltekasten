@@ -19,7 +19,7 @@ export const actions: Actions = {
     await prisma.bookmark.delete({
       where: {
         id: bookmarkId,
-        userId: session.user.userId,
+        userId: session?.user?.userId,
       }
     });
     return { type: "success", message: 'Deleted Bookmark' }
