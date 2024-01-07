@@ -201,6 +201,12 @@ export const load: PageServerLoad = async ({ parent, locals }) => {
       tags: tagsResponse,
     };
   } catch (error) {
-    return { bookmarks: [], error: error.message }
+    let message
+    if (typeof error === "string") {
+      message = error.toUpperCase() // works, `e` narrowed to string
+    } else if (error instanceof Error) {
+      message = error.message // works, `e` narrowed to Error
+    }
+    return { bookmarks: [], error: message }
   }
 };
