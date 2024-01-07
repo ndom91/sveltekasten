@@ -5,7 +5,8 @@ import { CategoryCreateInputSchema } from '$zod'
 import type { Actions, PageServerLoad } from './$types'
 import type { ZodError } from 'zod';
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals, parent }) => {
+  await parent()
   const session = await locals.getSession()
 
   const response = await prisma.category.findMany({
