@@ -157,7 +157,6 @@ model FeedEntry {
   link            String
   content         String?
   contentSnippet  String?
-  language        String?
   author          String?
   ingested        DateTime?
   published       DateTime?
@@ -170,6 +169,7 @@ model FeedEntry {
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
 
+  @@index([guid])
   @@index([userId])
   @@index([feedId])
 }
