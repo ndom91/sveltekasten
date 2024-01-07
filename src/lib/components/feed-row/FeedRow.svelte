@@ -48,22 +48,26 @@
   <Table.Cell class="font-medium">
     <img src={feedEntry.feedMedia?.[0]?.href} alt="Feed Media" class="rounded-md object-cover" />
   </Table.Cell>
-  <Table.Cell>
+  <Table.Cell class="max-w-[60vw]">
     <span>
       {feedEntry.title}
     </span>
-    <p class="line-clamp-4 max-w-[70vw]">{@html feedEntry.description}</p>
+    <p class="line-clamp-4 max-w-[70vw]">{@html feedEntry.contentSnippet}</p>
     <p class="flex items-center justify-start gap-2 text-sm text-muted">
       {#if feedEntry.metadata?.logo?.url}
         <img src={feedEntry.metadata?.logo?.url} alt="URL Favicon" class="size-4 rounded-full" />
       {/if}
       <span>
-        {feedEntry.feed.url}
+        {feedEntry.link}
       </span>
-      {#if feedEntry.category?.name}
-        <Badge color="blue">
-          {feedEntry.category?.name}
-        </Badge>
+      {#if feedEntry.categories}
+        <span class="flex flex-wrap">
+          {#each feedEntry.categories as category}
+            <Badge color="blue">
+              {category}
+            </Badge>
+          {/each}
+        </span>
       {/if}
     </p>
   </Table.Cell>

@@ -8,7 +8,10 @@
 
   const ui = useInterface()
   const { data } = $props()
-  console.log("feeds.data", data.feedEntries)
+
+  if (data.error) {
+    console.error(data.error)
+  }
 
   let activeFeedEntries = $derived(() => {
     if (!ui.searchQuery) return data.feedEntries
@@ -30,7 +33,7 @@
         <Table.Header>
           <Table.Row class="rounded-md">
             <Table.Head class="w-48 text-left"></Table.Head>
-            <Table.Head class="text-center">Feed</Table.Head>
+            <Table.Head class="max-w-[60vw] text-center">Feed</Table.Head>
             <Table.Head class="w-32 text-center">Date</Table.Head>
           </Table.Row>
         </Table.Header>
