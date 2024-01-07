@@ -2,7 +2,7 @@ import { SvelteKitAuth } from "@auth/sveltekit";
 import type { Handle } from "@sveltejs/kit";
 import { sequence } from "@sveltejs/kit/hooks";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import type { Provider } from "@auth/core/providers";
+import type { Provider } from "@auth/sveltekit/providers";
 import prisma from "$lib/prisma";
 import {
   AUTH_SECRET,
