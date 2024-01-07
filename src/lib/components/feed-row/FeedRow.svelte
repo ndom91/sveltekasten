@@ -45,42 +45,51 @@
       bookmarkId={feedEntry.id}
     />
   {/await}
-  <Table.Cell class="font-medium">
+  <Table.Cell class="w-48 font-medium">
     <img src={feedEntry.feedMedia?.[0]?.href} alt="Feed Media" class="rounded-md object-cover" />
   </Table.Cell>
-  <Table.Cell class="max-w-[60vw]">
-    <span>
+  <Table.Cell class="flex flex-col gap-2">
+    <span class="line-clamp-1 text-clip text-xl font-bold">
       {feedEntry.title}
     </span>
-    <p class="line-clamp-4 max-w-[70vw]">{@html feedEntry.contentSnippet}</p>
-    <p class="flex items-center justify-start gap-2 text-sm text-muted">
-      {#if feedEntry.metadata?.logo?.url}
-        <img src={feedEntry.metadata?.logo?.url} alt="URL Favicon" class="size-4 rounded-full" />
-      {/if}
-      <span>
-        {feedEntry.link}
-      </span>
-      {#if feedEntry.categories}
-        <span class="flex flex-wrap">
-          {#each feedEntry.categories as category}
-            <Badge color="blue">
-              {category}
-            </Badge>
-          {/each}
-        </span>
-      {/if}
-    </p>
-  </Table.Cell>
-  <Table.Cell title={String(feedEntry.createdAt)}>
-    <div>
-      <div>
-        {format(feedEntry.createdAt, "pp")}
-      </div>
-      <div>
-        {format(feedEntry.createdAt, "d MMM yyyy")}
+    <p class="line-clamp-3">{@html feedEntry.contentSnippet}</p>
+    <div class="flex items-center justify-start gap-2 text-sm text-muted">
+      <div class="flex items-center justify-start gap-2">
+        {#if feedEntry.link}
+          <img
+            src={`https://${new URL(feedEntry.link).hostname}/favicon.ico`}
+            alt="URL Favicon"
+            class="size-4 rounded-full"
+          />
+        {/if}
+        <a href={feedEntry.link} class="line-clamp-1 text-clip">
+          {feedEntry.link}
+        </a>
       </div>
     </div>
+    <span class="flex flex-wrap gap-2">
+      <Badge variant="secondary">
+        {format(feedEntry.createdAt, "H:mm d MMM yyyy")}
+      </Badge>
+      {#if feedEntry.categories}
+        {#each feedEntry.categories as category}
+          <Badge variant="outline">
+            {category}
+          </Badge>
+        {/each}
+      {/if}
+    </span>
   </Table.Cell>
+  <!-- <Table.Cell title={String(feedEntry.createdAt)}> -->
+  <!--   <div> -->
+  <!--     <div> -->
+  <!--       {format(feedEntry.createdAt, "pp")} -->
+  <!--     </div> -->
+  <!--     <div> -->
+  <!--       {format(feedEntry.createdAt, "d MMM yyyy")} -->
+  <!--     </div> -->
+  <!--   </div> -->
+  <!-- </Table.Cell> -->
   {#await import("./FeedActions.svelte") then { default: Actions }}
     <svelte:component
       this={Actions}
