@@ -5,7 +5,8 @@ import { TagCreateInputSchema } from "$zod";
 import type { Actions, PageServerLoad } from "./$types";
 import type { ZodError } from "zod";
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async ({ parent, locals }) => {
+  await parent()
   const session = await locals.getSession();
 
   const response = await prisma.tag.findMany({

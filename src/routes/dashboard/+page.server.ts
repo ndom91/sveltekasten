@@ -176,9 +176,10 @@ export const actions: Actions = {
   }
 }
 
-export const load: PageServerLoad = async (event) => {
+export const load: PageServerLoad = async ({ parent, locals }) => {
+  await parent()
   try {
-    const session = await event.locals.getSession();
+    const session = await locals.getSession();
 
     const bookmarksResponse = await prisma.bookmark.findMany({
       where: { userId: session.user.userId },
