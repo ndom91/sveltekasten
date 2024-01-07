@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { goto } from "$app/navigation"
   import { FeedRow } from "$lib/components/feed-row"
   import * as Table from "$lib/components/ui/table"
   import * as Pagination from "$lib/components/ui/pagination"
@@ -10,6 +11,7 @@
 
   const ui = useInterface()
   const { data } = $props()
+  let page = $state(1)
 
   if (data.error) {
     console.error(data.error)
@@ -26,6 +28,13 @@
       )
     })
   })
+
+  const handlePageChange = (p: number) => {
+    page = p
+    const limit = 10
+    const skip = (page - 1) * limit
+    goto(`?skip=${skip}`)
+  }
 </script>
 
 <main class="h-full">
@@ -45,6 +54,8 @@
           class="w-auto rounded-xl border-2 bg-zinc-50 p-2 dark:border-zinc-700 dark:bg-zinc-950"
           count={100}
           perPage={10}
+          {page}
+          onPageChange={handlePageChange}
           let:pages
           let:currentPage
         >
