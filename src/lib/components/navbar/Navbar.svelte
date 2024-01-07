@@ -10,7 +10,7 @@
 
   const { simple = false } = $props()
   const ui = useInterface()
-  let searchInputEl: HTMLInputElement
+  let searchInputEl = $state<HTMLInputElement>()
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.repeat || event.target instanceof HTMLInputElement) return
@@ -20,7 +20,7 @@
     }
     if (event.code === "Slash") {
       event.preventDefault()
-      searchInputEl.focus()
+      searchInputEl?.focus()
     }
   }
 </script>
