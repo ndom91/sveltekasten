@@ -42,7 +42,7 @@
       </Table.Root>
       <div class="fixed bottom-8 flex w-full justify-center">
         <Pagination.Root
-          class="w-auto rounded-xl border-2 bg-zinc-950 p-2 dark:border-zinc-700"
+          class="w-auto rounded-xl border-2 bg-zinc-50 p-2 dark:border-zinc-700 dark:bg-zinc-950"
           count={100}
           perPage={10}
           let:pages

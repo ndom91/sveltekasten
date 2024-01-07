@@ -34,7 +34,7 @@
 </script>
 
 <Table.Row
-  class="relative hover:bg-zinc-900"
+  class="relative hover:bg-zinc-100 dark:hover:bg-zinc-900"
   on:mouseleave={closeButtonGroup}
   on:mouseenter={openButtonGroup}
 >
@@ -80,23 +80,13 @@
       {/if}
     </span>
   </Table.Cell>
-  <!-- <Table.Cell title={String(feedEntry.createdAt)}> -->
-  <!--   <div> -->
-  <!--     <div> -->
-  <!--       {format(feedEntry.createdAt, "pp")} -->
-  <!--     </div> -->
-  <!--     <div> -->
-  <!--       {format(feedEntry.createdAt, "d MMM yyyy")} -->
-  <!--     </div> -->
-  <!--   </div> -->
-  <!-- </Table.Cell> -->
   {#await import("./FeedActions.svelte") then { default: Actions }}
     <svelte:component
       this={Actions}
       {handleMetadataSidebarOpen}
       {handleDeleteDialogOpen}
       {isOptionsOpen}
-      url={feedEntry.url ?? ""}
+      url={feedEntry.link ?? ""}
     />
   {/await}
 </Table.Row>
