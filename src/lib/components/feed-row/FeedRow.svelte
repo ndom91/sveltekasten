@@ -62,7 +62,7 @@
             class="size-4 rounded-full"
           />
         {/if}
-        <a href={feedEntry.link} class="line-clamp-1 text-clip">
+        <a target="_blank" href={feedEntry.link} class="line-clamp-1 text-clip">
           {feedEntry.link}
         </a>
       </div>
