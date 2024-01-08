@@ -10,8 +10,8 @@ export const POST: RequestHandler = async ({ request, locals, url }) => {
     return fail(401, { type: "error", error: "Unauthenticated" })
   }
 
-  const skip = url.searchParams.get('skip') ?? "0";
-  const limit = url.searchParams.get('limit') ?? "10";
+  const skip = Number(url.searchParams.get('skip') ?? "0")
+  const limit = Number(url.searchParams.get('limit') ?? "10")
   const { query, type = 'feedEntry' } = await request.json();
 
   // @TODO: Make fields dynamic depending on what schema is being searched
@@ -30,8 +30,8 @@ export const POST: RequestHandler = async ({ request, locals, url }) => {
         },
         userId: session?.user?.userId
       },
-      take: parseInt(limit) + parseInt(skip),
-      skip: parseInt(skip),
+      take: limit + skip,
+      skip: skip,
       include: {
         feed: true,
         feedMedia: true,
@@ -53,8 +53,8 @@ export const POST: RequestHandler = async ({ request, locals, url }) => {
         },
         userId: session?.user?.userId
       },
-      take: parseInt(limit) + parseInt(skip),
-      skip: parseInt(skip),
+      take: limit + skip,
+      skip: skip,
       orderBy: { published: "desc" },
     })
   ])

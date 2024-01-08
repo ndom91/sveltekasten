@@ -188,8 +188,8 @@ export const actions: Actions = {
 export const load: PageServerLoad = async ({ parent, locals, url }) => {
   await parent()
   try {
-    const skip = url.searchParams.get('skip') ?? "0";
-    const limit = url.searchParams.get('limit') ?? "10";
+    const skip = Number(url.searchParams.get('skip') ?? "0")
+    const limit = Number(url.searchParams.get('limit') ?? "10")
 
     const session = await locals.getSession();
     if (!session?.user?.userId) {
@@ -206,8 +206,8 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
     ])
 
     const [data, count] = await prisma.bookmark.findManyAndCount({
-      take: parseInt(limit) + parseInt(skip),
-      skip: parseInt(skip),
+      take: limit + skip,
+      skip: skip,
       where: { userId: session?.user?.userId },
       include: {
         category: true,
