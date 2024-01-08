@@ -49,10 +49,9 @@
   <title>Briefkasten | Feeds</title>
   <meta name="description" content="This is where the description goes for SEO" />
 </svelte:head>
+
 <main class="h-full">
-  <div
-    class="align-start flex max-h-[calc(100vh_-_80px)] flex-col justify-start gap-2 overflow-y-scroll"
-  >
+  <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2">
     {#if data.feedEntries}
       <Table.Root>
         <Table.Body>

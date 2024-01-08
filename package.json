@@ -52,7 +52,6 @@
     "mode-watcher": "^0.1.2",
     "p-debounce": "^4.0.0",
     "svelte-french-toast": "^1.2.0",
-    "svelte-local-storage-store": "^0.6.4",
     "svelte-sonner": "^0.3.9",
     "sveltekit-superforms": "^1.13.1",
     "tailwind-merge": "^2.2.0",

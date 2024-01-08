@@ -15,11 +15,11 @@
   <DropdownMenu.Trigger
     class="rounded-full outline-none transition duration-300 focus:outline-none focus:ring-2 focus:ring-zinc-200 dark:focus:ring-zinc-500"
   >
-    <Avatar.Root class="rounded-full outline-none focus:outline-none focus:ring-gray-200">
+    <Avatar.Root>
       <Avatar.Image
         src={$page.data.session?.user.image ||
           `https://unavatar.io/${$page.data.session?.user.email}?fallback=https://source.boringavatars.com/marble/120/${$page.data.session?.user.email}?colors=264653r,2a9d8f,e9c46a,f4a261,e76f51`}
-        class="rounded focus:outline-none focus:ring-gray-200"
+        class="rounded"
         alt="User Avatar"
       />
       <Avatar.Fallback><Skeleton class="h-full w-full rounded-full" /></Avatar.Fallback>

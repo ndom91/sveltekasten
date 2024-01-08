@@ -1,4 +1,3 @@
-import { persisted } from 'svelte-local-storage-store';
 import type { Bookmark, Category, Tag } from "$zod"
 
 type MetadataSidebarData = {
@@ -10,7 +9,6 @@ type MetadataSidebarData = {
 // Search
 const searching = $state(false);
 let searchQuery = $state('');
-const searchRecents = persisted<string[]>('svelte:recent-searches', []);
 
 // Sidebars
 let metadataSidebarOpen = $state(false);
@@ -41,7 +39,6 @@ export function useInterface() {
     get searching() { return searching },
     get searchQuery() { return searchQuery },
     set searchQuery(query) { searchQuery = query },
-    get searchRecents() { return searchRecents },
     updateSearchQuery: (e: string): string => searchQuery = e,
 
     // UI Elements
@@ -50,10 +47,10 @@ export function useInterface() {
     get metadataSidebarEditMode() { return metadataSidebarEditMode },
     get userSidebarOpen() { return userSidebarOpen },
     get quickAddOpen() { return quickAddOpen },
-    toggleMetadataSidebar: (target?: boolean): boolean => metadataSidebarOpen = target ? target : !metadataSidebarOpen,
-    toggleMetadataSidebarEditMode: (target?: boolean): boolean => metadataSidebarEditMode = target ? target : !metadataSidebarEditMode,
+    toggleMetadataSidebar: (target?: boolean): boolean => metadataSidebarOpen = target ?? !metadataSidebarOpen,
+    toggleMetadataSidebarEditMode: (target?: boolean): boolean => metadataSidebarEditMode = target ?? !metadataSidebarEditMode,
     setMetadataSidebarData: (data: MetadataSidebarData): MetadataSidebarData => metadataSidebarData = data,
     toggleUserSidebar: (): boolean => userSidebarOpen = !userSidebarOpen,
-    toggleQuickAdd: (target?: boolean): boolean => quickAddOpen = target ? target : !quickAddOpen,
+    toggleQuickAdd: (target?: boolean): boolean => quickAddOpen = target ?? !quickAddOpen,
   }
 }
