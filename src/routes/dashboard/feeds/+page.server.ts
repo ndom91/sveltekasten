@@ -12,22 +12,16 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
     const skip = url.searchParams.get('skip') ?? "0";
     const limit = url.searchParams.get('limit') ?? "10";
 
-    const [data, count] = await prisma.$transaction([
-      prisma.feedEntry.findMany({
-        take: parseInt(limit) + parseInt(skip),
-        skip: parseInt(skip),
-        where: { userId: session?.user?.userId },
-        include: {
-          feed: true,
-          feedMedia: true,
-        },
-        orderBy: { published: "desc" },
-      }),
-      prisma.feedEntry.count({
-        where: { userId: session?.user?.userId },
-        orderBy: { published: "desc" },
-      }),
-    ])
+    const [data, count] = await prisma.feedEntry.findManyAndCount({
+      take: parseInt(limit) + parseInt(skip),
+      skip: parseInt(skip),
+      where: { userId: session?.user?.userId },
+      include: {
+        feed: true,
+        feedMedia: true,
+      },
+      orderBy: { published: "desc" },
+    });
 
     return {
       feedEntries: data,

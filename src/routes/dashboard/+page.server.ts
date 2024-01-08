@@ -187,21 +187,7 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
 
-    const [bookmarks, count, categories, tags] = await prisma.$transaction([
-      prisma.bookmark.findMany({
-        take: parseInt(limit) + parseInt(skip),
-        skip: parseInt(skip),
-        where: { userId: session?.user?.userId },
-        include: {
-          category: true,
-          tags: { include: { tag: true } },
-        },
-        orderBy: { createdAt: "desc" },
-      }),
-      prisma.bookmark.count({
-        where: { userId: session?.user?.userId },
-        orderBy: { createdAt: "desc" },
-      }),
+    const [categories, tags] = await prisma.$transaction([
       prisma.category.findMany({
         where: { userId: session.user.userId },
       }),
@@ -210,9 +196,19 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
       })
     ])
 
+    const [data, count] = await prisma.bookmark.findManyAndCount({
+      take: parseInt(limit) + parseInt(skip),
+      skip: parseInt(skip),
+      where: { userId: session?.user?.userId },
+      include: {
+        category: true,
+        tags: { include: { tag: true } },
+      },
+      orderBy: { createdAt: "desc" },
+    })
 
     return {
-      bookmarks,
+      bookmarks: data,
       count,
       categories,
       tags,
