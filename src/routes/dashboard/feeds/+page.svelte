@@ -20,17 +20,6 @@
 
   let activeFeedEntries = $derived(async () => {
     if (!ui.searchQuery) return data.feedEntries
-    // Simple FE search
-    // return data.feedEntries?.filter((feedEntry) => {
-    //   const query = ui.searchQuery.toLowerCase()
-    //   return (
-    //     feedEntry.title?.toLowerCase().includes(query) ||
-    //     feedEntry.contentSnippet?.toLowerCase().includes(query) ||
-    //     feedEntry.link?.toLowerCase().includes(query)
-    //   )
-    // })
-
-    // Prisma Full Text Search
     const res = await fetch("/api/search", {
       method: "POST",
       headers: {
@@ -41,7 +30,6 @@
       }),
     })
     const searchRes = await res.json()
-    console.log("searchRes", searchRes)
     return searchRes
   })
 
@@ -49,7 +37,10 @@
     page = p
     const limit = 10
     const skip = (page - 1) * limit
-    goto(`?skip=${skip}`)
+    goto(`?skip=${skip}`, {
+      noScroll: true,
+      keepFocus: true,
+    })
   }
 </script>
 

@@ -11,15 +11,18 @@
   <nav
     class="mx-auto flex h-24 w-full items-center justify-end gap-4 border-b border-b-zinc-100 p-4 dark:border-b-zinc-900"
   >
-    <div class="flex w-full max-w-7xl justify-start">
+    <div class="mx-auto flex w-full max-w-7xl items-center justify-start gap-4 text-xl">
       <Logo class="size-8 text-zinc-800 dark:text-zinc-50" />
-      <h2 class="ml-4 text-lg">Error</h2>
+      <span class="">Error</span>
+      <span class="items-center text-red-400">
+        {$page.status}
+      </span>
     </div>
   </nav>
   <div class="flex w-full flex-col items-center justify-center gap-4">
     <Card.Root class="mt-24 w-[380px]">
       <Card.Header>
-        <Card.Title class="flex justify-between">
+        <Card.Title class="flex justify-between gap-2">
           <p class="font-normal">Uh oh, something's gone wrong</p>
         </Card.Title>
       </Card.Header>
