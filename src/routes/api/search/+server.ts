@@ -4,37 +4,59 @@ import { json, fail } from '@sveltejs/kit';
 import prisma from "$lib/prisma";
 
 // @ts-expect-error
-export const POST: RequestHandler = async ({ request, locals }) => {
+export const POST: RequestHandler = async ({ request, locals, url }) => {
   const session = await locals.getSession()
   if (!session?.user?.userId) {
     return fail(401, { type: "error", error: "Unauthenticated" })
   }
 
+  const skip = url.searchParams.get('skip') ?? "0";
+  const limit = url.searchParams.get('limit') ?? "10";
   const { query, type = 'feedEntry' } = await request.json();
 
-  // @ts-expect-error
-  const result = await prisma[type].findMany({
-    where: {
-      title: {
-        search: query,
+  const [data, count] = await prisma.$transaction([
+    // @ts-expect-error
+    prisma[type].findMany({
+      where: {
+        title: {
+          search: query,
+        },
+        link: {
+          search: query,
+        },
+        content: {
+          search: query,
+        },
+        userId: session?.user?.userId
       },
-      link: {
-        search: query,
+      take: parseInt(limit) + parseInt(skip),
+      skip: parseInt(skip),
+      include: {
+        feed: true,
+        feedMedia: true,
+        _count: true
       },
-      content: {
-        search: query,
+      orderBy: { published: "desc" },
+    }),
+    // @ts-expect-error
+    prisma[type].count({
+      where: {
+        title: {
+          search: query,
+        },
+        link: {
+          search: query,
+        },
+        content: {
+          search: query,
+        },
+        userId: session?.user?.userId
       },
-      userId: session?.user?.userId
-    },
-    // take: parseInt(limit + skip),
-    // skip: parseInt(skip),
-    include: {
-      feed: true,
-      feedMedia: true,
-      _count: true
-    },
-    orderBy: { published: "desc" },
-  })
+      take: parseInt(limit) + parseInt(skip),
+      skip: parseInt(skip),
+      orderBy: { published: "desc" },
+    })
+  ])
 
-  return json(result);
+  return json({ data, count });
 }

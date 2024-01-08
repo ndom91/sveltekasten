@@ -39,9 +39,9 @@ export const actions: Actions = {
     } catch (error) {
       let message
       if (typeof error === "string") {
-        message = error.toUpperCase() // works, `e` narrowed to string
+        message = error.toUpperCase()
       } else if (error instanceof Error) {
-        message = error.message // works, `e` narrowed to Error
+        message = error.message
       } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
           console.log(

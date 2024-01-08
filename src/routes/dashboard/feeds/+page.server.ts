@@ -7,30 +7,35 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
     const session = await locals.getSession();
     const skip = url.searchParams.get('skip') ?? "0";
     const limit = url.searchParams.get('limit') ?? "10";
-    console.log("skip", { limit, skip });
 
-    const feedEntriesResponse = await prisma.feedEntry.findMany({
-      take: parseInt(limit + skip),
-      skip: parseInt(skip),
-      where: { userId: session?.user?.userId },
-      include: {
-        feed: true,
-        feedMedia: true,
-        _count: true
-      },
-      orderBy: { published: "desc" },
-    });
+    const [data, count] = await prisma.$transaction([
+      prisma.feedEntry.findMany({
+        take: parseInt(limit) + parseInt(skip),
+        skip: parseInt(skip),
+        where: { userId: session?.user?.userId },
+        include: {
+          feed: true,
+          feedMedia: true,
+        },
+        orderBy: { published: "desc" },
+      }),
+      prisma.feedEntry.count({
+        where: { userId: session?.user?.userId },
+        orderBy: { published: "desc" },
+      }),
+    ])
 
     return {
-      feedEntries: feedEntriesResponse,
+      feedEntries: data,
+      count
     };
   } catch (error) {
     let message
     if (typeof error === "string") {
-      message = error.toUpperCase() // works, `e` narrowed to string
+      message = error.toUpperCase()
     } else if (error instanceof Error) {
-      message = error.message // works, `e` narrowed to Error
+      message = error.message
     }
-    return { feedEntries: [], error: message };
+    return { feedEntries: [], count: 0, error: message };
   }
 };

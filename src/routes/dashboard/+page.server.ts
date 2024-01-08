@@ -203,9 +203,9 @@ export const load: PageServerLoad = async ({ parent, locals }) => {
   } catch (error) {
     let message
     if (typeof error === "string") {
-      message = error.toUpperCase() // works, `e` narrowed to string
+      message = error.toUpperCase()
     } else if (error instanceof Error) {
-      message = error.message // works, `e` narrowed to Error
+      message = error.message
     }
     return { bookmarks: [], error: message }
   }

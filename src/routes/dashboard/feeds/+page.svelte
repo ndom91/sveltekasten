@@ -12,11 +12,11 @@
   const ui = useInterface()
   const { data } = $props()
   let page = $state(1)
+  let pageCount = $state(data.count)
 
   if (data.error) {
     console.error(data.error)
   }
-  console.log("entriesCount:", data.feedEntries?.length)
 
   let activeFeedEntries = $derived(async () => {
     if (!ui.searchQuery) return data.feedEntries
@@ -29,8 +29,9 @@
         query: ui.searchQuery,
       }),
     })
-    return res.json()
-    // return searchRes
+    const { data: searchResults, count } = await res.json()
+    pageCount = count
+    return searchResults
   })
 
   const handlePageChange = (p: number) => {
@@ -75,7 +76,7 @@
       <div class="fixed bottom-8 flex w-full justify-center">
         <Pagination.Root
           class="w-auto rounded-xl border-2 bg-zinc-50 p-2 dark:border-zinc-700 dark:bg-zinc-950"
-          count={100}
+          count={pageCount}
           perPage={10}
           {page}
           onPageChange={handlePageChange}
