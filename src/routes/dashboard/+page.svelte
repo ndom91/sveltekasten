@@ -11,7 +11,7 @@
   const ui = useInterface()
   const { data } = $props()
   let page = $state(1)
-  let pageCount = $state<number>(data.count ?? 1)
+  let totalItems = $state<number>(data.count ?? 1)
 
   if (data.error) {
     console.error(data.error)
@@ -30,7 +30,7 @@
       }),
     })
     const { data: searchResults, count } = await res.json()
-    pageCount = count
+    totalItems = count
     return searchResults
   })
 
@@ -76,37 +76,39 @@
         </Table.Body>
       </Table.Root>
       <div class="fixed bottom-8 flex w-full justify-center">
-        <Pagination.Root
-          class="w-auto rounded-xl border-2 bg-zinc-50 p-2 dark:border-zinc-700 dark:bg-zinc-950"
-          count={pageCount}
-          perPage={10}
-          {page}
-          onPageChange={handlePageChange}
-          let:pages
-          let:currentPage
-        >
-          <Pagination.Content>
-            <Pagination.Item>
-              <Pagination.PrevButton />
-            </Pagination.Item>
-            {#each pages as page (page.key)}
-              {#if page.type === "ellipsis"}
-                <Pagination.Item>
-                  <Pagination.Ellipsis />
-                </Pagination.Item>
-              {:else}
-                <Pagination.Item>
-                  <Pagination.Link {page} isActive={currentPage == page.value}>
-                    {page.value}
-                  </Pagination.Link>
-                </Pagination.Item>
-              {/if}
-            {/each}
-            <Pagination.Item>
-              <Pagination.NextButton />
-            </Pagination.Item>
-          </Pagination.Content>
-        </Pagination.Root>
+        {#if totalItems / 10 > 1}
+          <Pagination.Root
+            class="w-auto rounded-xl border-2 bg-zinc-50 p-2 dark:border-zinc-700 dark:bg-zinc-950"
+            count={totalItems}
+            perPage={10}
+            {page}
+            onPageChange={handlePageChange}
+            let:pages
+            let:currentPage
+          >
+            <Pagination.Content>
+              <Pagination.Item>
+                <Pagination.PrevButton />
+              </Pagination.Item>
+              {#each pages as page (page.key)}
+                {#if page.type === "ellipsis"}
+                  <Pagination.Item>
+                    <Pagination.Ellipsis />
+                  </Pagination.Item>
+                {:else}
+                  <Pagination.Item>
+                    <Pagination.Link {page} isActive={currentPage == page.value}>
+                      {page.value}
+                    </Pagination.Link>
+                  </Pagination.Item>
+                {/if}
+              {/each}
+              <Pagination.Item>
+                <Pagination.NextButton />
+              </Pagination.Item>
+            </Pagination.Content>
+          </Pagination.Root>
+        {/if}
       </div>
     {:else}
       <img src={Arrow} alt="Arrow" class="absolute right-28 top-28" />
