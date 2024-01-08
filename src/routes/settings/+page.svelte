@@ -4,6 +4,10 @@
   import { CommandBar } from "$lib/components/command-bar"
 </script>
 
+<svelte:head>
+  <title>Briefkasten | Settings</title>
+  <meta name="description" content="This is where the description goes for SEO" />
+</svelte:head>
 <div class="flex">
   <CommandBar />
   <Sidebar />

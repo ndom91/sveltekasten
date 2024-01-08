@@ -9,6 +9,10 @@
   let { data } = $props()
 </script>
 
+<svelte:head>
+  <title>Briefkasten | Tags</title>
+  <meta name="description" content="This is where the description goes for SEO" />
+</svelte:head>
 <main class="mx-auto w-full p-4">
   <div class="align-start flex flex-col justify-start gap-2">
     <Table.Root>
@@ -55,13 +59,7 @@
         <span> Create New </span>
       </div>
       <Input class="w-48" placeholder="Name" id="name" name="name" type="text" />
-      <Input
-        class="w-48"
-        placeholder="Emoji"
-        id="emoji"
-        name="emoji"
-        type="text"
-      />
+      <Input class="w-48" placeholder="Emoji" id="emoji" name="emoji" type="text" />
       <Button variant="secondary" type="submit" class="w-24">Create</Button>
     </form>
   </div>

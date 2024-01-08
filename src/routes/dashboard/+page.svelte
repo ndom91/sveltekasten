@@ -11,7 +11,7 @@
   const ui = useInterface()
   const { data } = $props()
   let page = $state(1)
-  let pageCount = $state(data.count)
+  let pageCount = $state<number>(data.count ?? 1)
 
   if (data.error) {
     console.error(data.error)
@@ -45,6 +45,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>Briefkasten | Bookmarks</title>
+  <meta name="description" content="This is where the description goes for SEO" />
+</svelte:head>
 <main class="mx-auto w-full p-4">
   <div class="align-start flex flex-col justify-start gap-2">
     {#if data.bookmarks}

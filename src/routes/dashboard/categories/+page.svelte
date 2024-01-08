@@ -9,6 +9,10 @@
   let { data } = $props()
 </script>
 
+<svelte:head>
+  <title>Briefkasten | Categories</title>
+  <meta name="description" content="This is where the description goes for SEO" />
+</svelte:head>
 <main class="mx-auto w-full p-4">
   <div class="align-start flex flex-col justify-start gap-2">
     <Table.Root>

@@ -220,6 +220,6 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
     } else if (error instanceof Error) {
       message = error.message
     }
-    return { bookmarks: [], error: message }
+    return { bookmarks: [], categories: [], tags: [], count: 1, error: message }
   }
 };
