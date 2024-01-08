@@ -20,7 +20,7 @@
     }
   }
 
-  const isEditMode = $derived(ui.metadataSidebarEditMode !== true)
+  const isEditMode = $derived(ui.metadataSidebarEditMode === true)
 
   const copyColor = (e: MouseEvent, color: string) => {
     e.preventDefault()
@@ -146,9 +146,11 @@
             </Select.Trigger>
             <Select.Input />
             <Select.Content>
-              {#each ui.metadataSidebarData.categories as category (category.id)}
-                <Select.Item value={category.id}>{category.name}</Select.Item>
-              {/each}
+              {#if ui.metadataSidebarData.categories}
+                {#each ui.metadataSidebarData.categories as category (category.id)}
+                  <Select.Item value={category.id}>{category.name}</Select.Item>
+                {/each}
+              {/if}
             </Select.Content>
           </Select.Root>
         </div>
