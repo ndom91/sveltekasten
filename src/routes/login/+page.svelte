@@ -8,11 +8,20 @@
   let email = ""
 
   const handleEmailSignIn = () => {
-    signIn("email", { email, callbackUrl: "/dashboard" })
+    signIn("email", {
+      email,
+      callbackUrl: $page.data.redirectTo
+        ? `/${decodeURIComponent($page.data.redirectTo).slice(1)}`
+        : `/dashboard`,
+    })
   }
 
   const handleSignIn = (provider: string) => {
-    signIn(provider, { callbackUrl: "/dashboard" })
+    signIn(provider, {
+      callbackUrl: $page.data.redirectTo
+        ? `/${decodeURIComponent($page.data.redirectTo).slice(1)}`
+        : `/dashboard`,
+    })
   }
 
   const providerButtonStyles = (provider: string): string => {

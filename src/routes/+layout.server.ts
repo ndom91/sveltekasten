@@ -7,7 +7,8 @@ export const load: LayoutServerLoad = async (event) => {
   const session = await event.locals.getSession();
 
   if (!session && event.url.pathname !== '/login') {
-    throw redirect(307, '/login');
+    const fromUrl = event.url.pathname + event.url.search
+    throw redirect(307, `/login?redirectTo=${encodeURIComponent(fromUrl)}`);
   }
 
   return {
