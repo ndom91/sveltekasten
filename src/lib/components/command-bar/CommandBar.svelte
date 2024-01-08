@@ -42,7 +42,7 @@
 
 <svelte:window on:keydown={handleKeyDown} />
 <Command.Dialog bind:open={isCommandOpen} label="Command Menu2" loop>
-  <Command.Input placeholder="Type a command or search..." />
+  <Command.Input type="command-input" placeholder="Type a command or search..." />
   <Command.List>
     <Command.Empty>No results found.</Command.Empty>
     <Command.Group heading="Pages">

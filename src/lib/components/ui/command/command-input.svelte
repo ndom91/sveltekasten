@@ -8,10 +8,13 @@
   let className: string | undefined | null = undefined
   export { className as class }
   export let value: string = ""
+  export let type: string = ""
 </script>
 
 <div class="flex items-center border-b px-2" data-cmdk-input-wrapper="">
-  <Logo class="size-6 mr-2 text-zinc-800 dark:text-zinc-50" />
+  {#if type === "command-input"}
+    <Logo class="size-6 mr-2 text-zinc-800 dark:text-zinc-50" />
+  {/if}
   <CommandPrimitive.Input
     class={cn(
       "flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
