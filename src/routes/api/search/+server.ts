@@ -1,8 +1,10 @@
-import { json } from '@sveltejs/kit';
-import { fail } from "@sveltejs/kit";
+import type { RequestHandler } from './$types';
+import { json, fail } from '@sveltejs/kit';
+
 import prisma from "$lib/prisma";
 
-export async function POST({ request, locals }) {
+// @ts-expect-error
+export const POST: RequestHandler = async ({ request, locals }) => {
   const session = await locals.getSession()
   if (!session?.user?.userId) {
     return fail(401, { type: "error", error: "Unauthenticated" })

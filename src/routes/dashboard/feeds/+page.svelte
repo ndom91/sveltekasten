@@ -29,8 +29,8 @@
         query: ui.searchQuery,
       }),
     })
-    const searchRes = await res.json()
-    return searchRes
+    return res.json()
+    // return searchRes
   })
 
   const handlePageChange = (p: number) => {
@@ -51,10 +51,24 @@
     {#if data.feedEntries}
       <Table.Root>
         <Table.Body>
-          {#await activeFeedEntries() then feedEntries}
-            {#each feedEntries as feedEntry}
-              <FeedRow {feedEntry} />
-            {/each}
+          {#await activeFeedEntries()}
+            <tr class="text-3xl">
+              <td colspan="2" class="h-24" align="center">Loading...</td>
+            </tr>
+          {:then feedEntries}
+            {#if feedEntries.length}
+              {#each feedEntries as feedEntry}
+                <FeedRow {feedEntry} />
+              {/each}
+            {:else}
+              <tr class="text-3xl">
+                <td colspan="2" class="h-24" align="center">No entries found</td>
+              </tr>
+            {/if}
+          {:catch error}
+            <tr class="text-3xl">
+              <td colspan="2" class="h-24" align="center">{error}</td>
+            </tr>
           {/await}
         </Table.Body>
       </Table.Root>
