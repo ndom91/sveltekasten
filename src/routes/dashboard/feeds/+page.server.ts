@@ -7,6 +7,7 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
     const session = await locals.getSession();
     const skip = url.searchParams.get('skip') ?? "0";
     const limit = url.searchParams.get('limit') ?? "10";
+    console.log("skip", { limit, skip });
 
     const feedEntriesResponse = await prisma.feedEntry.findMany({
       take: parseInt(limit + skip),
@@ -15,6 +16,7 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
       include: {
         feed: true,
         feedMedia: true,
+        _count: true
       },
       orderBy: { published: "desc" },
     });
@@ -23,6 +25,12 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
       feedEntries: feedEntriesResponse,
     };
   } catch (error) {
-    return { feedEntries: [], error: error.message };
+    let message
+    if (typeof error === "string") {
+      message = error.toUpperCase() // works, `e` narrowed to string
+    } else if (error instanceof Error) {
+      message = error.message // works, `e` narrowed to Error
+    }
+    return { feedEntries: [], error: message };
   }
 };

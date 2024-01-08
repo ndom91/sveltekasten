@@ -7,6 +7,7 @@
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
   import { Breadcrumbs } from "$lib/components/navbar"
   import { useInterface } from "$state/ui.svelte"
+  import pDebounce from "p-debounce"
 
   const { simple = false } = $props()
   const ui = useInterface()
@@ -22,6 +23,10 @@
       event.preventDefault()
       searchInputEl?.focus()
     }
+  }
+
+  const handleKeyUp = (event: KeyboardEvent) => {
+    ui.searchQuery = event.target.value
   }
 </script>
 
@@ -40,7 +45,8 @@
           id="search"
           name="search"
           bind:this={searchInputEl}
-          bind:value={ui.searchQuery}
+          value={ui.searchQuery}
+          onkeyup={pDebounce(handleKeyUp, 500)}
           spellcheck="false"
           aria-label="Search"
           class={"flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 pl-10 pr-10 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}

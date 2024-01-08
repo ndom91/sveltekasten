@@ -9,6 +9,8 @@ export async function POST({ request, locals }) {
   }
 
   const { query, type = 'feedEntry' } = await request.json();
+
+  // @ts-expect-error
   const result = await prisma[type].findMany({
     where: {
       title: {
@@ -20,9 +22,17 @@ export async function POST({ request, locals }) {
       content: {
         search: query,
       },
+      userId: session?.user?.userId
     },
+    // take: parseInt(limit + skip),
+    // skip: parseInt(skip),
+    include: {
+      feed: true,
+      feedMedia: true,
+      _count: true
+    },
+    orderBy: { published: "desc" },
   })
-
 
   return json(result);
 }

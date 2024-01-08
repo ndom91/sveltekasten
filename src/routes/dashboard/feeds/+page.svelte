@@ -16,17 +16,33 @@
   if (data.error) {
     console.error(data.error)
   }
+  console.log("entriesCount:", data.feedEntries?.length)
 
-  let activeFeedEntries = $derived(() => {
+  let activeFeedEntries = $derived(async () => {
     if (!ui.searchQuery) return data.feedEntries
-    return data.feedEntries?.filter((feedEntry) => {
-      const query = ui.searchQuery.toLowerCase()
-      return (
-        feedEntry.title?.toLowerCase().includes(query) ||
-        feedEntry.contentSnippet?.toLowerCase().includes(query) ||
-        feedEntry.link?.toLowerCase().includes(query)
-      )
+    // Simple FE search
+    // return data.feedEntries?.filter((feedEntry) => {
+    //   const query = ui.searchQuery.toLowerCase()
+    //   return (
+    //     feedEntry.title?.toLowerCase().includes(query) ||
+    //     feedEntry.contentSnippet?.toLowerCase().includes(query) ||
+    //     feedEntry.link?.toLowerCase().includes(query)
+    //   )
+    // })
+
+    // Prisma Full Text Search
+    const res = await fetch("/api/search", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: ui.searchQuery,
+      }),
     })
+    const searchRes = await res.json()
+    console.log("searchRes", searchRes)
+    return searchRes
   })
 
   const handlePageChange = (p: number) => {
@@ -44,9 +60,11 @@
     {#if data.feedEntries}
       <Table.Root>
         <Table.Body>
-          {#each activeFeedEntries() as feedEntry}
-            <FeedRow {feedEntry} />
-          {/each}
+          {#await activeFeedEntries() then feedEntries}
+            {#each feedEntries as feedEntry}
+              <FeedRow {feedEntry} />
+            {/each}
+          {/await}
         </Table.Body>
       </Table.Root>
       <div class="fixed bottom-8 flex w-full justify-center">

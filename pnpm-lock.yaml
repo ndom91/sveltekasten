@@ -35,6 +35,9 @@ dependencies:
   mode-watcher:
     specifier: ^0.1.2
     version: 0.1.2(svelte@5.0.0-next.27)
+  p-debounce:
+    specifier: ^4.0.0
+    version: 4.0.0
   svelte-french-toast:
     specifier: ^1.2.0
     version: 1.2.0(svelte@5.0.0-next.27)
@@ -1854,6 +1857,11 @@ packages:
       prelude-ls: 1.2.1
       type-check: 0.4.0
     dev: true
+
+  /p-debounce@4.0.0:
+    resolution: {integrity: sha512-4Ispi9I9qYGO4lueiLDhe4q4iK5ERK8reLsuzH6BPaXn53EGaua8H66PXIFGrW897hwjXp+pVLrm/DLxN0RF0A==}
+    engines: {node: '>=12'}
+    dev: false
 
   /p-limit@3.1.0:
     resolution: {integrity: sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ==}

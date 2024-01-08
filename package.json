@@ -50,6 +50,7 @@
     "formsnap": "^0.4.2",
     "lucide-svelte": "^0.299.0",
     "mode-watcher": "^0.1.2",
+    "p-debounce": "^4.0.0",
     "svelte-french-toast": "^1.2.0",
     "svelte-local-storage-store": "^0.6.4",
     "svelte-sonner": "^0.3.9",
