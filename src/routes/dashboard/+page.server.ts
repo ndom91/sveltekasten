@@ -9,6 +9,9 @@ import { formSchema } from "../schema";
 export const actions: Actions = {
   deleteBookmark: async ({ request, locals }) => {
     const session = await locals.getSession()
+    if (!session?.user?.userId) {
+      return fail(401, { type: "error", error: "Unauthenticated" })
+    }
     const data = await request.formData();
     const bookmarkId = data.get('bookmarkId')?.toString() || ''
 
@@ -19,13 +22,16 @@ export const actions: Actions = {
     await prisma.bookmark.delete({
       where: {
         id: bookmarkId,
-        userId: session?.user?.userId,
+        userId: session.user.userId,
       }
     });
     return { type: "success", message: 'Deleted Bookmark' }
   },
   saveMetadataEdits: async ({ request, locals }) => {
     const session = await locals.getSession()
+    if (!session?.user?.userId) {
+      return fail(401, { type: "error", error: "Unauthenticated" })
+    }
     const data = await request.formData();
 
     const id = data.get('id')?.toString() || ''
@@ -65,8 +71,11 @@ export const actions: Actions = {
 
     try {
       const session = await event.locals.getSession()
-      const { title, url, description, categoryId, tags } = form.data
+      if (!session?.user?.userId) {
+        return fail(401, { type: "error", error: "Unauthenticated" })
+      }
       const { userId } = session.user
+      const { title, url, description, categoryId, tags } = form.data
 
       const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(url)}&palette=true`)
       const metadataResponse = await res.json()
@@ -169,9 +178,9 @@ export const actions: Actions = {
         message: "Added Successfully",
         type: "success",
       };
-    } catch (err) {
-      console.error(err)
-      fail(500, { message: 'Failed to add bookmark' })
+    } catch (error) {
+      console.error(error)
+      fail(500, { type: "error", message: 'Failed to add bookmark' })
     }
   }
 }

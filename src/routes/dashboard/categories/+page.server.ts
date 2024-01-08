@@ -7,6 +7,9 @@ import type { Actions, PageServerLoad } from './$types'
 export const load: PageServerLoad = async ({ locals, parent }) => {
   await parent()
   const session = await locals.getSession()
+  if (!session?.user?.userId) {
+    return fail(401, { type: "error", error: "Unauthenticated" })
+  }
 
   const response = await prisma.category.findMany({
     where: { userId: session?.user?.userId }

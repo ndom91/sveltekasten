@@ -8,6 +8,9 @@ import type { ZodError } from "zod";
 export const load: PageServerLoad = async ({ parent, locals }) => {
   await parent()
   const session = await locals.getSession();
+  if (!session?.user?.userId) {
+    return fail(401, { type: "error", error: "Unauthenticated" })
+  }
 
   const response = await prisma.tag.findMany({
     where: { userId: session.user.userId },
@@ -19,6 +22,9 @@ export const load: PageServerLoad = async ({ parent, locals }) => {
 export const actions: Actions = {
   createTag: async ({ request, locals }) => {
     const session = await locals.getSession();
+    if (!session?.user?.userId) {
+      return fail(401, { type: "error", error: "Unauthenticated" })
+    }
     const formData = Object.fromEntries(await request.formData());
     const { name, emoji } = formData as { name: string; emoji: string };
 
@@ -29,7 +35,7 @@ export const actions: Actions = {
         data: {
           name,
           emoji,
-          userId: session?.user?.userId,
+          userId: session.user.userId,
         },
       });
 
