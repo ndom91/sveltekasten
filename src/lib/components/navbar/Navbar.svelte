@@ -26,7 +26,7 @@
   }
 
   const handleKeyUp = (event: KeyboardEvent) => {
-    ui.searchQuery = event.target.value
+    ui.searchQuery = (event.target as HTMLInputElement).value
   }
 </script>
 

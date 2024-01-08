@@ -7,7 +7,7 @@
   import * as Select from "$lib/components/ui/select"
   import { Label } from "$lib/components/ui/label"
   // @TODO: Add validation back
-  // import { languages, formSchema as schema, type FormSchema } from "../../../routes/schema"
+  import { formSchema as schema, type FormSchema } from "$/routes/schema"
   import { superForm } from "sveltekit-superforms/client"
   import SuperDebug from "sveltekit-superforms/client/SuperDebug.svelte"
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
@@ -63,7 +63,7 @@
     <Label for="category">Category</Label>
     <Select.Root
       name="categoryId"
-      items={$page.data?.categories?.map((cat) => ({
+      items={$page.data?.categories?.map((cat: { id: string, name: string }) => ({
         value: cat.id,
         label: cat.name,
       }))}
@@ -78,17 +78,6 @@
         {/each}
       </Select.Content>
     </Select.Root>
-    <!-- <input -->
-    <!--   type="text" -->
-    <!--   name="category" -->
-    <!--   bind:value={$form.category} -->
-    <!--   aria-invalid={$errors.category ? "true" : undefined} -->
-    <!--   {...$constraints.category} -->
-    <!--   class={cn( -->
-    <!--     "flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50", -->
-    <!--     $errors.category ? "border-red-300" : "", -->
-    <!--   )} -->
-    <!-- /> -->
     {#if $errors.category}<span class="text-xs text-red-400">{$errors.category}</span>{/if}
   </div>
 
