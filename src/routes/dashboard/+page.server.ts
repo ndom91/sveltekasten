@@ -176,29 +176,46 @@ export const actions: Actions = {
   }
 }
 
-export const load: PageServerLoad = async ({ parent, locals }) => {
+export const load: PageServerLoad = async ({ parent, locals, url }) => {
   await parent()
   try {
-    const session = await locals.getSession();
+    const skip = url.searchParams.get('skip') ?? "0";
+    const limit = url.searchParams.get('limit') ?? "10";
 
-    const bookmarksResponse = await prisma.bookmark.findMany({
-      where: { userId: session.user.userId },
-      include: {
-        category: true,
-        tags: { include: { tag: true } },
-      },
-    })
-    const categoriesResponse = await prisma.category.findMany({
-      where: { userId: session.user.userId },
-    })
-    const tagsResponse = await prisma.tag.findMany({
-      where: { userId: session.user.userId },
-    })
+    const session = await locals.getSession();
+    if (!session?.user?.userId) {
+      return fail(401, { type: "error", error: "Unauthenticated" })
+    }
+
+    const [bookmarks, count, categories, tags] = await prisma.$transaction([
+      prisma.bookmark.findMany({
+        take: parseInt(limit) + parseInt(skip),
+        skip: parseInt(skip),
+        where: { userId: session?.user?.userId },
+        include: {
+          category: true,
+          tags: { include: { tag: true } },
+        },
+        orderBy: { createdAt: "desc" },
+      }),
+      prisma.bookmark.count({
+        where: { userId: session?.user?.userId },
+        orderBy: { createdAt: "desc" },
+      }),
+      prisma.category.findMany({
+        where: { userId: session.user.userId },
+      }),
+      prisma.tag.findMany({
+        where: { userId: session.user.userId },
+      })
+    ])
+
 
     return {
-      bookmarks: bookmarksResponse,
-      categories: categoriesResponse,
-      tags: tagsResponse,
+      bookmarks,
+      count,
+      categories,
+      tags,
     };
   } catch (error) {
     let message

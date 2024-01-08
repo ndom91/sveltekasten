@@ -14,6 +14,7 @@ export const POST: RequestHandler = async ({ request, locals, url }) => {
   const limit = url.searchParams.get('limit') ?? "10";
   const { query, type = 'feedEntry' } = await request.json();
 
+  // @TODO: Make fields dynamic depending on what schema is being searched
   const [data, count] = await prisma.$transaction([
     // @ts-expect-error
     prisma[type].findMany({

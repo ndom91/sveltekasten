@@ -34,44 +34,39 @@
 </script>
 
 <Table.Row
-  class="relative hover:bg-zinc-900"
+  class="relative hover:bg-zinc-100 dark:hover:bg-zinc-900"
   on:mouseleave={closeButtonGroup}
   on:mouseenter={openButtonGroup}
 >
   {#await import("./DeleteDialog.svelte") then { default: DeleteDialog }}
     <svelte:component this={DeleteDialog} bind:open={isDeleteDialogOpen} bookmarkId={bookmark.id} />
   {/await}
-  <Table.Cell class="font-medium">
-    <img src={bookmark.image} alt="Bookmark Screenshot" class="size-12 rounded-md object-cover" />
+  <Table.Cell class="w-32 font-medium">
+    <img src={bookmark.image} alt="Bookmark Screenshot" class="mx-auto rounded-md object-cover" />
   </Table.Cell>
-  <Table.Cell>
-    <span>
+  <Table.Cell class="flex flex-col gap-2">
+    <span class="line-clamp-1 text-clip text-xl font-bold">
       {bookmark.title}
     </span>
     <p class="line-clamp-2 break-words">{bookmark.desc}</p>
-    <p class="flex items-center justify-start gap-2 text-sm text-muted">
+    <div class="flex items-center justify-start gap-2 text-sm text-muted">
       {#if bookmark.metadata?.logo?.url}
         <img src={bookmark.metadata?.logo?.url} alt="URL Favicon" class="size-4 rounded-full" />
       {/if}
       <span>
         {bookmark.url}
       </span>
+    </div>
+    <span class="flex flex-wrap gap-2">
+      <Badge variant="secondary">
+        {format(bookmark.createdAt, "H:mm - d MMM yyyy")}
+      </Badge>
       {#if bookmark.category?.name}
-        <Badge color="blue">
-          {bookmark.category?.name}
+        <Badge variant="outline">
+          {bookmark.category.name}
         </Badge>
       {/if}
-    </p>
-  </Table.Cell>
-  <Table.Cell title={String(bookmark.createdAt)}>
-    <div>
-      <div>
-        {format(bookmark.createdAt, "pp")}
-      </div>
-      <div>
-        {format(bookmark.createdAt, "d MMM yyyy")}
-      </div>
-    </div>
+    </span>
   </Table.Cell>
   {#await import("./BookmarkActions.svelte") then { default: Actions }}
     <svelte:component
