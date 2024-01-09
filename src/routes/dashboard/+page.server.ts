@@ -75,7 +75,7 @@ export const actions: Actions = {
         return fail(401, { type: "error", error: "Unauthenticated" })
       }
       const { userId } = session.user
-      const { title, url, description, categoryId, tags } = form.data
+      const { title, url, description, categoryId, tagIds } = form.data
 
       const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(url)}&palette=true`)
       const metadataResponse = await res.json()
@@ -83,11 +83,26 @@ export const actions: Actions = {
 
       dev && console.log('quickAdd.url.metadataResponse', metadata)
 
-      const upsertBookmarkRes = await prisma.bookmark.upsert({
-        include: {
-          category: true,
-        },
-        create: {
+      // await prisma.post.create({
+      //   data: {
+      //     title: 'title',
+      //     categories: {
+      //       create: {
+      //         category: {
+      //           connect: {
+      //             id: 1
+      //           }
+      //         }
+      //       }
+      //     },
+      //   },
+      // })
+      console.log('input.tagIds', tagIds)
+      const upsertBookmarkRes = await prisma.bookmark.create({
+        // include: {
+        //   category: true,
+        // },
+        data: {
           url,
           title: title,
           image: metadata.image?.url ? metadata.image.url : metadata.logo?.url,
@@ -98,6 +113,17 @@ export const actions: Actions = {
               id: userId,
             },
           },
+          tags: {
+            create: {
+              tag: {
+                connectOrCreate: tagIds?.map((tagId) => ({
+                  where: {
+                    id: tagId,
+                  }
+                })),
+              },
+            },
+          },
           category: categoryId
             ? {
               connect: {
@@ -106,71 +132,50 @@ export const actions: Actions = {
             }
             : {},
         },
-        update: {
-          url,
-          // title: title.length ? title : metadata.title,
-          // image: metadata.image,
-          // imageBlur: metadata.imageBlur,
-          // desc: desc.length ? desc : metadata.description,
-          title,
-          metadata,
-          desc: description,
-          category: categoryId
-            ? {
-              connect: {
-                id: categoryId,
-              },
-            }
-            : {},
-        },
-        where: { url_userId: { url: url, userId: userId } },
+        // update: {
+        //   url,
+        //   // title: title.length ? title : metadata.title,
+        //   // image: metadata.image,
+        //   // imageBlur: metadata.imageBlur,
+        //   // desc: desc.length ? desc : metadata.description,
+        //   title,
+        //   metadata,
+        //   desc: description,
+        //   category: categoryId
+        //     ? {
+        //       connect: {
+        //         id: categoryId,
+        //       },
+        //     }
+        //     : {},
+        // },
+        // where: { url_userId: { url: url, userId: userId } },
       })
 
-      let upsertTagRes
-      // Next, if there are tags, insert them sequentially
-      if (tags && tags.filter(Boolean).length) {
-        upsertTagRes = await Promise.all(
-          tags.map(async (tag) => {
-            return await prisma.tag.upsert({
-              create: {
-                name: tag,
-                userId,
-              },
-              update: {
-                name: tag,
-              },
-              where: {
-                name_userId: {
-                  name: tag,
-                  userId,
-                },
-              },
-            })
-          }),
-        )
-
-        // Finally, link the tags to bookmark in intermediate join table
-        await Promise.all(
-          upsertTagRes.map((tag) => {
-            return prisma.tagsOnBookmarks.upsert({
-              create: {
-                bookmarkId: upsertBookmarkRes.id,
-                tagId: tag.id,
-              },
-              update: {
-                bookmarkId: upsertBookmarkRes.id,
-                tagId: tag.id,
-              },
-              where: {
-                bookmarkId_tagId: {
-                  bookmarkId: upsertBookmarkRes.id,
-                  tagId: tag.id,
-                },
-              },
-            })
-          }),
-        )
-      }
+      // Next, if there are tags, connect them
+      // if (tagIds && tagIds.filter(Boolean).length) {
+      //   console.log('tagIds', tagIds)
+      //   await Promise.all(
+      //     tagIds.map((tagId) => {
+      //       return prisma.tagsOnBookmarks.upsert({
+      //         create: {
+      //           bookmarkId: upsertBookmarkRes.id,
+      //           tagId: tagId,
+      //         },
+      //         update: {
+      //           bookmarkId: upsertBookmarkRes.id,
+      //           tagId: tagId,
+      //         },
+      //         where: {
+      //           bookmarkId_tagId: {
+      //             bookmarkId: upsertBookmarkRes.id,
+      //             tagId: tagId,
+      //           },
+      //         },
+      //       })
+      //     }),
+      //   )
+      // }
 
       return {
         form,

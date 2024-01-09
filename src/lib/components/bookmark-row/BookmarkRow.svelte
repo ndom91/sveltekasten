@@ -31,6 +31,7 @@
   const closeButtonGroup = () => {
     isOptionsOpen = false
   }
+  console.log(JSON.stringify(bookmark.tags))
 </script>
 
 <Table.Row
@@ -67,6 +68,15 @@
         </Badge>
       {/if}
     </span>
+    {#if bookmark.tags.length}
+      <span class="flex flex-wrap gap-2">
+        {#each bookmark.tags as tag}
+          <Badge variant="default">
+            {tag.name}
+          </Badge>
+        {/each}
+      </span>
+    {/if}
   </Table.Cell>
   {#await import("./BookmarkActions.svelte") then { default: Actions }}
     <svelte:component

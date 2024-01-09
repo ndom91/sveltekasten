@@ -11,8 +11,10 @@
   import { superForm } from "sveltekit-superforms/client"
   import SuperDebug from "sveltekit-superforms/client/SuperDebug.svelte"
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
+  import TagInput from "$lib/components/TagInput.svelte"
   import toast from "svelte-french-toast"
   import { useInterface } from "$state/ui.svelte"
+  import type { Tag } from "$zod"
 
   const ui = useInterface()
 
@@ -24,6 +26,10 @@
       ui.toggleQuickAdd()
     },
   })
+
+  const tagValues = $derived(
+    ($page.data.tags as Tag[]).map((tag) => ({ value: tag.id, label: tag.name })),
+  )
 </script>
 
 <form method="post" action="/dashboard?/quickAdd" use:enhance class="flex flex-col gap-2">
@@ -79,6 +85,11 @@
       </Select.Content>
     </Select.Root>
     {#if $errors.category}<span class="text-xs text-red-400">{$errors.category}</span>{/if}
+  </div>
+
+  <div class="align-start flex flex-col gap-2">
+    <Label for="tags">Tags</Label>
+    <TagInput setFormTags={(v) => ($form.tagIds = v)} tags={tagValues} class="bg-transparent" />
   </div>
 
   <div class="align-start flex flex-col gap-2">
