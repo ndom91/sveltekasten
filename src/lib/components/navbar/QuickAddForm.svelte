@@ -90,6 +90,7 @@
   <div class="align-start flex flex-col gap-2">
     <Label for="tags">Tags</Label>
     <TagInput setFormTags={(v) => ($form.tagIds = v)} tags={tagValues} class="bg-transparent" />
+    <input type="hidden" name="tagIds" id="tagIds" value={$form.tagIds} />
   </div>
 
   <div class="align-start flex flex-col gap-2">

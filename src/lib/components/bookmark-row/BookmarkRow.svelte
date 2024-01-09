@@ -31,7 +31,6 @@
   const closeButtonGroup = () => {
     isOptionsOpen = false
   }
-  console.log(JSON.stringify(bookmark.tags))
 </script>
 
 <Table.Row
@@ -59,24 +58,25 @@
       </span>
     </div>
     <span class="flex flex-wrap gap-2">
-      <Badge variant="secondary">
+      <Badge variant="default">
         {format(bookmark.createdAt, "H:mm - d MMM yyyy")}
       </Badge>
       {#if bookmark.category?.name}
-        <Badge variant="outline">
+        <Badge variant="secondary">
           {bookmark.category.name}
         </Badge>
       {/if}
+      {#if bookmark.tags.length}
+        <span class="flex flex-wrap gap-2">
+          {#each bookmark.tags as tag}
+            <Badge variant="outline">
+              {tag.tag.name}
+              {tag.tag.emoji}
+            </Badge>
+          {/each}
+        </span>
+      {/if}
     </span>
-    {#if bookmark.tags.length}
-      <span class="flex flex-wrap gap-2">
-        {#each bookmark.tags as tag}
-          <Badge variant="default">
-            {tag.name}
-          </Badge>
-        {/each}
-      </span>
-    {/if}
   </Table.Cell>
   {#await import("./BookmarkActions.svelte") then { default: Actions }}
     <svelte:component

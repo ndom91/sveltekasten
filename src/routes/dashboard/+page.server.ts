@@ -6,6 +6,37 @@ import { fail } from "@sveltejs/kit";
 import { superValidate } from "sveltekit-superforms/server";
 import { formSchema } from "../schema";
 
+import metascraper from "metascraper"
+import metascraperDescription from "metascraper-description"
+import metascraperTitle from "metascraper-title"
+import metascraperClearbit from "metascraper-clearbit"
+import metascraperImage from "metascraper-image"
+import metascraperLogo from "metascraper-logo"
+import metascraperLogoFavicon from "metascraper-logo-favicon"
+import metascraperLang from "metascraper-lang"
+import metascraperPublisher from "metascraper-publisher"
+import metascraperAuthor from "metascraper-author"
+import metascraperFeed from "metascraper-feed"
+import metascraperDate from "metascraper-date"
+import metascraperUrl from "metascraper-url"
+import metascraperReadability from "metascraper-readability"
+
+const metascraperClient = metascraper([
+  metascraperDescription(),
+  metascraperTitle(),
+  metascraperClearbit(),
+  metascraperLogo(),
+  metascraperImage(),
+  metascraperLogoFavicon(),
+  metascraperLang(),
+  metascraperPublisher(),
+  metascraperAuthor(),
+  metascraperFeed(),
+  metascraperReadability(),
+  metascraperDate(),
+  metascraperUrl(),
+])
+
 export const actions: Actions = {
   deleteBookmark: async ({ request, locals }) => {
     const session = await locals.getSession()
@@ -75,55 +106,41 @@ export const actions: Actions = {
         return fail(401, { type: "error", error: "Unauthenticated" })
       }
       const { userId } = session.user
-      const { title, url, description, categoryId, tagIds } = form.data
+      const { title, url, description, categoryId, tagIds: tagIdsString } = form.data
+      const tagIds = tagIdsString?.length ? tagIdsString.split(',') : []
 
-      const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(url)}&palette=true`)
-      const metadataResponse = await res.json()
-      const metadata = metadataResponse.data
+      // const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(url)}&palette=true`)
+      // const metadataResponse = await res.json()
+      // const metadata = metadataResponse.data
 
-      dev && console.log('quickAdd.url.metadataResponse', metadata)
+      const resp = await fetch(url)
+      const metadata = await metascraperClient({ html: await resp.text(), url: url })
+      console.log('metadata', metadata)
 
-      // await prisma.post.create({
-      //   data: {
-      //     title: 'title',
-      //     categories: {
-      //       create: {
-      //         category: {
-      //           connect: {
-      //             id: 1
-      //           }
-      //         }
-      //       }
-      //     },
-      //   },
-      // })
-      console.log('input.tagIds', tagIds)
-      const upsertBookmarkRes = await prisma.bookmark.create({
+      const bookmark = await prisma.bookmark.create({
         // include: {
         //   category: true,
         // },
         data: {
           url,
           title: title,
-          image: metadata.image?.url ? metadata.image.url : metadata.logo?.url,
-          desc: description?.length ? description : metadata.description,
+          image: metadata.image ? metadata.image : metadata.logo,
+          desc: description ? description : metadata.description,
           metadata,
           user: {
             connect: {
               id: userId,
             },
           },
-          tags: {
-            create: {
+          tags: tagIds ? {
+            create: tagIds.map((tagId) => ({
               tag: {
-                connectOrCreate: tagIds?.map((tagId) => ({
-                  where: {
-                    id: tagId,
-                  }
-                })),
-              },
-            },
-          },
+                connect: {
+                  id: tagId
+                }
+              }
+            }))
+          } : {},
           category: categoryId
             ? {
               connect: {
@@ -132,54 +149,12 @@ export const actions: Actions = {
             }
             : {},
         },
-        // update: {
-        //   url,
-        //   // title: title.length ? title : metadata.title,
-        //   // image: metadata.image,
-        //   // imageBlur: metadata.imageBlur,
-        //   // desc: desc.length ? desc : metadata.description,
-        //   title,
-        //   metadata,
-        //   desc: description,
-        //   category: categoryId
-        //     ? {
-        //       connect: {
-        //         id: categoryId,
-        //       },
-        //     }
-        //     : {},
-        // },
-        // where: { url_userId: { url: url, userId: userId } },
       })
-
-      // Next, if there are tags, connect them
-      // if (tagIds && tagIds.filter(Boolean).length) {
-      //   console.log('tagIds', tagIds)
-      //   await Promise.all(
-      //     tagIds.map((tagId) => {
-      //       return prisma.tagsOnBookmarks.upsert({
-      //         create: {
-      //           bookmarkId: upsertBookmarkRes.id,
-      //           tagId: tagId,
-      //         },
-      //         update: {
-      //           bookmarkId: upsertBookmarkRes.id,
-      //           tagId: tagId,
-      //         },
-      //         where: {
-      //           bookmarkId_tagId: {
-      //             bookmarkId: upsertBookmarkRes.id,
-      //             tagId: tagId,
-      //           },
-      //         },
-      //       })
-      //     }),
-      //   )
-      // }
+      console.log('createResults', bookmark)
 
       return {
         form,
-        bookmark: upsertBookmarkRes,
+        bookmark: bookmark,
         message: "Added Successfully",
         type: "success",
       };
