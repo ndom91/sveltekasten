@@ -1,10 +1,9 @@
 import prisma from "$lib/prisma";
-import { dev } from "$app/environment"
+import { fail } from "@sveltejs/kit";
+import { formSchema } from "../schema";
+import { superValidate } from "sveltekit-superforms/server";
 import type { Actions } from "./$types"
 import type { PageServerLoad } from './$types'
-import { fail } from "@sveltejs/kit";
-import { superValidate } from "sveltekit-superforms/server";
-import { formSchema } from "../schema";
 
 import splashy from "splashy"
 import metascraper from "metascraper"
@@ -175,15 +174,6 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
 
-    const [categories, tags] = await prisma.$transaction([
-      prisma.category.findMany({
-        where: { userId: session.user.userId },
-      }),
-      prisma.tag.findMany({
-        where: { userId: session.user.userId },
-      })
-    ])
-
     const [data, count] = await prisma.bookmark.findManyAndCount({
       take: limit + skip,
       skip: skip,
@@ -198,8 +188,6 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
     return {
       bookmarks: data,
       count,
-      categories,
-      tags,
     };
   } catch (error) {
     let message
@@ -208,6 +196,6 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
     } else if (error instanceof Error) {
       message = error.message
     }
-    return { bookmarks: [], categories: [], tags: [], count: 1, error: message }
+    return { bookmarks: [], count: 1, error: message }
   }
 };

@@ -17,7 +17,7 @@
     if (event.repeat || event.target instanceof HTMLInputElement) return
     if (event.altKey && event.code === "KeyN") {
       event.preventDefault()
-      ui.toggleQuickAdd(true)
+      ui.toggleQuickAdd()
     }
     if (event.code === "Slash") {
       event.preventDefault()

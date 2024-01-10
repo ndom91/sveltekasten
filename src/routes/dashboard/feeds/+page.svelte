@@ -7,7 +7,7 @@
   import EmptyIllustration from "$lib/assets/empty-state.png"
   import Arrow from "$lib/assets/arrow.svg"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
-  import { infiniteScroll } from "$lib/components/InfiniteScroll"
+  import { infiniteScroll } from "$lib/components/infinite-scroll"
 
   const ui = useInterface()
   const { data } = $props()

@@ -29,3 +29,15 @@ declare module "@auth/sveltekit" {
     userId: string;
   }
 }
+
+interface ViewTransition {
+  updateCallbackDone: Promise<void>;
+  ready: Promise<void>;
+  finished: Promise<void>;
+  skipTransition: () => void;
+}
+
+interface Document {
+  startViewTransition(updateCallback: () => Promise<void>): ViewTransition;
+}
+

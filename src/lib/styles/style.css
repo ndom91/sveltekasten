@@ -115,7 +115,6 @@ textarea {
   form-sizing: content;
 }
 
-
 table tr {
   @apply border-b-0 !important;
 }
