@@ -15,6 +15,15 @@
       ui.toggleUserSidebar()
     }
   }
+
+  const activePage = $derived(() => {
+    const path = $page.url.pathname
+    if (path === "/dashboard") return "home"
+    if (path === "/dashboard/feeds") return "feeds"
+    if (path === "/dashboard/categories") return "categories"
+    if (path === "/dashboard/tags") return "tags"
+    return "home"
+  })
 </script>
 
 <svelte:window on:keydown={handleKeyDown} />
@@ -46,7 +55,10 @@
           <Button
             variant="ghost"
             builders={[tooltipBuilder]}
-            class="relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-300 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0 dark:focus:ring-zinc-800"
+            class={cn(
+              "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-300 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0 dark:focus:ring-zinc-800",
+              activePage() === "home" ? "ring-2 ring-zinc-300 dark:ring-zinc-800" : "",
+            )}
             href="/dashboard"
           >
             <svg
@@ -80,7 +92,10 @@
           <Button
             variant="ghost"
             builders={[tooltipBuilder]}
-            class="relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-300 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0 dark:focus:ring-zinc-800"
+            class={cn(
+              "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-300 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0 dark:focus:ring-zinc-800",
+              activePage() === "feeds" ? "ring-2 ring-zinc-300 dark:ring-zinc-800" : "",
+            )}
             href="/dashboard/feeds"
           >
             <svg
@@ -114,7 +129,10 @@
           <Button
             variant="ghost"
             builders={[tooltipBuilder]}
-            class="relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-300 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0 dark:focus:ring-zinc-800"
+            class={cn(
+              "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-300 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0 dark:focus:ring-zinc-800",
+              activePage() === "categories" ? "ring-2 ring-zinc-300 dark:ring-zinc-800" : "",
+            )}
             href="/dashboard/categories"
           >
             <svg
@@ -148,7 +166,10 @@
           <Button
             variant="ghost"
             builders={[tooltipBuilder]}
-            class="relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-300 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0 dark:focus:ring-zinc-800"
+            class={cn(
+              "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-300 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0 dark:focus:ring-zinc-800",
+              activePage() === "tags" ? "ring-2 ring-zinc-300 dark:ring-zinc-800" : "",
+            )}
             href="/dashboard/tags"
           >
             <svg
