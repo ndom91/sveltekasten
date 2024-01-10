@@ -6,6 +6,7 @@ import { fail } from "@sveltejs/kit";
 import { superValidate } from "sveltekit-superforms/server";
 import { formSchema } from "../schema";
 
+import splashy from "splashy"
 import metascraper from "metascraper"
 import metascraperDescription from "metascraper-description"
 import metascraperTitle from "metascraper-title"
@@ -109,22 +110,21 @@ export const actions: Actions = {
       const { title, url, description, categoryId, tagIds: tagIdsString } = form.data
       const tagIds = tagIdsString?.length ? tagIdsString.split(',') : []
 
-      // const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(url)}&palette=true`)
-      // const metadataResponse = await res.json()
-      // const metadata = metadataResponse.data
-
       const resp = await fetch(url)
       const metadata = await metascraperClient({ html: await resp.text(), url: url })
-      console.log('metadata', metadata)
+      const image = metadata.image ? metadata.image : metadata.logo as string
+
+      const imageResponse = await fetch(image)
+      const imageBuffer = await imageResponse.arrayBuffer()
+      const palette = await splashy(Buffer.from(imageBuffer))
+
+      metadata.palette = palette
 
       const bookmark = await prisma.bookmark.create({
-        // include: {
-        //   category: true,
-        // },
         data: {
           url,
           title: title,
-          image: metadata.image ? metadata.image : metadata.logo,
+          image,
           desc: description ? description : metadata.description,
           metadata,
           user: {
@@ -150,7 +150,6 @@ export const actions: Actions = {
             : {},
         },
       })
-      console.log('createResults', bookmark)
 
       return {
         form,
