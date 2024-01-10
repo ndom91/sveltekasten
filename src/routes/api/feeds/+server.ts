@@ -1,23 +1,24 @@
+import type { RequestHandler } from './$types';
+import { json, fail } from '@sveltejs/kit';
 import prisma from "$lib/prisma";
-import { fail } from "@sveltejs/kit";
-import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ parent, locals, url }) => {
-  await parent()
+// @ts-expect-error
+export const POST: RequestHandler = async ({ request, locals }) => {
   try {
-    const session = await locals.getSession();
+    const session = await locals.getSession()
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
-    const skip = Number(url.searchParams.get('skip') ?? "0")
-    const limit = Number(url.searchParams.get('limit') ?? "10")
+    const responseJson = await request.json();
+    const skip = Number(responseJson.skip ?? "0")
+    const limit = Number(responseJson.limit ?? "10")
 
     if (limit > 100) {
       return fail(401, { type: "error", error: "Attempted to load too many items" })
     }
 
-    const [data, count] = await prisma.feedEntry.findManyAndCount({
-      take: limit + skip,
+    const data = await prisma.feedEntry.findMany({
+      take: limit,
       skip: skip,
       where: { userId: session?.user?.userId },
       include: {
@@ -27,10 +28,9 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
       orderBy: { published: "desc" },
     });
 
-    return {
-      feedEntries: data,
-      count
-    };
+    return json({
+      data,
+    })
   } catch (error) {
     let message
     if (typeof error === "string") {
@@ -38,6 +38,6 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
     } else if (error instanceof Error) {
       message = error.message
     }
-    return { feedEntries: [], count: 0, error: message };
+    return fail(401, { data: [], error: message })
   }
-};
+}

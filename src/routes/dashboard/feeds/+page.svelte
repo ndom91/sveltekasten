@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { goto } from "$app/navigation"
+  import { onDestroy } from "svelte"
   import { FeedRow } from "$lib/components/feed-row"
   import * as Table from "$lib/components/ui/table"
   import * as Pagination from "$lib/components/ui/pagination"
@@ -8,18 +8,39 @@
   import EmptyIllustration from "$lib/assets/empty-state.png"
   import Arrow from "$lib/assets/arrow.svg"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
+  import { intersectionObserver } from "$lib/components/InfiniteScroll"
 
   const ui = useInterface()
   const { data } = $props()
-  let page = $state(1)
+  let pageNumber = $state(1)
+  let loading = $state(false)
   let totalItems = $state<number>(data.count ?? 1)
+  let allItems = $state(data.feedEntries ?? [])
 
   if (data.error) {
     console.error(data.error)
   }
 
+  let elementRef = $state<HTMLElement>()
+  let observer: IntersectionObserver | null = $state(null)
+
+  $effect(() => {
+    if (elementRef) {
+      observer = intersectionObserver({
+        fetch: () => loadMore(pageNumber + 1),
+        element: elementRef,
+      })
+    }
+  })
+
+  onDestroy(() => {
+    if (observer) {
+      observer.disconnect()
+    }
+  })
+
   let activeFeedEntries = $derived(async () => {
-    if (!ui.searchQuery) return data.feedEntries
+    if (!ui.searchQuery) return allItems
     const res = await fetch("/api/search", {
       method: "POST",
       headers: {
@@ -34,14 +55,25 @@
     return searchResults
   })
 
-  const handlePageChange = (p: number) => {
-    page = p
+  const loadMore = async (p: number) => {
+    loading = true
+    pageNumber = p
     const limit = 10
-    const skip = (page - 1) * limit
-    goto(`?skip=${skip}`, {
-      noScroll: true,
-      keepFocus: true,
+    const skip = 10 * (pageNumber - 1)
+
+    const res = await fetch("/api/feeds", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        limit,
+        skip,
+      }),
     })
+    const { data: additionalResults } = await res.json()
+    allItems.push(...additionalResults)
+    loading = false
   }
 </script>
 
@@ -64,6 +96,7 @@
               {#each feedEntries as feedEntry}
                 <FeedRow {feedEntry} />
               {/each}
+              <div bind:this={elementRef} class="h-24 w-full" />
             {:else}
               <tr class="text-3xl">
                 <td colspan="2" class="h-24" align="center">No entries found</td>
@@ -77,13 +110,13 @@
         </Table.Body>
       </Table.Root>
       <div class="fixed bottom-8 flex w-full justify-center">
-        {#if totalItems > 1}
+        {#if totalItems > 10000}
           <Pagination.Root
             class="w-auto rounded-xl border-2 bg-zinc-50 p-2 dark:border-zinc-700 dark:bg-zinc-950"
             count={totalItems}
             perPage={10}
-            {page}
-            onPageChange={handlePageChange}
+            page={pageNumber}
+            onPageChange={loadMore}
             let:pages
             let:currentPage
           >
