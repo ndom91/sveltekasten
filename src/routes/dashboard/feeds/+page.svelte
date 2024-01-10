@@ -47,7 +47,9 @@
     const limit = 10
     const skip = 10 * (pageNumber - 1)
 
-    // TODO: Stop fetching when `allItems >= count.roundUp(10)`
+    // Skip if all items already loaded
+    if (allItems.length >= totalItemCount) return
+
     const res = await fetch("/api/feeds", {
       method: "POST",
       headers: {
