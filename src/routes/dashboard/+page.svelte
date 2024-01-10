@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onDestroy } from "svelte"
   import { goto } from "$app/navigation"
   import * as Table from "$lib/components/ui/table"
   import * as Pagination from "$lib/components/ui/pagination"
@@ -7,18 +8,65 @@
   import EmptyIllustration from "$lib/assets/empty-state.png"
   import Arrow from "$lib/assets/arrow.svg"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
+  import { infiniteScroll } from "$lib/components/InfiniteScroll"
 
   const ui = useInterface()
   const { data } = $props()
-  let page = $state(1)
-  let totalItems = $state<number>(data.count ?? 1)
+  let pageNumber = $state(1)
+  let totalItemCount = $state<number>(data.count ?? 1)
+  let loading = $state(false)
+  let allItems = $state(data.bookmarks ?? [])
 
   if (data.error) {
     console.error(data.error)
   }
 
+  // Setup infinite scrolling
+  let elementRef = $state<HTMLElement>()
+  let observer: IntersectionObserver | null = $state(null)
+
+  $effect(() => {
+    if (elementRef) {
+      observer = infiniteScroll({
+        fetch: () => loadMore(pageNumber + 1),
+        element: elementRef,
+      })
+    }
+  })
+
+  onDestroy(() => {
+    if (observer) {
+      observer.disconnect()
+    }
+  })
+
+  // Load more items on infinite scroll
+  const loadMore = async (p: number) => {
+    loading = true
+    pageNumber = p
+    const limit = 10
+    const skip = 10 * (pageNumber - 1)
+
+    // Skip if all items already loaded
+    if (allItems.length >= totalItemCount) return
+
+    const res = await fetch("/api/bookmarks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        limit,
+        skip,
+      }),
+    })
+    const { data: additionalResults } = await res.json()
+    allItems.push(...additionalResults)
+    loading = false
+  }
+
   let activeBookmarks = $derived(async () => {
-    if (!ui.searchQuery) return data.bookmarks
+    if (!ui.searchQuery) return allItems
     const res = await fetch("/api/search", {
       method: "POST",
       headers: {
@@ -30,19 +78,20 @@
       }),
     })
     const { data: searchResults, count } = await res.json()
-    totalItems = count
+    totalItemCount = count
     return searchResults
   })
 
-  const handlePageChange = (p: number) => {
-    page = p
-    const limit = 10
-    const skip = (page - 1) * limit
-    goto(`?skip=${skip}`, {
-      noScroll: true,
-      keepFocus: true,
-    })
-  }
+  // const handlePageChange = (p: number) => {
+  //   console.log("handlePageChange.page", p)
+  //   pageNumber = p
+  //   const limit = 10
+  //   const skip = (pageNumber - 1) * limit
+  //   goto(`?skip=${skip}`, {
+  //     noScroll: true,
+  //     keepFocus: true,
+  //   })
+  // }
 </script>
 
 <svelte:head>
@@ -63,6 +112,7 @@
               {#each bookmarks as bookmark}
                 <BookmarkRow {bookmark} />
               {/each}
+              <div bind:this={elementRef} class="h-24 w-full" />
             {:else}
               <tr class="text-3xl">
                 <td colspan="2" class="h-24" align="center">No bookmarks found</td>
@@ -76,12 +126,12 @@
         </Table.Body>
       </Table.Root>
       <div class="fixed bottom-8 flex w-full justify-center">
-        {#if totalItems / 10 > 1}
+        {#if totalItemCount / 10 > 1}
           <Pagination.Root
             class="w-auto rounded-xl border-2 bg-zinc-50 p-2 dark:border-zinc-700 dark:bg-zinc-950"
-            count={totalItems}
+            count={totalItemCount}
             perPage={10}
-            {page}
+            page={pageNumber}
             onPageChange={handlePageChange}
             let:pages
             let:currentPage
