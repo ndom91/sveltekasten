@@ -2,31 +2,32 @@
   import { onDestroy } from "svelte"
   import { FeedRow } from "$lib/components/feed-row"
   import * as Table from "$lib/components/ui/table"
-  import * as Pagination from "$lib/components/ui/pagination"
 
   import { useInterface } from "$state/ui.svelte"
   import EmptyIllustration from "$lib/assets/empty-state.png"
   import Arrow from "$lib/assets/arrow.svg"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
-  import { intersectionObserver } from "$lib/components/InfiniteScroll"
+  import { infiniteScroll } from "$lib/components/InfiniteScroll"
 
   const ui = useInterface()
   const { data } = $props()
   let pageNumber = $state(1)
   let loading = $state(false)
-  let totalItems = $state<number>(data.count ?? 1)
+  let totalItemCount = $state<number>(data.count ?? 1)
   let allItems = $state(data.feedEntries ?? [])
 
+  // Log error from page server loading
   if (data.error) {
     console.error(data.error)
   }
 
+  // Setup infinite scrolling
   let elementRef = $state<HTMLElement>()
   let observer: IntersectionObserver | null = $state(null)
 
   $effect(() => {
     if (elementRef) {
-      observer = intersectionObserver({
+      observer = infiniteScroll({
         fetch: () => loadMore(pageNumber + 1),
         element: elementRef,
       })
@@ -39,28 +40,14 @@
     }
   })
 
-  let activeFeedEntries = $derived(async () => {
-    if (!ui.searchQuery) return allItems
-    const res = await fetch("/api/search", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: ui.searchQuery,
-      }),
-    })
-    const { data: searchResults, count } = await res.json()
-    totalItems = count
-    return searchResults
-  })
-
+  // Load more items on infinite scroll
   const loadMore = async (p: number) => {
     loading = true
     pageNumber = p
     const limit = 10
     const skip = 10 * (pageNumber - 1)
 
+    // TODO: Stop fetching when `allItems >= count.roundUp(10)`
     const res = await fetch("/api/feeds", {
       method: "POST",
       headers: {
@@ -75,6 +62,23 @@
     allItems.push(...additionalResults)
     loading = false
   }
+
+  // Handle search input
+  let activeFeedEntries = $derived(async () => {
+    if (!ui.searchQuery) return allItems
+    const res = await fetch("/api/search", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: ui.searchQuery,
+      }),
+    })
+    const { data: searchResults, count } = await res.json()
+    totalItemCount = count
+    return searchResults
+  })
 </script>
 
 <svelte:head>
@@ -96,7 +100,12 @@
               {#each feedEntries as feedEntry}
                 <FeedRow {feedEntry} />
               {/each}
-              <div bind:this={elementRef} class="h-24 w-full" />
+              <div
+                bind:this={elementRef}
+                class="grid h-24 w-full place-items-center text-xl font-light"
+              >
+                Loading...
+              </div>
             {:else}
               <tr class="text-3xl">
                 <td colspan="2" class="h-24" align="center">No entries found</td>
@@ -109,41 +118,6 @@
           {/await}
         </Table.Body>
       </Table.Root>
-      <div class="fixed bottom-8 flex w-full justify-center">
-        {#if totalItems > 10000}
-          <Pagination.Root
-            class="w-auto rounded-xl border-2 bg-zinc-50 p-2 dark:border-zinc-700 dark:bg-zinc-950"
-            count={totalItems}
-            perPage={10}
-            page={pageNumber}
-            onPageChange={loadMore}
-            let:pages
-            let:currentPage
-          >
-            <Pagination.Content>
-              <Pagination.Item>
-                <Pagination.PrevButton />
-              </Pagination.Item>
-              {#each pages as page (page.key)}
-                {#if page.type === "ellipsis"}
-                  <Pagination.Item>
-                    <Pagination.Ellipsis />
-                  </Pagination.Item>
-                {:else}
-                  <Pagination.Item>
-                    <Pagination.Link {page} isActive={currentPage == page.value}>
-                      {page.value}
-                    </Pagination.Link>
-                  </Pagination.Item>
-                {/if}
-              {/each}
-              <Pagination.Item>
-                <Pagination.NextButton />
-              </Pagination.Item>
-            </Pagination.Content>
-          </Pagination.Root>
-        {/if}
-      </div>
     {:else}
       <img src={Arrow} alt="Arrow" class="absolute right-28 top-28" />
       <div class="relative mx-auto w-1/2">

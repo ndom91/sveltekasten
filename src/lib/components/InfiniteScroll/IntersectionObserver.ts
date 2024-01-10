@@ -3,13 +3,13 @@ type IntersectionObserverProps = {
   element: HTMLElement
 }
 
-export const intersectionObserver = ({ fetch, element }: IntersectionObserverProps): IntersectionObserver | null => {
+export const infiniteScroll = ({ fetch, element }: IntersectionObserverProps): IntersectionObserver | null => {
   if (element) {
     const observer = new IntersectionObserver(
-      async (entries) => {
+      (entries) => {
         const first = entries[0];
         if (first.isIntersecting) {
-          await fetch();
+          fetch();
         }
       },
       { threshold: 1 }

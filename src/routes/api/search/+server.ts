@@ -1,6 +1,5 @@
 import type { RequestHandler } from './$types';
 import { json, fail } from '@sveltejs/kit';
-
 import prisma from "$lib/prisma";
 
 // @ts-expect-error

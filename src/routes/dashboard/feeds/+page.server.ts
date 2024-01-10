@@ -34,7 +34,7 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
   } catch (error) {
     let message
     if (typeof error === "string") {
-      message = error.toUpperCase()
+      message = error
     } else if (error instanceof Error) {
       message = error.message
     }

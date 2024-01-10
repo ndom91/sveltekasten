@@ -1,7 +1,5 @@
-// import InfiniteScroll from './InfiniteScroll.svelte';
-import { intersectionObserver } from './IntersectionObserver';
+import { infiniteScroll } from './IntersectionObserver';
 
 export {
-  // InfiniteScroll,
-  intersectionObserver
+  infiniteScroll
 }

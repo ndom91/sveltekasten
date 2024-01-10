@@ -42,7 +42,7 @@ export const actions: Actions = {
     } catch (error) {
       let message
       if (typeof error === "string") {
-        message = error.toUpperCase()
+        message = error
       } else if (error instanceof Error) {
         message = error.message
       } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
