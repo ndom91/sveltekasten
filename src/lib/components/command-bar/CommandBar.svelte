@@ -15,18 +15,19 @@
       event.preventDefault()
       isCommandOpen = !isCommandOpen
     }
-    if ((event.ctrlKey || event.metaKey) && event.code === "KeyD") {
-      event.preventDefault()
-      goto("/dashboard")
-    }
-    if ((event.ctrlKey || event.metaKey) && event.code === "KeyC") {
-      event.preventDefault()
-      goto("/dashboard/categories")
-    }
-    if ((event.ctrlKey || event.metaKey) && event.code === "KeyT") {
-      event.preventDefault()
-      goto("/dashboard/tags")
-    }
+    // TODO: Rethink these shortcuts
+    // if ((event.ctrlKey || event.metaKey) && event.code === "KeyD") {
+    //   event.preventDefault()
+    //   goto("/dashboard")
+    // }
+    // if ((event.ctrlKey || event.metaKey) && event.code === "KeyC") {
+    //   event.preventDefault()
+    //   goto("/dashboard/categories")
+    // }
+    // if ((event.ctrlKey || event.metaKey) && event.code === "KeyT") {
+    //   event.preventDefault()
+    //   goto("/dashboard/tags")
+    // }
   }
 
   const openQuickAdd = () => {
