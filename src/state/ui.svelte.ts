@@ -1,7 +1,7 @@
 import type { Bookmark, Category, Tag } from "$zod"
 
 type MetadataSidebarData = {
-  bookmark: Bookmark,
+  bookmark: Bookmark & { tags: string[] },
   categories?: Category[],
   tags?: Tag[]
 }
@@ -21,6 +21,7 @@ let metadataSidebarData = $state<MetadataSidebarData>({
     imageBlur: "",
     desc: "",
     categoryId: "",
+    tags: [],
     metadata: {},
     userId: "",
     createdAt: new Date(),

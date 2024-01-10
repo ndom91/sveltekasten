@@ -1,14 +1,19 @@
 <script lang="ts">
+  import { cn } from "$lib/utils"
+  import { page } from "$app/stores"
+  import { enhance } from "$app/forms"
+  import { form_action } from "$lib/form_action"
+  import { useInterface } from "$state/ui.svelte"
+
   import { Label } from "$lib/components/ui/label"
   import { Button } from "$lib/components/ui/button"
   import * as Select from "$lib/components/ui/select"
   import * as Tooltip from "$lib/components/ui/tooltip"
-  import { cn } from "$lib/utils"
-  import { enhance } from "$app/forms"
-  import { form_action } from "$lib/form_action"
-  import { useInterface } from "$state/ui.svelte"
+  import TagInput, { type Tag } from "$lib/components/TagInput.svelte"
+
   import { format } from "date-fns"
   import toast from "svelte-french-toast"
+  import type { TagsOnBookmarks } from "$zod"
 
   const ui = useInterface()
 
@@ -118,14 +123,14 @@
         </div>
         <div class="flex flex-col gap-2">
           <Label for="description">Description</Label>
-          <input
-            type="text"
+          <textarea
+            rows="4"
             id="description"
             name="description"
             readonly={!isEditMode}
             bind:value={ui.metadataSidebarData.bookmark.desc}
             class={cn(
-              "flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+              "flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
               !isEditMode ? "cursor-default text-muted" : "bg-zinc-100 dark:bg-zinc-950",
             )}
           />
@@ -139,7 +144,14 @@
               value: cat.id,
               label: cat.name,
             }))}
-            onSelectedChange={(e) => (ui.metadataSidebarData.bookmark.categoryId = e.value)}
+            selected={{
+              value: ui.metadataSidebarData.bookmark.categoryId,
+              label: ui.metadataSidebarData?.categories?.find(
+                (cat) => cat.id === ui.metadataSidebarData.bookmark.categoryId,
+              )?.name,
+            }}
+            onSelectedChange={(e) =>
+              (ui.metadataSidebarData.bookmark.categoryId = e?.value ?? null)}
           >
             <Select.Trigger class="w-full enabled:bg-zinc-950 disabled:cursor-default">
               <Select.Value placeholder="Category" />
@@ -154,14 +166,25 @@
             </Select.Content>
           </Select.Root>
         </div>
-        {#if ui.metadataSidebarData.bookmark.metadata?.image?.url}
+        <div class="flex flex-col gap-2">
+          <Label for="category">Tags</Label>
+          <TagInput
+            tags={$page.data?.tags.map((tag: Tag) => ({ value: tag.id, label: tag.name }))}
+            disabled={!isEditMode}
+            setFormTags={(v) => (ui.metadataSidebarData.bookmark.tags = v)}
+            selected={ui.metadataSidebarData.bookmark?.tags?.map((tag: TagsOnBookmarks) => tag.tagId) ?? []}
+            class="bg-transparent"
+          />
+          <input type="hidden" name="tagIds" id="tagIds" value={ui.metadataSidebarData.tags} />
+        </div>
+        {#if ui.metadataSidebarData.bookmark.image}
           <div
             class={cn("w-full rounded-full border-b-2 border-zinc-100 px-8 dark:border-zinc-800")}
           />
           <div class="mb-2 flex min-h-0 flex-col items-start gap-2">
             <h2>Cover Photo</h2>
             <img
-              src={ui.metadataSidebarData.bookmark.metadata?.image?.url}
+              src={ui.metadataSidebarData.bookmark.image}
               alt="Bookmark Screenshot"
               class="w-full rounded-md object-cover"
             />
@@ -186,17 +209,17 @@
           </div>
           <div class="flex w-full justify-between text-sm">
             <span class="font-bold">Added</span>
-            {#if ui.metadataSidebarData.bookmark.metadata?.date}
+            {#if ui.metadataSidebarData.bookmark.createdAt}
               <span>
-                {format(ui.metadataSidebarData.bookmark.metadata?.date, "dd MMM yyyy")}
+                {format(ui.metadataSidebarData.bookmark.createdAt, "dd MMM yyyy")}
               </span>
             {/if}
           </div>
           <div class="flex w-full justify-between text-sm">
             <span class="font-bold">Colors</span>
-            {#if ui.metadataSidebarData.bookmark.metadata?.logo?.palette}
+            {#if ui.metadataSidebarData.bookmark.metadata?.palette}
               <div class="flex gap-1">
-                {#each ui.metadataSidebarData.bookmark.metadata?.logo?.palette as color}
+                {#each ui.metadataSidebarData.bookmark.metadata?.palette as color}
                   <button
                     onclick={(e) => copyColor(e, color)}
                     class="size-4 rounded-full"

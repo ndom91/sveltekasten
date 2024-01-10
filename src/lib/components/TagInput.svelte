@@ -1,3 +1,10 @@
+<script lang="ts" context="module">
+  export type Tag = {
+    label: string
+    value: string
+  }
+</script>
+
 <script lang="ts">
   import * as Command from "$lib/components/ui/command"
   import * as Popover from "$lib/components/ui/popover"
@@ -6,19 +13,22 @@
   import { tick } from "svelte"
   import { cn } from "$lib/utils"
 
-  type Tag = {
-    label: string
-    value: string
-  }
-
   let open = $state(false)
   let {
     setFormTags,
     tags = [],
     class: className,
-  } = $props<{ setFormTags: (v: string[]) => void; tags: Tag[]; class?: string }>()
+    disabled = false,
+    selected = [],
+  } = $props<{
+    setFormTags: (v: string[]) => void
+    tags: Tag[]
+    disabled?: boolean
+    class?: string
+    selected?: string[]
+  }>()
 
-  const selectedValue = $state<string[]>([])
+  const selectedValue = $state<string[]>(selected)
 
   function closeAndFocusTrigger(triggerId: string) {
     open = false
@@ -39,6 +49,7 @@
     <Button
       builders={[builder]}
       variant="outline"
+      {disabled}
       role="combobox"
       aria-expanded={open}
       class={cn("w-full justify-between", className)}
