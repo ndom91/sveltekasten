@@ -1,8 +1,6 @@
 <script lang="ts">
-  // import { page } from "$app/stores"
-  import { cn } from "$lib/utils"
-  import { format, startOfWeek } from "date-fns"
-  // import * as Table from "$lib/components/ui/table"
+  import { slide } from "svelte/transition"
+  import { format } from "date-fns"
   import { Badge } from "$lib/components/ui/badge"
   import { useInterface } from "$state/ui.svelte"
   import type { FeedEntry, FeedEntryMedia } from "$zod"
@@ -11,14 +9,10 @@
 
   const { feedEntry } = $props<{ feedEntry: FeedEntry & { feedMedia: FeedEntryMedia[] } }>()
 
-  let isDeleteDialogOpen = $state(false)
   let isOptionsOpen = $state(false)
   let card = $state<HTMLElement>()
   let cardOpen = $state(false)
 
-  const handleDeleteDialogOpen = () => {
-    isDeleteDialogOpen = true
-  }
   const handleMetadataSidebarOpen = () => {
     // ui.setMetadataSidebarData({
     //   bookmark,
@@ -38,7 +32,6 @@
     if (e.repeat || e.target instanceof HTMLInputElement) return
     if (e.key === "\\" && e.target === card) {
       e.preventDefault()
-      console.log("slash", feedEntry.title)
       cardOpen = !cardOpen
     }
   }
@@ -55,14 +48,7 @@
   on:mouseleave={closeButtonGroup}
   on:mouseenter={openButtonGroup}
 >
-  {#await import("./DeleteDialog.svelte") then { default: DeleteDialog }}
-    <svelte:component
-      this={DeleteDialog}
-      bind:open={isDeleteDialogOpen}
-      bookmarkId={feedEntry.id}
-    />
-  {/await}
-  <div class={cn("grid place-items-center", cardOpen ? "items-start" : "")}>
+  <div>
     <img src={feedEntry.feedMedia?.[0]?.href} alt="Feed Media" class="rounded-md object-cover" />
   </div>
   <div class="flex flex-col gap-2">
@@ -70,9 +56,13 @@
       {feedEntry.title}
     </span>
     {#if cardOpen}
-      <p class="">{@html feedEntry.content}</p>
+      <p transition:slide class="prose max-w-none dark:text-zinc-100 dark:prose-a:text-zinc-200">
+        {@html feedEntry.content}
+      </p>
     {:else}
-      <p class="line-clamp-2">{@html feedEntry.contentSnippet}</p>
+      <p class="prose line-clamp-2 max-w-none dark:text-zinc-100 dark:prose-a:text-zinc-200">
+        {@html feedEntry.contentSnippet}
+      </p>
     {/if}
     <div class="flex items-center justify-start gap-2 text-sm text-muted">
       <div class="flex items-center justify-start gap-2">
@@ -104,10 +94,10 @@
   {#await import("./FeedActions.svelte") then { default: Actions }}
     <svelte:component
       this={Actions}
-      {handleMetadataSidebarOpen}
-      {handleDeleteDialogOpen}
-      {isOptionsOpen}
       url={feedEntry.link ?? ""}
+      toggleCardOpen={() => (cardOpen = !cardOpen)}
+      {isOptionsOpen}
+      {handleMetadataSidebarOpen}
     />
   {/await}
 </div>
