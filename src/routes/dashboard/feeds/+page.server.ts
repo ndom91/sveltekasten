@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
       return fail(401, { type: "error", error: "Attempted to load too many items" })
     }
 
-    const [data, count] = await prisma.feedEntry.findManyAndCount({
+    const [feedEntryData, feedEntryCount] = await prisma.feedEntry.findManyAndCount({
       take: limit + skip,
       skip: skip,
       where: { userId: session?.user?.userId },
@@ -27,9 +27,36 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
       orderBy: { published: "desc" },
     });
 
+    const [feedData, feedCount] = await prisma.feed.findManyAndCount({
+      where: { userId: session?.user?.userId },
+      select: {
+        id: true,
+        name: true,
+        url: true,
+        description: true,
+        language: true,
+        userId: true,
+        lastFetched: true,
+        createdAt: true,
+        updatedAt: true,
+        _count: {
+          select: {
+            feedEntries: { where: { unread: true } },
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
     return {
-      feedEntries: data,
-      count
+      feedEntries: {
+        data: feedEntryData,
+        count: feedEntryCount
+      },
+      feeds: {
+        data: feedData,
+        count: feedCount
+      }
     };
   } catch (error) {
     let message

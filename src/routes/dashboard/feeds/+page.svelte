@@ -9,13 +9,14 @@
   import Arrow from "$lib/assets/arrow.svg"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
   import { infiniteScroll } from "$lib/components/infinite-scroll"
+  import type { FeedEntry } from "$zod"
 
   const ui = useInterface()
   const { data } = $props()
   let pageNumber = $state(1)
   let loading = $state(false)
   let totalItemCount = $state<number>(data.count ?? 1)
-  let allItems = $state(data.feedEntries ?? [])
+  let allItems = $state(data.feedEntries?.data ?? [])
 
   // Log error from page server loading
   if (data.error) {
@@ -80,7 +81,7 @@
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
       const currentActiveElementIndex = allItems.findIndex(
-        (item) => `$${item.id}` === currentActiveElement.dataset.id,
+        (item: FeedEntry) => `$${item.id}` === currentActiveElement.dataset.id,
       )
       const nextIndex =
         e.key === "ArrowDown" || e.key === "j"
@@ -106,7 +107,7 @@
 
 <main class="h-full">
   <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start">
-    {#if data.feedEntries}
+    {#if data.feedEntries?.count > 0}
       <Table.Root>
         <Table.Body>
           {#await activeFeedEntries()}
