@@ -15,7 +15,7 @@
   const { data } = $props()
   let pageNumber = $state(1)
   let loading = $state(false)
-  let totalItemCount = $state<number>(data.count ?? 1)
+  let totalItemCount = $state<number>(data.feedEntries?.count ?? 1)
   let allItems = $state(data.feedEntries?.data ?? [])
 
   // Log error from page server loading
