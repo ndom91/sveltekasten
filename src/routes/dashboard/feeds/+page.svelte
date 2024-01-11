@@ -2,6 +2,7 @@
   import { onDestroy } from "svelte"
   import { FeedRow } from "$lib/components/feed-row"
   import * as Table from "$lib/components/ui/table"
+  import { Skeleton } from "$lib/components/ui/skeleton"
 
   import { useInterface } from "$state/ui.svelte"
   import EmptyIllustration from "$lib/assets/empty-state.png"
@@ -118,9 +119,20 @@
       <Table.Root>
         <Table.Body>
           {#await activeFeedEntries()}
-            <tr class="text-3xl">
-              <td colspan="2" class="h-24" align="center">Loading...</td>
-            </tr>
+            {#each Array.from({ length: 10 }) as _}
+              <tr class="h-40 text-3xl">
+                <td colspan="2" align="left">
+                  <div class="mx-4 flex w-full items-start gap-4 p-4 opacity-10">
+                    <Skeleton class="h-36 w-60 rounded-md" />
+                    <div class="flex w-full flex-col items-start gap-4">
+                      <Skeleton class="h-4 w-2/3" />
+                      <Skeleton class="h-10 w-3/4" />
+                      <Skeleton class="h-4 w-96" />
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            {/each}
           {:then feedEntries}
             {#if feedEntries.length}
               {#each feedEntries as feedEntry}
