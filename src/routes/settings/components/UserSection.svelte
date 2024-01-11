@@ -3,6 +3,7 @@
   import { Button } from "$lib/components/ui/button"
   import { Input } from "$lib/components/ui/input"
   import * as Card from "$lib/components/ui/card"
+  import { clipboard } from "$lib/utils"
 </script>
 
 <div class="flex flex-col items-start justify-start gap-2">
@@ -18,7 +19,10 @@
         you can use the following token:
         <div class="flex items-center justify-between rounded-md p-2 font-mono dark:bg-zinc-700">
           {$page.data.session?.user?.userId}
-          <Button variant="ghost" class="h-8 p-1">
+          <button
+            use:clipboard={$page.data.session?.user?.userId}
+            class="h-8 rounded-md bg-transparent p-1 outline-none focus:outline-none focus:ring-2 focus:ring-zinc-300"
+          >
             <svg
               class="size-4"
               data-slot="icon"
@@ -35,7 +39,7 @@
                 d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184"
               ></path>
             </svg>
-          </Button>
+          </button>
         </div>
       </div>
     </Card.Content>

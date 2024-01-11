@@ -42,7 +42,7 @@
             </div>
             <div class="w-24" role="cell">
               <Button
-                onclick={(e) => handleToggleDeleteDialog(e, feed)}
+                onclick={(e: MouseEvent) => handleToggleDeleteDialog(e, feed)}
                 variant="destructive"
                 class=""
               >
