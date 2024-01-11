@@ -3,6 +3,7 @@
   import { page } from "$app/stores"
   import { useInterface } from "$state/ui.svelte"
   import BookmarkContent from "./BookmarkContent.svelte"
+  import FeedContent from "./FeedContent.svelte"
 
   const ui = useInterface()
 
@@ -28,6 +29,8 @@
   {#if ui.metadataSidebarOpen}
     {#if bookmarkPage}
       <BookmarkContent />
-    {:else if feedPage}{/if}
+    {:else if feedPage}
+      <FeedContent />
+    {/if}
   {/if}
 </aside>
