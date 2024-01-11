@@ -2,11 +2,24 @@
   import { page } from "$app/stores"
   import { Badge } from "$lib/components/ui/badge"
   import { Button } from "$lib/components/ui/button"
+  import type { Feed } from "$zod"
   // import { useInterface } from "$state/ui.svelte"
   // const ui = useInterface()
 
   // const isEditMode = $derived(ui.metadataSidebarEditMode === true)
   const { data: feeds, count: feedsCount } = $page.data.feeds
+
+  const handleMarkAllRead = async (feed: Feed) => {
+    await fetch("/api/feeds/mark-all-read", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        feedId: feed.id,
+      }),
+    })
+  }
 </script>
 
 <div class="flex h-full items-center justify-start gap-4">
@@ -52,7 +65,10 @@
               </svg>
               {feed["_count"].feedEntries ?? 0}
             </Badge>
-            <Button class="h-8 rounded-full px-2 py-0 text-xs">
+            <Button
+              onclick={() => handleMarkAllRead(feed)}
+              class="h-8 rounded-full px-2 py-0 text-xs"
+            >
               <svg
                 class="size-4 mr-2"
                 data-slot="icon"

@@ -2,6 +2,7 @@ import type { RequestHandler } from './$types';
 import { json, fail } from '@sveltejs/kit';
 import prisma from "$lib/prisma";
 
+// Get FeedEntries
 // @ts-expect-error
 export const GET: RequestHandler = async ({ url, locals }) => {
   try {
@@ -41,6 +42,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
   }
 }
 
+// Update FeedEntry
 // @ts-expect-error
 export const PUT: RequestHandler = async ({ request, locals }) => {
   try {
