@@ -1,13 +1,11 @@
 <script lang="ts">
   import { onDestroy } from "svelte"
-  import { FeedRow } from "$lib/components/feed-row"
   import * as Table from "$lib/components/ui/table"
+  import EmptyState from "$lib/components/EmptyState.svelte"
+  import { FeedRow } from "$lib/components/feed-row"
   import { Skeleton } from "$lib/components/ui/skeleton"
 
   import { useInterface } from "$state/ui.svelte"
-  import EmptyIllustration from "$lib/assets/empty-state.png"
-  import Arrow from "$lib/assets/arrow.svg"
-  import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
   import { infiniteScroll } from "$lib/components/infinite-scroll"
   import type { FeedEntry } from "$zod"
 
@@ -149,17 +147,7 @@
         </Table.Body>
       </Table.Root>
     {:else}
-      <img src={Arrow} alt="Arrow" class="absolute right-28 top-28" />
-      <div class="relative mx-auto w-1/2">
-        <img src={EmptyIllustration} alt="Empty" />
-        <p class="mb-4 text-center text-2xl font-light">Looks like there's nothing here!</p>
-        <p class="text-center text-muted-foreground">
-          Get started by adding a bookmark with the "+" button above or by pressing <KeyboardIndicator
-            class="text-sm text-white"
-            key="Alt N"
-          />
-        </p>
-      </div>
+      <EmptyState />
     {/if}
   </div>
 </main>
