@@ -3,15 +3,14 @@ import { json, fail } from '@sveltejs/kit';
 import prisma from "$lib/prisma";
 
 // @ts-expect-error
-export const POST: RequestHandler = async ({ request, locals }) => {
+export const GET: RequestHandler = async ({ url, locals }) => {
   try {
     const session = await locals.getSession()
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
-    const responseJson = await request.json();
-    const skip = Number(responseJson.skip ?? "0")
-    const limit = Number(responseJson.limit ?? "10")
+    const skip = Number(url.searchParams.get('skip') ?? "0")
+    const limit = Number(url.searchParams.get('limit') ?? "10")
 
     if (limit > 100) {
       return fail(401, { type: "error", error: "Attempted to load too many items" })
