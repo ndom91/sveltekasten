@@ -40,7 +40,7 @@ export const actions: Actions = {
       return fail(400, { type: "error", message: "Feed URL Required" })
     }
 
-    await fetch(`${WORKER_URL}/feed`, {
+    await fetch(`${WORKER_URL}/v1/feed`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
