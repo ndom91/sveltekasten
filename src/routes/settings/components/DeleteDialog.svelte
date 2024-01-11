@@ -7,9 +7,9 @@
   import type { Feed } from "$zod"
 
   let { form, open, feed } = $props<{
-    form?: ActionData
     open: boolean
-    feed: Feed
+    form?: ActionData
+    feed?: Feed
   }>()
 
   $effect(() => {
