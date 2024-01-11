@@ -160,6 +160,7 @@ model FeedEntry {
   author          String?
   ingested        DateTime?
   published       DateTime?
+  unread          Boolean      @default(true)
   categories      String[]
   feed            Feed         @relation(fields: [feedId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   feedId          String
