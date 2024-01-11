@@ -18,7 +18,7 @@
 
   let showKeyboardShortcuts = $state(false)
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: KeyboardEvent) => {
     if (e.repeat || e.target instanceof HTMLInputElement) return
     if ((e.ctrlKey || e.metaKey) && e.key === "/") {
       e.preventDefault()

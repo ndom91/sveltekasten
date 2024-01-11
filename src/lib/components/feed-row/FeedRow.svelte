@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { cn } from "$lib/utils"
   import { slide } from "svelte/transition"
   import { format } from "date-fns"
   import { Badge } from "$lib/components/ui/badge"
@@ -7,7 +8,7 @@
 
   const ui = useInterface()
 
-  const { feedEntry } = $props<{ feedEntry: FeedEntry & { feedMedia: FeedEntryMedia[] } }>()
+  let { feedEntry } = $props<{ feedEntry: FeedEntry & { feedMedia: FeedEntryMedia[] } }>()
 
   let isOptionsOpen = $state(false)
   let card = $state<HTMLElement>()
@@ -22,18 +23,36 @@
     // ui.toggleMetadataSidebar(true)
     // ui.toggleMetadataSidebarEditMode(false)
   }
+
   const openButtonGroup = () => {
     isOptionsOpen = true
   }
+
   const closeButtonGroup = () => {
     isOptionsOpen = false
   }
+
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.repeat || e.target instanceof HTMLInputElement) return
     if (e.key === "\\" && e.target === card) {
       e.preventDefault()
       cardOpen = !cardOpen
+      handleMarkAsUnread(false)
     }
+  }
+
+  const handleMarkAsUnread = async (target: boolean | null = null) => {
+    feedEntry = {
+      ...feedEntry,
+      unread: target ?? !feedEntry.unread,
+    }
+    await fetch(`/api/feeds`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ feedEntry }),
+    })
   }
 </script>
 
@@ -48,6 +67,9 @@
   on:mouseleave={closeButtonGroup}
   on:mouseenter={openButtonGroup}
 >
+  {#if feedEntry.unread}
+    <div class="size-4 absolute left-2 top-2 rounded-full bg-emerald-400 duration-1000" />
+  {/if}
   <div>
     <img src={feedEntry.feedMedia?.[0]?.href} alt="Feed Media" class="rounded-md object-cover" />
   </div>
@@ -97,6 +119,7 @@
       url={feedEntry.link ?? ""}
       toggleCardOpen={() => (cardOpen = !cardOpen)}
       {isOptionsOpen}
+      {handleMarkAsUnread}
       {handleMetadataSidebarOpen}
     />
   {/await}
