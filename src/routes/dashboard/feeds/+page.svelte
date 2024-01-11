@@ -81,6 +81,28 @@
     totalItemCount = count
     return searchResults
   })
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.repeat || e.target instanceof HTMLInputElement) return
+    if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "j" || e.key === "k") {
+      e.preventDefault()
+      const currentActiveElement = e.target as HTMLElement
+      const currentActiveElementIndex = allItems.findIndex(
+        (item) => `$${item.id}` === currentActiveElement.dataset.id,
+      )
+      const nextIndex =
+        e.key === "ArrowDown" || e.key === "j"
+          ? currentActiveElementIndex + 1
+          : currentActiveElementIndex - 1
+      const nextElement = document.querySelector(
+        `[data-id="$${allItems[nextIndex]?.id}"]`,
+      ) as HTMLElement
+
+      if (nextElement) {
+        nextElement.focus()
+      }
+    }
+  }
 </script>
 
 <svelte:head>
@@ -88,8 +110,10 @@
   <meta name="description" content="This is where the description goes for SEO" />
 </svelte:head>
 
+<svelte:window on:keydown={handleKeyDown} />
+
 <main class="h-full">
-  <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2">
+  <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start">
     {#if data.feedEntries}
       <Table.Root>
         <Table.Body>

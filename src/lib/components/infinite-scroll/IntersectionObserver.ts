@@ -12,7 +12,7 @@ export const infiniteScroll = ({ fetch, element }: IntersectionObserverProps): I
           fetch();
         }
       },
-      { threshold: 1 }
+      { threshold: 0.8 }
     );
     observer.observe(element);
     return observer
