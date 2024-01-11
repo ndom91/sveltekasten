@@ -67,7 +67,6 @@
     "metascraper-url": "^5.43.1",
     "mode-watcher": "^0.1.2",
     "p-debounce": "^4.0.0",
-    "splashy": "^5.1.30",
     "svelte-french-toast": "^1.2.0",
     "svelte-sonner": "^0.3.9",
     "sveltekit-superforms": "^1.13.1",

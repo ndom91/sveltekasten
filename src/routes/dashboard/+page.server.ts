@@ -5,7 +5,7 @@ import { superValidate } from "sveltekit-superforms/server";
 import type { Actions } from "./$types"
 import type { PageServerLoad } from './$types'
 
-import splashy from "splashy"
+// import splashy from "splashy"
 import metascraper from "metascraper"
 import metascraperDescription from "metascraper-description"
 import metascraperTitle from "metascraper-title"
@@ -115,9 +115,9 @@ export const actions: Actions = {
 
       const imageResponse = await fetch(image)
       const imageBuffer = await imageResponse.arrayBuffer()
-      const palette = await splashy(Buffer.from(imageBuffer))
+      // const palette = await splashy(Buffer.from(imageBuffer))
 
-      metadata.palette = palette
+      // metadata.palette = palette
 
       const bookmark = await prisma.bookmark.create({
         data: {
