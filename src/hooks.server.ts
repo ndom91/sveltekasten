@@ -122,7 +122,7 @@ export const handleAuth = SvelteKitAuth({
   // @ts-expext-error
   adapter: PrismaAdapter(prisma),
   secret: AUTH_SECRET,
-  trustHost: !building ? Boolean(AUTH_TRUST_HOST ?? false) : false,
+  trustHost: Boolean(AUTH_TRUST_HOST ?? false),
   pages: {
     signIn: "/login",
   },
