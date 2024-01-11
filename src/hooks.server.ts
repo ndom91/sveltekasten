@@ -76,20 +76,20 @@ if (KEYCLOAK_ID && KEYCLOAK_SECRET) {
   }));
 }
 
-if (SMTP_HOST && SMTP_USER && SMTP_PASSWORD) {
-  const Email = await import("@auth/sveltekit/providers/email");
-  providers.push(Email.default({
-    server: {
-      host: SMTP_HOST,
-      port: SMTP_PORT,
-      auth: {
-        user: SMTP_USER,
-        pass: SMTP_PASSWORD,
-      },
-      from: SMTP_FROM,
-    },
-  }));
-}
+// if (SMTP_HOST && SMTP_USER && SMTP_PASSWORD) {
+//   const Email = await import("@auth/sveltekit/providers/email");
+//   providers.push(Email.default({
+//     server: {
+//       host: SMTP_HOST,
+//       port: SMTP_PORT,
+//       auth: {
+//         user: SMTP_USER,
+//         pass: SMTP_PASSWORD,
+//       },
+//       from: SMTP_FROM,
+//     },
+//   }));
+// }
 
 const handleGlobal: Handle = async ({ event, resolve }) => {
   // @ts-expect-error
@@ -106,7 +106,7 @@ export const handleAuth = SvelteKitAuth({
   callbacks: {
     // @ts-expect-error
     session: async ({ session, token }) => {
-      if (token) {
+      if (token && session.user) {
         session.user.userId = token.sub;
       }
       return session;
@@ -119,9 +119,10 @@ export const handleAuth = SvelteKitAuth({
   session: {
     strategy: "jwt",
   },
+  // @ts-expext-error
   adapter: PrismaAdapter(prisma),
   secret: AUTH_SECRET,
-  trustHost: AUTH_TRUST_HOST,
+  trustHost: !building ? Boolean(AUTH_TRUST_HOST ?? false) : false,
   pages: {
     signIn: "/login",
   },
