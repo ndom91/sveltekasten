@@ -17,8 +17,8 @@
   >
     <Avatar.Root>
       <Avatar.Image
-        src={$page.data.session?.user.image ||
-          `https://unavatar.io/${$page.data.session?.user.email}?fallback=https://source.boringavatars.com/marble/120/${$page.data.session?.user.email}?colors=264653r,2a9d8f,e9c46a,f4a261,e76f51`}
+        src={$page.data.session?.user?.image ||
+          `https://unavatar.io/${$page.data.session?.user?.email}?fallback=https://source.boringavatars.com/marble/120/${$page.data.session?.user?.email}?colors=264653r,2a9d8f,e9c46a,f4a261,e76f51`}
         class="rounded"
         alt="User Avatar"
       />
@@ -28,7 +28,7 @@
   <DropdownMenu.Content transition={blur} transitionConfig={{ delay: 0, duration: 250 }}>
     <DropdownMenu.Group>
       <DropdownMenu.Label class="line-clamp-1 w-full justify-start truncate">
-        {$page.data.session?.user.name ?? $page.data.session?.user.email}
+        {$page.data.session?.user?.name ?? $page.data.session?.user?.email}
       </DropdownMenu.Label>
       <DropdownMenu.Separator />
       <DropdownMenu.CheckboxItem
@@ -39,7 +39,7 @@
         Dark Mode
       </DropdownMenu.CheckboxItem>
       <DropdownMenu.Item href="/settings" class="justify-start hover:cursor-pointer"
-        >User Settings</DropdownMenu.Item
+        >Settings</DropdownMenu.Item
       >
       <DropdownMenu.Separator />
       <DropdownMenu.Item class="justify-start hover:cursor-pointer" on:click={() => signOut()}

@@ -22,7 +22,6 @@
     if (path === "/dashboard/feeds") return "feeds"
     if (path === "/dashboard/categories") return "categories"
     if (path === "/dashboard/tags") return "tags"
-    return "home"
   })
 </script>
 
