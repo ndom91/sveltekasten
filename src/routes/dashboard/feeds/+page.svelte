@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onDestroy } from "svelte"
+  import toast from "svelte-french-toast"
   import * as Table from "$lib/components/ui/table"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { FeedRow } from "$lib/components/feed-row"
@@ -99,7 +100,12 @@
       const currentActiveElementIndex = allItems.findIndex(
         (item: FeedEntry) => `$${item.id}` === currentActiveElement.dataset.id,
       )
-      window.open(allItems[currentActiveElementIndex].link, "_target")
+      const targetLink = allItems[currentActiveElementIndex]?.link
+      if (!targetLink) {
+        toast.error("No item focused to open")
+        return
+      }
+      window.open(targetLink, "_target")
     }
   }
 </script>
