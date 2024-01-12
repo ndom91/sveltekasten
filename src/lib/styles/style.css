@@ -143,3 +143,8 @@ table tr {
   background: #3c3b3b4b;
   cursor: pointer;
 }
+
+/* RSS Feed Content */
+.prose iframe {
+  @apply !relative !aspect-video !max-w-screen-md;
+}
