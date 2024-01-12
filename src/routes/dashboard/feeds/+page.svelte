@@ -93,6 +93,14 @@
         nextElement.focus()
       }
     }
+    if (e.ctrlKey && e.key === "Enter") {
+      e.preventDefault()
+      const currentActiveElement = e.target as HTMLElement
+      const currentActiveElementIndex = allItems.findIndex(
+        (item: FeedEntry) => `$${item.id}` === currentActiveElement.dataset.id,
+      )
+      window.open(allItems[currentActiveElementIndex].link, "_target")
+    }
   }
 </script>
 
@@ -113,11 +121,11 @@
               <tr class="h-40 text-3xl">
                 <td colspan="2" align="left">
                   <div class="mx-4 flex w-full items-start gap-4 p-4 opacity-10">
-                    <Skeleton class="h-36 w-60 rounded-md" />
+                    <Skeleton class="h-32 w-72 rounded-md" />
                     <div class="flex w-full flex-col items-start gap-4">
-                      <Skeleton class="h-4 w-2/3" />
-                      <Skeleton class="h-10 w-3/4" />
-                      <Skeleton class="h-4 w-96" />
+                      <Skeleton class="h-4 w-3/4 min-w-[300px]" />
+                      <Skeleton class="h-10 w-4/5 min-w-[400px]" />
+                      <Skeleton class="h-4 w-96 min-w-[100px]" />
                     </div>
                   </div>
                 </td>
