@@ -7,6 +7,11 @@
   export let handleMetadataSidebarOpen: () => void
   export let toggleCardOpen: () => void
   export let handleMarkAsUnread: (target?: boolean) => void
+
+  const handleToggleCardOpen = () => {
+    toggleCardOpen()
+    handleMarkAsUnread(false)
+  }
 </script>
 
 <div
@@ -15,7 +20,7 @@
     isOptionsOpen ? "opacity-100" : "opacity-0",
   )}
 >
-  <Button title="Read" variant="ghost" size="icon" on:click={toggleCardOpen}>
+  <Button title="Read" variant="ghost" size="icon" on:click={handleToggleCardOpen}>
     <svg
       class="size-5 text-zinc-900 dark:text-zinc-100"
       data-slot="icon"

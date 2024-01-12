@@ -73,12 +73,12 @@
   <div>
     <img src={feedEntry.feedMedia?.[0]?.href} alt="Feed Media" class="rounded-md object-cover" />
   </div>
-  <div class="flex flex-col gap-2">
+  <div class="flex flex-col gap-2 will-change-contents">
     <span class="line-clamp-1 text-clip text-xl font-bold">
       {feedEntry.title}
     </span>
     {#if cardOpen}
-      <p transition:slide class="prose max-w-none dark:text-zinc-100 dark:prose-a:text-zinc-200">
+      <p transition:slide class="has-[iframe]:aspect-video has-[iframe]:relative has-[iframe]:max-w-screen-sm prose max-w-none prose-img:!h-auto prose-img:max-w-screen-md prose-img:object-contain prose-video:aspect-video prose-video:max-w-screen-sm dark:text-zinc-100 dark:prose-a:text-zinc-200">
         {@html feedEntry.content}
       </p>
     {:else}
