@@ -80,31 +80,29 @@
   <div>
     <img src={feedEntry.feedMedia?.[0]?.href ?? `https://picsum.photos/seed/${encodeURIComponent(feedEntry.title.replaceAll(' ', '').substring(0,5).toLowerCase())}/240/153.webp`} alt="Feed Item Hero" class="rounded-md object-cover" />
   </div>
-  <div class="flex flex-col gap-2 will-change-contents">
-    <span class="line-clamp-1 text-clip text-xl font-bold">
+  <div class="flex flex-col will-change-contents">
+    <span class="mb-2 line-clamp-1 text-clip text-xl font-bold">
       {feedEntry.title}
     </span>
-      <p class={cn("prose max-w-screen-lg transition-all duration-300 prose-img:!h-auto prose-img:max-w-screen-md prose-img:object-contain prose-video:aspect-video prose-video:max-w-screen-sm dark:text-zinc-100 dark:prose-headings:text-zinc-100 dark:prose-a:text-zinc-200", cardOpen ? "opacity-100" : "pointer-events-none h-0 opacity-0")}>
-        {@html dompurify.sanitize(feedEntry.content)}
-      </p>
-      <p class={cn("prose line-clamp-2 max-w-none dark:text-zinc-100 dark:prose-a:text-zinc-200", cardOpen ? "hidden" : "display-[-webkit-box]")}>
-        {@html feedEntry.contentSnippet}
-      </p>
-    <div class="flex items-center justify-start gap-2 text-sm text-muted">
-      <div class="flex items-center justify-start gap-2">
-        {#if feedEntry.link}
-          <img
-            src={`https://${new URL(feedEntry.link).hostname}/favicon.ico`}
-            alt="URL Favicon"
-            class="size-4 rounded-full"
-          />
-        {/if}
+    <p class={cn("prose max-w-screen-lg transition-all duration-300 prose-img:!h-auto prose-img:max-w-screen-md prose-img:object-contain prose-video:aspect-video prose-video:max-w-screen-sm dark:text-zinc-100 dark:prose-headings:text-zinc-100 dark:prose-a:text-zinc-200 dark:prose-strong:text-zinc-100", cardOpen ? "opacity-100" : "pointer-events-none h-0 opacity-0")}>
+      {@html dompurify.sanitize(feedEntry.content)}
+    </p>
+    <p class={cn("prose line-clamp-2 max-w-none dark:text-zinc-100 dark:prose-a:text-zinc-200", cardOpen ? "hidden" : "display-[-webkit-box]")}>
+      {@html feedEntry.contentSnippet}
+    </p>
+    <div class="mt-2 flex items-center justify-start gap-2 text-sm text-muted">
+      {#if feedEntry.link}
+        <img
+          src={`https://${new URL(feedEntry.link).hostname}/favicon.ico`}
+          alt="URL Favicon"
+          class="size-4 rounded-full"
+        />
         <a target="_blank" href={feedEntry.link} class="line-clamp-1 text-clip">
           {feedEntry.link}
         </a>
-      </div>
+      {/if}
     </div>
-    <span class="flex flex-wrap gap-2">
+    <span class="mt-2 flex flex-wrap gap-2">
       <Badge variant="secondary">
         {format(feedEntry.createdAt, "H:mm d MMM yyyy")}
       </Badge>
