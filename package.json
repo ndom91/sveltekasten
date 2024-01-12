@@ -49,6 +49,7 @@
     "clsx": "^2.0.0",
     "cmdk-sv": "^0.0.12",
     "date-fns": "^3.0.6",
+    "dompurify": "^3.0.8",
     "formsnap": "^0.4.2",
     "lucide-svelte": "^0.299.0",
     "metascraper": "^5.43.2",

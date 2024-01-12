@@ -29,6 +29,9 @@ dependencies:
   date-fns:
     specifier: ^3.0.6
     version: 3.0.6
+  dompurify:
+    specifier: ^3.0.8
+    version: 3.0.8
   formsnap:
     specifier: ^0.4.2
     version: 0.4.2(svelte@5.0.0-next.30)(sveltekit-superforms@1.13.1)(zod@3.22.4)
@@ -1588,6 +1591,10 @@ packages:
     engines: {node: '>= 4'}
     dependencies:
       domelementtype: 2.3.0
+    dev: false
+
+  /dompurify@3.0.8:
+    resolution: {integrity: sha512-b7uwreMYL2eZhrSCRC4ahLTeZcPZxSmYfmcQGXGkXiZSNW1X85v+SDM5KsWcpivIiUBH47Ji7NtyUdpLeF5JZQ==}
     dev: false
 
   /domutils@3.1.0:

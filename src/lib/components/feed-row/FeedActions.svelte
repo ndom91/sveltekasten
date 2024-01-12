@@ -5,13 +5,8 @@
   export let isOptionsOpen: boolean
   export let url: string
   export let handleMetadataSidebarOpen: () => void
-  export let toggleCardOpen: () => void
+  export let handleToggleCardOpen: () => void
   export let handleMarkAsUnread: (target?: boolean) => void
-
-  const handleToggleCardOpen = () => {
-    toggleCardOpen()
-    handleMarkAsUnread(false)
-  }
 </script>
 
 <div

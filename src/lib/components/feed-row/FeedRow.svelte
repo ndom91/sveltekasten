@@ -1,10 +1,10 @@
 <script lang="ts">
   import { cn } from "$lib/utils"
-  import { slide } from "svelte/transition"
   import { format } from "date-fns"
   import { Badge } from "$lib/components/ui/badge"
   import { useInterface } from "$state/ui.svelte"
   import type { FeedEntry, FeedEntryMedia } from "$zod"
+  import dompurify from "dompurify"
 
   const ui = useInterface()
 
@@ -36,7 +36,14 @@
     if (e.repeat || e.target instanceof HTMLInputElement) return
     if (e.key === "\\" && e.target === card) {
       e.preventDefault()
-      cardOpen = !cardOpen
+      handleToggleCardOpen()
+    }
+  }
+
+  const handleToggleCardOpen = () => {
+    cardOpen = !cardOpen
+    // Only toggle and make network request if necessary
+    if (feedEntry.unread === true) {
       handleMarkAsUnread(false)
     }
   }
@@ -78,7 +85,7 @@
       {feedEntry.title}
     </span>
       <p class={cn("prose max-w-screen-lg transition-all duration-300 prose-img:!h-auto prose-img:max-w-screen-md prose-img:object-contain prose-video:aspect-video prose-video:max-w-screen-sm dark:text-zinc-100 dark:prose-headings:text-zinc-100 dark:prose-a:text-zinc-200", cardOpen ? "opacity-100" : "pointer-events-none h-0 opacity-0")}>
-        {@html feedEntry.content}
+        {@html dompurify.sanitize(feedEntry.content)}
       </p>
       <p class={cn("prose line-clamp-2 max-w-none dark:text-zinc-100 dark:prose-a:text-zinc-200", cardOpen ? "hidden" : "display-[-webkit-box]")}>
         {@html feedEntry.contentSnippet}
@@ -114,8 +121,8 @@
     <svelte:component
       this={Actions}
       url={feedEntry.link ?? ""}
-      toggleCardOpen={() => (cardOpen = !cardOpen)}
       {isOptionsOpen}
+      {handleToggleCardOpen}
       {handleMarkAsUnread}
       {handleMetadataSidebarOpen}
     />
