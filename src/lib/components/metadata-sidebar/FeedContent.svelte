@@ -27,7 +27,7 @@
     <div class="flex items-center justify-between">
       <h2>Feeds</h2>
     </div>
-    <div class="grid grid-cols-[30px_1fr] justify-start">
+    <div class="grid grid-cols-[30px_1fr] justify-start gap-y-4">
       {#each feeds as feed}
         <div>
           <img

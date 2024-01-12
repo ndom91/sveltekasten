@@ -71,21 +71,18 @@
     <div class="size-4 absolute left-2 top-2 rounded-full bg-emerald-400 duration-1000" />
   {/if}
   <div>
-    <img src={feedEntry.feedMedia?.[0]?.href} alt="Feed Media" class="rounded-md object-cover" />
+    <img src={feedEntry.feedMedia?.[0]?.href ?? `https://picsum.photos/seed/${encodeURIComponent(feedEntry.title.replaceAll(' ', '').substring(0,5).toLowerCase())}/240/153.webp`} alt="Feed Item Hero" class="rounded-md object-cover" />
   </div>
   <div class="flex flex-col gap-2 will-change-contents">
     <span class="line-clamp-1 text-clip text-xl font-bold">
       {feedEntry.title}
     </span>
-    {#if cardOpen}
-      <p transition:slide class="has-[iframe]:aspect-video has-[iframe]:relative has-[iframe]:max-w-screen-sm prose max-w-none prose-img:!h-auto prose-img:max-w-screen-md prose-img:object-contain prose-video:aspect-video prose-video:max-w-screen-sm dark:text-zinc-100 dark:prose-a:text-zinc-200">
+      <p class={cn("prose max-w-screen-lg transition-all duration-300 prose-img:!h-auto prose-img:max-w-screen-md prose-img:object-contain prose-video:aspect-video prose-video:max-w-screen-sm dark:text-zinc-100 dark:prose-headings:text-zinc-100 dark:prose-a:text-zinc-200", cardOpen ? "opacity-100" : "pointer-events-none h-0 opacity-0")}>
         {@html feedEntry.content}
       </p>
-    {:else}
-      <p class="prose line-clamp-2 max-w-none dark:text-zinc-100 dark:prose-a:text-zinc-200">
+      <p class={cn("prose line-clamp-2 max-w-none dark:text-zinc-100 dark:prose-a:text-zinc-200", cardOpen ? "hidden" : "display-[-webkit-box]")}>
         {@html feedEntry.contentSnippet}
       </p>
-    {/if}
     <div class="flex items-center justify-start gap-2 text-sm text-muted">
       <div class="flex items-center justify-start gap-2">
         {#if feedEntry.link}
