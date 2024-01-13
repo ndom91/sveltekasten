@@ -2,11 +2,11 @@
   import { page } from "$app/stores"
   import { Badge } from "$lib/components/ui/badge"
   import { Button } from "$lib/components/ui/button"
+  import { Checkbox } from "$lib/components/ui/checkbox"
   import type { Feed } from "$zod"
-  // import { useInterface } from "$state/ui.svelte"
-  // const ui = useInterface()
+  import { useInterface } from "$state/ui.svelte"
+  const ui = useInterface()
 
-  // const isEditMode = $derived(ui.metadataSidebarEditMode === true)
   const { data: feeds, count: feedsCount } = $page.data.feeds
 
   const handleMarkAllRead = async (feed: Feed) => {
@@ -29,18 +29,17 @@
     </div>
     <div class="grid grid-cols-[30px_1fr] justify-start gap-y-4">
       {#each feeds as feed}
-        <div>
-          <img
-            src={`https://${new URL(feed.url).hostname}/favicon.ico`}
-            alt="URL Favicon"
-            class="size-6 rounded-full"
-          />
+        <div class="flex items-start justify-center pt-1">
+          <Checkbox id={new URL(feed.url).host} bind:checked={feed.visible} />
         </div>
         <div class="flex flex-col items-start gap-2">
-          <div>
-            <span>
-              {new URL(feed.url).host}
-            </span>
+          <div class="flex items-center justify-start gap-2">
+            <span> {new URL(feed.url).host} </span>
+            <img
+              src={`https://${new URL(feed.url).hostname}/favicon.ico`}
+              alt="URL Favicon"
+              class="size-6 rounded-full"
+            />
           </div>
           <div class="line-clamp-2 dark:text-zinc-600">
             {feed.description}

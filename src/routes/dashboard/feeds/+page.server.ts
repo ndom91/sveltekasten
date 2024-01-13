@@ -1,6 +1,7 @@
 import prisma from "$lib/prisma";
 import { fail } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
+import type { Feed } from "$zod";
 
 export const load: PageServerLoad = async ({ parent, locals, url }) => {
   await parent()
@@ -54,7 +55,12 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
         count: feedEntryCount
       },
       feeds: {
-        data: feedData,
+        data: feedData.map((feed) => {
+          return {
+            ...feed,
+            visible: true
+          } as unknown as Feed & { visible: boolean }
+        }),
         count: feedCount
       }
     };

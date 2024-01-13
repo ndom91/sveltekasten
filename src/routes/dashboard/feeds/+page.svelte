@@ -8,14 +8,14 @@
 
   import { useInterface } from "$state/ui.svelte"
   import { infiniteScroll } from "$lib/components/infinite-scroll"
-  import type { FeedEntry } from "$zod"
+  import type { Feed, FeedEntry, FeedEntryMedia } from "$zod"
 
   const ui = useInterface()
   const { data } = $props()
   let pageNumber = $state(1)
   let loading = $state(false)
   let totalItemCount = $state<number>(data.feedEntries?.count ?? 1)
-  let allItems = $state(data.feedEntries?.data ?? [])
+  let allItems = $state<FeedEntry & { feed: Feed, feedMedia: FeedEntryMedia }[]>(data.feedEntries?.data ?? [])
 
   // Log error from page server loading
   if (data.error) {
@@ -59,7 +59,10 @@
 
   // Handle search input
   let activeFeedEntries = $derived(async () => {
-    if (!ui.searchQuery) return allItems
+    if (!ui.searchQuery) return allItems.filter(item => {
+      const feed = data.feeds?.data?.find(feed => feed.id === item.feed?.id)
+      return feed?.visible
+    })
     const res = await fetch("/api/search", {
       method: "POST",
       headers: {
@@ -80,7 +83,7 @@
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
       const currentActiveElementIndex = allItems.findIndex(
-        (item: FeedEntry) => `$${item.id}` === currentActiveElement.dataset.id,
+        (item) => `$${item.id}` === currentActiveElement.dataset.id,
       )
       const nextIndex =
         e.key === "ArrowDown" || e.key === "j"
@@ -98,7 +101,7 @@
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
       const currentActiveElementIndex = allItems.findIndex(
-        (item: FeedEntry) => `$${item.id}` === currentActiveElement.dataset.id,
+        (item) => `$${item.id}` === currentActiveElement.dataset.id,
       )
       const targetLink = allItems[currentActiveElementIndex]?.link
       if (!targetLink) {
