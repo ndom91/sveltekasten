@@ -138,21 +138,17 @@
               </tr>
             {/each}
           {:then feedEntries}
-            {#if feedEntries.length}
-              {#each feedEntries as feedEntry}
-                <FeedRow {feedEntry} />
-              {/each}
-              <div
-                bind:this={elementRef}
-                class="grid h-24 w-full place-items-center text-xl font-light"
-              >
-                Loading...
-              </div>
+            {#each feedEntries as feedEntry}
+              <FeedRow {feedEntry} />
             {:else}
               <tr class="text-3xl">
                 <td colspan="2" class="h-24" align="center">No entries found</td>
               </tr>
-            {/if}
+            {/each}
+            <div
+              bind:this={elementRef}
+              class="grid h-24 w-full place-items-center text-xl font-light"
+            />
           {:catch error}
             <tr class="text-3xl">
               <td colspan="2" class="h-24" align="center">{error}</td>

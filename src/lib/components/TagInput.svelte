@@ -54,36 +54,34 @@
       aria-expanded={open}
       class={cn("w-full justify-between", className)}
     >
-      {#if selectedValue.length}
-        <div class="flex w-full justify-start gap-2 truncate">
-          {#each selectedValue as value}
-            <Badge class="text-sm">
-              {tags.find((tag) => tag.value === value)?.label}
-              <Button
-                onclickcapture={(e: MouseEvent) => handleTagRemove(e, value)}
-                variant="link"
-                class="h-auto p-0 text-black"
+      <div class="flex w-full justify-start gap-2 truncate">
+        {#each selectedValue as value}
+          <Badge class="text-sm">
+            {tags.find((tag) => tag.value === value)?.label}
+            <Button
+              onclickcapture={(e: MouseEvent) => handleTagRemove(e, value)}
+              variant="link"
+              class="h-auto p-0 text-black"
+            >
+              <svg
+                class="size-4 ml-1"
+                data-slot="icon"
+                fill="none"
+                stroke-width="1.5"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
               >
-                <svg
-                  class="size-4 ml-1"
-                  data-slot="icon"
-                  fill="none"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"
-                  ></path>
-                </svg>
-              </Button>
-            </Badge>
-          {/each}
-        </div>
-      {:else}
-        Select tags..
-      {/if}
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </Button>
+          </Badge>
+        {:else}
+          Select tags..
+        {/each}
+      </div>
       <svg
         class="size-4 ml-2 opacity-50"
         data-slot="icon"

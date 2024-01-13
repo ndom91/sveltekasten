@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onDestroy } from "svelte"
   import * as Table from "$lib/components/ui/table"
-  import type { ComponentProps } from 'svelte';
+  import type { ComponentProps } from "svelte"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
   import { useInterface } from "$state/ui.svelte"
@@ -67,7 +67,7 @@
     loading = false
   }
 
-  let activeBookmarks: () => Promise<typeof allItems[]> = $derived(async () => {
+  let activeBookmarks: () => Promise<(typeof allItems)[]> = $derived(async () => {
     if (!ui.searchQuery) return allItems
     const res = await fetch("/api/search", {
       method: "POST",
@@ -99,11 +99,8 @@
               <td colspan="2" class="h-24" align="center">Loading...</td>
             </tr>
           {:then bookmarks}
-            {#if bookmarks.length}
-              {#each bookmarks as bookmark}
-                <BookmarkRow {bookmark} />
-              {/each}
-              <div bind:this={elementRef} class="h-24 w-full" />
+            {#each bookmarks as bookmark}
+              <BookmarkRow {bookmark} />
             {:else}
               <EmptyState />
               <p class="mx-auto w-1/2 text-center text-muted-foreground">
@@ -126,7 +123,8 @@
                 </svg>
                 button above or by pressing <KeyboardIndicator class="text-sm" key="Alt N" />
               </p>
-            {/if}
+            {/each}
+            <div bind:this={elementRef} class="h-24 w-full" />
           {:catch error}
             <tr class="text-3xl">
               <td colspan="2" class="h-24" align="center">{error}</td>
