@@ -22,17 +22,17 @@
 {/await}
 <div class="flex flex-col items-start justify-start gap-2">
   <Card.Root class="w-full">
-    <Card.Header class="dark:bg-zinc-900">
+    <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
       <Card.Title>Manage Feeds</Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
       <div class="flex flex-col items-start gap-2" role="table">
         <div class="flex w-full items-center justify-start" role="rowheader">
-          <div class="w-64">ID</div>
+          <div class="w-72">ID</div>
           <div class="flex-grow">URL</div>
           <div class="w-24">Actions</div>
         </div>
-        {#if $page.data?.feeds?.data}
+        {#if $page.data?.feeds?.data.length}
           {#each $page.data.feeds.data as feed}
             <div class="flex w-full items-center justify-start" role="row">
               <div class="w-64 font-mono" role="cell">
@@ -68,12 +68,18 @@
               </div>
             </div>
           {/each}
+        {:else}
+          <div class="flex w-full items-center justify-start" role="row">
+            <div class="my-8 w-full text-center" role="cell">
+              No feeds added yet, please use the form below to add your first!
+            </div>
+          </div>
         {/if}
       </div>
     </Card.Content>
   </Card.Root>
   <Card.Root class="w-full">
-    <Card.Header class="dark:bg-zinc-900">
+    <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
       <Card.Title>Add Feed</Card.Title>
     </Card.Header>
     <Card.Content class="p-4">

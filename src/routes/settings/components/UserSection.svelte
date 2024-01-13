@@ -8,7 +8,7 @@
 
 <div class="flex flex-col items-start justify-start gap-2">
   <Card.Root class="w-full">
-    <Card.Header class="dark:bg-zinc-900">
+    <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
       <Card.Title>API Token <i>TODO</i></Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
@@ -17,7 +17,7 @@
           briefkasten extension</a
         >
         you can use the following token:
-        <div class="flex items-center justify-between rounded-md p-2 font-mono dark:bg-zinc-700">
+        <div class="flex items-center justify-between rounded-md bg-zinc-100 p-2 font-mono dark:bg-zinc-700">
           {$page.data.session?.user?.userId}
           <button
             use:clipboard={$page.data.session?.user?.userId}
@@ -45,7 +45,7 @@
     </Card.Content>
   </Card.Root>
   <Card.Root class="w-full">
-    <Card.Header class="dark:bg-zinc-900">
+    <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
       <Card.Title>Import <i>TODO</i></Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
@@ -61,7 +61,7 @@
     </Card.Content>
   </Card.Root>
   <Card.Root class="w-full">
-    <Card.Header class="dark:bg-zinc-900">
+    <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
       <Card.Title>Export <i>TODO</i></Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
@@ -76,7 +76,7 @@
     </Card.Content>
   </Card.Root>
   <Card.Root class="w-full">
-    <Card.Header class="dark:bg-zinc-900">
+    <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
       <Card.Title>About</Card.Title>
     </Card.Header>
     <Card.Content class="p-4">

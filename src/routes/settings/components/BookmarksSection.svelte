@@ -4,7 +4,7 @@
 
 <div class="flex flex-col items-start justify-start gap-2">
   <Card.Root class="w-full">
-    <Card.Header class="dark:bg-zinc-900">
+    <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
       <Card.Title>Bookmark Settings</Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
