@@ -113,8 +113,8 @@ export const actions: Actions = {
       const metadata = await metascraperClient({ html: await resp.text(), url: url })
       const image = metadata.image ? metadata.image : metadata.logo as string
 
-      const imageResponse = await fetch(image)
-      const imageBuffer = await imageResponse.arrayBuffer()
+      // const imageResponse = await fetch(image)
+      // const imageBuffer = await imageResponse.arrayBuffer()
       // const palette = await splashy(Buffer.from(imageBuffer))
 
       // metadata.palette = palette

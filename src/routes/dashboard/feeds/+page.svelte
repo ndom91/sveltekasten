@@ -162,6 +162,9 @@
       </Table.Root>
     {:else}
       <EmptyState />
+      <p class="mx-auto w-1/2 text-center text-muted-foreground">
+        Get started by adding a feed in <a class="underline" href="/settings">settings</a>
+      </p>
     {/if}
   </div>
 </main>
