@@ -1,7 +1,17 @@
 import type { Bookmark, Category, Tag } from "$zod"
 
+type LoadedBookmark = {
+  bookmark: Bookmark & {
+    tags: {
+      tag: Tag
+    }[]
+  } & {
+    category: Category
+  }
+}
+
 type MetadataSidebarData = {
-  bookmark: Bookmark & { tags: string[] },
+  bookmark: LoadedBookmark
   categories?: Category[],
   tags?: Tag[]
 }
