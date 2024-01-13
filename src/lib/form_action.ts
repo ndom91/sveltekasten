@@ -9,7 +9,7 @@ type FormActionMessage = {
   message?: string;
 };
 
-export const form_action = (opts?: FormActionMessage, callback?: (data: any | unknown) => any) => {
+export const form_action = (_opts?: FormActionMessage, callback?: (data: any | unknown) => any) => {
   return function form_enhance() {
     // loading.setLoading(true);
     return async ({ result }: { result: ActionResult<{ message: string }> }) => {
