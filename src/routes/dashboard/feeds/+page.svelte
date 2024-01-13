@@ -94,7 +94,7 @@
         nextElement.focus()
       }
     }
-    if (e.ctrlKey && e.key === "Enter") {
+    if (e.key === "o") {
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
       const currentActiveElementIndex = allItems.findIndex(

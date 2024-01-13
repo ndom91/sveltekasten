@@ -95,11 +95,11 @@
               </td>
             </tr>
             <tr>
-              <td>Open focused feed element in new tab</td>
-              <td><Kbd key="Ctrl/Cmd" /> <span class="text-xs">+</span> <Kbd key="Enter" /></td>
+              <td>Open original link</td>
+              <td><Kbd key="o" /></td>
             </tr>
             <tr>
-              <td>Open RSS article to read</td>
+              <td>Toggle RSS article open to read</td>
               <td><Kbd key="\" /></td>
             </tr>
           </tbody>
