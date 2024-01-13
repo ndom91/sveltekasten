@@ -90,7 +90,7 @@
     />
   </div>
   <div class="flex flex-col">
-    <span class="line-clamp-1 text-clip pb-2 text-xl font-bold">
+    <span class="line-clamp-1 min-h-[28px] w-auto text-xl font-bold">
       {feedEntry.title}
     </span>
     <p
