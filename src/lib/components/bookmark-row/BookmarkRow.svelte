@@ -4,11 +4,11 @@
   import * as Table from "$lib/components/ui/table"
   import { Badge } from "$lib/components/ui/badge"
   import { useInterface } from "$state/ui.svelte"
-  import type { Bookmark } from "$zod"
+  import type { Bookmark, Tag, Category } from "$zod"
 
   const ui = useInterface()
 
-  const { bookmark } = $props<{ bookmark: Bookmark }>()
+  const { bookmark } = $props<{ bookmark: Bookmark & { tags: { tag: Tag }[] } & { category: Category } }>()
 
   let isDeleteDialogOpen = $state(false)
   let isOptionsOpen = $state(false)
@@ -18,6 +18,7 @@
   }
   const handleMetadataSidebarOpen = () => {
     ui.setMetadataSidebarData({
+      // @ts-expect-error
       bookmark,
       categories: $page.data.categories,
       tags: $page.data.tags,
@@ -50,8 +51,8 @@
     </span>
     <p class="line-clamp-2 break-words">{bookmark.desc}</p>
     <div class="flex items-center justify-start gap-2 text-sm text-muted">
-      {#if bookmark.metadata?.logo?.url}
-        <img src={bookmark.metadata?.logo?.url} alt="URL Favicon" class="size-4 rounded-full" />
+      {#if bookmark.metadata?.logo}
+        <img src={bookmark.metadata?.logo} alt="URL Favicon" class="size-4 rounded-full" />
       {/if}
       <span>
         {bookmark.url}
