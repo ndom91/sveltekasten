@@ -25,6 +25,9 @@
       }
       ui.toggleQuickAdd()
     },
+    onSubmit: ({ formElement }) => {
+      formElement.reset()
+    },
   })
 
   const tagValues = $derived(

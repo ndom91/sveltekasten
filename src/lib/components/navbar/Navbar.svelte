@@ -15,11 +15,11 @@
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.repeat || event.target instanceof HTMLInputElement) return
-    if (event.altKey && event.code === "KeyN") {
+    if (event.altKey && event.key === "n") {
       event.preventDefault()
       ui.toggleQuickAdd()
     }
-    if (event.code === "Slash") {
+    if (event.key === "/") {
       event.preventDefault()
       searchInputEl?.focus()
     }
@@ -34,7 +34,9 @@
 <nav
   class="mx-auto flex h-20 w-full items-center justify-between border-b border-b-zinc-100 p-4 dark:border-b-zinc-900"
 >
-  <Breadcrumbs />
+  <div>
+    <Breadcrumbs />
+  </div>
   <div class="flex items-center justify-end gap-4">
     {#if !simple}
       <div
@@ -78,6 +80,7 @@
               <Tooltip.Trigger asChild let:builder={tooltipBuilder}>
                 <Button
                   builders={[popoverBuilder, tooltipBuilder]}
+                  onclick={() => ui.toggleQuickAdd()}
                   variant="outline"
                   class="size-11 rounded-full p-0"
                 >

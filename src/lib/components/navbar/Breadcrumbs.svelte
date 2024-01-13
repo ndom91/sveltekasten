@@ -18,7 +18,7 @@
   }
 </script>
 
-<div class="flex items-center font-light">
+<div class="flex hidden items-center font-light md:block">
   {#each crumbs as c, i}
     {#if i == crumbs.length - 1}
       <span class="p-1">
