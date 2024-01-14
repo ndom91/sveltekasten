@@ -19,6 +19,9 @@ type MetadataSidebarData = {
 const searching = $state(false);
 let searchQuery = $state('');
 
+// Feed Page
+let showUnreadOnly = $state(false)
+
 // Sidebars
 let metadataSidebarOpen = $state(false);
 let metadataSidebarData = $state<MetadataSidebarData>({
@@ -58,6 +61,10 @@ export function useInterface() {
     get searchQuery() { return searchQuery },
     set searchQuery(query) { searchQuery = query },
     updateSearchQuery: (e: string): string => searchQuery = e,
+
+    // Feed Page
+    get showUnreadOnly() { return showUnreadOnly },
+    set showUnreadOnly(query) { showUnreadOnly = query },
 
     // UI Elements
     get metadataSidebarOpen() { return metadataSidebarOpen },

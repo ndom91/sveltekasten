@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onDestroy } from "svelte"
   import toast from "svelte-french-toast"
-  import * as Table from "$lib/components/ui/table"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { FeedRow } from "$lib/components/feed-row"
   import { Skeleton } from "$lib/components/ui/skeleton"
@@ -15,9 +14,13 @@
   let pageNumber = $state(1)
   let loading = $state(false)
   let totalItemCount = $state<number>(data.feedEntries?.count ?? 1)
-  let allItems = $state<FeedEntry & { feed: Feed; feedMedia: FeedEntryMedia }[]>(
+  let allItems = $state<(FeedEntry & { feed: Feed; feedMedia: FeedEntryMedia })[]>(
     data.feedEntries?.data ?? [],
   )
+
+  $effect(() => {
+    allItems = data.feedEntries?.data ?? []
+  })
 
   // Log error from page server loading
   if (data.error) {
@@ -53,10 +56,11 @@
 
     if (
       // Skip if all items already loaded
-      (allItems.length >= totalItemCount) ||
+      allItems.length >= totalItemCount ||
       // Skip if list is less than window to avoid loop
-      listWrapperEl && listWrapperEl.scrollHeight < window.innerHeight
-    ) return
+      (listWrapperEl && listWrapperEl.scrollHeight < window.innerHeight)
+    )
+      return
 
     const res = await fetch(`/api/feeds?skip=${skip}&limit=${limit}`)
     const { data: additionalResults } = await res.json()
@@ -67,10 +71,18 @@
   // Handle search input
   let activeFeedEntries = $derived(async () => {
     if (!ui.searchQuery)
-      return allItems.filter((item) => {
-        const feed = data.feeds?.data?.find((feed) => feed.id === item.feed?.id)
-        return feed?.visible
-      })
+      return allItems
+        .filter((item) => {
+          if (ui.showUnreadOnly) {
+            return !!item.unread
+          } else {
+            return item
+          }
+        })
+        .filter((item) => {
+          const feed = data.feeds?.data?.find((feed) => feed.id === item.feed?.id)
+          return feed?.visible
+        })
     const res = await fetch("/api/search", {
       method: "POST",
       headers: {
@@ -149,9 +161,7 @@
           {#each feedEntries as feedEntry}
             <FeedRow {feedEntry} />
           {:else}
-            <div class="my-8 w-full text-center text-3xl">
-              No entries found
-            </div>
+            <div class="my-8 w-full text-center text-3xl">No entries found</div>
           {/each}
           <div
             bind:this={elementRef}

@@ -1,13 +1,19 @@
 <script lang="ts">
   import { page } from "$app/stores"
+  import type { PageServerLoad } from "./$types";
   import { Badge } from "$lib/components/ui/badge"
   import { Button } from "$lib/components/ui/button"
   import { Checkbox } from "$lib/components/ui/checkbox"
-  import type { Feed } from "$zod"
+  import type { Feed, FeedEntry } from "$zod"
   import { useInterface } from "$state/ui.svelte"
   const ui = useInterface()
 
-  const { data: feeds, count: feedsCount } = $page.data.feeds
+  const { data: feeds } = $page.data.feeds as PageServerLoad.feeds.data
+  let showUnreadOnly = $state(false)
+
+  const handleToggleUnreadOnly = () => {
+    ui.showUnreadOnly = !ui.showUnreadOnly
+  }
 
   const handleMarkAllRead = async (feed: Feed) => {
     await fetch("/api/feeds/mark-all-read", {
@@ -25,7 +31,15 @@
 <div class="flex h-full items-center justify-start gap-4">
   <div class="flex h-full flex-col gap-4 p-6">
     <div class="flex items-center justify-between">
-      <h2>Feeds</h2>
+      <h2>Filters</h2>
+    </div>
+    <div class="grid grid-cols-[30px_1fr] justify-start gap-y-4">
+      <div class="flex items-start justify-center pt-1">
+        <Checkbox on:click={handleToggleUnreadOnly} id="unread-only" bind:checked={showUnreadOnly} />
+      </div>
+      <div class="flex flex-col items-start gap-2">
+        Unread Only
+      </div>
     </div>
     <div class="grid grid-cols-[30px_1fr] justify-start gap-y-4">
       {#each feeds as feed}
