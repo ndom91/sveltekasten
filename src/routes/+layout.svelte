@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Toaster } from "svelte-french-toast"
-  import { onNavigate } from "$app/navigation"
+  import { goto, onNavigate } from "$app/navigation"
   import KeyboardShortcutsHelp from "$lib/components/KeyboardShortcutsHelp.svelte"
   import "$lib/styles/style.css"
 
@@ -23,6 +23,26 @@
     if ((e.ctrlKey || e.metaKey) && e.key === "/") {
       e.preventDefault()
       showKeyboardShortcuts = !showKeyboardShortcuts
+    }
+    if (e.shiftKey && e.key === "!") {
+      e.preventDefault()
+      goto('/dashboard')
+    }
+    if (e.shiftKey && e.key === "@") {
+      e.preventDefault()
+      goto('/dashboard/feeds')
+    }
+    if (e.shiftKey && e.key === "#") {
+      e.preventDefault()
+      goto('/dashboard/categories')
+    }
+    if (e.shiftKey && e.key === "$") {
+      e.preventDefault()
+      goto('/dashboard/tags')
+    }
+    if (e.shiftKey && e.key === "%") {
+      e.preventDefault()
+      goto('/settings')
     }
   }
 </script>

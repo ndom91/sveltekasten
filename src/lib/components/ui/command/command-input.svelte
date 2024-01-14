@@ -3,7 +3,7 @@
   import { cn } from "$lib/utils"
   import Logo from "$lib/assets/Logo.svelte"
 
-  type $$Props = CommandPrimitive.InputProps
+  type $$Props = CommandPrimitive.InputProps & { type?: string }
 
   let className: string | undefined | null = undefined
   export { className as class }
@@ -13,7 +13,7 @@
 
 <div class="flex items-center border-b px-2" data-cmdk-input-wrapper="">
   {#if type === "command-input"}
-    <Logo class="size-6 mr-2 text-zinc-800 dark:text-zinc-50" />
+    <Logo class="!size-7 mr-2 !overflow-visible text-zinc-800 dark:text-zinc-50" />
   {/if}
   <CommandPrimitive.Input
     class={cn(

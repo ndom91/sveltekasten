@@ -6,7 +6,7 @@
 </script>
 
 <Dialog.Root bind:open>
-  <Dialog.Content>
+  <Dialog.Content class="!w-[clamp(700px,_33%_,1000px)] !max-w-none">
     <Dialog.Header>
       <Dialog.Title>Keyboard Shortcuts</Dialog.Title>
       <Dialog.Description>
@@ -16,30 +16,48 @@
               <td colspan="2">
                 <div class="text-lg dark:text-zinc-100">Global</div>
               </td>
+              <td colspan="2">
+                <div class="text-lg dark:text-zinc-100">Navigation</div>
+              </td>
             </tr>
             <tr>
               <td>Show Shortcut Help</td>
               <td><Kbd key="Ctrl/Cmd" /> <span class="text-xs">+</span> <Kbd key="?" /></td>
+              <td>Navigate to Bookmarks</td>
+              <td><Kbd key="Shift" /> <span class="text-xs">+</span> <Kbd key="1" /></td>
             </tr>
             <tr>
               <td>Toggle Right Sidebar</td>
               <td><Kbd key="]" /></td>
+              <td>Navigate to Feeds</td>
+              <td><Kbd key="Shift" /> <span class="text-xs">+</span> <Kbd key="2" /></td>
             </tr>
             <tr>
               <td>Toggle Left Sidebar</td>
               <td><Kbd key="[" /></td>
+              <td>Navigate to Categories</td>
+              <td><Kbd key="Shift" /> <span class="text-xs">+</span> <Kbd key="3" /></td>
             </tr>
             <tr>
               <td>Focus search input</td>
               <td><Kbd key="/" /></td>
+              <td>Navigate to Tags</td>
+              <td><Kbd key="Shift" /> <span class="text-xs">+</span> <Kbd key="4" /></td>
             </tr>
             <tr>
               <td>Open "Quick Add" Dialog</td>
               <td><Kbd key="Alt" /> <span class="text-xs">+</span> <Kbd key="N" /></td>
+              <td>Navigate to Settings</td>
+              <td><Kbd key="Shift" /> <span class="text-xs">+</span> <Kbd key="5" /></td>
+            </tr>
+            <tr>
+              <td>Open Command Dialog</td>
+              <td><Kbd key="Ctrl/Cmd" /> <span class="text-xs">+</span> <Kbd key="K" /></td>
+              <td colspan="2" />
             </tr>
             <tr>
               <td colspan="2">
-                <div class="text-lg dark:text-zinc-100">RSS Feed List</div>
+                <div class="text-lg dark:text-zinc-100">Items Lists</div>
               </td>
             </tr>
             <tr>
