@@ -1,6 +1,6 @@
 <script lang="ts">
   import { cn } from "$lib/utils"
-  import { page } from "$app/stores"
+  // import { page } from "$app/stores"
   import { format } from "date-fns"
   import { Badge } from "$lib/components/ui/badge"
   import type { FeedEntry, FeedEntryMedia } from "$zod"
@@ -64,12 +64,12 @@
   role="row"
   bind:this={card}
   tabindex="0"
-  class="relative mx-4 grid grid-cols-[15rem_1fr] gap-4 rounded-lg rounded-l-none border-l-4 border-transparent p-4 outline-none transition-all duration-300 focus:border-zinc-500 focus:bg-zinc-100 focus:outline-none dark:focus:bg-zinc-900"
+  class="grid relative gap-4 p-4 mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none grid-cols-[15rem_1fr] dark:focus:bg-zinc-900 focus:border-zinc-500 focus:bg-zinc-100"
   on:mouseleave={closeButtonGroup}
   on:mouseenter={openButtonGroup}
 >
   {#if feedEntry.unread}
-    <div class="size-4 absolute left-2 top-2 rounded-full bg-emerald-400 duration-1000" />
+    <div class="absolute top-2 left-2 bg-emerald-400 rounded-full duration-1000 size-4" />
   {/if}
   <div>
     <img
@@ -78,11 +78,11 @@
           feedEntry.title.replaceAll(" ", "").substring(0, 5).toLowerCase(),
         )}/240/153.webp`}
       alt="Feed Item Hero"
-      class="rounded-md object-cover"
+      class="object-cover rounded-md"
     />
   </div>
   <div class="flex flex-col">
-    <span class="line-clamp-1 min-h-[28px] w-auto text-xl font-bold">
+    <span class="w-auto text-xl font-bold line-clamp-1 min-h-[28px]">
       {feedEntry.title}
     </span>
     <p
@@ -101,19 +101,19 @@
     >
       {@html feedEntry.contentSnippet}
     </p>
-    <div class="mt-2 flex items-center justify-start gap-2 text-sm text-muted">
+    <div class="flex gap-2 justify-start items-center mt-2 text-sm text-muted">
       {#if feedEntry.link}
         <img
           src={`https://${new URL(feedEntry.link).hostname}/favicon.ico`}
           alt="URL Favicon"
-          class="size-4 rounded-full"
+          class="rounded-full size-4"
         />
         <a target="_blank" href={feedEntry.link} class="line-clamp-1 text-clip">
           {feedEntry.link}
         </a>
       {/if}
     </div>
-    <span class="mt-2 flex flex-wrap gap-2">
+    <span class="flex flex-wrap gap-2 mt-2">
       <Badge variant="secondary">
         {format(feedEntry.createdAt, "H:mm d MMM yyyy")}
       </Badge>
