@@ -1,7 +1,7 @@
 import prisma from "$lib/prisma";
 import { fail } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
-import type { Feed } from "$zod";
+import type { Feed, FeedEntry } from "$zod";
 
 export const load: PageServerLoad = async ({ parent, locals, url }) => {
   await parent()
