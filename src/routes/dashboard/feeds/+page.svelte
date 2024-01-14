@@ -125,7 +125,7 @@
       )
       const targetLink = allItems[currentActiveElementIndex]?.link
       if (!targetLink) {
-        toast.error("No item focused to open")
+        toast.error("No item selected")
         return
       }
       window.open(targetLink, "_target")
