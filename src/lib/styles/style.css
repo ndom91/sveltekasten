@@ -111,34 +111,40 @@
   }
 }
 
+/* 2024 Reset */
+
 textarea {
   form-sizing: content;
 }
 
-table tr {
-  @apply border-b-0 !important;
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
 }
 
-/* width */
+p {
+  text-wrap: pretty;
+}
+
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   border-radius: 100vh;
   background: transparent;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: #3c3b3b3b;
   border-radius: 100vh;
   transition: all 250ms ease-in-out;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #3c3b3b4b;
   cursor: pointer;
@@ -146,5 +152,5 @@ table tr {
 
 /* RSS Feed Content */
 .prose iframe {
-  @apply !relative !aspect-video !max-w-screen-md;
+  @apply  !relative !aspect-video !max-w-screen-md;
 }
