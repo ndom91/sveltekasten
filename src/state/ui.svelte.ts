@@ -1,13 +1,12 @@
 import type { Bookmark, Category, Tag } from "$zod"
 
-type LoadedBookmark = {
-  bookmark: Bookmark & {
-    tags: {
-      tag: Tag
-    }[]
-  } & {
-    category: Category
-  }
+type LoadedBookmark = Bookmark & {
+  metadata: Record<string, string>
+  tags: {
+    tag: Tag
+  }[]
+} & {
+  category: Category
 }
 
 type MetadataSidebarData = {
@@ -25,6 +24,14 @@ let metadataSidebarOpen = $state(false);
 let metadataSidebarData = $state<MetadataSidebarData>({
   bookmark: {
     id: "",
+    category: {
+      userId: "",
+      description: "",
+      createdAt: new Date(),
+      updatedAt: new Date,
+      id: "",
+      name: "",
+    },
     title: "",
     url: "",
     image: "",

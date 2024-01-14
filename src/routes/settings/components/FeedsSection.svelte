@@ -32,7 +32,7 @@
           <div class="flex-grow">URL</div>
           <div class="w-24">Actions</div>
         </div>
-        {#each $page.data.feeds.data as feed}
+        {#each $page.data?.feeds?.data as feed}
           <div class="flex w-full items-center justify-start" role="row">
             <div class="w-64 font-mono" role="cell">
               {feed.id}
