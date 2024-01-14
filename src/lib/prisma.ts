@@ -1,52 +1,50 @@
-import { Prisma, PrismaClient } from '@prisma/client'
+import { Prisma, PrismaClient } from "@prisma/client"
 
-// Prisma workaround: https://github.com/prisma/prisma/discussions/3087
-// const findManyAndCount = {
-//   name: 'findManyAndCount',
-//   model: {
-//     $allModels: {
-//       findManyAndCount<Model, Args>(
-//         this: Model,
-//         args: Prisma.Exact<Args, Prisma.Args<Model, 'findMany'>>
-//       ): Promise<[
-//         Prisma.Result<Model, Args, 'findMany'>,
-//         number,
-//         Args extends { take: number } ? number : undefined
-//       ]> {
-//         return prisma.$transaction([
-//           (this as any).findMany(args),
-//           (this as any).count({ where: (args as any).where })
-//         ]) as any;
-//       }
-//     }
-//   }
-// }
-
-// function createExtendedClient() {
-//   return new PrismaClient().$extends(findManyAndCount);
-// }
-//
-// type ExtendedPrismaClient = ReturnType<typeof createExtendedClient>;
-// type PC = Omit<ExtendedPrismaClient, keyof PrismaClient> & PrismaClient
-//
-// const prisma = createExtendedClient() as unknown as PC;
-//
-// export default prisma
-const prisma = new PrismaClient().$extends({
-  name: 'findManyAndCount',
+// https://github.com/prisma/prisma/discussions/3087#discussioncomment-8112411
+const findManyAndCount = {
+  name: "findManyAndCount",
   model: {
     $allModels: {
       findManyAndCount<Model, Args>(
         this: Model,
-        args: Prisma.Exact<Args, Prisma.Args<Model, 'findMany'>>
-      ): Promise<[Prisma.Result<Model, Args, 'findMany'>, number]> {
+        args: Prisma.Exact<Args, Prisma.Args<Model, "findMany">>,
+      ): Promise<
+        [
+          Prisma.Result<Model, Args, "findMany">,
+          number,
+          Args extends { take: number } ? number : undefined,
+        ]
+      > {
         return prisma.$transaction([
           (this as any).findMany(args),
-          (this as any).count({ where: (args as any).where })
-        ]) as any;
-      }
-    }
+          (this as any).count({ where: (args as any).where }),
+        ]) as any
+      },
+    },
+  },
+}
+
+type FindManyAndCountType = typeof findManyAndCount.model.$allModels.findManyAndCount
+
+// Apply the inferred types to the extended models
+type ModelsWithCustomMethods = {
+  [Model in keyof PrismaClient]: PrismaClient[Model] extends {
+    findMany: (...args: any[]) => Promise<any>
   }
-});
+    ? {
+        findManyAndCount: FindManyAndCountType
+      } & PrismaClient[Model]
+    : PrismaClient[Model]
+}
+
+type ExtendedPrismaClient = PrismaClient & ModelsWithCustomMethods
+
+function createExtendedClient(): ExtendedPrismaClient {
+  const prisma = new PrismaClient() as unknown as ExtendedPrismaClient
+  prisma.$extends(findManyAndCount)
+  return prisma
+}
+
+const prisma: ExtendedPrismaClient = createExtendedClient()
 
 export default prisma
