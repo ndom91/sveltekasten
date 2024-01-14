@@ -15,19 +15,6 @@
       event.preventDefault()
       isCommandOpen = !isCommandOpen
     }
-    // TODO: Rethink these shortcuts
-    // if ((event.ctrlKey || event.metaKey) && event.code === "KeyD") {
-    //   event.preventDefault()
-    //   goto("/dashboard")
-    // }
-    // if ((event.ctrlKey || event.metaKey) && event.code === "KeyC") {
-    //   event.preventDefault()
-    //   goto("/dashboard/categories")
-    // }
-    // if ((event.ctrlKey || event.metaKey) && event.code === "KeyT") {
-    //   event.preventDefault()
-    //   goto("/dashboard/tags")
-    // }
   }
 
   const openQuickAdd = () => {
@@ -48,13 +35,16 @@
     <Command.Empty>No results found.</Command.Empty>
     <Command.Group heading="Pages">
       <Command.Item onSelect={() => goto("/dashboard")} class="flex justify-between">
-        Dashboard <KeyboardIndicator class="text-xs" key="⌘D" />
+        Dashboard <KeyboardIndicator class="text-xs" key="Shift + 1" />
       </Command.Item>
-      <Command.Item onSelect={() => goto("/categories")} class="flex justify-between">
-        Categories <KeyboardIndicator class="text-xs" key="⌘C" />
+      <Command.Item onSelect={() => goto("/dashboard/feeds")} class="flex justify-between">
+        Feeds <KeyboardIndicator class="text-xs" key="Shift + 2" />
       </Command.Item>
-      <Command.Item onSelect={() => goto("/tags")} class="flex justify-between">
-        Tags <KeyboardIndicator class="text-xs" key="⌘T" />
+      <Command.Item onSelect={() => goto("/dashboard/categories")} class="flex justify-between">
+        Categories <KeyboardIndicator class="text-xs" key="Shift + 3" />
+      </Command.Item>
+      <Command.Item onSelect={() => goto("/dashboard/tags")} class="flex justify-between">
+        Tags <KeyboardIndicator class="text-xs" key="Shift + 4" />
       </Command.Item>
     </Command.Group>
     <Command.Separator />
