@@ -26,6 +26,7 @@
 
   // Setup infinite scrolling
   let elementRef = $state<HTMLElement>()
+  let listWrapperEl = $state<HTMLElement>()
   let observer: IntersectionObserver | null = $state(null)
 
   $effect(() => {
@@ -50,8 +51,12 @@
     const limit = 10
     const skip = 10 * (pageNumber - 1)
 
-    // Skip if all items already loaded
-    if (allItems.length >= totalItemCount) return
+    if (
+      // Skip if all items already loaded
+      (allItems.length >= totalItemCount) ||
+      // Skip if list is less than window to avoid loop
+      listWrapperEl && listWrapperEl.scrollHeight < window.innerHeight
+    ) return
 
     const res = await fetch(`/api/feeds?skip=${skip}&limit=${limit}`)
     const { data: additionalResults } = await res.json()
@@ -126,7 +131,7 @@
 <main class="h-full">
   <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start">
     {#if data.feedEntries?.count > 0}
-      <div class="h-full overflow-scroll">
+      <div bind:this={listWrapperEl} class="h-full overflow-scroll">
         {#await activeFeedEntries()}
           {#each Array.from({ length: 10 }) as _}
             <div class="h-40 text-3xl">
@@ -144,7 +149,7 @@
           {#each feedEntries as feedEntry}
             <FeedRow {feedEntry} />
           {:else}
-            <div class="mx-auto w-full text-3xl">
+            <div class="my-8 w-full text-center text-3xl">
               No entries found
             </div>
           {/each}
