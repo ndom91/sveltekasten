@@ -9,11 +9,11 @@
   import { Button } from "$lib/components/ui/button"
   import * as Select from "$lib/components/ui/select"
   import * as Tooltip from "$lib/components/ui/tooltip"
-  import TagInput, { type Tag } from "$lib/components/TagInput.svelte"
+  import TagInput from "$lib/components/TagInput.svelte"
 
   import { format } from "date-fns"
   import toast from "svelte-french-toast"
-  import type { TagsOnBookmarks } from "$zod"
+  import type { Tag, TagsOnBookmarks } from "$zod"
 
   const ui = useInterface()
 
@@ -92,14 +92,14 @@
           bind:value={ui.metadataSidebarData.bookmark.url}
           class={cn(
             "flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-            ui.metadataSidebarData.bookmark.metadata?.logo?.url && "pl-10",
+            ui.metadataSidebarData.bookmark.metadata?.logo && "pl-10",
             !isEditMode ? "cursor-default text-muted" : "bg-zinc-100 dark:bg-zinc-950",
           )}
         />
-        {#if ui.metadataSidebarData.bookmark.metadata?.logo?.url}
+        {#if ui.metadataSidebarData.bookmark.metadata?.logo}
           <img
             class="size-4 absolute left-3 top-3"
-            src={ui.metadataSidebarData.bookmark.metadata?.logo?.url}
+            src={ui.metadataSidebarData.bookmark.metadata?.logo}
             alt="URL Favicon"
           />
         {/if}
