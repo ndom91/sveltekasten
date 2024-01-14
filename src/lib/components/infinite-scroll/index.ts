@@ -1,5 +1,3 @@
-import { infiniteScroll } from './IntersectionObserver';
+import { infiniteScroll } from "./IntersectionObserver"
 
-export {
-  infiniteScroll
-}
+export { infiniteScroll }

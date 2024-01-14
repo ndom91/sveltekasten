@@ -54,17 +54,17 @@
       aria-expanded={open}
       class={cn("w-full justify-between", className)}
     >
-      <div class="flex w-full justify-start gap-2 truncate">
+      <div class="flex gap-2 justify-start w-full truncate">
         {#each selectedValue as value}
           <Badge class="text-sm">
             {tags.find((tag) => tag.value === value)?.label}
             <Button
               onclickcapture={(e: MouseEvent) => handleTagRemove(e, value)}
               variant="link"
-              class="h-auto p-0 text-black"
+              class="p-0 h-auto text-black"
             >
               <svg
-                class="size-4 ml-1"
+                class="ml-1 size-4"
                 data-slot="icon"
                 fill="none"
                 stroke-width="1.5"
@@ -83,7 +83,7 @@
         {/each}
       </div>
       <svg
-        class="size-4 ml-2 opacity-50"
+        class="ml-2 opacity-50 size-4"
         data-slot="icon"
         fill="none"
         stroke-width="1.5"

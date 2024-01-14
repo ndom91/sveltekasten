@@ -7,7 +7,7 @@
 
 <div class={cn("min-h-2 grid place-items-center rounded-lg", className)}>
   <svg
-    class="h-4 w-4 animate-spin text-gray-900/50"
+    class="w-4 h-4 animate-spin text-gray-900/50"
     viewBox="0 0 64 64"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

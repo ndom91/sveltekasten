@@ -41,24 +41,24 @@
   bind:this={card}
   data-id={bookmark.id}
   role="row"
-  class="relative mx-4 grid grid-cols-[15rem_1fr] gap-4 rounded-lg rounded-l-none border-l-4 border-transparent p-4 outline-none transition-all duration-300 focus:border-zinc-500 focus:bg-zinc-100 focus:outline-none dark:focus:bg-zinc-900"
+  class="grid relative gap-4 p-4 mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none grid-cols-[15rem_1fr] dark:focus:bg-zinc-900 focus:border-zinc-500 focus:bg-zinc-100"
   on:mouseleave={closeButtonGroup}
   on:mouseenter={openButtonGroup}
 >
   {#await import("./DeleteDialog.svelte") then { default: DeleteDialog }}
     <svelte:component this={DeleteDialog} bind:open={isDeleteDialogOpen} bookmarkId={bookmark.id} />
   {/await}
-  <div >
-    <img src={bookmark.image} alt="Bookmark Screenshot" class="rounded-md object-cover" />
+  <div>
+    <img src={bookmark.image} alt="Bookmark Screenshot" class="object-cover rounded-md" />
   </div>
   <div class="flex flex-col gap-2">
-    <span class="line-clamp-1 text-clip text-xl font-bold">
+    <span class="text-xl font-bold line-clamp-1 text-clip">
       {bookmark.title}
     </span>
-    <p class="line-clamp-2 break-words">{bookmark.desc}</p>
-    <div class="flex items-center justify-start gap-2 text-sm text-muted">
+    <p class="break-words line-clamp-2">{bookmark.desc}</p>
+    <div class="flex gap-2 justify-start items-center text-sm text-muted">
       {#if bookmark.metadata?.logo}
-        <img src={bookmark.metadata?.logo} alt="URL Favicon" class="size-4 rounded-full" />
+        <img src={bookmark.metadata?.logo} alt="URL Favicon" class="rounded-full size-4" />
       {/if}
       <span>
         {bookmark.url}

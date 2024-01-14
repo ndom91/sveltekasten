@@ -36,7 +36,7 @@
 </script>
 
 <form method="post" action="/dashboard?/quickAdd" use:enhance class="flex flex-col gap-2">
-  <div class="align-start flex flex-col gap-2">
+  <div class="flex flex-col gap-2 align-start">
     <Label for="title">Title</Label>
     <input
       type="text"
@@ -52,7 +52,7 @@
     {#if $errors.title}<span class="text-xs text-red-400">{$errors.title}</span>{/if}
   </div>
 
-  <div class="align-start flex flex-col gap-2">
+  <div class="flex flex-col gap-2 align-start">
     <Label for="url">URL</Label>
     <input
       type="text"
@@ -68,7 +68,7 @@
     {#if $errors.url}<span class="text-xs text-red-400">{$errors.url}</span>{/if}
   </div>
 
-  <div class="align-start flex flex-col gap-2">
+  <div class="flex flex-col gap-2 align-start">
     <Label for="category">Category</Label>
     <Select.Root
       name="categoryId"
@@ -90,13 +90,13 @@
     {#if $errors.category}<span class="text-xs text-red-400">{$errors.category}</span>{/if}
   </div>
 
-  <div class="align-start flex flex-col gap-2">
+  <div class="flex flex-col gap-2 align-start">
     <Label for="tags">Tags</Label>
     <TagInput setFormTags={(v) => ($form.tagIds = v)} tags={tagValues} class="bg-transparent" />
     <input type="hidden" name="tagIds" id="tagIds" value={$form.tagIds} />
   </div>
 
-  <div class="align-start flex flex-col gap-2">
+  <div class="flex flex-col gap-2 align-start">
     <Label for="description">Description</Label>
     <input
       type="text"

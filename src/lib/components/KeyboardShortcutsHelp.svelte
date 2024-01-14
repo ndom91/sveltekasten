@@ -62,10 +62,10 @@
             </tr>
             <tr>
               <td>Focus element in list down</td>
-              <td class="flex items-stretch gap-2">
+              <td class="flex gap-2 items-stretch">
                 <Kbd key="j" /> <span class="self-center text-xs">or</span>
                 <Kbd>
-                  <div class="grid h-full place-items-center">
+                  <div class="grid place-items-center h-full">
                     <svg
                       class="size-3"
                       data-slot="icon"
@@ -88,10 +88,10 @@
             </tr>
             <tr>
               <td>Focus element in list up</td>
-              <td class="flex items-stretch gap-2">
+              <td class="flex gap-2 items-stretch">
                 <Kbd key="k" /> <span class="self-center text-xs">or</span>
                 <Kbd>
-                  <div class="grid h-full place-items-center">
+                  <div class="grid place-items-center h-full">
                     <svg
                       class="size-3"
                       data-slot="icon"

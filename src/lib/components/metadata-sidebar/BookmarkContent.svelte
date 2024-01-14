@@ -30,11 +30,11 @@
   method="post"
   action="/dashboard?/saveMetadataEdits"
   use:enhance={form_action()}
-  class="flex h-full items-center justify-start gap-4"
+  class="flex gap-4 justify-start items-center h-full"
 >
   <input type="hidden" name="id" value={ui.metadataSidebarData.bookmark.id} />
-  <div class="flex h-full flex-col gap-4 p-6">
-    <div class="flex items-center justify-between">
+  <div class="flex flex-col gap-4 p-6 h-full">
+    <div class="flex justify-between items-center">
       <h2>Metadata</h2>
       <Tooltip.Root>
         <Tooltip.Trigger asChild let:builder={tooltipBuilder}>
@@ -67,7 +67,7 @@
         </Tooltip.Content>
       </Tooltip.Root>
     </div>
-    <div class="flex flex-col items-start gap-2">
+    <div class="flex flex-col gap-2 items-start">
       <Label for="title">Title</Label>
       <input
         type="text"
@@ -98,7 +98,7 @@
         />
         {#if ui.metadataSidebarData.bookmark.metadata?.logo}
           <img
-            class="size-4 absolute left-3 top-3"
+            class="absolute top-3 left-3 size-4"
             src={ui.metadataSidebarData.bookmark.metadata?.logo}
             alt="URL Favicon"
           />
@@ -136,7 +136,7 @@
         }}
         onSelectedChange={(e) => (ui.metadataSidebarData.bookmark.categoryId = e?.value ?? null)}
       >
-        <Select.Trigger class="w-full enabled:bg-zinc-950 disabled:cursor-default">
+        <Select.Trigger class="w-full disabled:cursor-default enabled:bg-zinc-950">
           <Select.Value placeholder="Category" />
         </Select.Trigger>
         <Select.Input />
@@ -162,31 +162,31 @@
     </div>
     {#if ui.metadataSidebarData.bookmark.image}
       <div class={cn("w-full rounded-full border-b-2 border-zinc-100 px-8 dark:border-zinc-800")} />
-      <div class="mb-2 flex min-h-0 flex-col items-start gap-2">
+      <div class="flex flex-col gap-2 items-start mb-2 min-h-0">
         <h2>Cover Photo</h2>
         <img
           src={ui.metadataSidebarData.bookmark.image}
           alt="Bookmark Screenshot"
-          class="w-full rounded-md object-cover"
+          class="object-cover w-full rounded-md"
         />
       </div>
     {/if}
     <div class={cn("w-full rounded-full border-b-2 border-zinc-100 px-8 dark:border-zinc-800")} />
-    <div class="mb-2 flex min-h-0 flex-grow flex-col items-start gap-2">
+    <div class="flex flex-col flex-grow gap-2 items-start mb-2 min-h-0">
       <h2>Metadata</h2>
-      <div class="flex w-full justify-between text-sm">
+      <div class="flex justify-between w-full text-sm">
         <span class="font-bold">Language</span>
         <span>
           {ui.metadataSidebarData.bookmark.metadata?.lang}
         </span>
       </div>
-      <div class="flex w-full justify-between text-sm">
+      <div class="flex justify-between w-full text-sm">
         <span class="font-bold">Publisher</span>
         <span>
           {ui.metadataSidebarData.bookmark.metadata?.publisher}
         </span>
       </div>
-      <div class="flex w-full justify-between text-sm">
+      <div class="flex justify-between w-full text-sm">
         <span class="font-bold">Added</span>
         {#if ui.metadataSidebarData.bookmark.createdAt}
           <span>
@@ -194,14 +194,14 @@
           </span>
         {/if}
       </div>
-      <div class="flex w-full justify-between text-sm">
+      <div class="flex justify-between w-full text-sm">
         <span class="font-bold">Colors</span>
         {#if ui.metadataSidebarData.bookmark.metadata?.palette}
           <div class="flex gap-1">
             {#each ui.metadataSidebarData.bookmark.metadata?.palette as color}
               <button
                 onclick={(e) => copyColor(e, color)}
-                class="size-4 rounded-full"
+                class="rounded-full size-4"
                 style={`background-color: ${color}`}
               />
             {/each}

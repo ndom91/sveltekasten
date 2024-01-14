@@ -18,7 +18,7 @@
   }
 </script>
 
-<div class="flex hidden items-center font-light md:block">
+<div class="hidden items-center font-light md:block">
   {#each crumbs as c, i}
     {#if i == crumbs.length - 1}
       <span class="p-1">
@@ -26,7 +26,7 @@
       </span>
     {:else}
       <a
-        class="rounded-sm p-1 outline-none focus:outline-none focus:ring-2 focus:ring-zinc-200 dark:focus:ring-zinc-500"
+        class="p-1 rounded-sm outline-none focus:ring-2 focus:outline-none dark:focus:ring-zinc-500 focus:ring-zinc-200"
         href={c.href}>{c.label}</a
       >&nbsp;/&nbsp;
     {/if}

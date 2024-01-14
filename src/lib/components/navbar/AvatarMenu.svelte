@@ -13,7 +13,7 @@
 <ModeWatcher />
 <DropdownMenu.Root closeOnItemClick={false}>
   <DropdownMenu.Trigger
-    class="rounded-full outline-none transition duration-300 focus:outline-none focus:ring-2 focus:ring-zinc-200 dark:focus:ring-zinc-500"
+    class="rounded-full transition duration-300 outline-none focus:ring-2 focus:outline-none dark:focus:ring-zinc-500 focus:ring-zinc-200"
   >
     <Avatar.Root>
       <Avatar.Image
@@ -22,12 +22,12 @@
         class="rounded"
         alt="User Avatar"
       />
-      <Avatar.Fallback><Skeleton class="h-full w-full rounded-full" /></Avatar.Fallback>
+      <Avatar.Fallback><Skeleton class="w-full h-full rounded-full" /></Avatar.Fallback>
     </Avatar.Root>
   </DropdownMenu.Trigger>
   <DropdownMenu.Content transition={blur} transitionConfig={{ delay: 0, duration: 250 }}>
     <DropdownMenu.Group>
-      <DropdownMenu.Label class="line-clamp-1 w-full justify-start truncate">
+      <DropdownMenu.Label class="justify-start w-full line-clamp-1 truncate">
         {$page.data.session?.user?.name ?? $page.data.session?.user?.email}
       </DropdownMenu.Label>
       <DropdownMenu.Separator />

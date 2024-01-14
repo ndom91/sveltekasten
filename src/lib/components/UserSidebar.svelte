@@ -215,7 +215,7 @@
     <div class="flex">
       <AvatarMenu />
       {#if ui.userSidebarOpen}
-        <span class="text-md ml-4 flex items-center justify-start truncate">
+        <span class="flex justify-start items-center ml-4 text-md truncate">
           {$page.data.session?.user?.name ?? ""}
         </span>
       {/if}

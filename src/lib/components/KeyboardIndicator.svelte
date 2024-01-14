@@ -1,12 +1,18 @@
 <script lang="ts">
   import { cn } from "$lib/utils"
 
-  export let key: string = ''
+  export let key: string = ""
   let className: string = ""
   export { className as class }
 </script>
 
-<kbd {...$$restProps} class={cn("inline-block rounded-sm bg-zinc-300 p-1 text-zinc-800 dark:bg-zinc-600 dark:text-zinc-100", className)}>
+<kbd
+  {...$$restProps}
+  class={cn(
+    "inline-block rounded-sm bg-zinc-300 p-1 text-zinc-800 dark:bg-zinc-600 dark:text-zinc-100",
+    className,
+  )}
+>
   {#if $$slots.default}
     <slot />
   {:else if key}

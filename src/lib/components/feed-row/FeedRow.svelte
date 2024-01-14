@@ -7,7 +7,9 @@
   import dompurify from "dompurify"
 
   let { feedEntry } = $props<{
-    feedEntry: FeedEntry & { feedMedia: FeedEntryMedia[] }
+    feedEntry: FeedEntry & {
+      feedMedia: FeedEntryMedia[]
+    }
   }>()
 
   let isOptionsOpen = $state(false)

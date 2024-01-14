@@ -83,7 +83,7 @@
         on:click={handleDeleteDialogOpen}
       >
         <svg
-          class="size-5 text-red-700"
+          class="text-red-700 size-5"
           data-slot="icon"
           fill="none"
           stroke-width="1.5"

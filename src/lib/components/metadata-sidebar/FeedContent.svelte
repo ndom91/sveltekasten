@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores"
-  import type { PageServerLoad } from "./$types";
+  import type { PageServerLoad } from "./$types"
   import { Badge } from "$lib/components/ui/badge"
   import { Button } from "$lib/components/ui/button"
   import { Checkbox } from "$lib/components/ui/checkbox"
@@ -28,40 +28,42 @@
   }
 </script>
 
-<div class="flex h-full items-center justify-start gap-4">
-  <div class="flex h-full flex-col gap-4 p-6">
-    <div class="flex items-center justify-between">
+<div class="flex gap-4 justify-start items-center h-full">
+  <div class="flex flex-col gap-4 p-6 h-full">
+    <div class="flex justify-between items-center">
       <h2>Filters</h2>
     </div>
-    <div class="grid grid-cols-[30px_1fr] justify-start gap-y-4">
-      <div class="flex items-start justify-center pt-1">
-        <Checkbox on:click={handleToggleUnreadOnly} id="unread-only" bind:checked={showUnreadOnly} />
+    <div class="grid gap-y-4 justify-start grid-cols-[30px_1fr]">
+      <div class="flex justify-center items-start pt-1">
+        <Checkbox
+          on:click={handleToggleUnreadOnly}
+          id="unread-only"
+          bind:checked={showUnreadOnly}
+        />
       </div>
-      <div class="flex flex-col items-start gap-2">
-        Unread Only
-      </div>
+      <div class="flex flex-col gap-2 items-start">Unread Only</div>
     </div>
-    <div class="grid grid-cols-[30px_1fr] justify-start gap-y-4">
+    <div class="grid gap-y-4 justify-start grid-cols-[30px_1fr]">
       {#each feeds as feed}
-        <div class="flex items-start justify-center pt-1">
+        <div class="flex justify-center items-start pt-1">
           <Checkbox id={new URL(feed.url).host} bind:checked={feed.visible} />
         </div>
-        <div class="flex flex-col items-start gap-2">
-          <div class="flex items-center justify-start gap-2">
+        <div class="flex flex-col gap-2 items-start">
+          <div class="flex gap-2 justify-start items-center">
             <span> {new URL(feed.url).host} </span>
             <img
               src={`https://${new URL(feed.url).hostname}/favicon.ico`}
               alt="URL Favicon"
-              class="size-6 rounded-full"
+              class="rounded-full size-6"
             />
           </div>
           <div class="line-clamp-2 dark:text-zinc-600">
             {feed.description}
           </div>
-          <div class="flex items-center justify-start gap-2">
-            <Badge variant="outline" title="Unread" class="h-8 px-2 py-0">
+          <div class="flex gap-2 justify-start items-center">
+            <Badge variant="outline" title="Unread" class="py-0 px-2 h-8">
               <svg
-                class="size-4 mr-2"
+                class="mr-2 size-4"
                 data-slot="icon"
                 fill="none"
                 stroke-width="1.5"
@@ -80,10 +82,10 @@
             </Badge>
             <Button
               onclick={() => handleMarkAllRead(feed)}
-              class="h-8 rounded-full px-2 py-0 text-xs"
+              class="py-0 px-2 h-8 text-xs rounded-full"
             >
               <svg
-                class="size-4 mr-2"
+                class="mr-2 size-4"
                 data-slot="icon"
                 fill="none"
                 stroke-width="1.5"

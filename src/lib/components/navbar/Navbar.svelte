@@ -32,15 +32,15 @@
 
 <svelte:window on:keydown={handleKeyDown} />
 <nav
-  class="mx-auto flex h-20 w-full items-center justify-between border-b border-b-zinc-100 p-4 dark:border-b-zinc-900"
+  class="flex justify-between items-center p-4 mx-auto w-full h-20 border-b border-b-zinc-100 dark:border-b-zinc-900"
 >
   <div>
     <Breadcrumbs />
   </div>
-  <div class="flex items-center justify-end gap-4">
+  <div class="flex gap-4 justify-end items-center">
     {#if !simple}
       <div
-        class="relative rounded-md transition duration-300 focus-within:rounded-md focus-within:outline-none focus-within:ring-2 focus-within:ring-zinc-300 dark:focus-within:ring-zinc-800"
+        class="relative rounded-md transition duration-300 focus-within:rounded-md focus-within:ring-2 focus-within:outline-none dark:focus-within:ring-zinc-800 focus-within:ring-zinc-300"
       >
         <input
           type="text"
@@ -54,7 +54,7 @@
           class={"flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 pl-10 pr-10 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}
         />
         <svg
-          class="size-4 absolute left-3 top-3"
+          class="absolute top-3 left-3 size-4"
           data-slot="icon"
           fill="none"
           stroke-width="1.5"
@@ -69,10 +69,10 @@
             d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
           ></path>
         </svg>
-        <KeyboardIndicator key="/" class="absolute right-3 top-2 text-xs" />
+        <KeyboardIndicator key="/" class="absolute top-2 right-3 text-xs" />
       </div>
       <div
-        class="rounded-full transition duration-300 focus-within:rounded-full focus-within:outline-none focus-within:ring-2 focus-within:ring-zinc-300 dark:focus-within:ring-zinc-800"
+        class="rounded-full transition duration-300 focus-within:rounded-full focus-within:ring-2 focus-within:outline-none dark:focus-within:ring-zinc-800 focus-within:ring-zinc-300"
       >
         <Popover.Root open={ui.quickAddOpen}>
           <Tooltip.Root>
@@ -82,7 +82,7 @@
                   builders={[popoverBuilder, tooltipBuilder]}
                   onclick={() => ui.toggleQuickAdd()}
                   variant="outline"
-                  class="size-11 rounded-full p-0"
+                  class="p-0 rounded-full size-11"
                 >
                   <svg
                     class="size-5"
@@ -105,7 +105,7 @@
               </Tooltip.Trigger>
             </Popover.Trigger>
             <Tooltip.Content>
-              <p class="flex items-center justify-center">
+              <p class="flex justify-center items-center">
                 Quick add Bookmark <KeyboardIndicator key="Alt N" class="ml-2 text-xs" />
               </p>
             </Tooltip.Content>
@@ -121,14 +121,14 @@
         </Popover.Root>
       </div>
       <div
-        class="rounded-full transition duration-300 focus-within:rounded-full focus-within:outline-none focus-within:ring-2 focus-within:ring-zinc-300 dark:focus-within:ring-zinc-800"
+        class="rounded-full transition duration-300 focus-within:rounded-full focus-within:ring-2 focus-within:outline-none dark:focus-within:ring-zinc-800 focus-within:ring-zinc-300"
       >
         <Tooltip.Root>
           <Tooltip.Trigger asChild let:builder={tooltipBuilder}>
             <Button
               builders={[tooltipBuilder]}
               variant="outline"
-              class="size-11 rounded-full p-0"
+              class="p-0 rounded-full size-11"
               on:click={() => ui.toggleMetadataSidebar()}
             >
               {#if ui.metadataSidebarOpen}
@@ -170,7 +170,7 @@
             </Button>
           </Tooltip.Trigger>
           <Tooltip.Content>
-            <p class="flex items-center justify-center">
+            <p class="flex justify-center items-center">
               Toggle Sidebar <KeyboardIndicator key="]" class="ml-2 text-xs" />
             </p>
           </Tooltip.Content>
