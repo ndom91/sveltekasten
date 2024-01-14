@@ -1,9 +1,10 @@
-import { SvelteKitAuth } from "@auth/sveltekit"
-import type { Handle } from "@sveltejs/kit"
 import { sequence } from "@sveltejs/kit/hooks"
+import { SvelteKitAuth } from "@auth/sveltekit"
 import { PrismaAdapter } from "@auth/prisma-adapter"
+import type { Handle } from "@sveltejs/kit"
 import type { Provider } from "@auth/sveltekit/providers"
 import prisma from "$lib/prisma"
+
 import {
   AUTH_SECRET,
   AUTH_TRUST_HOST,
@@ -78,20 +79,22 @@ if (KEYCLOAK_ID && KEYCLOAK_SECRET) {
   )
 }
 
-// if (SMTP_HOST && SMTP_USER && SMTP_PASSWORD) {
-//   const Email = await import("@auth/sveltekit/providers/email");
-//   providers.push(Email.default({
-//     server: {
-//       host: SMTP_HOST,
-//       port: SMTP_PORT,
-//       auth: {
-//         user: SMTP_USER,
-//         pass: SMTP_PASSWORD,
-//       },
-//       from: SMTP_FROM,
-//     },
-//   }));
-// }
+if (SMTP_HOST && SMTP_USER && SMTP_PASSWORD) {
+  const Email = await import("@auth/sveltekit/providers/email")
+  providers.push(
+    Email.default({
+      server: {
+        host: SMTP_HOST,
+        port: SMTP_PORT,
+        auth: {
+          user: SMTP_USER,
+          pass: SMTP_PASSWORD,
+        },
+        from: SMTP_FROM,
+      },
+    }),
+  )
+}
 
 const handleGlobal: Handle = async ({ event, resolve }) => {
   // @ts-expect-error

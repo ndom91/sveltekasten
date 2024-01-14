@@ -128,11 +128,9 @@
 <main class="h-full">
   <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2">
     {#if data.bookmarks}
-      <div class="h-full overflow-scroll">
+      <div class="overflow-scroll h-full">
         {#await activeBookmarks()}
-          <div class="mx-auto w-full text-3xl">
-            Loading...
-          </div>
+          <div class="my-8 w-full text-3xl text-center">Loading...</div>
         {:then bookmarks}
           {#each bookmarks as bookmark}
             <BookmarkRow {bookmark} />
@@ -141,7 +139,7 @@
             <p class="mx-auto w-1/2 text-center text-muted-foreground">
               Get started by adding a bookmark with the
               <svg
-                class="size-7 inline rounded-md p-1 dark:bg-zinc-700"
+                class="inline p-1 rounded-md size-7 dark:bg-zinc-700"
                 data-slot="icon"
                 fill="none"
                 stroke-width="1.5"
@@ -159,9 +157,9 @@
               button above or by pressing <KeyboardIndicator class="text-sm" key="Alt N" />
             </p>
           {/each}
-          <div bind:this={elementRef} class="h-24 w-full" />
+          <div bind:this={elementRef} class="w-full h-24" />
         {:catch error}
-          <div class="mx-auto w-full text-3xl">
+          <div class="my-4 w-full text-3xl text-center">
             {error}
           </div>
         {/await}
@@ -171,7 +169,7 @@
       <p class="mx-auto w-1/2 text-center text-muted-foreground">
         Get started by adding a bookmark with the
         <svg
-          class="size-7 inline rounded-md p-1 dark:bg-zinc-700"
+          class="inline p-1 rounded-md size-7 dark:bg-zinc-700"
           data-slot="icon"
           fill="none"
           stroke-width="1.5"

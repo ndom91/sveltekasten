@@ -143,16 +143,16 @@
 <main class="h-full">
   <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start">
     {#if data.feedEntries?.count > 0}
-      <div bind:this={listWrapperEl} class="h-full overflow-scroll">
+      <div bind:this={listWrapperEl} class="overflow-scroll h-full">
         {#await activeFeedEntries()}
           {#each Array.from({ length: 10 }) as _}
             <div class="h-40 text-3xl">
-              <div class="mx-4 flex w-full items-start gap-4 p-4 opacity-10">
-                <Skeleton class="h-32 w-72 rounded-md" />
-                <div class="flex w-full flex-col items-start gap-4">
-                  <Skeleton class="h-4 w-3/4 min-w-[300px]" />
-                  <Skeleton class="h-10 w-4/5 min-w-[400px]" />
-                  <Skeleton class="h-4 w-96 min-w-[100px]" />
+              <div class="flex gap-4 items-start p-4 mx-4 w-full opacity-10">
+                <Skeleton class="w-72 h-32 rounded-md" />
+                <div class="flex flex-col gap-4 items-start w-full">
+                  <Skeleton class="w-3/4 h-4 min-w-[300px]" />
+                  <Skeleton class="w-4/5 h-10 min-w-[400px]" />
+                  <Skeleton class="w-96 h-4 min-w-[100px]" />
                 </div>
               </div>
             </div>
@@ -161,14 +161,11 @@
           {#each feedEntries as feedEntry}
             <FeedRow {feedEntry} />
           {:else}
-            <div class="my-8 w-full text-center text-3xl">No entries found</div>
+            <div class="my-8 w-full text-3xl text-center">No entries found</div>
           {/each}
-          <div
-            bind:this={elementRef}
-            class="grid h-24 w-full place-items-center text-xl font-light"
-          />
+          <div bind:this={elementRef} class="w-full h-24 text-xl font-light" />
         {:catch error}
-          <div class="mx-auto w-full text-3xl">
+          <div class="my-4 w-full text-3xl text-center">
             {error}
           </div>
         {/await}
