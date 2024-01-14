@@ -1,9 +1,9 @@
-import { SvelteKitAuth } from "@auth/sveltekit";
-import type { Handle } from "@sveltejs/kit";
-import { sequence } from "@sveltejs/kit/hooks";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import type { Provider } from "@auth/sveltekit/providers";
-import prisma from "$lib/prisma";
+import { SvelteKitAuth } from "@auth/sveltekit"
+import type { Handle } from "@sveltejs/kit"
+import { sequence } from "@sveltejs/kit/hooks"
+import { PrismaAdapter } from "@auth/prisma-adapter"
+import type { Provider } from "@auth/sveltekit/providers"
+import prisma from "$lib/prisma"
 import {
   AUTH_SECRET,
   AUTH_TRUST_HOST,
@@ -28,52 +28,54 @@ import {
   SMTP_PASSWORD,
   SMTP_PORT,
   SMTP_USER,
-} from "$env/static/private";
+} from "$env/static/private"
 
-const providers: Provider[] = [];
+const providers: Provider[] = []
 
 if (GITHUB_ID && GITHUB_SECRET) {
-  const GitHub = await import("@auth/sveltekit/providers/github");
-  providers.push(
-    GitHub.default({ clientId: GITHUB_ID, clientSecret: GITHUB_SECRET }),
-  );
+  const GitHub = await import("@auth/sveltekit/providers/github")
+  providers.push(GitHub.default({ clientId: GITHUB_ID, clientSecret: GITHUB_SECRET }))
 }
 
 if (GOOGLE_ID && GOOGLE_SECRET) {
-  const Google = await import("@auth/sveltekit/providers/google");
-  providers.push(
-    Google.default({ clientId: GOOGLE_ID, clientSecret: GOOGLE_SECRET }),
-  );
+  const Google = await import("@auth/sveltekit/providers/google")
+  providers.push(Google.default({ clientId: GOOGLE_ID, clientSecret: GOOGLE_SECRET }))
 }
 
 if (AZURE_AD_CLIENT_ID && AZURE_AD_CLIENT_SECRET) {
-  const AzureAD = await import("@auth/sveltekit/providers/azure-ad");
-  providers.push(AzureAD.default({
-    clientId: AZURE_AD_CLIENT_ID,
-    clientSecret: AZURE_AD_CLIENT_SECRET,
-    tenantId: AZURE_AD_TENANT_ID,
-  }));
+  const AzureAD = await import("@auth/sveltekit/providers/azure-ad")
+  providers.push(
+    AzureAD.default({
+      clientId: AZURE_AD_CLIENT_ID,
+      clientSecret: AZURE_AD_CLIENT_SECRET,
+      tenantId: AZURE_AD_TENANT_ID,
+    }),
+  )
 }
 
 if (AUTHENTIK_ID && AUTHENTIK_SECRET) {
-  const Authentik = await import("@auth/sveltekit/providers/authentik");
-  providers.push(Authentik.default({
-    name: AUTHENTIK_NAME,
-    clientId: AUTHENTIK_ID,
-    clientSecret: AUTHENTIK_SECRET,
-    issuer: AUTHENTIK_ISSUER,
-  }));
+  const Authentik = await import("@auth/sveltekit/providers/authentik")
+  providers.push(
+    Authentik.default({
+      name: AUTHENTIK_NAME,
+      clientId: AUTHENTIK_ID,
+      clientSecret: AUTHENTIK_SECRET,
+      issuer: AUTHENTIK_ISSUER,
+    }),
+  )
 }
 
 if (KEYCLOAK_ID && KEYCLOAK_SECRET) {
-  const Keycloak = await import("@auth/sveltekit/providers/keycloak");
-  providers.push(Keycloak.default({
-    clientId: KEYCLOAK_ID,
-    name: KEYCLOAK_NAME,
-    clientSecret: KEYCLOAK_SECRET,
-    issuer: KEYCLOAK_ISSUER,
-    allowDangerousEmailAccountLinking: Boolean(KEYCLOAK_DANGER_EMAIL_ACC_LINK),
-  }));
+  const Keycloak = await import("@auth/sveltekit/providers/keycloak")
+  providers.push(
+    Keycloak.default({
+      clientId: KEYCLOAK_ID,
+      name: KEYCLOAK_NAME,
+      clientSecret: KEYCLOAK_SECRET,
+      issuer: KEYCLOAK_ISSUER,
+      allowDangerousEmailAccountLinking: Boolean(KEYCLOAK_DANGER_EMAIL_ACC_LINK),
+    }),
+  )
 }
 
 // if (SMTP_HOST && SMTP_USER && SMTP_PASSWORD) {
@@ -96,10 +98,10 @@ const handleGlobal: Handle = async ({ event, resolve }) => {
   event.locals.providers = providers.map((provider) => ({
     id: provider.id as string,
     name: provider.name,
-  }));
-  const response = await resolve(event);
-  return response;
-};
+  }))
+  const response = await resolve(event)
+  return response
+}
 
 export const handleAuth = SvelteKitAuth({
   providers,
@@ -107,25 +109,24 @@ export const handleAuth = SvelteKitAuth({
     // @ts-expect-error
     session: async ({ session, token }) => {
       if (token && session.user) {
-        session.user.userId = token.sub;
+        session.user.userId = token.sub
       }
-      return session;
+      return session
     },
     jwt: async ({ token }) => {
-      token.idToken = "";
-      return token;
+      token.idToken = ""
+      return token
     },
   },
   session: {
     strategy: "jwt",
   },
-  // @ts-expext-error
   adapter: PrismaAdapter(prisma),
   secret: AUTH_SECRET,
   trustHost: Boolean(AUTH_TRUST_HOST ?? false),
   pages: {
     signIn: "/login",
   },
-});
+})
 
-export const handle = sequence(handleAuth, handleGlobal);
+export const handle = sequence(handleAuth, handleGlobal)

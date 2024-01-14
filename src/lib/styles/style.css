@@ -112,7 +112,6 @@
 }
 
 /* 2024 Reset */
-
 textarea {
   form-sizing: content;
 }
@@ -152,5 +151,5 @@ p {
 
 /* RSS Feed Content */
 .prose iframe {
-  @apply  !relative !aspect-video !max-w-screen-md;
+  @apply !relative !aspect-video !max-w-screen-md;
 }
