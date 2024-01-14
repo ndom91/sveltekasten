@@ -126,7 +126,7 @@
 <main class="h-full">
   <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start">
     {#if data.feedEntries?.count > 0}
-      <div>
+      <div class="h-full overflow-scroll">
         {#await activeFeedEntries()}
           {#each Array.from({ length: 10 }) as _}
             <div class="h-40 text-3xl">

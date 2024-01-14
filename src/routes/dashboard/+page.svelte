@@ -128,7 +128,7 @@
 <main class="h-full">
   <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2">
     {#if data.bookmarks}
-      <div>
+      <div class="h-full overflow-scroll">
         {#await activeBookmarks()}
           <div class="mx-auto w-full text-3xl">
             Loading...
