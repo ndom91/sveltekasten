@@ -1,12 +1,10 @@
 <script lang="ts">
   import { cn } from "$lib/utils"
+  import { page } from "$app/stores"
   import { format } from "date-fns"
   import { Badge } from "$lib/components/ui/badge"
-  // import { useInterface } from "$state/ui.svelte"
   import type { FeedEntry, FeedEntryMedia } from "$zod"
   import dompurify from "dompurify"
-
-  // const ui = useInterface()
 
   let { feedEntry } = $props<{
     feedEntry: FeedEntry & { feedMedia: FeedEntryMedia[] }
@@ -15,16 +13,6 @@
   let isOptionsOpen = $state(false)
   let card = $state<HTMLElement>()
   let cardOpen = $state(false)
-
-  const handleMetadataSidebarOpen = () => {
-    // ui.setMetadataSidebarData({
-    //   bookmark,
-    //   categories: $page.data.categories,
-    //   tags: $page.data.tags,
-    // })
-    // ui.toggleMetadataSidebar(true)
-    // ui.toggleMetadataSidebarEditMode(false)
-  }
 
   const openButtonGroup = () => {
     isOptionsOpen = true
@@ -39,6 +27,10 @@
     if (e.key === "\\" && e.target === card) {
       e.preventDefault()
       handleToggleCardOpen()
+    }
+    if (e.key === "u" && e.target === card) {
+      e.preventDefault()
+      handleMarkAsUnread()
     }
   }
 
@@ -141,7 +133,6 @@
       {isOptionsOpen}
       {handleToggleCardOpen}
       {handleMarkAsUnread}
-      {handleMetadataSidebarOpen}
     />
   {/await}
 </div>

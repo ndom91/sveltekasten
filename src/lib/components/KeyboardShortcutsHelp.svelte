@@ -118,7 +118,11 @@
             </tr>
             <tr>
               <td>Toggle RSS article open to read</td>
-              <td><Kbd key="\" /></td>
+              <td><Kbd key="&bsol;" /></td>
+            </tr>
+            <tr>
+              <td>Toggle Mark as Read</td>
+              <td><Kbd key="u" /></td>
             </tr>
           </tbody>
         </table>
