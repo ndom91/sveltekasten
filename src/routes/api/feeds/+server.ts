@@ -1,6 +1,6 @@
-import type { RequestHandler } from './$types';
-import { json, fail } from '@sveltejs/kit';
-import prisma from "$lib/prisma";
+import type { RequestHandler } from "./$types"
+import { json, fail } from "@sveltejs/kit"
+import prisma from "$lib/prisma"
 
 // Get FeedEntries
 // @ts-expect-error
@@ -10,8 +10,8 @@ export const GET: RequestHandler = async ({ url, locals }) => {
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
-    const skip = Number(url.searchParams.get('skip') ?? "0")
-    const limit = Number(url.searchParams.get('limit') ?? "10")
+    const skip = Number(url.searchParams.get("skip") ?? "0")
+    const limit = Number(url.searchParams.get("limit") ?? "10")
 
     if (limit > 100) {
       return fail(401, { type: "error", error: "Attempted to load too many items" })
@@ -26,7 +26,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
         feedMedia: true,
       },
       orderBy: { published: "desc" },
-    });
+    })
 
     return json({
       data,
@@ -50,21 +50,21 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
-    const { feedEntry } = await request.json();
+    const { feedEntry } = await request.json()
 
     const data = await prisma.feedEntry.update({
       data: {
-        unread: feedEntry.unread
+        unread: feedEntry.unread,
       },
       where: {
         id: feedEntry.id,
-        userId: session?.user?.userId
+        userId: session?.user?.userId,
       },
       include: {
         feed: true,
         feedMedia: true,
       },
-    });
+    })
 
     return json({ data })
   } catch (error) {

@@ -1,6 +1,6 @@
-import type { RequestHandler } from './$types';
-import { json, fail } from '@sveltejs/kit';
-import prisma from "$lib/prisma";
+import type { RequestHandler } from "./$types"
+import { json, fail } from "@sveltejs/kit"
+import prisma from "$lib/prisma"
 
 // @ts-expect-error
 export const POST: RequestHandler = async ({ request, locals, url }) => {
@@ -9,9 +9,9 @@ export const POST: RequestHandler = async ({ request, locals, url }) => {
     return fail(401, { type: "error", error: "Unauthenticated" })
   }
 
-  const skip = Number(url.searchParams.get('skip') ?? "0")
-  const limit = Number(url.searchParams.get('limit') ?? "10")
-  const { query, type = 'feedEntry' } = await request.json();
+  const skip = Number(url.searchParams.get("skip") ?? "0")
+  const limit = Number(url.searchParams.get("limit") ?? "10")
+  const { query, type = "feedEntry" } = await request.json()
 
   // @TODO: Make fields dynamic depending on what schema is being searched
   const [data, count] = await prisma.$transaction([
@@ -27,14 +27,14 @@ export const POST: RequestHandler = async ({ request, locals, url }) => {
         content: {
           search: query,
         },
-        userId: session?.user?.userId
+        userId: session?.user?.userId,
       },
       take: limit + skip,
       skip: skip,
       include: {
         feed: true,
         feedMedia: true,
-        _count: true
+        _count: true,
       },
       orderBy: { published: "desc" },
     }),
@@ -50,13 +50,13 @@ export const POST: RequestHandler = async ({ request, locals, url }) => {
         content: {
           search: query,
         },
-        userId: session?.user?.userId
+        userId: session?.user?.userId,
       },
       take: limit + skip,
       skip: skip,
       orderBy: { published: "desc" },
-    })
+    }),
   ])
 
-  return json({ data, count });
+  return json({ data, count })
 }

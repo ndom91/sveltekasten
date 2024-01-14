@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod"
 
 export const formSchema = z.object({
   title: z.string({ required_error: "A title is required" }).min(2).max(100),
@@ -7,6 +7,6 @@ export const formSchema = z.object({
   categoryId: z.string().min(2).max(50).optional(),
   tagIds: z.string().min(2).max(500).optional(),
   // tagIds: z.array(z.string().min(2).max(50)).optional(),
-});
+})
 
-export type FormSchema = typeof formSchema;
+export type FormSchema = typeof formSchema

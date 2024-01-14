@@ -1,8 +1,8 @@
-import prisma from '$lib/prisma';
-import { fail } from "@sveltejs/kit";
+import prisma from "$lib/prisma"
+import { fail } from "@sveltejs/kit"
 import { Prisma } from "@prisma/client"
-import { CategoryCreateInputSchema } from '$zod'
-import type { Actions, PageServerLoad } from './$types'
+import { CategoryCreateInputSchema } from "$zod"
+import type { Actions, PageServerLoad } from "./$types"
 
 export const load: PageServerLoad = async ({ locals, parent }) => {
   await parent()
@@ -12,11 +12,11 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
   }
 
   const response = await prisma.category.findMany({
-    where: { userId: session?.user?.userId }
+    where: { userId: session?.user?.userId },
   })
 
-  return { categories: response };
-};
+  return { categories: response }
+}
 
 export const actions: Actions = {
   createCategory: async ({ request, locals }) => {
@@ -25,7 +25,7 @@ export const actions: Actions = {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
     const formData = Object.fromEntries(await request.formData())
-    const { name, description } = formData as { name: string, description: string }
+    const { name, description } = formData as { name: string; description: string }
 
     try {
       CategoryCreateInputSchema.parse(formData)
@@ -35,10 +35,10 @@ export const actions: Actions = {
           name,
           description,
           userId: session.user.userId,
-        }
+        },
       })
 
-      return { message: 'Category Created', type: "success", form: formData }
+      return { message: "Category Created", type: "success", form: formData }
     } catch (error) {
       let message
       if (typeof error === "string") {
@@ -46,15 +46,18 @@ export const actions: Actions = {
       } else if (error instanceof Error) {
         message = error.message
       } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        if (error.code === 'P2002') {
-          console.log(
-            'There is a unique constraint violation, category could not be created'
-          )
+        if (error.code === "P2002") {
+          console.log("There is a unique constraint violation, category could not be created")
         }
       }
       // const { fieldErrors: errors } = error.flatten();
 
-      return fail(500, { message: "Error", type: "error", error: message, data: { name, description } })
+      return fail(500, {
+        message: "Error",
+        type: "error",
+        error: message,
+        data: { name, description },
+      })
     }
   },
 }

@@ -5,6 +5,7 @@
     "dev": "vite dev --port 3000",
     "build": "vite build",
     "preview": "vite preview",
+    "format": "prettier --write",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "db:push": "pnpm dlx prisma db push",
@@ -82,9 +83,6 @@
     "printWidth": 100,
     "plugins": [
       "prettier-plugin-svelte"
-    ],
-    "pluginSearchDirs": [
-      "."
     ],
     "overrides": [
       {

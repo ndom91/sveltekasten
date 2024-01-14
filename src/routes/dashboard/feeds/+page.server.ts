@@ -1,17 +1,17 @@
-import prisma from "$lib/prisma";
-import { fail } from "@sveltejs/kit";
-import type { PageServerLoad } from "./$types";
-import type { Feed, FeedEntry } from "$zod";
+import prisma from "$lib/prisma"
+import { fail } from "@sveltejs/kit"
+import type { PageServerLoad } from "./$types"
+import type { Feed, FeedEntry } from "$zod"
 
 export const load: PageServerLoad = async ({ parent, locals, url }) => {
   await parent()
   try {
-    const session = await locals.getSession();
+    const session = await locals.getSession()
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
-    const skip = Number(url.searchParams.get('skip') ?? "0")
-    const limit = Number(url.searchParams.get('limit') ?? "10")
+    const skip = Number(url.searchParams.get("skip") ?? "0")
+    const limit = Number(url.searchParams.get("limit") ?? "10")
 
     if (limit > 100) {
       return fail(401, { type: "error", error: "Attempted to load too many items" })
@@ -26,7 +26,7 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
         feedMedia: true,
       },
       orderBy: { published: "desc" },
-    });
+    })
 
     const [feedData, feedCount] = await prisma.feed.findManyAndCount({
       where: { userId: session?.user?.userId },
@@ -47,23 +47,23 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
         },
       },
       orderBy: { createdAt: "desc" },
-    });
+    })
 
     return {
       feedEntries: {
         data: feedEntryData,
-        count: feedEntryCount
+        count: feedEntryCount,
       },
       feeds: {
         data: feedData.map((feed) => {
           return {
             ...feed,
-            visible: true
+            visible: true,
           } as unknown as Feed & { visible: boolean }
         }),
-        count: feedCount
-      }
-    };
+        count: feedCount,
+      },
+    }
   } catch (error) {
     let message
     if (typeof error === "string") {
@@ -71,6 +71,6 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
     } else if (error instanceof Error) {
       message = error.message
     }
-    return { feedEntries: [], count: 0, error: message };
+    return { feedEntries: [], count: 0, error: message }
   }
-};
+}

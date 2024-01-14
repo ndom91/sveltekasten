@@ -1,8 +1,8 @@
-import prisma from "$lib/prisma";
-import { fail } from "@sveltejs/kit";
+import prisma from "$lib/prisma"
+import { fail } from "@sveltejs/kit"
 import type { Actions } from "./$types"
-import type { PageServerLoad } from "./$types";
-import { WORKER_URL } from '$env/static/private';
+import type { PageServerLoad } from "./$types"
+import { WORKER_URL } from "$env/static/private"
 
 export const actions: Actions = {
   deleteFeed: async ({ request, locals }) => {
@@ -10,8 +10,8 @@ export const actions: Actions = {
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
-    const data = await request.formData();
-    const feedId = String(data.get('feedId'))
+    const data = await request.formData()
+    const feedId = String(data.get("feedId"))
 
     if (!feedId) {
       return fail(400, { type: "error", message: "Missing Feed ID" })
@@ -21,9 +21,9 @@ export const actions: Actions = {
       where: {
         id: feedId,
         userId: session.user.userId,
-      }
-    });
-    return { type: "success", message: 'Deleted Feed' }
+      },
+    })
+    return { type: "success", message: "Deleted Feed" }
   },
   addFeed: async ({ request, locals }) => {
     if (!WORKER_URL) {
@@ -33,8 +33,8 @@ export const actions: Actions = {
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
-    const data = await request.formData();
-    const feedUrl = String(data.get('feedUrl'))
+    const data = await request.formData()
+    const feedUrl = String(data.get("feedUrl"))
 
     if (!feedUrl) {
       return fail(400, { type: "error", message: "Feed URL Required" })
@@ -51,19 +51,19 @@ export const actions: Actions = {
       }),
     })
 
-    return { type: "success", message: 'Added Feed' }
+    return { type: "success", message: "Added Feed" }
   },
 }
 
 export const load: PageServerLoad = async ({ parent, locals, url }) => {
   await parent()
   try {
-    const session = await locals.getSession();
+    const session = await locals.getSession()
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
-    const skip = Number(url.searchParams.get('skip') ?? "0")
-    const limit = Number(url.searchParams.get('limit') ?? "10")
+    const skip = Number(url.searchParams.get("skip") ?? "0")
+    const limit = Number(url.searchParams.get("limit") ?? "10")
 
     if (limit > 100) {
       return fail(401, { type: "error", error: "Attempted to load too many items" })
@@ -88,14 +88,14 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
         },
       },
       orderBy: { createdAt: "desc" },
-    });
+    })
 
     return {
       feeds: {
         data: feedData,
-        count: feedCount
-      }
-    };
+        count: feedCount,
+      },
+    }
   } catch (error) {
     let message
     if (typeof error === "string") {
@@ -103,6 +103,6 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
     } else if (error instanceof Error) {
       message = error.message
     }
-    return { feedEntries: [], count: 0, error: message };
+    return { feedEntries: [], count: 0, error: message }
   }
-};
+}

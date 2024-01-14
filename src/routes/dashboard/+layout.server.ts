@@ -1,13 +1,12 @@
-import prisma from "$lib/prisma";
-import { fail } from "@sveltejs/kit";
-import { formSchema } from "../schema";
-import { superValidate } from "sveltekit-superforms/server";
-import type { LayoutServerLoad } from "./$types";
+import prisma from "$lib/prisma"
+import { fail } from "@sveltejs/kit"
+import { formSchema } from "../schema"
+import { superValidate } from "sveltekit-superforms/server"
+import type { LayoutServerLoad } from "./$types"
 
 export const load: LayoutServerLoad = async ({ locals }) => {
   try {
-
-    const session = await locals.getSession();
+    const session = await locals.getSession()
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
@@ -17,13 +16,13 @@ export const load: LayoutServerLoad = async ({ locals }) => {
       }),
       prisma.tag.findMany({
         where: { userId: session.user.userId },
-      })
+      }),
     ])
     return {
       form: await superValidate(formSchema),
       tags,
-      categories
-    };
+      categories,
+    }
   } catch (error) {
     let message
     if (typeof error === "string") {
@@ -33,5 +32,4 @@ export const load: LayoutServerLoad = async ({ locals }) => {
     }
     return { categories: [], tags: [], error: message }
   }
-};
-
+}

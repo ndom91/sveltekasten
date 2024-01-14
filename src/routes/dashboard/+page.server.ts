@@ -1,9 +1,9 @@
-import prisma from "$lib/prisma";
-import { fail } from "@sveltejs/kit";
-import { formSchema } from "../schema";
-import { superValidate } from "sveltekit-superforms/server";
+import prisma from "$lib/prisma"
+import { fail } from "@sveltejs/kit"
+import { formSchema } from "../schema"
+import { superValidate } from "sveltekit-superforms/server"
 import type { Actions } from "./$types"
-import type { PageServerLoad } from './$types'
+import type { PageServerLoad } from "./$types"
 
 // import splashy from "splashy"
 import metascraper from "metascraper"
@@ -43,8 +43,8 @@ export const actions: Actions = {
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
-    const data = await request.formData();
-    const bookmarkId = data.get('bookmarkId')?.toString() || ''
+    const data = await request.formData()
+    const bookmarkId = data.get("bookmarkId")?.toString() || ""
 
     if (!bookmarkId) {
       return fail(400)
@@ -54,27 +54,27 @@ export const actions: Actions = {
       where: {
         id: bookmarkId,
         userId: session.user.userId,
-      }
-    });
-    return { type: "success", message: 'Deleted Bookmark' }
+      },
+    })
+    return { type: "success", message: "Deleted Bookmark" }
   },
   saveMetadataEdits: async ({ request, locals }) => {
     const session = await locals.getSession()
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
-    const data = await request.formData();
+    const data = await request.formData()
 
-    const id = data.get('id')?.toString() || ''
-    const title = data.get('title')?.toString() || ''
-    const url = data.get('url')?.toString() || ''
-    const desc = data.get('description')?.toString() || ''
-    const categoryId = data.get('categoryId')?.toString() || ''
+    const id = data.get("id")?.toString() || ""
+    const title = data.get("title")?.toString() || ""
+    const url = data.get("url")?.toString() || ""
+    const desc = data.get("description")?.toString() || ""
+    const categoryId = data.get("categoryId")?.toString() || ""
     // @TODO: Support updating image
     // const image = data.get('image')?.toString() || ''
 
     if (!id) {
-      return fail(400, { type: 'error', message: 'Missing bookmark id' })
+      return fail(400, { type: "error", message: "Missing bookmark id" })
     }
 
     await prisma.bookmark.update({
@@ -87,17 +87,17 @@ export const actions: Actions = {
       where: {
         id,
         userId: session.user.userId,
-      }
-    });
+      },
+    })
 
-    return { type: "success", message: 'Updated Bookmark' }
+    return { type: "success", message: "Updated Bookmark" }
   },
   quickAdd: async (event) => {
-    const form = await superValidate(event, formSchema);
+    const form = await superValidate(event, formSchema)
     if (!form.valid) {
       return fail(400, {
-        form
-      });
+        form,
+      })
     }
 
     try {
@@ -107,11 +107,11 @@ export const actions: Actions = {
       }
       const { userId } = session.user
       const { title, url, description, categoryId, tagIds: tagIdsString } = form.data
-      const tagIds = tagIdsString?.length ? tagIdsString.split(',') : []
+      const tagIds = tagIdsString?.length ? tagIdsString.split(",") : []
 
       const resp = await fetch(url)
       const metadata = await metascraperClient({ html: await resp.text(), url: url })
-      const image = metadata.image ? metadata.image : metadata.logo as string
+      const image = metadata.image ? metadata.image : (metadata.logo as string)
 
       // const imageResponse = await fetch(image)
       // const imageBuffer = await imageResponse.arrayBuffer()
@@ -131,21 +131,23 @@ export const actions: Actions = {
               id: userId,
             },
           },
-          tags: tagIds ? {
-            create: tagIds.map((tagId) => ({
-              tag: {
-                connect: {
-                  id: tagId
-                }
+          tags: tagIds
+            ? {
+                create: tagIds.map((tagId) => ({
+                  tag: {
+                    connect: {
+                      id: tagId,
+                    },
+                  },
+                })),
               }
-            }))
-          } : {},
+            : {},
           category: categoryId
             ? {
-              connect: {
-                id: categoryId,
-              },
-            }
+                connect: {
+                  id: categoryId,
+                },
+              }
             : {},
         },
       })
@@ -155,21 +157,21 @@ export const actions: Actions = {
         bookmark: bookmark,
         message: "Added Successfully",
         type: "success",
-      };
+      }
     } catch (error) {
       console.error(error)
-      fail(500, { type: "error", message: 'Failed to add bookmark' })
+      fail(500, { type: "error", message: "Failed to add bookmark" })
     }
-  }
+  },
 }
 
 export const load: PageServerLoad = async ({ parent, locals, url }) => {
   await parent()
   try {
-    const skip = Number(url.searchParams.get('skip') ?? "0")
-    const limit = Number(url.searchParams.get('limit') ?? "10")
+    const skip = Number(url.searchParams.get("skip") ?? "0")
+    const limit = Number(url.searchParams.get("limit") ?? "10")
 
-    const session = await locals.getSession();
+    const session = await locals.getSession()
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
@@ -188,7 +190,7 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
     return {
       bookmarks: data,
       count,
-    };
+    }
   } catch (error) {
     let message
     if (typeof error === "string") {
@@ -198,4 +200,4 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
     }
     return { bookmarks: [], count: 1, error: message }
   }
-};
+}
