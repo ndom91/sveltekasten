@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onDestroy } from "svelte"
-  import * as Table from "$lib/components/ui/table"
-  import type { ComponentProps } from "svelte"
+  import toast from "svelte-french-toast"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
   import { useInterface } from "$state/ui.svelte"
@@ -83,55 +82,90 @@
     totalItemCount = count
     return searchResults
   })
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.repeat || e.target instanceof HTMLInputElement) return
+    if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "j" || e.key === "k") {
+      e.preventDefault()
+      const currentActiveElement = e.target as HTMLElement
+      const currentActiveElementIndex = allItems.findIndex(
+        (item) => item.id === currentActiveElement.dataset.id,
+      )
+      const nextIndex =
+        e.key === "ArrowDown" || e.key === "j"
+          ? currentActiveElementIndex + 1
+          : currentActiveElementIndex - 1
+      const nextElement = document.querySelector(
+        `[data-id="${allItems[nextIndex]?.id}"]`,
+      ) as HTMLElement
+
+      if (nextElement) {
+        nextElement.focus()
+      }
+    }
+    if (e.key === "o") {
+      e.preventDefault()
+      const currentActiveElement = e.target as HTMLElement
+      const currentActiveElementIndex = allItems.findIndex(
+        (item) => item.id === currentActiveElement.dataset.id,
+      )
+      const targetLink = allItems[currentActiveElementIndex]?.url
+      if (!targetLink) {
+        toast.error("No item focused to open")
+        return
+      }
+      window.open(targetLink, "_target")
+    }
+  }
 </script>
 
 <svelte:head>
   <title>Briefkasten | Bookmarks</title>
   <meta name="description" content="This is where the description goes for SEO" />
 </svelte:head>
+
+<svelte:window on:keydown={handleKeyDown} />
+
 <main class="h-full">
   <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2">
     {#if data.bookmarks}
-      <Table.Root>
-        <Table.Body>
-          {#await activeBookmarks()}
-            <tr class="text-3xl">
-              <td colspan="2" class="h-24" align="center">Loading...</td>
-            </tr>
-          {:then bookmarks}
-            {#each bookmarks as bookmark}
-              <BookmarkRow {bookmark} />
-            {:else}
-              <EmptyState />
-              <p class="mx-auto w-1/2 text-center text-muted-foreground">
-                Get started by adding a bookmark with the
-                <svg
-                  class="size-7 inline rounded-md p-1 dark:bg-zinc-700"
-                  data-slot="icon"
-                  fill="none"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Zm9.75-9.75H18a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 18 3.75h-2.25A2.25 2.25 0 0 0 13.5 6v2.25a2.25 2.25 0 0 0 2.25 2.25Z"
-                  ></path>
-                </svg>
-                button above or by pressing <KeyboardIndicator class="text-sm" key="Alt N" />
-              </p>
-            {/each}
-            <div bind:this={elementRef} class="h-24 w-full" />
-          {:catch error}
-            <tr class="text-3xl">
-              <td colspan="2" class="h-24" align="center">{error}</td>
-            </tr>
-          {/await}
-        </Table.Body>
-      </Table.Root>
+      <div>
+        {#await activeBookmarks()}
+          <div class="mx-auto w-full text-3xl">
+            Loading...
+          </div>
+        {:then bookmarks}
+          {#each bookmarks as bookmark}
+            <BookmarkRow {bookmark} />
+          {:else}
+            <EmptyState />
+            <p class="mx-auto w-1/2 text-center text-muted-foreground">
+              Get started by adding a bookmark with the
+              <svg
+                class="size-7 inline rounded-md p-1 dark:bg-zinc-700"
+                data-slot="icon"
+                fill="none"
+                stroke-width="1.5"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Zm9.75-9.75H18a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 18 3.75h-2.25A2.25 2.25 0 0 0 13.5 6v2.25a2.25 2.25 0 0 0 2.25 2.25Z"
+                ></path>
+              </svg>
+              button above or by pressing <KeyboardIndicator class="text-sm" key="Alt N" />
+            </p>
+          {/each}
+          <div bind:this={elementRef} class="h-24 w-full" />
+        {:catch error}
+          <div class="mx-auto w-full text-3xl">
+            {error}
+          </div>
+        {/await}
+      </div>
     {:else}
       <EmptyState />
       <p class="mx-auto w-1/2 text-center text-muted-foreground">

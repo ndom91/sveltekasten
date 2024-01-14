@@ -2,11 +2,11 @@
   import { cn } from "$lib/utils"
   import { format } from "date-fns"
   import { Badge } from "$lib/components/ui/badge"
-  import { useInterface } from "$state/ui.svelte"
+  // import { useInterface } from "$state/ui.svelte"
   import type { FeedEntry, FeedEntryMedia } from "$zod"
   import dompurify from "dompurify"
 
-  const ui = useInterface()
+  // const ui = useInterface()
 
   let { feedEntry } = $props<{
     feedEntry: FeedEntry & { feedMedia: FeedEntryMedia[] }
@@ -68,7 +68,7 @@
 <svelte:window on:keydown={handleKeyDown} />
 
 <div
-  data-id="${feedEntry.id}"
+  data-id={feedEntry.id}
   role="row"
   bind:this={card}
   tabindex="0"

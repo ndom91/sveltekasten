@@ -15,7 +15,9 @@
   let pageNumber = $state(1)
   let loading = $state(false)
   let totalItemCount = $state<number>(data.feedEntries?.count ?? 1)
-  let allItems = $state<FeedEntry & { feed: Feed, feedMedia: FeedEntryMedia }[]>(data.feedEntries?.data ?? [])
+  let allItems = $state<FeedEntry & { feed: Feed; feedMedia: FeedEntryMedia }[]>(
+    data.feedEntries?.data ?? [],
+  )
 
   // Log error from page server loading
   if (data.error) {
@@ -59,10 +61,11 @@
 
   // Handle search input
   let activeFeedEntries = $derived(async () => {
-    if (!ui.searchQuery) return allItems.filter(item => {
-      const feed = data.feeds?.data?.find(feed => feed.id === item.feed?.id)
-      return feed?.visible
-    })
+    if (!ui.searchQuery)
+      return allItems.filter((item) => {
+        const feed = data.feeds?.data?.find((feed) => feed.id === item.feed?.id)
+        return feed?.visible
+      })
     const res = await fetch("/api/search", {
       method: "POST",
       headers: {
@@ -83,14 +86,14 @@
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
       const currentActiveElementIndex = allItems.findIndex(
-        (item) => `$${item.id}` === currentActiveElement.dataset.id,
+        (item) => item.id === currentActiveElement.dataset.id,
       )
       const nextIndex =
         e.key === "ArrowDown" || e.key === "j"
           ? currentActiveElementIndex + 1
           : currentActiveElementIndex - 1
       const nextElement = document.querySelector(
-        `[data-id="$${allItems[nextIndex]?.id}"]`,
+        `[data-id="${allItems[nextIndex]?.id}"]`,
       ) as HTMLElement
 
       if (nextElement) {
@@ -101,7 +104,7 @@
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
       const currentActiveElementIndex = allItems.findIndex(
-        (item) => `$${item.id}` === currentActiveElement.dataset.id,
+        (item) => item.id === currentActiveElement.dataset.id,
       )
       const targetLink = allItems[currentActiveElementIndex]?.link
       if (!targetLink) {
@@ -123,42 +126,38 @@
 <main class="h-full">
   <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start">
     {#if data.feedEntries?.count > 0}
-      <Table.Root>
-        <Table.Body>
-          {#await activeFeedEntries()}
-            {#each Array.from({ length: 10 }) as _}
-              <tr class="h-40 text-3xl">
-                <td colspan="2" align="left">
-                  <div class="mx-4 flex w-full items-start gap-4 p-4 opacity-10">
-                    <Skeleton class="h-32 w-72 rounded-md" />
-                    <div class="flex w-full flex-col items-start gap-4">
-                      <Skeleton class="h-4 w-3/4 min-w-[300px]" />
-                      <Skeleton class="h-10 w-4/5 min-w-[400px]" />
-                      <Skeleton class="h-4 w-96 min-w-[100px]" />
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            {/each}
-          {:then feedEntries}
-            {#each feedEntries as feedEntry}
-              <FeedRow {feedEntry} />
-            {:else}
-              <tr class="text-3xl">
-                <td colspan="2" class="h-24" align="center">No entries found</td>
-              </tr>
-            {/each}
-            <div
-              bind:this={elementRef}
-              class="grid h-24 w-full place-items-center text-xl font-light"
-            />
-          {:catch error}
-            <tr class="text-3xl">
-              <td colspan="2" class="h-24" align="center">{error}</td>
-            </tr>
-          {/await}
-        </Table.Body>
-      </Table.Root>
+      <div>
+        {#await activeFeedEntries()}
+          {#each Array.from({ length: 10 }) as _}
+            <div class="h-40 text-3xl">
+              <div class="mx-4 flex w-full items-start gap-4 p-4 opacity-10">
+                <Skeleton class="h-32 w-72 rounded-md" />
+                <div class="flex w-full flex-col items-start gap-4">
+                  <Skeleton class="h-4 w-3/4 min-w-[300px]" />
+                  <Skeleton class="h-10 w-4/5 min-w-[400px]" />
+                  <Skeleton class="h-4 w-96 min-w-[100px]" />
+                </div>
+              </div>
+            </div>
+          {/each}
+        {:then feedEntries}
+          {#each feedEntries as feedEntry}
+            <FeedRow {feedEntry} />
+          {:else}
+            <div class="mx-auto w-full text-3xl">
+              No entries found
+            </div>
+          {/each}
+          <div
+            bind:this={elementRef}
+            class="grid h-24 w-full place-items-center text-xl font-light"
+          />
+        {:catch error}
+          <div class="mx-auto w-full text-3xl">
+            {error}
+          </div>
+        {/await}
+      </div>
     {:else}
       <EmptyState />
       <p class="mx-auto w-1/2 text-center text-muted-foreground">
