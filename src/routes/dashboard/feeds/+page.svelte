@@ -94,7 +94,20 @@
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        query: ui.searchQuery,
+        type: "feedEntry",
+        include: {
+          feed: true,
+          feedMedia: true,
+        },
+        orderBy: { published: "desc" },
+        where: {
+          title: {
+            search: ui.searchQuery,
+          },
+          content: {
+            search: ui.searchQuery,
+          },
+        },
       }),
     })
     const { data: searchResults, count } = await res.json()

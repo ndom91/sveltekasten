@@ -1,18 +1,19 @@
 <script lang="ts">
-  import { onDestroy } from "svelte"
   import toast from "svelte-french-toast"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
   import { useInterface } from "$state/ui.svelte"
   import { BookmarkRow } from "$lib/components/bookmark-row"
   import { infiniteScroll } from "$lib/components/infinite-scroll"
+  import type { Bookmark, Tag, Category } from "$zod"
+
+  type LoadBookmarkResult = Bookmark & { tags: { tag: Tag }[] } & { category: Category }
 
   const ui = useInterface()
   const { data } = $props()
   let pageNumber = $state(1)
   let totalItemCount = $state<number>(data.count ?? 1)
-  let loading = $state(false)
-  let allItems = $state(data.bookmarks ?? [])
+  let allItems = $state<LoadBookmarkResult[]>(data.bookmarks ?? [])
 
   $effect(() => {
     allItems = data.bookmarks ?? []
@@ -38,7 +39,6 @@
 
   // Load more items on infinite scroll
   const loadMore = async (p: number) => {
-    loading = true
     pageNumber = p
     const limit = 10
     const skip = 10 * (pageNumber - 1)
@@ -58,7 +58,6 @@
     })
     const { data: additionalResults } = await res.json()
     allItems.push(...additionalResults)
-    loading = false
   }
 
   let activeBookmarks: () => Promise<(typeof allItems)[]> = $derived(async () => {
@@ -69,13 +68,28 @@
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        query: ui.searchQuery,
         type: "bookmark",
+        orderBy: { createdAt: "desc" },
+        include: {
+          category: true,
+          tags: { include: { tag: true } },
+        },
+        where: {
+          title: {
+            search: ui.searchQuery,
+          },
+          url: {
+            search: ui.searchQuery,
+          },
+          desc: {
+            search: ui.searchQuery,
+          },
+        },
       }),
     })
-    const { data: searchResults, count } = await res.json()
+    const { data, count } = await res.json()
     totalItemCount = count
-    return searchResults
+    return data
   })
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.repeat || e.target instanceof HTMLInputElement) return
