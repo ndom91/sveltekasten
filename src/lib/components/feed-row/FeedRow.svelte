@@ -89,7 +89,7 @@
     </span>
     <p
       class={cn(
-        "prose max-w-screen-lg transition-all duration-300 prose-img:!h-auto prose-img:max-w-screen-md prose-img:object-contain prose-video:aspect-video prose-video:max-w-screen-sm dark:text-zinc-100 dark:prose-headings:text-zinc-100 dark:prose-a:text-zinc-200 dark:prose-strong:text-zinc-100",
+        "prose max-w-screen-lg transition-all duration-300 dark:prose-blockquote:text-zinc-200 prose-img:!h-auto prose-img:max-w-screen-md prose-img:object-contain prose-video:aspect-video prose-video:max-w-screen-sm dark:text-zinc-100 dark:prose-headings:text-zinc-100 dark:prose-a:text-zinc-200 dark:prose-strong:text-zinc-100",
         cardOpen ? "h-full opacity-100" : "pointer-events-none h-0 opacity-0",
       )}
     >
@@ -106,7 +106,7 @@
     <div class="flex gap-2 justify-start items-center mt-2 text-sm text-muted">
       {#if feedEntry.link}
         <img
-          src={`https://${new URL(feedEntry.link).hostname}/favicon.ico`}
+          src={`https://icons.duckduckgo.com/ip9/${new URL(feedEntry.link).hostname}.ico`}
           alt="URL Favicon"
           class="rounded-full size-4"
         />
