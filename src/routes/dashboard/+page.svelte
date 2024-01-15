@@ -32,12 +32,7 @@
         fetch: () => loadMore(pageNumber + 1),
         element: elementRef,
       })
-    }
-  })
-
-  onDestroy(() => {
-    if (observer) {
-      observer.disconnect()
+      return () => observer?.disconnect()
     }
   })
 
