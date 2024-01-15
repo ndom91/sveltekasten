@@ -46,16 +46,7 @@
     // Skip if all items already loaded
     if (allItems.length >= totalItemCount) return
 
-    const res = await fetch("/api/bookmarks", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        limit,
-        skip,
-      }),
-    })
+    const res = await fetch(`/api/bookmarks?skip=${skip}&limit=${limit}`)
     const { data: additionalResults } = await res.json()
     allItems.push(...additionalResults)
   }
