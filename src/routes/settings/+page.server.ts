@@ -25,7 +25,7 @@ export const actions: Actions = {
     })
     return { type: "success", message: "Deleted Feed" }
   },
-  addFeed: async ({ request, locals }) => {
+  addFeed: async ({ fetch, request, locals }) => {
     if (!WORKER_URL) {
       return fail(500, { type: "error", error: "Worker URL Not Configured!" })
     }
