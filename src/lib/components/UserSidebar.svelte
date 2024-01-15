@@ -160,7 +160,7 @@
           </Button>
         </Tooltip.Trigger>
         <Tooltip.Content side="right">
-          <p>RSS Feeds</p>
+          <p>Archives</p>
         </Tooltip.Content>
       </Tooltip.Root>
       <Tooltip.Root>
