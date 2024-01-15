@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onDestroy } from "svelte"
   import toast from "svelte-french-toast"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { FeedRow } from "$lib/components/feed-row"
@@ -8,16 +7,29 @@
   import { useInterface } from "$state/ui.svelte"
   import { infiniteScroll } from "$lib/components/infinite-scroll"
   import type { Feed, FeedEntry, FeedEntryMedia } from "$zod"
+  import { invalidateAll } from "$app/navigation"
+  import { documentVisibilityStore } from "$lib/utils"
 
   const ui = useInterface()
   const { data } = $props()
   let pageNumber = $state(1)
-  let loading = $state(false)
   let totalItemCount = $state<number>(data.feedEntries?.count ?? 1)
   let allItems = $state<(FeedEntry & { feed: Feed; feedMedia: FeedEntryMedia })[]>(
     data.feedEntries?.data ?? [],
   )
 
+  // Reload feed when coming back to tab
+  const visibility = documentVisibilityStore()
+  let prevVisibility: DocumentVisibilityState = "visible"
+
+  $effect(() => {
+    if (prevVisibility === "hidden" && $visibility === "visible") {
+      invalidateAll()
+    }
+    prevVisibility = $visibility
+  })
+
+  // Update local state when load fn data has changed
   $effect(() => {
     allItems = data.feedEntries?.data ?? []
   })
@@ -27,7 +39,7 @@
     console.error(data.error)
   }
 
-  // Setup infinite scrolling
+  // Infinite scrolling
   let elementRef = $state<HTMLElement>()
   let listWrapperEl = $state<HTMLElement>()
   let observer: IntersectionObserver | null = $state(null)
@@ -38,18 +50,12 @@
         fetch: () => loadMore(pageNumber + 1),
         element: elementRef,
       })
-    }
-  })
-
-  onDestroy(() => {
-    if (observer) {
-      observer.disconnect()
+      return () => observer?.disconnect()
     }
   })
 
   // Load more items on infinite scroll
   const loadMore = async (p: number) => {
-    loading = true
     pageNumber = p
     const limit = 10
     const skip = 10 * (pageNumber - 1)
@@ -65,7 +71,6 @@
     const res = await fetch(`/api/feeds?skip=${skip}&limit=${limit}`)
     const { data: additionalResults } = await res.json()
     allItems.push(...additionalResults)
-    loading = false
   }
 
   // Handle search input
