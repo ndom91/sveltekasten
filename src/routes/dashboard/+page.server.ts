@@ -179,7 +179,10 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
     const [data, count] = await prisma.bookmark.findManyAndCount({
       take: limit + skip,
       skip: skip,
-      where: { userId: session?.user?.userId },
+      where: {
+        userId: session?.user?.userId,
+        archived: false,
+      },
       include: {
         category: true,
         tags: { include: { tag: true } },

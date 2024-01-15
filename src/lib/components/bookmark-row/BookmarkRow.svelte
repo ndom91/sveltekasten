@@ -4,6 +4,7 @@
   import { Badge } from "$lib/components/ui/badge"
   import { useInterface } from "$state/ui.svelte"
   import type { Bookmark, Tag, Category } from "$zod"
+  import { invalidateAll } from "$app/navigation"
 
   const ui = useInterface()
   let card = $state<HTMLElement>()
@@ -33,6 +34,16 @@
   }
   const closeButtonGroup = () => {
     isOptionsOpen = false
+  }
+  const handleArchive = async () => {
+    await fetch(`/api/bookmarks`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: bookmark.id, update: { archived: true } }),
+    })
+    invalidateAll()
   }
 </script>
 
@@ -91,6 +102,7 @@
       {handleMetadataSidebarOpen}
       {handleDeleteDialogOpen}
       {isOptionsOpen}
+      {handleArchive}
       url={bookmark.url ?? ""}
     />
   {/await}
