@@ -8,6 +8,7 @@ RUN corepack enable
 
 FROM base AS build
 WORKDIR /app
+RUN apk add git
 # RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 ADD . ./
 RUN pnpm install --frozen-lockfile
