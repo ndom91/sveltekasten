@@ -12,7 +12,7 @@ datasource db {
 
 generator zod {
   provider = "zod-prisma-types"
-  output = "../src/lib/prismaTypes"
+  output = "../src/lib/types/prisma"
 }
 
 model Bookmark {
