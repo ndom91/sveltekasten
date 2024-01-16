@@ -181,7 +181,7 @@
           {:else}
             <div class="my-8 w-full text-3xl text-center">No entries found</div>
           {/each}
-          <div bind:this={elementRef} class="w-full h-24 text-xl font-light" />
+          <div bind:this={elementRef} class="w-full h-48 text-xl font-light" />
         {:catch error}
           <div class="my-4 w-full text-3xl text-center">
             {error}
