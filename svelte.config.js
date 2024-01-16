@@ -14,7 +14,7 @@ const config = {
       $stores: "src/stores",
       $assets: "src/lib/assets",
       $lib: "src/lib",
-      $zod: "src/lib/types",
+      $zod: "src/lib/types/prisma",
       $state: "src/state",
     },
   },
