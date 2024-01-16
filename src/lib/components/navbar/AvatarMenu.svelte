@@ -1,4 +1,5 @@
 <script lang="ts">
+  // @ts-nocheck undefined '__VER__' is replaced by Vite in markup
   import { page } from "$app/stores"
   import { blur } from "svelte/transition"
   import { signOut } from "@auth/sveltekit/client"
@@ -6,7 +7,6 @@
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import { Skeleton } from "$lib/components/ui/skeleton"
   import { ModeWatcher, mode, toggleMode } from "mode-watcher"
-  import { version } from "$app/environment"
 
   let isDarkMode = $derived($mode === "dark")
 </script>
@@ -32,9 +32,7 @@
         <div>
           {$page.data.session?.user?.name ?? $page.data.session?.user?.email}
         </div>
-        <div class="text-zinc-200 dark:text-zinc-600">
-          v{version}
-        </div>
+        <div class="text-zinc-200 dark:text-zinc-600">{__VER__}</div>
       </DropdownMenu.Label>
       <DropdownMenu.Separator />
       <DropdownMenu.CheckboxItem
