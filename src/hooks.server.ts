@@ -25,12 +25,15 @@ import {
   KEYCLOAK_ISSUER,
   KEYCLOAK_NAME,
   KEYCLOAK_SECRET,
-  SMTP_FROM,
-  SMTP_HOST,
-  SMTP_PASSWORD,
-  SMTP_PORT,
-  SMTP_USER,
+  // SMTP_FROM,
+  // SMTP_HOST,
+  // SMTP_PASSWORD,
+  // SMTP_PORT,
+  // SMTP_USER,
 } from "$env/static/private"
+
+// import { SMTP_FROM, SMTP_HOST, SMTP_PASSWORD, SMTP_PORT, SMTP_USER } from "$env/dynamic/private"
+import { VITE_SMTP_HOST } from "$env/dynamic/private"
 
 const providers: Provider[] = []
 
@@ -80,25 +83,45 @@ if (KEYCLOAK_ID && KEYCLOAK_SECRET) {
   )
 }
 
-if (SMTP_HOST && SMTP_USER && SMTP_PASSWORD) {
+// console.log({
+//   SMTP_HOST,
+//   SMTP_USER,
+//   SMTP_PASSWORD,
+// })
+console.log({
+  SMTP_HOST: import.meta.env.SMTP_HOST,
+  SMTP_USER: import.meta.env.SMTP_USER,
+  SMTP_PASSWORD: import.meta.env.SMTP_PASSWORD,
+})
+console.log({
+  SMTP_HOST: Boolean(import.meta.env.SMTP_HOST),
+  SMTP_USER: Boolean(import.meta.env.SMTP_USER),
+  SMTP_PASSWORD: Boolean(import.meta.env.SMTP_PASSWORD),
+})
+
+if (VITE_SMTP_HOST) {
+  // if (import.meta.env.SMTP_HOST && import.meta.env.SMTP_USER && import.meta.env.SMTP_PASSWORD) {
+  // if (SMTP_HOST && SMTP_USER && SMTP_PASSWORD) {
   const Email = await import("@auth/sveltekit/providers/email")
   providers.push(
     Email.default({
       server: {
-        host: SMTP_HOST,
-        port: SMTP_PORT,
+        host: import.meta.env.SMTP_HOST,
+        port: import.meta.env.SMTP_PORT,
         auth: {
-          user: SMTP_USER,
-          pass: SMTP_PASSWORD,
+          user: import.meta.env.SMTP_USER,
+          pass: import.meta.env.SMTP_PASSWORD,
         },
-        from: SMTP_FROM,
+        from: import.meta.env.SMTP_FROM,
       },
     }),
   )
 }
 
-async function logger({ event, resolve }) {
-  if (!dev) return
+const logger: Handle = async ({ event, resolve }) => {
+  if (!dev) {
+    return resolve(event)
+  }
   const start_time = Date.now()
   // Wait on response, run other hooks and load
   const response = await resolve(event)
@@ -111,6 +134,7 @@ async function logger({ event, resolve }) {
 const handleGlobal: Handle = async ({ event, resolve }) => {
   // @ts-expect-error
   event.locals.providers = providers.map((provider) => ({
+    // @ts-expect-error
     id: provider.id as string,
     name: provider.name,
   }))
@@ -136,6 +160,7 @@ export const handleAuth = SvelteKitAuth({
   session: {
     strategy: "jwt",
   },
+  // @ts-expect-error
   adapter: PrismaAdapter(prisma),
   secret: AUTH_SECRET,
   trustHost: Boolean(AUTH_TRUST_HOST ?? false),
