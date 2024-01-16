@@ -52,7 +52,7 @@
           <div class="flex gap-2 justify-start items-center">
             <span> {new URL(feed.url).host} </span>
             <img
-              src={`https://icons.duckduckgo.com/ip9/${new URL(feedEntry.link).hostname}.ico`}
+              src={`https://icons.duckduckgo.com/ip9/${new URL(feed.url).hostname}.ico`}
               alt="URL Favicon"
               class="rounded-full size-6"
             />
