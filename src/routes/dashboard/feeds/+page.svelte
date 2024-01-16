@@ -166,7 +166,7 @@
           {#each Array.from({ length: 10 }) as _}
             <div class="h-40 text-3xl">
               <div class="flex gap-4 items-start p-4 mx-4 w-full opacity-10">
-                <Skeleton class="w-72 h-32 rounded-md" />
+                <Skeleton class="w-52 h-28 rounded-md" />
                 <div class="flex flex-col gap-4 items-start w-full">
                   <Skeleton class="w-3/4 h-4 min-w-[300px]" />
                   <Skeleton class="w-4/5 h-10 min-w-[400px]" />

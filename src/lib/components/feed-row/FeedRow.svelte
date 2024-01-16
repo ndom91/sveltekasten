@@ -1,10 +1,11 @@
 <script lang="ts">
   import { cn } from "$lib/utils/style"
-  // import { page } from "$app/stores"
   import { format } from "date-fns"
   import { Badge } from "$lib/components/ui/badge"
   import type { FeedEntry, FeedEntryMedia } from "$zod"
   import dompurify from "dompurify"
+  import { spring, tweened } from "svelte/motion"
+  import { quintOut } from "svelte/easing"
 
   let { feedEntry } = $props<{
     feedEntry: FeedEntry & {
@@ -57,6 +58,24 @@
       body: JSON.stringify({ feedEntry }),
     })
   }
+
+  // const size = spring(0)
+  // size.stiffness = 0.3
+  // size.damping = 0.4
+  // size.precision = 0.005
+  const size = tweened(0, {
+    duration: 700,
+    delay: 200,
+    easing: quintOut,
+  })
+
+  $effect(() => {
+    if (cardOpen) {
+      size.set(100)
+    } else {
+      size.set(0)
+    }
+  })
 </script>
 
 <svelte:window on:keydown={handleKeyDown} />
@@ -66,7 +85,7 @@
   role="row"
   bind:this={card}
   tabindex="0"
-  class="grid relative gap-4 p-4 mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none grid-cols-[15rem_1fr] dark:focus:bg-zinc-900 focus:border-zinc-500 focus:bg-zinc-100"
+  class="grid relative gap-4 p-4 mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none grid-cols-[10rem_1fr] dark:focus:bg-zinc-900 focus:border-zinc-500 focus:bg-zinc-100"
   on:mouseleave={closeButtonGroup}
   on:mouseenter={openButtonGroup}
 >
@@ -83,26 +102,19 @@
       class="object-cover rounded-md"
     />
   </div>
-  <div class="flex flex-col">
+  <div class="flex flex-col justify-between">
     <span class="w-auto text-xl font-bold line-clamp-1 min-h-[28px]">
       {feedEntry.title}
     </span>
-    <p
+    <div
+      style="transform: scaleY({$size === 0 ? '0' : `${$size}%`})"
       class={cn(
-        "prose max-w-screen-lg transition-all duration-300 dark:prose-blockquote:text-zinc-200 prose-img:!h-auto prose-img:max-w-screen-md prose-img:object-contain prose-video:aspect-video prose-video:max-w-screen-sm dark:text-zinc-100 dark:prose-headings:text-zinc-100 dark:prose-a:text-zinc-200 dark:prose-strong:text-zinc-100",
-        cardOpen ? "h-full opacity-100" : "pointer-events-none h-0 opacity-0",
+        "prose max-w-screen-lg origin-top prose-img:!w-full dark:prose-blockquote:text-zinc-200 prose-img:!h-auto prose-img:max-w-screen-md prose-img:object-contain prose-video:aspect-video prose-video:max-w-screen-sm dark:text-zinc-100 dark:prose-headings:text-zinc-100 dark:prose-a:text-zinc-200 dark:prose-strong:text-zinc-100",
+        cardOpen ? "h-full" : "h-0 pointer-events-none opacity-0",
       )}
     >
       {@html dompurify.sanitize(feedEntry.content ?? "")}
-    </p>
-    <p
-      class={cn(
-        "prose line-clamp-2 max-w-none transition-all dark:text-zinc-100 dark:prose-a:text-zinc-200",
-        cardOpen ? "h-0" : "display-[-webkit-box]",
-      )}
-    >
-      {@html feedEntry.contentSnippet}
-    </p>
+    </div>
     <div class="flex gap-2 justify-start items-center mt-2 text-sm text-muted">
       {#if feedEntry.link}
         <img
@@ -115,7 +127,7 @@
         </a>
       {/if}
     </div>
-    <span class="flex flex-wrap gap-2 mt-2">
+    <span class="flex flex-wrap gap-2 mt-3">
       <Badge variant="secondary">
         {format(feedEntry.createdAt, "H:mm d MMM yyyy")}
       </Badge>
