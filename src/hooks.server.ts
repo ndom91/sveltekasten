@@ -4,6 +4,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter"
 import type { Handle } from "@sveltejs/kit"
 import type { Provider } from "@auth/sveltekit/providers"
 import prisma from "$lib/prisma"
+import { dev } from "$app/environment"
 
 import {
   AUTH_SECRET,
@@ -96,6 +97,17 @@ if (SMTP_HOST && SMTP_USER && SMTP_PASSWORD) {
   )
 }
 
+async function logger({ event, resolve }) {
+  if (!dev) return
+  const start_time = Date.now()
+  // Wait on response, run other hooks and load
+  const response = await resolve(event)
+
+  console.log(`${Date.now() - start_time}ms  ${event.request.method} ${event.url.pathname}`)
+
+  return response
+}
+
 const handleGlobal: Handle = async ({ event, resolve }) => {
   // @ts-expect-error
   event.locals.providers = providers.map((provider) => ({
@@ -132,4 +144,4 @@ export const handleAuth = SvelteKitAuth({
   },
 })
 
-export const handle = sequence(handleAuth, handleGlobal)
+export const handle = sequence(logger, handleAuth, handleGlobal)
