@@ -3,7 +3,7 @@
   import { Button } from "$lib/components/ui/button"
   import { Input } from "$lib/components/ui/input"
   import * as Card from "$lib/components/ui/card"
-  import { clipboard } from "$lib/utils"
+  import { clipboard } from "$lib/utils/clipboard"
 </script>
 
 <div class="flex flex-col items-start justify-start gap-2">

@@ -8,7 +8,7 @@
   import { infiniteScroll } from "$lib/components/infinite-scroll"
   import type { Feed, FeedEntry, FeedEntryMedia } from "$zod"
   import { invalidateAll } from "$app/navigation"
-  import { documentVisibilityStore } from "$lib/utils"
+  import { documentVisibilityStore } from "$lib/utils/documentVisibility"
 
   const ui = useInterface()
   const { data } = $props()
