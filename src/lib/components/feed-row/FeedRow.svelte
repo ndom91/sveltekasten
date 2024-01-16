@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn } from "$lib/utils"
+  import { cn } from "$lib/utils/style"
   // import { page } from "$app/stores"
   import { format } from "date-fns"
   import { Badge } from "$lib/components/ui/badge"

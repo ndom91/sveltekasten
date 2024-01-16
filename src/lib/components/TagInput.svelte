@@ -11,7 +11,7 @@
   import { Button } from "$lib/components/ui/button"
   import { Badge } from "$lib/components/ui/badge"
   import { tick } from "svelte"
-  import { cn } from "$lib/utils"
+  import { cn } from "$lib/utils/style"
 
   let open = $state(false)
   let {

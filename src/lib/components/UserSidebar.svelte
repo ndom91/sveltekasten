@@ -4,7 +4,7 @@
   import { Button } from "$lib/components/ui/button"
   import { AvatarMenu } from "$lib/components/navbar"
   import Logo from "$lib/assets/Logo.svelte"
-  import { cn } from "$lib/utils"
+  import { cn } from "$lib/utils/style"
   import { useInterface } from "$state/ui.svelte"
 
   const ui = useInterface()

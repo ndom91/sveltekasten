@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn } from "$lib/utils"
+  import { cn } from "$lib/utils/style"
 
   let className: string = ""
   export { className as class }

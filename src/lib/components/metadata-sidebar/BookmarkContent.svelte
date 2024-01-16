@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn } from "$lib/utils"
+  import { cn } from "$lib/utils/style"
   import { page } from "$app/stores"
   import { enhance } from "$app/forms"
   import { form_action } from "$lib/form_action"

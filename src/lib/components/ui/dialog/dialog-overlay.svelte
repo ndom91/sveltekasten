@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Dialog as DialogPrimitive } from "bits-ui";
-	import { cn } from "$lib/utils";
+	import { cn } from "$lib/utils/style";
 	import { fade } from "svelte/transition";
 
 	type $$Props = DialogPrimitive.OverlayProps;

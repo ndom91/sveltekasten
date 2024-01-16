@@ -2,7 +2,7 @@
   import { page } from "$app/stores"
   import { dev } from "$app/environment"
 
-  import { cn } from "$lib/utils"
+  import { cn } from "$lib/utils/style"
   import { Button } from "$lib/components/ui/button"
   import * as Select from "$lib/components/ui/select"
   import { Label } from "$lib/components/ui/label"

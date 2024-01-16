@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Pagination as PaginationPrimitive } from "bits-ui"
   import { Button } from "$lib/components/ui/button"
-  import { cn } from "$lib/utils"
+  import { cn } from "$lib/utils/style"
 
   type $$Props = PaginationPrimitive.NextButtonProps
   type $$Events = PaginationPrimitive.NextButtonEvents

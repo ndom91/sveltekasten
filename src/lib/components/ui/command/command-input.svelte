@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Command as CommandPrimitive } from "cmdk-sv"
-  import { cn } from "$lib/utils"
+  import { cn } from "$lib/utils/style"
   import Logo from "$lib/assets/Logo.svelte"
 
   type $$Props = CommandPrimitive.InputProps & { type?: string }

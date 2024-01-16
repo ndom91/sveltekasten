@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Form as FormPrimitive } from "formsnap";
-	import { cn } from "$lib/utils";
+	import { cn } from "$lib/utils/style";
 	import type { HTMLAttributes } from "svelte/elements";
 
 	type $$Props = HTMLAttributes<HTMLParagraphElement>;

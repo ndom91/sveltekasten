@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Form as FormPrimitive } from "formsnap"
   import { buttonVariants } from "$lib/components/ui/button"
-  import { cn } from "$lib/utils"
+  import { cn } from "$lib/utils/style"
   import type { HTMLSelectAttributes } from "svelte/elements"
 
   type $$Props = HTMLSelectAttributes

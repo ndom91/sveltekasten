@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn } from "$lib/utils"
+  import { cn } from "$lib/utils/style"
   import { Select as SelectPrimitive } from "bits-ui"
 
   type $$Props = SelectPrimitive.ItemProps
