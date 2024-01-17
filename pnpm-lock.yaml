@@ -7,10 +7,10 @@ settings:
 dependencies:
   '@auth/prisma-adapter':
     specifier: ^1.0.14
-    version: 1.0.14(@prisma/client@5.7.1)
+    version: 1.0.14(@prisma/client@5.7.1)(nodemailer@6.9.8)
   '@auth/sveltekit':
     specifier: ^0.5.2
-    version: 0.5.2(@sveltejs/kit@2.3.2)(svelte@5.0.0-next.35)
+    version: 0.5.2(@sveltejs/kit@2.3.2)(nodemailer@6.9.8)(svelte@5.0.0-next.35)
   '@prisma/client':
     specifier: 5.7.1
     version: 5.7.1(prisma@5.7.1)
@@ -80,6 +80,9 @@ dependencies:
   mode-watcher:
     specifier: ^0.1.2
     version: 0.1.2(svelte@5.0.0-next.35)
+  nodemailer:
+    specifier: ^6.9.8
+    version: 6.9.8
   p-debounce:
     specifier: ^4.0.0
     version: 4.0.0
@@ -194,7 +197,7 @@ packages:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.20
 
-  /@auth/core@0.20.0:
+  /@auth/core@0.20.0(nodemailer@6.9.8):
     resolution: {integrity: sha512-04lQH58H5d/9xQ63MOTDTOC7sXWYlr/RhJ97wfFLXzll7nYyCKbkrT3ZMdzdLC5O+qt90sQDK85TAtLlcZ2WBg==}
     peerDependencies:
       nodemailer: ^6.8.0
@@ -206,29 +209,30 @@ packages:
       '@types/cookie': 0.6.0
       cookie: 0.6.0
       jose: 5.1.3
+      nodemailer: 6.9.8
       oauth4webapi: 2.4.0
       preact: 10.11.3
       preact-render-to-string: 5.2.3(preact@10.11.3)
     dev: false
 
-  /@auth/prisma-adapter@1.0.14(@prisma/client@5.7.1):
+  /@auth/prisma-adapter@1.0.14(@prisma/client@5.7.1)(nodemailer@6.9.8):
     resolution: {integrity: sha512-7urwnDT+K81SocU0SbfY/vtY/NbXgj8/AU2k6Ek8waHT/7YPLsOQnXQsTWROmolFshNVkt2kq9Z/HOVnRdHrkQ==}
     peerDependencies:
       '@prisma/client': '>=2.26.0 || >=3 || >=4 || >=5'
     dependencies:
-      '@auth/core': 0.20.0
+      '@auth/core': 0.20.0(nodemailer@6.9.8)
       '@prisma/client': 5.7.1(prisma@5.7.1)
     transitivePeerDependencies:
       - nodemailer
     dev: false
 
-  /@auth/sveltekit@0.5.2(@sveltejs/kit@2.3.2)(svelte@5.0.0-next.35):
+  /@auth/sveltekit@0.5.2(@sveltejs/kit@2.3.2)(nodemailer@6.9.8)(svelte@5.0.0-next.35):
     resolution: {integrity: sha512-BqPIsKEn8VWaUcsbw3ve03rYLJGj0/MyBs83PCLL5vevD2zlfu6Wpxgk8i0AOoXsX1g5k95/gvXP/mL3OuardA==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0 || ^2.0.0
       svelte: ^3.54.0 || ^4.0.0
     dependencies:
-      '@auth/core': 0.20.0
+      '@auth/core': 0.20.0(nodemailer@6.9.8)
       '@sveltejs/kit': 2.3.2(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@5.0.0-next.35)(vite@4.5.1)
       svelte: 5.0.0-next.35
     transitivePeerDependencies:
@@ -2866,6 +2870,11 @@ packages:
   /node-releases@2.0.14:
     resolution: {integrity: sha512-y10wOWt8yZpqXmOgRo77WaHEmhYQYGNA6y421PKsKYWEK8aW+cqAphborZDhqfyKrbZEN92CN1X2KbafY2s7Yw==}
     dev: true
+
+  /nodemailer@6.9.8:
+    resolution: {integrity: sha512-cfrYUk16e67Ks051i4CntM9kshRYei1/o/Gi8K1d+R34OIs21xdFnW7Pt7EucmVKA0LKtqUGNcjMZ7ehjl49mQ==}
+    engines: {node: '>=6.0.0'}
+    dev: false
 
   /nopt@7.2.0:
     resolution: {integrity: sha512-CVDtwCdhYIvnAzFoJ6NJ6dX3oga9/HyciQDnG1vQDjSLMeKLJ4A93ZqYKDrgYSr1FBY5/hMYC+2VCi24pgpkGA==}

@@ -25,15 +25,12 @@ import {
   KEYCLOAK_ISSUER,
   KEYCLOAK_NAME,
   KEYCLOAK_SECRET,
-  // SMTP_FROM,
-  // SMTP_HOST,
-  // SMTP_PASSWORD,
-  // SMTP_PORT,
-  // SMTP_USER,
+  SMTP_FROM,
+  SMTP_HOST,
+  SMTP_PASSWORD,
+  SMTP_PORT,
+  SMTP_USER,
 } from "$env/static/private"
-
-// import { SMTP_FROM, SMTP_HOST, SMTP_PASSWORD, SMTP_PORT, SMTP_USER } from "$env/dynamic/private"
-import { VITE_SMTP_HOST } from "$env/dynamic/private"
 
 const providers: Provider[] = []
 
@@ -83,36 +80,18 @@ if (KEYCLOAK_ID && KEYCLOAK_SECRET) {
   )
 }
 
-// console.log({
-//   SMTP_HOST,
-//   SMTP_USER,
-//   SMTP_PASSWORD,
-// })
-console.log({
-  SMTP_HOST: import.meta.env.SMTP_HOST,
-  SMTP_USER: import.meta.env.SMTP_USER,
-  SMTP_PASSWORD: import.meta.env.SMTP_PASSWORD,
-})
-console.log({
-  SMTP_HOST: Boolean(import.meta.env.SMTP_HOST),
-  SMTP_USER: Boolean(import.meta.env.SMTP_USER),
-  SMTP_PASSWORD: Boolean(import.meta.env.SMTP_PASSWORD),
-})
-
-if (VITE_SMTP_HOST) {
-  // if (import.meta.env.SMTP_HOST && import.meta.env.SMTP_USER && import.meta.env.SMTP_PASSWORD) {
-  // if (SMTP_HOST && SMTP_USER && SMTP_PASSWORD) {
+if (SMTP_HOST && SMTP_USER && SMTP_PASSWORD) {
   const Email = await import("@auth/sveltekit/providers/email")
   providers.push(
     Email.default({
       server: {
-        host: import.meta.env.SMTP_HOST,
-        port: import.meta.env.SMTP_PORT,
+        host: SMTP_HOST,
+        port: SMTP_PORT,
         auth: {
-          user: import.meta.env.SMTP_USER,
-          pass: import.meta.env.SMTP_PASSWORD,
+          user: SMTP_USER,
+          pass: SMTP_PASSWORD,
         },
-        from: import.meta.env.SMTP_FROM,
+        from: SMTP_FROM,
       },
     }),
   )
