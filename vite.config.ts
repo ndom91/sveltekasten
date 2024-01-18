@@ -4,6 +4,7 @@ import { defineConfig } from "vite"
 
 const VCS_SHA = (process.env.VERCEL_GIT_COMMIT_SHA || process.env.GITHUB_SHA)!
 
+// @ts-expect-error
 export default defineConfig(({ mode }) => {
   let commitHash: string
   if (mode === "development") {

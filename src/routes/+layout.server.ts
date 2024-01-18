@@ -1,7 +1,5 @@
 import type { LayoutServerLoad } from "./$types"
 import { redirect } from "@sveltejs/kit"
-import { superValidate } from "sveltekit-superforms/server"
-import { formSchema } from "./schema"
 
 export const load: LayoutServerLoad = async (event) => {
   const session = await event.locals.getSession()
@@ -11,8 +9,12 @@ export const load: LayoutServerLoad = async (event) => {
     throw redirect(307, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
   }
 
+  // If there is a session, don't let the user stay on "/"
+  if (session?.user && event.url.pathname == "/") {
+    throw redirect(303, `/dashboard`)
+  }
+
   return {
-    form: await superValidate(formSchema),
     session,
   }
 }
