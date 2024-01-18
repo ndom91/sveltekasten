@@ -5,93 +5,49 @@ import type { Handle } from "@sveltejs/kit"
 import type { Provider } from "@auth/sveltekit/providers"
 import prisma from "$lib/prisma"
 import { dev } from "$app/environment"
+import { env } from "$env/dynamic/private"
 
-import {
-  AUTH_SECRET,
-  AUTH_TRUST_HOST,
-  AUTHENTIK_ID,
-  AUTHENTIK_ISSUER,
-  AUTHENTIK_NAME,
-  AUTHENTIK_SECRET,
-  AZURE_AD_CLIENT_ID,
-  AZURE_AD_CLIENT_SECRET,
-  AZURE_AD_TENANT_ID,
-  GITHUB_ID,
-  GITHUB_SECRET,
-  GOOGLE_ID,
-  GOOGLE_SECRET,
-  KEYCLOAK_DANGER_EMAIL_ACC_LINK,
-  KEYCLOAK_ID,
-  KEYCLOAK_ISSUER,
-  KEYCLOAK_NAME,
-  KEYCLOAK_SECRET,
-  SMTP_FROM,
-  SMTP_HOST,
-  SMTP_PASSWORD,
-  SMTP_PORT,
-  SMTP_USER,
-} from "$env/static/private"
+JSON.stringify("{}", null, 2)
 
 const providers: Provider[] = []
 
-if (GITHUB_ID && GITHUB_SECRET) {
+if (env.AUTH_GITHUB_ID && env.AUTH_GITHUB_SECRET) {
   const GitHub = await import("@auth/sveltekit/providers/github")
-  providers.push(GitHub.default({ clientId: GITHUB_ID, clientSecret: GITHUB_SECRET }))
+  providers.push(GitHub.default({}))
 }
 
-if (GOOGLE_ID && GOOGLE_SECRET) {
+if (env.AUTH_GOOGLE_ID && env.AUTH_GOOGLE_SECRET) {
   const Google = await import("@auth/sveltekit/providers/google")
-  providers.push(Google.default({ clientId: GOOGLE_ID, clientSecret: GOOGLE_SECRET }))
+  providers.push(Google.default({}))
 }
 
-if (AZURE_AD_CLIENT_ID && AZURE_AD_CLIENT_SECRET) {
+if (env.AUTH_AZURE_AD_CLIENT_ID && env.AUTH_AZURE_AD_CLIENT_SECRET) {
   const AzureAD = await import("@auth/sveltekit/providers/azure-ad")
-  providers.push(
-    AzureAD.default({
-      clientId: AZURE_AD_CLIENT_ID,
-      clientSecret: AZURE_AD_CLIENT_SECRET,
-      tenantId: AZURE_AD_TENANT_ID,
-    }),
-  )
+  providers.push(AzureAD.default({}))
 }
 
-if (AUTHENTIK_ID && AUTHENTIK_SECRET) {
+if (env.AUTH_AUTHENTIK_ID && env.AUTH_AUTHENTIK_SECRET) {
   const Authentik = await import("@auth/sveltekit/providers/authentik")
-  providers.push(
-    Authentik.default({
-      name: AUTHENTIK_NAME,
-      clientId: AUTHENTIK_ID,
-      clientSecret: AUTHENTIK_SECRET,
-      issuer: AUTHENTIK_ISSUER,
-    }),
-  )
+  providers.push(Authentik.default({}))
 }
 
-if (KEYCLOAK_ID && KEYCLOAK_SECRET) {
+if (env.AUTH_KEYCLOAK_ID && env.AUTH_KEYCLOAK_SECRET) {
   const Keycloak = await import("@auth/sveltekit/providers/keycloak")
-  providers.push(
-    Keycloak.default({
-      clientId: KEYCLOAK_ID,
-      name: KEYCLOAK_NAME,
-      clientSecret: KEYCLOAK_SECRET,
-      issuer: KEYCLOAK_ISSUER,
-      allowDangerousEmailAccountLinking: Boolean(KEYCLOAK_DANGER_EMAIL_ACC_LINK),
-    }),
-  )
+  providers.push(Keycloak.default({}))
 }
 
-if (SMTP_HOST && SMTP_USER && SMTP_PASSWORD) {
+if (env.AUTH_SMTP_HOST && env.AUTH_SMTP_USER && env.AUTH_SMTP_PASSWORD) {
   const Email = await import("@auth/sveltekit/providers/email")
   providers.push(
     Email.default({
       server: {
-        host: SMTP_HOST,
-        port: SMTP_PORT,
+        host: env.AUTH_SMTP_HOST,
+        port: env.AUTH_SMTP_PORT,
         auth: {
-          user: SMTP_USER,
-          pass: SMTP_PASSWORD,
+          user: env.AUTH_SMTP_USER,
+          pass: env.AUTH_SMTP_PASSWORD,
         },
-        from: SMTP_FROM,
+        from: env.AUTH_SMTP_FROM,
       },
     }),
   )
@@ -141,8 +97,8 @@ export const handleAuth = SvelteKitAuth({
   },
   // @ts-expect-error
   adapter: PrismaAdapter(prisma),
-  secret: AUTH_SECRET,
-  trustHost: Boolean(AUTH_TRUST_HOST ?? false),
+  secret: env.AUTH_SECRET,
+  trustHost: Boolean(env.AUTH_TRUST_HOST ?? false),
   pages: {
     signIn: "/login",
   },

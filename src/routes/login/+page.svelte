@@ -4,6 +4,7 @@
   import { twJoin } from "tailwind-merge"
   import { signIn } from "@auth/sveltekit/client"
   import { page } from "$app/stores"
+  // import { env } from "$env/dynamic/private"
 
   let email = ""
 
@@ -17,6 +18,7 @@
   }
 
   const handleSignIn = (provider: string) => {
+    // const autoLogin = Boolean(env.AUTH_AUTOLOGIN_FIRST_PROVIDER)
     signIn(provider, {
       callbackUrl: $page.data.redirectTo
         ? `/${decodeURIComponent($page.data.redirectTo).slice(1)}`
@@ -42,18 +44,18 @@
   }
 </script>
 
-<div class="relative flex h-full w-full overflow-hidden">
+<div class="flex overflow-hidden relative w-full h-full">
   <svelte:component
     this={LoginPattern}
-    class="fixed right-0 top-0 z-[5] min-h-full min-w-full object-cover"
+    class="object-cover fixed top-0 right-0 min-w-full min-h-full z-[5]"
   />
   <div
     aria-label="Slate cover background"
     class="absolute left-0 top-0 z-10 flex h-[275%] w-[150%] translate-x-[-70%] translate-y-[-28%] rotate-[22deg] items-center bg-slate-900 md:translate-y-[-15%] md:rotate-[11deg]"
   />
   <div class="h-dvh z-20 flex w-full items-center justify-center md:ml-[15%] md:w-[22rem]">
-    <div class="flex w-80 flex-col items-center justify-center text-xl">
-      <h2 class="mb-4 flex items-center space-x-2 text-3xl font-light text-slate-600">
+    <div class="flex flex-col justify-center items-center w-80 text-xl">
+      <h2 class="flex items-center mb-4 space-x-2 text-3xl font-light text-slate-600">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -61,34 +63,34 @@
           stroke-linecap="round"
           stroke-linejoin="round"
           stroke-width="2"
-          class="size-12 rounded-full bg-slate-800 p-2 text-white"
+          class="p-2 text-white rounded-full size-12 bg-slate-800"
           viewBox="0 0 24 24"
         >
           <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
         </svg>
         <span class="text-4xl font-medium text-white">Briefkasten</span>
       </h2>
-      <div class="m-8 flex w-full flex-col gap-2 rounded bg-white p-6 shadow-lg">
+      <div class="flex flex-col gap-2 p-6 m-8 w-full bg-white rounded shadow-lg">
         {#if !$page.data.session?.user}
           {#if $page.data.providers.includes({ id: "email", name: "Email" })}
             <form on:submit={handleEmailSignIn}>
               <input
-                class="block w-full flex-1 rounded-md border border-gray-200 p-3 font-normal transition placeholder:font-light placeholder:text-slate-400 focus:border-slate-500 focus:ring-slate-500 sm:text-sm"
+                class="block flex-1 p-3 w-full font-normal rounded-md border border-gray-200 transition sm:text-sm placeholder:font-light placeholder:text-slate-400 focus:border-slate-500 focus:ring-slate-500"
                 type="email"
                 autoComplete="username"
                 placeholder="user@company.com"
                 bind:value={email}
               />
               <button
-                class="mt-2 flex h-12 w-full items-center justify-center space-x-2 rounded bg-slate-800 px-4 text-base font-light text-white transition hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-800 focus:ring-offset-2"
+                class="flex justify-center items-center px-4 mt-2 space-x-2 w-full h-12 text-base font-light text-white rounded transition focus:ring-2 focus:ring-offset-2 focus:outline-none bg-slate-800 hover:bg-slate-900 focus:ring-slate-800"
                 >Continue</button
               >
             </form>
 
-            <div class="my-4 flex items-center gap-2">
-              <div class="h-[1px] flex-1 bg-black" />
-              <span class="text-xs uppercase leading-4">or</span>
-              <div class="h-[1px] flex-1 bg-black" />
+            <div class="flex gap-2 items-center my-4">
+              <div class="flex-1 bg-black h-[1px]" />
+              <span class="text-xs leading-4 uppercase">or</span>
+              <div class="flex-1 bg-black h-[1px]" />
             </div>
           {/if}
 
@@ -102,7 +104,7 @@
                 on:click={() => handleSignIn(provider.id)}
               >
                 <ProviderIcons provider={provider.id} />
-                <span class="flex w-full justify-center">
+                <span class="flex justify-center w-full">
                   Signin with {provider.name !== "Azure Active Directory"
                     ? provider.name
                     : "Azure AD"}
