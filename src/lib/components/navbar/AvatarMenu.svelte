@@ -7,6 +7,7 @@
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import { Skeleton } from "$lib/components/ui/skeleton"
   import { ModeWatcher, mode, toggleMode } from "mode-watcher"
+  import { version } from "$app/environment"
 
   let isDarkMode = $derived($mode === "dark")
 </script>
@@ -32,7 +33,7 @@
         <div>
           {$page.data.session?.user?.name ?? $page.data.session?.user?.email}
         </div>
-        <div class="text-zinc-200 dark:text-zinc-600">{__VER__}</div>
+        <div class="text-zinc-200 dark:text-zinc-600">{version}</div>
       </DropdownMenu.Label>
       <DropdownMenu.Separator />
       <DropdownMenu.CheckboxItem

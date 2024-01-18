@@ -1,4 +1,5 @@
 import adapter from "@sveltejs/adapter-vercel"
+import * as child_process from "node:child_process"
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte"
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -7,7 +8,7 @@ const config = {
   kit: {
     adapter: adapter(),
     version: {
-      name: process.env.npm_package_version,
+      name: child_process.execSync("git rev-parse HEAD").toString().trim().substring(0, 7),
     },
     alias: {
       $: "src",
@@ -17,9 +18,6 @@ const config = {
       $zod: "src/lib/types/prisma",
       $state: "src/state",
     },
-  },
-  vitePlugin: {
-    inspector: true,
   },
 }
 
