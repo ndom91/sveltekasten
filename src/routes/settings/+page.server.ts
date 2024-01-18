@@ -62,7 +62,7 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
-    const skip = Number(url.searchParams.get("skip") ?? "0")
+    // const skip = Number(url.searchParams.get("skip") ?? "0")
     const limit = Number(url.searchParams.get("limit") ?? "10")
 
     if (limit > 100) {

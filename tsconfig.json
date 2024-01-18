@@ -8,11 +8,11 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
+    "lib": ["dom", "esnext"],
     "sourceMap": true,
     "strict": true,
     "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "bundler"
+    "module": "ESNext"
   },
   "ts-node": {
     "esm": true
