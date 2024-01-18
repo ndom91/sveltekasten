@@ -7,8 +7,6 @@ import prisma from "$lib/prisma"
 import { dev } from "$app/environment"
 import { env } from "$env/dynamic/private"
 
-JSON.stringify("{}", null, 2)
-
 const providers: Provider[] = []
 
 if (env.AUTH_GITHUB_ID && env.AUTH_GITHUB_SECRET) {
