@@ -11,7 +11,7 @@ type RequestBody = {
 
 // @ts-expect-error
 export const POST: RequestHandler = async ({ request, locals, url }) => {
-  const session = await locals.getSession()
+  const session = await locals.auth()
   if (!session?.user?.userId) {
     return fail(401, { type: "error", error: "Unauthenticated" })
   }

@@ -5,7 +5,7 @@ import type { PageServerLoad } from "./$types"
 export const load: PageServerLoad = async ({ parent, locals, url }) => {
   await parent()
   try {
-    const session = await locals.getSession()
+    const session = await locals.auth()
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }

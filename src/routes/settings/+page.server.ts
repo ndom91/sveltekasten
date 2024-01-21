@@ -6,7 +6,7 @@ import { WORKER_URL } from "$env/static/private"
 
 export const actions: Actions = {
   deleteFeed: async ({ request, locals }) => {
-    const session = await locals.getSession()
+    const session = await locals.auth()
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
@@ -29,7 +29,7 @@ export const actions: Actions = {
     if (!WORKER_URL) {
       return fail(500, { type: "error", error: "Worker URL Not Configured!" })
     }
-    const session = await locals.getSession()
+    const session = await locals.auth()
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
@@ -58,7 +58,7 @@ export const actions: Actions = {
 export const load: PageServerLoad = async ({ parent, locals, url }) => {
   await parent()
   try {
-    const session = await locals.getSession()
+    const session = await locals.auth()
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }

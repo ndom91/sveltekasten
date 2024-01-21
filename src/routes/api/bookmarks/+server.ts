@@ -6,7 +6,7 @@ import prisma from "$lib/prisma"
 // @ts-expect-error
 export const GET: RequestHandler = async ({ url, locals }) => {
   try {
-    const session = await locals.getSession()
+    const session = await locals.auth()
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
@@ -46,7 +46,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 // @ts-expect-error
 export const PUT: RequestHandler = async ({ request, locals }) => {
   try {
-    const session = await locals.getSession()
+    const session = await locals.auth()
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }

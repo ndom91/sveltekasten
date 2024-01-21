@@ -6,7 +6,7 @@ import type { Actions, PageServerLoad } from "./$types"
 
 export const load: PageServerLoad = async ({ locals, parent }) => {
   await parent()
-  const session = await locals.getSession()
+  const session = await locals.auth()
   if (!session?.user?.userId) {
     return fail(401, { type: "error", error: "Unauthenticated" })
   }
@@ -20,7 +20,7 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 
 export const actions: Actions = {
   createCategory: async ({ request, locals }) => {
-    const session = await locals.getSession()
+    const session = await locals.auth()
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }

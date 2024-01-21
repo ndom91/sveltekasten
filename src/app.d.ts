@@ -1,14 +1,14 @@
-import "@auth/sveltekit";
+import "@auth/sveltekit"
 
 declare module "@auth/sveltekit/jwt" {
   interface JWT {
-    idToken?: string;
+    idToken?: string
   }
 }
 
 type Provider = {
-  id: string;
-  name: string;
+  id: string
+  name: string
 }
 
 // See https://kit.svelte.dev/docs/types#app
@@ -26,18 +26,17 @@ declare namespace App {
 // Requires @auth/sveltekit@0.5.1+
 declare module "@auth/sveltekit" {
   interface User {
-    userId: string;
+    userId: string
   }
 }
 
 interface ViewTransition {
-  updateCallbackDone: Promise<void>;
-  ready: Promise<void>;
-  finished: Promise<void>;
-  skipTransition: () => void;
+  updateCallbackDone: Promise<void>
+  ready: Promise<void>
+  finished: Promise<void>
+  skipTransition: () => void
 }
 
 interface Document {
-  startViewTransition(updateCallback: () => Promise<void>): ViewTransition;
+  startViewTransition(updateCallback: () => Promise<void>): ViewTransition
 }
-

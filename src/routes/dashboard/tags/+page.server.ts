@@ -7,7 +7,7 @@ import type { ZodError } from "zod"
 
 export const load: PageServerLoad = async ({ parent, locals }) => {
   await parent()
-  const session = await locals.getSession()
+  const session = await locals.auth()
   if (!session?.user?.userId) {
     return fail(401, { type: "error", error: "Unauthenticated" })
   }
@@ -21,7 +21,7 @@ export const load: PageServerLoad = async ({ parent, locals }) => {
 
 export const actions: Actions = {
   createTag: async ({ request, locals }) => {
-    const session = await locals.getSession()
+    const session = await locals.auth()
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }

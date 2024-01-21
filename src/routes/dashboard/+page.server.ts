@@ -39,7 +39,7 @@ const metascraperClient = metascraper([
 
 export const actions: Actions = {
   deleteBookmark: async ({ request, locals }) => {
-    const session = await locals.getSession()
+    const session = await locals.auth()
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
@@ -59,7 +59,7 @@ export const actions: Actions = {
     return { type: "success", message: "Deleted Bookmark" }
   },
   saveMetadataEdits: async ({ request, locals }) => {
-    const session = await locals.getSession()
+    const session = await locals.auth()
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
@@ -101,7 +101,7 @@ export const actions: Actions = {
     }
 
     try {
-      const session = await event.locals.getSession()
+      const session = await event.locals.auth()
       if (!session?.user?.userId) {
         return fail(401, { type: "error", error: "Unauthenticated" })
       }
@@ -171,7 +171,7 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
     const skip = Number(url.searchParams.get("skip") ?? "0")
     const limit = Number(url.searchParams.get("limit") ?? "10")
 
-    const session = await locals.getSession()
+    const session = await locals.auth()
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }

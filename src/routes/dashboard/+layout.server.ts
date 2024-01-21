@@ -6,7 +6,7 @@ import type { LayoutServerLoad } from "./$types"
 
 export const load: LayoutServerLoad = async ({ locals }) => {
   try {
-    const session = await locals.getSession()
+    const session = await locals.auth()
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
