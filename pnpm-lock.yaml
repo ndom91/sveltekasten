@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@auth/drizzle-adapter':
+    specifier: ^0.3.16
+    version: 0.3.16(nodemailer@6.9.8)
   '@auth/prisma-adapter':
     specifier: ^1.0.15
     version: 1.0.15(@prisma/client@5.7.1)(nodemailer@6.9.8)
@@ -243,6 +246,14 @@ packages:
       oauth4webapi: 2.4.0
       preact: 10.11.3
       preact-render-to-string: 5.2.3(preact@10.11.3)
+    dev: false
+
+  /@auth/drizzle-adapter@0.3.16(nodemailer@6.9.8):
+    resolution: {integrity: sha512-08uS3j6Omzhshgtn8bjKxZlVOrO2Y3eXdTCYDFdhVAG7KpnotRYFhjrXqVlb9kjaNIxavnyad37+DtpIoOYqmg==}
+    dependencies:
+      '@auth/core': 0.22.0(nodemailer@6.9.8)
+    transitivePeerDependencies:
+      - nodemailer
     dev: false
 
   /@auth/prisma-adapter@1.0.15(@prisma/client@5.7.1)(nodemailer@6.9.8):

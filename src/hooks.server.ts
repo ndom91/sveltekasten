@@ -1,11 +1,11 @@
 import { sequence } from "@sveltejs/kit/hooks"
 import { SvelteKitAuth } from "@auth/sveltekit"
-import { PrismaAdapter } from "@auth/prisma-adapter"
+import { DrizzleAdapter } from "@auth/drizzle-adapter"
 import type { Handle } from "@sveltejs/kit"
 import type { Provider } from "@auth/sveltekit/providers"
-import prisma from "$lib/prisma"
 import { dev } from "$app/environment"
 import { env } from "$env/dynamic/private"
+import { db } from "$lib/db"
 
 const providers: Provider[] = []
 
@@ -93,8 +93,7 @@ export const handleAuth = SvelteKitAuth({
   session: {
     strategy: "jwt",
   },
-  // @ts-expect-error
-  adapter: PrismaAdapter(prisma),
+  adapter: DrizzleAdapter(db),
   secret: env.AUTH_SECRET,
   trustHost: Boolean(env.AUTH_TRUST_HOST ?? false),
   pages: {
