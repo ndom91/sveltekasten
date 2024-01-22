@@ -13,8 +13,8 @@ export const bookmarks = sqliteTable(
     title: text("title").notNull(),
     url: text("url").notNull(),
     image: text("image"),
-    imageBlur: text("image"),
-    desc: text("desc"),
+    imageBlur: text("imageBlur"),
+    description: text("description"),
     category: text("category"),
     metadata: text("metadata", { mode: "json" }),
     archived: integer("archived", { mode: "boolean" }).default(false),
@@ -56,7 +56,7 @@ export type Tag = typeof tags.$inferSelect
 export type InsertTag = typeof tags.$inferInsert
 
 export const tagsToBookmarks = sqliteTable("tagsToBookmarks", {
-  bookmarkId: text("bookmark_id")
+  bookmarkId: text("bookmarkId")
     .notNull()
     .references(() => bookmarks.id),
   tagId: text("tagId")

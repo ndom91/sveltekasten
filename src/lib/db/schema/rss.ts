@@ -45,7 +45,7 @@ export const feedEntries = sqliteTable(
     ingested: integer("ingested", { mode: "timestamp_ms" }),
     published: integer("published", { mode: "timestamp_ms" }),
     unread: integer("unread", { mode: "boolean" }).default(true),
-    categoriers: text("metadata", { mode: "json" }),
+    categories: text("categories", { mode: "json" }),
     feedId: text("feedId").references(() => feeds.id, { onDelete: "cascade", onUpdate: "cascade" }),
     userId: text("userId").references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
     createdAt: integer("createdAt", { mode: "timestamp_ms" }).default(sql`(strftime('%s', 'now'))`),
