@@ -3,7 +3,7 @@ import { integer, sqliteTable, index, unique, text } from "drizzle-orm/sqlite-co
 import { createId } from "@paralleldrive/cuid2"
 import { users } from "./auth"
 
-export const feeds = sqliteTable(
+export const feed = sqliteTable(
   "feed",
   {
     id: text("id")
@@ -26,10 +26,10 @@ export const feeds = sqliteTable(
   }),
 )
 
-export type Feed = typeof feeds.$inferSelect
-export type InsertFeed = typeof feeds.$inferInsert
+export type Feed = typeof feed.$inferSelect
+export type InsertFeed = typeof feed.$inferInsert
 
-export const feedEntries = sqliteTable(
+export const feedEntry = sqliteTable(
   "feedEntry",
   {
     id: text("id")
@@ -46,7 +46,7 @@ export const feedEntries = sqliteTable(
     published: integer("published", { mode: "timestamp_ms" }),
     unread: integer("unread", { mode: "boolean" }).default(true),
     categories: text("categories", { mode: "json" }),
-    feedId: text("feedId").references(() => feeds.id, { onDelete: "cascade", onUpdate: "cascade" }),
+    feedId: text("feedId").references(() => feed.id, { onDelete: "cascade", onUpdate: "cascade" }),
     userId: text("userId").references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
     createdAt: integer("createdAt", { mode: "timestamp_ms" }).default(sql`(strftime('%s', 'now'))`),
     updatedAt: integer("updatedAt", { mode: "timestamp_ms" }),
@@ -58,8 +58,8 @@ export const feedEntries = sqliteTable(
   }),
 )
 
-export type FeedEntry = typeof feedEntries.$inferSelect
-export type InsertFeedEntry = typeof feedEntries.$inferInsert
+export type FeedEntry = typeof feedEntry.$inferSelect
+export type InsertFeedEntry = typeof feedEntry.$inferInsert
 
 export const feedEntryMedia = sqliteTable(
   "feedEntryMedia",
@@ -75,7 +75,7 @@ export const feedEntryMedia = sqliteTable(
     width: integer("width"),
     description: text("description"),
     credit: text("credit"),
-    feedEntryId: text("feedEntryId").references(() => feedEntries.id, {
+    feedEntryId: text("feedEntryId").references(() => feedEntry.id, {
       onDelete: "cascade",
       onUpdate: "cascade",
     }),

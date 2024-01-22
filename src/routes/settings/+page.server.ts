@@ -1,5 +1,7 @@
 import { fail } from "@sveltejs/kit"
-import prisma from "$lib/prisma"
+import { db } from "$lib/db"
+import { feed } from "$lib/db/schema/rss"
+import { and, eq } from "drizzle-orm"
 import type { Actions } from "./$types"
 import type { PageServerLoad } from "./$types"
 import { WORKER_URL } from "$env/static/private"
@@ -17,12 +19,8 @@ export const actions: Actions = {
       return fail(400, { type: "error", message: "Missing Feed ID" })
     }
 
-    await prisma.feed.delete({
-      where: {
-        id: feedId,
-        userId: session.user.userId,
-      },
-    })
+    await db.delete(feed).where(and(eq(feed.id, feedId), eq(feed.userId, session.user.userId)))
+
     return { type: "success", message: "Deleted Feed" }
   },
   addFeed: async ({ fetch, request, locals }) => {

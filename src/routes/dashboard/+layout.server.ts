@@ -1,4 +1,7 @@
 import prisma from "$lib/prisma"
+import { db } from "$lib/db"
+import { feed } from "$lib/db/schema/rss"
+import { and, eq } from "drizzle-orm"
 import { fail } from "@sveltejs/kit"
 import { formSchema } from "../schema"
 import { superValidate } from "sveltekit-superforms/server"
@@ -10,6 +13,7 @@ export const load: LayoutServerLoad = async ({ locals }) => {
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
+
     const [categories, tags] = await prisma.$transaction([
       prisma.category.findMany({
         where: { userId: session.user.userId },
@@ -18,6 +22,7 @@ export const load: LayoutServerLoad = async ({ locals }) => {
         where: { userId: session.user.userId },
       }),
     ])
+
     return {
       form: await superValidate(formSchema),
       tags,

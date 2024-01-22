@@ -3,7 +3,7 @@ import { integer, sqliteTable, index, unique, text } from "drizzle-orm/sqlite-co
 import { createId } from "@paralleldrive/cuid2"
 import { users } from "./auth"
 
-export const bookmarks = sqliteTable(
+export const bookmark = sqliteTable(
   "bookmark",
   {
     id: text("id")
@@ -18,7 +18,7 @@ export const bookmarks = sqliteTable(
     category: text("category"),
     metadata: text("metadata", { mode: "json" }),
     archived: integer("archived", { mode: "boolean" }).default(false),
-    categoryId: text("categoryId").references(() => categories.id, { onDelete: "set null" }),
+    categoryId: text("categoryId").references(() => category.id, { onDelete: "set null" }),
     userId: text("userId").references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
     createdAt: integer("createdAt", { mode: "timestamp_ms" }).default(sql`(strftime('%s', 'now'))`),
     updatedAt: integer("updatedAt", { mode: "timestamp_ms" }),
@@ -30,10 +30,10 @@ export const bookmarks = sqliteTable(
   }),
 )
 
-export type Bookmark = typeof bookmarks.$inferSelect
-export type InsertBookmark = typeof bookmarks.$inferInsert
+export type Bookmark = typeof bookmark.$inferSelect
+export type InsertBookmark = typeof bookmark.$inferInsert
 
-export const tags = sqliteTable(
+export const tag = sqliteTable(
   "tag",
   {
     id: text("id")
@@ -52,22 +52,22 @@ export const tags = sqliteTable(
   }),
 )
 
-export type Tag = typeof tags.$inferSelect
-export type InsertTag = typeof tags.$inferInsert
+export type Tag = typeof tag.$inferSelect
+export type InsertTag = typeof tag.$inferInsert
 
-export const tagsToBookmarks = sqliteTable("tagsToBookmarks", {
+export const tagToBookmark = sqliteTable("tagsToBookmarks", {
   bookmarkId: text("bookmarkId")
     .notNull()
-    .references(() => bookmarks.id),
+    .references(() => bookmark.id),
   tagId: text("tagId")
     .notNull()
-    .references(() => tags.id),
+    .references(() => tag.id),
 })
 
-export type TagOnBookmark = typeof tagsToBookmarks.$inferSelect
-export type InsertTagOnBookmark = typeof tagsToBookmarks.$inferInsert
+export type TagOnBookmark = typeof tagToBookmark.$inferSelect
+export type InsertTagOnBookmark = typeof tagToBookmark.$inferInsert
 
-export const categories = sqliteTable(
+export const category = sqliteTable(
   "category",
   {
     id: text("id")
@@ -86,5 +86,5 @@ export const categories = sqliteTable(
   }),
 )
 
-export type Category = typeof categories.$inferSelect
-export type InsertCategory = typeof categories.$inferInsert
+export type Category = typeof category.$inferSelect
+export type InsertCategory = typeof category.$inferInsert
