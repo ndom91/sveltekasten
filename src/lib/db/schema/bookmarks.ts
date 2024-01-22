@@ -26,7 +26,7 @@ export const bookmarks = sqliteTable(
   (t) => ({
     uniqueUserUrl: unique().on(t.url, t.userId),
     categoryIdx: index("category_idx").on(t.categoryId),
-    userIdx: index("user_idx").on(t.userId),
+    userIdx: index("bookmarks_user_idx").on(t.userId),
   }),
 )
 
@@ -48,7 +48,7 @@ export const tags = sqliteTable(
   },
   (t) => ({
     uniqueNameUser: unique().on(t.name, t.userId),
-    userIdx: index("user_idx").on(t.userId),
+    userIdx: index("tags_user_idx").on(t.userId),
   }),
 )
 
@@ -82,7 +82,7 @@ export const categories = sqliteTable(
   },
   (t) => ({
     uniqueNameUser: unique().on(t.name, t.userId),
-    userIdx: index("user_idx").on(t.userId),
+    userIdx: index("categories_user_idx").on(t.userId),
   }),
 )
 

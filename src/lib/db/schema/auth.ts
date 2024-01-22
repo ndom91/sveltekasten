@@ -34,7 +34,7 @@ export const accounts = sqliteTable(
     compoundKey: primaryKey({
       columns: [account.provider, account.providerAccountId],
     }),
-    userIdx: index("user_idx").on(account.userId),
+    userIdx: index("accounts_user_idx").on(account.userId),
   }),
 )
 
@@ -51,7 +51,7 @@ export const sessions = sqliteTable(
     expires: integer("expires", { mode: "timestamp_ms" }).notNull(),
   },
   (session) => ({
-    userIdx: index("user_idx").on(session.userId),
+    userIdx: index("sessions_user_idx").on(session.userId),
   }),
 )
 

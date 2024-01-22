@@ -22,7 +22,7 @@ export const feeds = sqliteTable(
   },
   (t) => ({
     uniqueUrlUser: unique().on(t.url, t.userId),
-    userIdx: index("user_idx").on(t.userId),
+    userIdx: index("feeds_user_idx").on(t.userId),
   }),
 )
 
@@ -53,7 +53,7 @@ export const feedEntries = sqliteTable(
   },
   (t) => ({
     guidIdx: index("guid_idx").on(t.guid),
-    userIdx: index("user_idx").on(t.userId),
+    userIdx: index("feed_entries_user_idx").on(t.userId),
     feedIdx: index("feed_idx").on(t.feedId),
   }),
 )
@@ -84,7 +84,7 @@ export const feedEntryMedia = sqliteTable(
     updatedAt: integer("updatedAt", { mode: "timestamp_ms" }),
   },
   (t) => ({
-    userIdx: index("user_idx").on(t.userId),
+    userIdx: index("feed_entry_media_user_idx").on(t.userId),
     feedEntryIdx: index("feed_entry_idx").on(t.feedEntryId),
   }),
 )
