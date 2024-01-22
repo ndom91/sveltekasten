@@ -3,11 +3,6 @@ import * as dotenv from "dotenv"
 dotenv.config()
 
 const isDev: boolean = process.env.NODE_ENV === "development"
-console.log("isDev", {
-  isDev,
-  local: process.env.DATABASE_URL_LOCAL,
-  prod: process.env.DATABASE_URL_PROD,
-})
 
 const config = {
   schema: "./src/lib/db/schema/*",
