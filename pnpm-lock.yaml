@@ -148,6 +148,9 @@ devDependencies:
   autoprefixer:
     specifier: ^10.4.16
     version: 10.4.16(postcss@8.4.32)
+  dotenv:
+    specifier: ^16.3.2
+    version: 16.3.2
   drizzle-kit:
     specifier: ^0.20.13
     version: 0.20.13
@@ -2234,6 +2237,11 @@ packages:
       domelementtype: 2.3.0
       domhandler: 5.0.3
     dev: false
+
+  /dotenv@16.3.2:
+    resolution: {integrity: sha512-HTlk5nmhkm8F6JcdXvHIzaorzCoziNQT9mGxLPVXW8wJF1TiGSL60ZGB4gHWabHOaMmWmhvk2/lPHfnBiT78AQ==}
+    engines: {node: '>=12'}
+    dev: true
 
   /dreamopt@0.8.0:
     resolution: {integrity: sha512-vyJTp8+mC+G+5dfgsY+r3ckxlz+QMX40VjPQsZc5gxVAxLmi64TBoVkP54A/pRAXMXsbu2GMMBrZPxNv23waMg==}

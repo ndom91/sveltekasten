@@ -12,6 +12,11 @@
     "db:migrate": "pnpm dlx prisma migrate dev",
     "db:studio": "pnpm dlx prisma studio",
     "db:generate": "pnpm dlx prisma generate",
+    "drizzle:migrate:new": "drizzle-kit generate:sqlite",
+    "drizzle:push": "drizzle-kit push:sqlite",
+    "drizzle:check": "drizzle-kit check:sqlite",
+    "drizzle:studio": "drizzle-kit studio",
+    "drizzle:start:local": "turso dev -f local.db",
     "postinstall": "pnpm dlx prisma generate"
   },
   "devDependencies": {
@@ -26,6 +31,7 @@
     "@typescript-eslint/eslint-plugin": "6.15.0",
     "@typescript-eslint/parser": "6.15.0",
     "autoprefixer": "^10.4.16",
+    "dotenv": "^16.3.2",
     "drizzle-kit": "^0.20.13",
     "eslint": "8.56.0",
     "eslint-config-prettier": "9.1.0",
