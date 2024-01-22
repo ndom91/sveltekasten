@@ -157,6 +157,9 @@ devDependencies:
   eslint-config-prettier:
     specifier: 9.1.0
     version: 9.1.0(eslint@8.56.0)
+  eslint-plugin-drizzle:
+    specifier: ^0.2.3
+    version: 0.2.3(eslint@8.56.0)
   eslint-plugin-svelte:
     specifier: 2.35.1
     version: 2.35.1(eslint@8.56.0)(svelte@5.0.0-next.37)
@@ -2515,6 +2518,14 @@ packages:
     hasBin: true
     peerDependencies:
       eslint: '>=7.0.0'
+    dependencies:
+      eslint: 8.56.0
+    dev: true
+
+  /eslint-plugin-drizzle@0.2.3(eslint@8.56.0):
+    resolution: {integrity: sha512-BO+ymHo33IUNoJlC0rbd7HP9EwwpW4VIp49R/tWQF/d2E1K2kgTf0tCXT0v9MSiBr6gGR1LtPwMLapTKEWSg9A==}
+    peerDependencies:
+      eslint: '>=8.0.0'
     dependencies:
       eslint: 8.56.0
     dev: true

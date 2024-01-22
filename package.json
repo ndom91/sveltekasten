@@ -29,6 +29,7 @@
     "drizzle-kit": "^0.20.13",
     "eslint": "8.56.0",
     "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-drizzle": "^0.2.3",
     "eslint-plugin-svelte": "2.35.1",
     "install": "^0.13.0",
     "postcss": "^8.4.32",
@@ -85,12 +86,14 @@
     "root": true,
     "parser": "@typescript-eslint/parser",
     "plugins": [
-      "@typescript-eslint"
+      "@typescript-eslint",
+      "drizzle"
     ],
     "extends": [
       "eslint:recommended",
       "plugin:@typescript-eslint/eslint-recommended",
       "plugin:@typescript-eslint/recommended",
+      "plugin:drizzle/all",
       "prettier"
     ],
     "parserOptions": {
