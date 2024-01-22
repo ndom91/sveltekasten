@@ -11,27 +11,27 @@ const providers: Provider[] = []
 
 if (env.AUTH_GITHUB_ID && env.AUTH_GITHUB_SECRET) {
   const GitHub = await import("@auth/sveltekit/providers/github")
-  providers.push(GitHub.default({}))
+  providers.push(GitHub.default)
 }
 
 if (env.AUTH_GOOGLE_ID && env.AUTH_GOOGLE_SECRET) {
   const Google = await import("@auth/sveltekit/providers/google")
-  providers.push(Google.default({}))
+  providers.push(Google.default)
 }
 
 if (env.AUTH_AZURE_AD_CLIENT_ID && env.AUTH_AZURE_AD_CLIENT_SECRET) {
   const AzureAD = await import("@auth/sveltekit/providers/azure-ad")
-  providers.push(AzureAD.default({}))
+  providers.push(AzureAD.default)
 }
 
 if (env.AUTH_AUTHENTIK_ID && env.AUTH_AUTHENTIK_SECRET) {
   const Authentik = await import("@auth/sveltekit/providers/authentik")
-  providers.push(Authentik.default({}))
+  providers.push(Authentik.default)
 }
 
 if (env.AUTH_KEYCLOAK_ID && env.AUTH_KEYCLOAK_SECRET) {
   const Keycloak = await import("@auth/sveltekit/providers/keycloak")
-  providers.push(Keycloak.default({}))
+  providers.push(Keycloak.default)
 }
 
 if (env.AUTH_SMTP_HOST && env.AUTH_SMTP_USER && env.AUTH_SMTP_PASSWORD) {
