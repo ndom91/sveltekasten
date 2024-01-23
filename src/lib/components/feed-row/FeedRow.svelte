@@ -4,13 +4,18 @@
   import { Badge } from "$lib/components/ui/badge"
   import type { FeedEntry, FeedEntryMedia } from "$zod"
   import dompurify from "dompurify"
-  import { spring, tweened } from "svelte/motion"
+  import { tweened } from "svelte/motion"
   import { quintOut } from "svelte/easing"
+  import { useInterface } from "$state/ui.svelte"
+  import { tick } from "svelte"
 
-  let { feedEntry } = $props<{
+  const ui = useInterface()
+
+  let { feedEntry, handleGenerateSpeech } = $props<{
     feedEntry: FeedEntry & {
       feedMedia: FeedEntryMedia[]
     }
+    handleGenerateSpeech: (text: string) => void
   }>()
 
   let isOptionsOpen = $state(false)
@@ -43,6 +48,12 @@
     if (feedEntry.unread === true) {
       handleMarkAsUnread(false)
     }
+  }
+  const handleSetTextToSpeechContent = async () => {
+    ui.textToSpeechAudioBlob = ""
+    await tick()
+    handleGenerateSpeech(feedEntry.title)
+    // ui.textToSpeechContent = feedEntry.title ?? ""
   }
 
   const handleMarkAsUnread = async (target: boolean | null = null) => {
@@ -147,6 +158,7 @@
       {isOptionsOpen}
       {handleToggleCardOpen}
       {handleMarkAsUnread}
+      {handleSetTextToSpeechContent}
     />
   {/await}
 </div>
