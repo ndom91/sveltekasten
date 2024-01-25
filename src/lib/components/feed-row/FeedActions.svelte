@@ -96,7 +96,7 @@
         on:click={handleSetTextToSpeechContent}
       >
         {#if ui.textToSpeechLoading}
-          <LoadingIndicator class="mr-2 dark:text-white" />
+          <LoadingIndicator class="dark:text-white" />
         {:else}
           <svg
             class="size-5"
