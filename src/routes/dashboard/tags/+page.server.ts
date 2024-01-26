@@ -1,13 +1,16 @@
 import prisma from "$lib/prisma"
-import { fail } from "@sveltejs/kit"
+import { fail, redirect } from "@sveltejs/kit"
 import { Prisma } from "@prisma/client"
 import { TagCreateInputSchema } from "$zod"
 import type { Actions, PageServerLoad } from "./$types"
 import type { ZodError } from "zod"
 
-export const load: PageServerLoad = async ({ parent, locals }) => {
-  await parent()
+export const load: PageServerLoad = async ({ url, locals }) => {
   const session = await locals.auth()
+  if (!session && url.pathname !== "/login") {
+    const fromUrl = url.pathname + url.search
+    redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
+  }
   if (!session?.user?.userId) {
     return fail(401, { type: "error", error: "Unauthenticated" })
   }
@@ -16,7 +19,10 @@ export const load: PageServerLoad = async ({ parent, locals }) => {
     where: { userId: session.user.userId },
   })
 
-  return { tags: response }
+  return {
+    session,
+    tags: response,
+  }
 }
 
 export const actions: Actions = {

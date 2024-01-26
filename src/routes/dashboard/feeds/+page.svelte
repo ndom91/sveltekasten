@@ -26,50 +26,37 @@
   const visibility = documentVisibilityStore()
   let prevVisibility: DocumentVisibilityState = "visible"
 
-  // Model loading
-  // let ready = $state(false)
-  // let progressItems = $state([])
+  // Model
+  let progressItems = $state([])
   let disabled = $state(false)
-
-  // Inputs and outputs
-  // let text = $state("I love Hugging Face!")
   let selectedSpeaker = $state(DEFAULT_SPEAKER)
-  let output = $state("")
-
-  // Create a reference to the worker object.
   let worker = $state<Worker>()
 
   $effect(() => {
-    // We use the `useEffect` hook to setup the worker as soon as the `App` component is mounted.
     if (!worker) {
-      // Create the worker if it does not yet exist.
-      // worker = new Worker(new URL("./worker.js", import.meta.url), {
       worker = new Worker(new URL(workah, import.meta.url), {
         type: "module",
       })
     }
 
-    // Create a callback function for messages from the worker thread.
     const onMessageReceived = (e) => {
       console.log("msg: ", e.data)
       switch (e.data.status) {
         case "initiate":
           // Model file start load: add a new progress item to the list.
           // ready = false
-          // progressItems.push(e.data)
+          progressItems.push(e.data)
           break
 
-        // case "progress":
-        //   // Model file progress: update one of the progress items.
-        //   progressItems((prev) =>
-        //     prev.map((item) => {
-        //       if (item.file === e.data.file) {
-        //         return { ...item, progress: e.data.progress }
-        //       }
-        //       return item
-        //     }),
-        //   )
-        //   break
+        case "progress":
+          // Model file progress: update one of the progress items.
+          progressItems = progressItems.map((item) => {
+            if (item.file === e.data.file) {
+              return { ...item, progress: e.data.progress }
+            }
+            return item
+          })
+          break
 
         // case "done":
         //   // Model file loaded: remove the progress item from the list.
@@ -90,6 +77,7 @@
           console.log(`Audio Set: ${blobUrl}`)
           ui.textToSpeechAudioBlob = blobUrl
           ui.textToSpeechLoading = false
+          console.timeEnd("audio.generate")
           break
       }
     }
@@ -103,10 +91,7 @@
 
   const handleGenerateSpeech = (text: string) => {
     if (!worker) return
-    // if (!ui.textToSpeechContent) {
-    //   toast.error(`Please select a story to read`)
-    //   return
-    // }
+    console.time("audio.generate")
     disabled = true
     ui.textToSpeechLoading = true
     worker.postMessage({

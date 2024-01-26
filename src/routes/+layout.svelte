@@ -26,23 +26,23 @@
     }
     if (e.shiftKey && e.key === "!") {
       e.preventDefault()
-      goto('/dashboard')
+      goto("/dashboard")
     }
     if (e.shiftKey && e.key === "@") {
       e.preventDefault()
-      goto('/dashboard/feeds')
+      goto("/dashboard/feeds")
     }
     if (e.shiftKey && e.key === "#") {
       e.preventDefault()
-      goto('/dashboard/categories')
+      goto("/dashboard/categories")
     }
     if (e.shiftKey && e.key === "$") {
       e.preventDefault()
-      goto('/dashboard/tags')
+      goto("/dashboard/tags")
     }
     if (e.shiftKey && e.key === "%") {
       e.preventDefault()
-      goto('/settings')
+      goto("/settings")
     }
   }
 </script>

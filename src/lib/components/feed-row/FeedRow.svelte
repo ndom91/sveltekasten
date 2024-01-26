@@ -49,6 +49,7 @@
       handleMarkAsUnread(false)
     }
   }
+
   const handleSetTextToSpeechContent = async () => {
     ui.textToSpeechAudioBlob = ""
     await tick()

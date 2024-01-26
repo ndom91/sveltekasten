@@ -2,7 +2,7 @@
   import { cn } from "$lib/utils/style"
 
   export let key: string = ""
-  let className: string = ""
+  let className = ""
   export { className as class }
 </script>
 

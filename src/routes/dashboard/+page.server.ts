@@ -1,4 +1,5 @@
 import prisma from "$lib/prisma"
+import { redirect } from "@sveltejs/kit"
 import { fail } from "@sveltejs/kit"
 import { formSchema } from "../schema"
 import { superValidate } from "sveltekit-superforms/server"
@@ -165,8 +166,14 @@ export const actions: Actions = {
   },
 }
 
-export const load: PageServerLoad = async ({ parent, locals, url }) => {
-  await parent()
+export const load: PageServerLoad = async ({ locals, url }) => {
+  const session = await locals?.auth()
+
+  if (!session && url.pathname !== "/login") {
+    const fromUrl = url.pathname + url.search
+    redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
+  }
+
   try {
     const skip = Number(url.searchParams.get("skip") ?? "0")
     const limit = Number(url.searchParams.get("limit") ?? "10")
@@ -193,6 +200,7 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
     return {
       bookmarks: data,
       count,
+      session,
     }
   } catch (error) {
     let message
