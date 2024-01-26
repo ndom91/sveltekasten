@@ -3,15 +3,12 @@
   import { format } from "date-fns"
   import { Badge } from "$lib/components/ui/badge"
   import { useInterface } from "$state/ui.svelte"
-  import type { Bookmark, Tag, Category } from "$zod"
   import { invalidateAll } from "$app/navigation"
 
   const ui = useInterface()
   let card = $state<HTMLElement>()
 
-  const { bookmark } = $props<{
-    bookmark: Bookmark & { tags: { tag: Tag }[] } & { category: Category }
-  }>()
+  const { bookmark } = $props<{ bookmark: LoadBookmarkResult }>()
 
   let isDeleteDialogOpen = $state(false)
   let isOptionsOpen = $state(false)

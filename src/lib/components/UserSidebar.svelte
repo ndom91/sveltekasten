@@ -19,6 +19,7 @@
   const activePage = $derived(() => {
     const path = $page.url.pathname
     if (path === "/dashboard") return "home"
+    if (path === "/dashboard/bookmarks") return "bookmarks"
     if (path === "/dashboard/feeds") return "feeds"
     if (path === "/dashboard/categories") return "categories"
     if (path === "/dashboard/tags") return "tags"
@@ -86,6 +87,43 @@
         </Tooltip.Trigger>
         <Tooltip.Content side="right">
           <p>Dashboard</p>
+        </Tooltip.Content>
+      </Tooltip.Root>
+      <Tooltip.Root>
+        <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
+          <Button
+            variant="ghost"
+            builders={[tooltipBuilder]}
+            data-sveltekit-preload-data="hover"
+            class={cn(
+              "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0 dark:focus:ring-zinc-800",
+              activePage() === "bookmarks" ? "ring-2 ring-zinc-300 dark:ring-zinc-800" : "",
+            )}
+            href="/dashboard/bookmarks"
+          >
+            <svg
+              class="size-6"
+              data-slot="icon"
+              fill="none"
+              stroke-width="1.5"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
+              ></path>
+            </svg>
+            {#if ui.userSidebarOpen}
+              <span class="ml-4 text-lg font-normal">Bookmarks</span>
+            {/if}
+          </Button>
+        </Tooltip.Trigger>
+        <Tooltip.Content side="right">
+          <p>Bookmarks</p>
         </Tooltip.Content>
       </Tooltip.Root>
       <Tooltip.Root>

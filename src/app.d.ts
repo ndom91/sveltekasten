@@ -1,3 +1,4 @@
+import type { Bookmark, Tag, Category } from "$zod"
 import "@auth/sveltekit"
 
 declare module "@auth/sveltekit/jwt" {
@@ -15,6 +16,10 @@ type Provider = {
 // for information about these interfaces
 // and what to do when importing types
 declare global {
+  type TODO = any
+  type LoadBookmarkResult = Bookmark & { tags: { tag: Tag }[] } & { category: Category | null }
+  type LoadFeedEntry = FeedEntry & { feed: Feed; feedMedia: FeedEntryMedia | null }[]
+
   namespace App {
     interface Locals {
       providers: Provider[]

@@ -20,7 +20,6 @@ const logger: Handle = async ({ event, resolve }) => {
 }
 
 const handleGlobal: Handle = async ({ event, resolve }) => {
-  // @ts-expect-error
   // event.locals.providers = providers.map((provider) => ({
   //   id: provider.id as string,
   //   name: provider.name,

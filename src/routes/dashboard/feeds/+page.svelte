@@ -1,45 +1,40 @@
 <script lang="ts">
   import toast from "svelte-french-toast"
   import EmptyState from "$lib/components/EmptyState.svelte"
-  import { Button } from "$lib/components/ui/button"
   import { FeedRow } from "$lib/components/feed-row"
   import { Skeleton } from "$lib/components/ui/skeleton"
-  import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
 
   import { useInterface } from "$state/ui.svelte"
   import { infiniteScroll } from "$lib/components/infinite-scroll"
-  import type { Feed, FeedEntry, FeedEntryMedia } from "$zod"
   import { invalidateAll } from "$app/navigation"
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
   import { DEFAULT_SPEAKER } from "$lib/transformers/consts"
-  import workah from "$lib/transformers/worker?url"
+  import ttsWorkerUrl from "$lib/transformers/worker?url"
 
   const ui = useInterface()
   const { data } = $props()
   let pageNumber = $state(1)
-  let totalItemCount = $state<number>(data.feedEntries?.count ?? 1)
-  let allItems = $state<(FeedEntry & { feed: Feed; feedMedia: FeedEntryMedia })[]>(
-    data.feedEntries?.data ?? [],
-  )
+  let totalItemCount = $state<number>(data.feedEntries?.count)
+  let allItems = $state<LoadFeedEntry>(data.feedEntries?.data)
 
   // Reload feed when coming back to tab
   const visibility = documentVisibilityStore()
   let prevVisibility: DocumentVisibilityState = "visible"
 
   // Model
-  let progressItems = $state([])
+  let progressItems = $state<TODO>([])
   let disabled = $state(false)
   let selectedSpeaker = $state(DEFAULT_SPEAKER)
   let worker = $state<Worker>()
 
   $effect(() => {
     if (!worker) {
-      worker = new Worker(new URL(workah, import.meta.url), {
+      worker = new Worker(new URL(ttsWorkerUrl, import.meta.url), {
         type: "module",
       })
     }
 
-    const onMessageReceived = (e) => {
+    const onMessageReceived = (e: TODO) => {
       console.log("msg: ", e.data)
       switch (e.data.status) {
         case "initiate":
@@ -95,7 +90,6 @@
     disabled = true
     ui.textToSpeechLoading = true
     worker.postMessage({
-      // text: ui.textToSpeechContent,
       text,
       speaker_id: selectedSpeaker,
     })
@@ -156,17 +150,18 @@
   let activeFeedEntries = $derived(async () => {
     if (!ui.searchQuery)
       return allItems
-        .filter((item) => {
+        .filter((item: LoadFeedEntry) => {
           if (ui.showUnreadOnly) {
             return !!item.unread
           } else {
             return item
           }
         })
-        .filter((item) => {
+        .filter((item: LoadFeedEntry) => {
           const feed = data.feeds?.data?.find((feed) => feed.id === item.feed?.id)
           return feed?.visible
         })
+
     const res = await fetch("/api/search", {
       method: "POST",
       headers: {
@@ -200,7 +195,7 @@
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
       const currentActiveElementIndex = allItems.findIndex(
-        (item) => item.id === currentActiveElement.dataset.id,
+        (item: LoadFeedEntry) => item.id === currentActiveElement.dataset.id,
       )
       const nextIndex =
         e.key === "ArrowDown" || e.key === "j"
@@ -218,7 +213,7 @@
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
       const currentActiveElementIndex = allItems.findIndex(
-        (item) => item.id === currentActiveElement.dataset.id,
+        (item: LoadFeedEntry) => item.id === currentActiveElement.dataset.id,
       )
       const targetLink = allItems[currentActiveElementIndex]?.link
       if (!targetLink) {

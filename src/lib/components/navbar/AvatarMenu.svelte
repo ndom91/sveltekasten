@@ -9,7 +9,6 @@
   import { SignOut } from "@auth/sveltekit/components"
 
   let isDarkMode = $derived($mode === "dark")
-  $inspect($page.data)
 </script>
 
 <ModeWatcher />

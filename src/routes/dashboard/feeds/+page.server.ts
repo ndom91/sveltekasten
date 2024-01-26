@@ -75,6 +75,11 @@ export const load: PageServerLoad = async ({ locals, url }) => {
     } else if (error instanceof Error) {
       message = error.message
     }
-    return { feedEntries: [], count: 0, error: message }
+
+    return {
+      feedEntries: [],
+      count: 0,
+      error: message,
+    }
   }
 }
