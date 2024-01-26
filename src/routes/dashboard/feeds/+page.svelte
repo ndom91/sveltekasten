@@ -1,14 +1,18 @@
 <script lang="ts">
   import toast from "svelte-french-toast"
   import EmptyState from "$lib/components/EmptyState.svelte"
+  import { Button } from "$lib/components/ui/button"
   import { FeedRow } from "$lib/components/feed-row"
   import { Skeleton } from "$lib/components/ui/skeleton"
+  import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
 
   import { useInterface } from "$state/ui.svelte"
   import { infiniteScroll } from "$lib/components/infinite-scroll"
   import type { Feed, FeedEntry, FeedEntryMedia } from "$zod"
   import { invalidateAll } from "$app/navigation"
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
+  import { DEFAULT_SPEAKER } from "$lib/transformers/consts"
+  import workah from "$lib/transformers/worker?url"
 
   const ui = useInterface()
   const { data } = $props()
@@ -21,6 +25,96 @@
   // Reload feed when coming back to tab
   const visibility = documentVisibilityStore()
   let prevVisibility: DocumentVisibilityState = "visible"
+
+  // Model loading
+  // let ready = $state(false)
+  // let progressItems = $state([])
+  let disabled = $state(false)
+
+  // Inputs and outputs
+  // let text = $state("I love Hugging Face!")
+  let selectedSpeaker = $state(DEFAULT_SPEAKER)
+  let output = $state("")
+
+  // Create a reference to the worker object.
+  let worker = $state<Worker>()
+
+  $effect(() => {
+    // We use the `useEffect` hook to setup the worker as soon as the `App` component is mounted.
+    if (!worker) {
+      // Create the worker if it does not yet exist.
+      // worker = new Worker(new URL("./worker.js", import.meta.url), {
+      worker = new Worker(new URL(workah, import.meta.url), {
+        type: "module",
+      })
+    }
+
+    // Create a callback function for messages from the worker thread.
+    const onMessageReceived = (e) => {
+      console.log("msg: ", e.data)
+      switch (e.data.status) {
+        case "initiate":
+          // Model file start load: add a new progress item to the list.
+          // ready = false
+          // progressItems.push(e.data)
+          break
+
+        // case "progress":
+        //   // Model file progress: update one of the progress items.
+        //   progressItems((prev) =>
+        //     prev.map((item) => {
+        //       if (item.file === e.data.file) {
+        //         return { ...item, progress: e.data.progress }
+        //       }
+        //       return item
+        //     }),
+        //   )
+        //   break
+
+        // case "done":
+        //   // Model file loaded: remove the progress item from the list.
+        //   setProgressItems((prev) => prev.filter((item) => item.file !== e.data.file))
+        //   break
+
+        case "ready":
+          console.log("pipeline ready")
+          // Pipeline ready: the worker is ready to accept messages.
+          // ready = true
+          break
+
+        case "complete":
+          // Generation complete: re-enable the "Translate" button
+          disabled = false
+
+          const blobUrl = URL.createObjectURL(e.data.output)
+          console.log(`Audio Set: ${blobUrl}`)
+          ui.textToSpeechAudioBlob = blobUrl
+          ui.textToSpeechLoading = false
+          break
+      }
+    }
+
+    // Attach the callback function as an event listener.
+    worker.addEventListener("message", onMessageReceived)
+
+    // Define a cleanup function for when the component is unmounted.
+    return () => worker?.removeEventListener("message", onMessageReceived)
+  })
+
+  const handleGenerateSpeech = (text: string) => {
+    if (!worker) return
+    // if (!ui.textToSpeechContent) {
+    //   toast.error(`Please select a story to read`)
+    //   return
+    // }
+    disabled = true
+    ui.textToSpeechLoading = true
+    worker.postMessage({
+      // text: ui.textToSpeechContent,
+      text,
+      speaker_id: selectedSpeaker,
+    })
+  }
 
   $effect(() => {
     if (prevVisibility === "hidden" && $visibility === "visible") {
@@ -177,7 +271,7 @@
           {/each}
         {:then feedEntries}
           {#each feedEntries as feedEntry}
-            <FeedRow {feedEntry} />
+            <FeedRow {feedEntry} {handleGenerateSpeech} />
           {:else}
             <div class="my-8 w-full text-3xl text-center">No entries found</div>
           {/each}
