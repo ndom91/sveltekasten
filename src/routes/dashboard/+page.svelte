@@ -8,7 +8,6 @@
   const handleKeyDown = (e: TODO) => {
     return null
   }
-  $inspect($page)
 </script>
 
 <svelte:head>
@@ -18,18 +17,18 @@
 
 <svelte:window on:keydown={handleKeyDown} />
 
-<main class="h-full">
-  <div class="flex justify-start p-4 w-full">
-    <h2 class="text-2xl font-thin">Welcome back {data.session?.user?.name}</h2>
+<main
+  class="h-full align-start flex max-h-[calc(100vh_-_80px)] max-w-[calc(100vw_-_80px)] flex-col justify-start gap-4"
+>
+  <div class="flex justify-start px-4 pt-4 w-full">
+    <h2 class="text-2xl font-thin">Latest Items</h2>
   </div>
-  <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2">
-    {#if data.bookmarks}
-      <HomeScroller items={data.bookmarks.data} count={data.bookmarks.count} type="bookmarks" />
-    {/if}
-    {#if data.feedEntries}
-      <HomeScroller items={data.feedEntries.data} count={data.feedEntries.count} type="feeds" />
-    {/if}
-  </div>
+  {#if data.bookmarks}
+    <HomeScroller items={data.bookmarks.data} count={data.bookmarks.count} type="bookmarks" />
+  {/if}
+  {#if data.feedEntries}
+    <HomeScroller items={data.feedEntries.data} count={data.feedEntries.count} type="feeds" />
+  {/if}
 </main>
 
 {#snippet emptyHelper()}

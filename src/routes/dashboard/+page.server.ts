@@ -21,6 +21,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
       skip: 0,
       where: {
         userId: session?.user?.userId,
+        unread: true,
       },
       include: {
         feed: true,

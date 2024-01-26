@@ -8,7 +8,7 @@
 <div class="flex">
   <CommandBar />
   <Sidebar />
-  <div class="flex w-full flex-grow flex-col">
+  <div class="flex flex-col flex-grow w-full max-w-screen">
     <Navbar />
     <slot />
   </div>
