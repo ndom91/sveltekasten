@@ -1,15 +1,15 @@
 <script lang="ts">
-  // @ts-nocheck undefined '__VER__' is replaced by Vite in markup
   import { page } from "$app/stores"
   import { blur } from "svelte/transition"
-  import { signOut } from "@auth/sveltekit/client"
   import * as Avatar from "$lib/components/ui/avatar"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import { Skeleton } from "$lib/components/ui/skeleton"
   import { ModeWatcher, mode, toggleMode } from "mode-watcher"
   import { version } from "$app/environment"
+  import { SignOut } from "@auth/sveltekit/components"
 
   let isDarkMode = $derived($mode === "dark")
+  $inspect($page.data)
 </script>
 
 <ModeWatcher />
@@ -47,9 +47,9 @@
         >Settings</DropdownMenu.Item
       >
       <DropdownMenu.Separator />
-      <DropdownMenu.Item class="justify-start hover:cursor-pointer" on:click={() => signOut()}
-        >Signout</DropdownMenu.Item
-      >
+      <DropdownMenu.Item class="justify-start hover:cursor-pointer">
+        <SignOut signOutPage="signout">Sign Out</SignOut>
+      </DropdownMenu.Item>
     </DropdownMenu.Group>
   </DropdownMenu.Content>
 </DropdownMenu.Root>

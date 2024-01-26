@@ -1,21 +1,27 @@
 import prisma from "$lib/prisma"
-import { fail } from "@sveltejs/kit"
+import { fail, redirect } from "@sveltejs/kit"
 import { Prisma } from "@prisma/client"
 import { CategoryCreateInputSchema } from "$zod"
 import type { Actions, PageServerLoad } from "./$types"
 
-export const load: PageServerLoad = async ({ locals, parent }) => {
-  await parent()
+export const load: PageServerLoad = async ({ locals, url }) => {
   const session = await locals.auth()
-  if (!session?.user?.userId) {
-    return fail(401, { type: "error", error: "Unauthenticated" })
+  if (!session && url.pathname !== "/login") {
+    const fromUrl = url.pathname + url.search
+    redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
   }
+  // if (!session?.user?.userId) {
+  //   return fail(401, { type: "error", error: "Unauthenticated" })
+  // }
 
   const response = await prisma.category.findMany({
     where: { userId: session?.user?.userId },
   })
 
-  return { categories: response }
+  return {
+    session,
+    categories: response,
+  }
 }
 
 export const actions: Actions = {

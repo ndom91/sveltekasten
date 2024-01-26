@@ -1,4 +1,4 @@
-import { fail } from "@sveltejs/kit"
+import { fail, redirect } from "@sveltejs/kit"
 import prisma from "$lib/prisma"
 import type { Actions } from "./$types"
 import type { PageServerLoad } from "./$types"
@@ -56,12 +56,15 @@ export const actions: Actions = {
 }
 
 export const load: PageServerLoad = async ({ parent, locals, url }) => {
-  await parent()
   try {
     const session = await locals.auth()
-    if (!session?.user?.userId) {
-      return fail(401, { type: "error", error: "Unauthenticated" })
+    if (!session && url.pathname !== "/login") {
+      const fromUrl = url.pathname + url.search
+      redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
     }
+    // if (!session?.user?.userId) {
+    //   return fail(401, { type: "error", error: "Unauthenticated" })
+    // }
     // const skip = Number(url.searchParams.get("skip") ?? "0")
     const limit = Number(url.searchParams.get("limit") ?? "10")
 
@@ -91,6 +94,7 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
     })
 
     return {
+      session,
       feeds: {
         data: feedData,
         count: feedCount,
