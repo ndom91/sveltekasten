@@ -2,29 +2,10 @@
   import LoginPattern from "$lib/assets/LoginPattern.svelte"
   import ProviderIcons from "./ProviderIcons.svelte"
   import { twJoin } from "tailwind-merge"
-  import { signIn } from "@auth/sveltekit/client"
   import { page } from "$app/stores"
-  // import { env } from "$env/dynamic/private"
+  import { SignIn } from "@auth/sveltekit/components"
 
-  let email = ""
-
-  const handleEmailSignIn = () => {
-    signIn("email", {
-      email,
-      callbackUrl: $page.data.redirectTo
-        ? `/${decodeURIComponent($page.data.redirectTo).slice(1)}`
-        : `/dashboard`,
-    })
-  }
-
-  const handleSignIn = (provider: string) => {
-    // const autoLogin = Boolean(env.AUTH_AUTOLOGIN_FIRST_PROVIDER)
-    signIn(provider, {
-      callbackUrl: $page.data.redirectTo
-        ? `/${decodeURIComponent($page.data.redirectTo).slice(1)}`
-        : `/dashboard`,
-    })
-  }
+  console.log($page.data.providers)
 
   const providerButtonStyles = (provider: string): string => {
     switch (provider) {
@@ -42,6 +23,7 @@
         return "bg-gray-600 hover:bg-gray-800 text-white"
     }
   }
+  export let form
 </script>
 
 <div class="flex overflow-hidden relative w-full h-full">
@@ -73,17 +55,21 @@
       <div class="flex flex-col gap-2 p-6 m-8 w-full bg-white rounded shadow-lg">
         {#if !$page.data.session?.user}
           {#if $page.data.providers.includes({ id: "email", name: "Email" })}
-            <form on:submit={handleEmailSignIn}>
+            <form>
               <input
                 class="block flex-1 p-3 w-full font-normal rounded-md border border-gray-200 transition sm:text-sm placeholder:font-light placeholder:text-slate-400 focus:border-slate-500 focus:ring-slate-500"
                 type="email"
                 autoComplete="username"
                 placeholder="user@company.com"
-                bind:value={email}
               />
-              <button
-                class="flex justify-center items-center px-4 mt-2 space-x-2 w-full h-12 text-base font-light text-white rounded transition focus:ring-2 focus:ring-offset-2 focus:outline-none bg-slate-800 hover:bg-slate-900 focus:ring-slate-800"
-                >Continue</button
+              <SignIn
+                provider="email"
+                signInPage="signin"
+                callbackUrl={$page.data.redirectTo
+                  ? `/${decodeURIComponent($page.data.redirectTo).slice(1)}`
+                  : `/dashboard`}
+                className="flex justify-center items-center px-4 mt-2 space-x-2 w-full h-12 text-base font-light text-white rounded transition focus:ring-2 focus:ring-offset-2 focus:outline-none bg-slate-800 hover:bg-slate-900 focus:ring-slate-800"
+                >Continue</SignIn
               >
             </form>
 
@@ -93,15 +79,22 @@
               <div class="flex-1 bg-black h-[1px]" />
             </div>
           {/if}
-
-          {#if $page.data.providers}
-            {#each $page.data.providers as provider}
-              <button
+          {#each $page.data.providers as provider}
+            <SignIn
+              provider={provider.id}
+              signInPage="signin"
+              options={{
+                redirectTo: $page.data.redirectTo
+                  ? `/${decodeURIComponent($page.data.redirectTo).slice(1)}`
+                  : `/dashboard`,
+              }}
+              className="w-full"
+            >
+              <div
                 class={twJoin(
                   "mt-2 flex h-12 w-full items-center space-x-2 rounded px-4 text-base font-light transition focus:outline-none focus:ring-2 focus:ring-slate-800 focus:ring-offset-2",
                   providerButtonStyles(provider.id),
                 )}
-                on:click={() => handleSignIn(provider.id)}
               >
                 <ProviderIcons provider={provider.id} />
                 <span class="flex justify-center w-full">
@@ -109,9 +102,11 @@
                     ? provider.name
                     : "Azure AD"}
                 </span>
-              </button>
-            {/each}
-          {/if}
+              </div>
+            </SignIn>
+          {:else}
+            <span>No Auth.js Providers found</span>
+          {/each}
         {/if}
       </div>
     </div>

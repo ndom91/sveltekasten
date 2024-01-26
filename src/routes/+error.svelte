@@ -1,7 +1,6 @@
 <script>
   import { page } from "$app/stores"
   import Logo from "$lib/assets/Logo.svelte"
-  import * as Card from "$lib/components/ui/card"
   import { Button } from "$lib/components/ui/button"
   import { ModeWatcher } from "mode-watcher"
 </script>
