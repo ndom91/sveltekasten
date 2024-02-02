@@ -12,42 +12,46 @@
 
   const handleToggleDeleteDialog = (e: MouseEvent, feed: Feed) => {
     e.preventDefault()
+    e.stopPropagation()
+    console.log("toggling")
     isDeleteDialogOpen = !isDeleteDialogOpen
     targetFeed = feed
   }
+
+  const form = $page.form
+  // $inspect($page)
 </script>
 
 {#await import("./DeleteDialog.svelte") then { default: DeleteDialog }}
-  <svelte:component this={DeleteDialog} bind:open={isDeleteDialogOpen} feed={targetFeed} />
+  <svelte:component this={DeleteDialog} {form} bind:open={isDeleteDialogOpen} feed={targetFeed} />
 {/await}
-<div class="flex flex-col items-start justify-start gap-2">
+<div class="flex flex-col gap-2 justify-start items-start">
   <Card.Root class="w-full">
     <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
       <Card.Title>Manage Feeds</Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
-      <div class="flex flex-col items-start gap-2" role="table">
-        <div class="flex w-full items-center justify-start" role="rowheader">
+      <div class="flex flex-col gap-2 items-start" role="table">
+        <div class="flex justify-start items-center w-full" role="rowheader">
           <div class="w-72">ID</div>
           <div class="flex-grow">URL</div>
           <div class="w-24">Actions</div>
         </div>
         {#each $page.data?.feeds?.data as feed}
-          <div class="flex w-full items-center justify-start" role="row">
+          <div class="flex justify-start items-center w-full" role="row">
             <div class="w-64 font-mono" role="cell">
               {feed.id}
             </div>
-            <div class="flex-grow truncate font-mono" role="cell">
+            <div class="flex-grow font-mono truncate" role="cell">
               {feed.url}
             </div>
             <div class="w-24" role="cell">
               <Button
                 onclick={(e: MouseEvent) => handleToggleDeleteDialog(e, feed)}
                 variant="destructive"
-                class=""
               >
                 <svg
-                  class="size-4 mr-2"
+                  class="mr-2 size-4"
                   data-slot="icon"
                   fill="none"
                   stroke-width="1.5"
@@ -67,7 +71,7 @@
             </div>
           </div>
         {:else}
-          <div class="flex w-full items-center justify-start" role="row">
+          <div class="flex justify-start items-center w-full" role="row">
             <div class="my-8 w-full text-center" role="cell">
               No feeds added yet, please use the form below to add your first!
             </div>
@@ -91,7 +95,7 @@
           type="text"
           name="feedUrl"
           placeholder="RSS Feed URL"
-          class="flex h-10 w-96 rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          class="flex py-2 px-3 w-96 h-10 text-sm bg-transparent rounded-md border focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-input ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring"
         />
         <button class={buttonVariants({ variant: "default" })} type="submit"> Add </button>
       </form>

@@ -8,12 +8,16 @@
 
   let { form, open, feed } = $props<{
     open: boolean
+    feed: Feed
     form?: ActionData
-    feed?: Feed
   }>()
 
+  $inspect(form)
+
   $effect(() => {
-    if ($form?.type === "success") {
+    console.log("form effect")
+    if (form?.type === "success") {
+      console.log("form.type === 'success', closing")
       open = false
     }
   })
