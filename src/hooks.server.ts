@@ -10,7 +10,6 @@ const logger: Handle = async ({ event, resolve }) => {
   const start_time = Date.now()
   // Wait on response, run other hooks and load
   const response = await resolve(event)
-  // console.log(response)
 
   console.log(
     `${response.status} ${event.request.method} ${event.url.pathname} (${Date.now() - start_time}ms)`,

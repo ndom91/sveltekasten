@@ -32,7 +32,7 @@ if (env.AUTH_KEYCLOAK_ID && env.AUTH_KEYCLOAK_SECRET) {
 }
 
 if (env.AUTH_SMTP_HOST && env.AUTH_SMTP_USER && env.AUTH_SMTP_PASSWORD) {
-  const Email = await import("@auth/sveltekit/providers/email")
+  const Email = await import("@auth/sveltekit/providers/nodemailer")
   providers.push(
     Email.default({
       server: {
@@ -57,7 +57,6 @@ export { providerMap }
 export const { signIn, signOut, handle } = SvelteKitAuth({
   providers,
   callbacks: {
-    // @ts-expect-error
     session: async ({ session, token }) => {
       if (token && session.user) {
         session.user.userId = token.sub
@@ -76,7 +75,7 @@ export const { signIn, signOut, handle } = SvelteKitAuth({
   adapter: PrismaAdapter(prisma),
   debug: true,
   secret: env.AUTH_SECRET,
-  // trustHost: Boolean(env.AUTH_TRUST_HOST ?? false),
+  trustHost: Boolean(env.AUTH_TRUST_HOST ?? false),
   // pages: {
   //   signIn: "/login",
   // },

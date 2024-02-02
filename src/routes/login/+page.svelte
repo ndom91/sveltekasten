@@ -5,7 +5,8 @@
   import { page } from "$app/stores"
   import { SignIn } from "@auth/sveltekit/components"
 
-  console.log($page.data.providers)
+  $inspect($page.data.providers)
+  const { form } = $props()
 
   const providerButtonStyles = (provider: string): string => {
     switch (provider) {
@@ -23,7 +24,6 @@
         return "bg-gray-600 hover:bg-gray-800 text-white"
     }
   }
-  export let form
 </script>
 
 <div class="flex overflow-hidden relative w-full h-full">
