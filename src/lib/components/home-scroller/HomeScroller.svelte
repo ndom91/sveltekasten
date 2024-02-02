@@ -18,7 +18,9 @@
         ? `Unread ${type.charAt(0).toUpperCase() + type.slice(1)}`
         : type.charAt(0).toUpperCase() + type.slice(1)}
     </h2>
-    <a data-sveltekit-preload-data="hover" href={`/dashboard/${type}`}>See more</a>
+    {#if items.length}
+      <a data-sveltekit-preload-data="hover" href={`/dashboard/${type}`}>See more</a>
+    {/if}
   </div>
   <div class="flex overflow-x-auto">
     {#each items as item (item.id)}
@@ -28,7 +30,7 @@
         <FeedItemPreviewCard {item} />
       {/if}
     {:else}
-      <div class="grid place-items-center w-full">
+      <div class="grid place-items-center w-full h-24">
         <p>No items found</p>
       </div>
     {/each}

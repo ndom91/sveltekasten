@@ -16,10 +16,10 @@
 <div class="flex">
   <CommandBar />
   <Sidebar />
-  <div class="flex w-full flex-grow flex-col">
+  <div class="flex flex-col flex-grow w-full">
     <Navbar simple={true} />
 
-    <Tabs.Root value="user" class="m-4 max-w-screen-2xl flex-grow">
+    <Tabs.Root value="user" class="flex-grow m-4 max-w-screen-2xl">
       <Tabs.List class="*:w-full *:text-lg *:font-light h-12 w-full bg-zinc-100 dark:bg-zinc-800">
         <Tabs.Trigger value="user">User</Tabs.Trigger>
         <Tabs.Trigger value="feeds">Feeds</Tabs.Trigger>
