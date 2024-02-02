@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@auth/prisma-adapter':
-    specifier: ^1.0.17
-    version: 1.0.17(@prisma/client@5.8.1)(nodemailer@6.9.8)
+    specifier: ^1.1.0
+    version: 1.2.0(@prisma/client@5.8.1)(nodemailer@6.9.8)
   '@auth/sveltekit':
     specifier: ^0.9.0
     version: 0.9.0(@sveltejs/kit@2.4.3)(nodemailer@6.9.8)(svelte@5.0.0-next.38)
@@ -15,11 +15,11 @@ dependencies:
     specifier: 5.8.1
     version: 5.8.1(prisma@5.8.1)
   '@xenova/transformers':
-    specifier: ^2.14.0
-    version: 2.14.0
+    specifier: ^2.14.2
+    version: 2.14.2
   bits-ui:
-    specifier: ^0.15.1
-    version: 0.15.1(svelte@5.0.0-next.40)
+    specifier: ^0.16.0
+    version: 0.16.0(svelte@5.0.0-next.40)
   clsx:
     specifier: ^2.1.0
     version: 2.1.0
@@ -33,53 +33,53 @@ dependencies:
     specifier: ^3.0.8
     version: 3.0.8
   formsnap:
-    specifier: ^0.4.2
-    version: 0.4.2(svelte@5.0.0-next.40)(sveltekit-superforms@1.13.4)(zod@3.22.4)
+    specifier: ^0.4.3
+    version: 0.4.3(svelte@5.0.0-next.40)(sveltekit-superforms@1.13.4)(zod@3.22.4)
   metascraper:
-    specifier: ^5.43.3
-    version: 5.43.3
+    specifier: ^5.43.4
+    version: 5.43.4
   metascraper-author:
-    specifier: ^5.43.3
-    version: 5.43.3
+    specifier: ^5.43.4
+    version: 5.43.4
   metascraper-clearbit:
-    specifier: ^5.43.3
-    version: 5.43.3
+    specifier: ^5.43.4
+    version: 5.43.4
   metascraper-date:
-    specifier: ^5.43.3
-    version: 5.43.3
+    specifier: ^5.43.4
+    version: 5.43.4
   metascraper-description:
-    specifier: ^5.43.3
-    version: 5.43.3
+    specifier: ^5.43.4
+    version: 5.43.4
   metascraper-feed:
-    specifier: ^5.43.3
-    version: 5.43.3
+    specifier: ^5.43.4
+    version: 5.43.4
   metascraper-image:
-    specifier: ^5.43.3
-    version: 5.43.3
+    specifier: ^5.43.4
+    version: 5.43.4
   metascraper-lang:
-    specifier: ^5.43.3
-    version: 5.43.3
+    specifier: ^5.43.4
+    version: 5.43.4
   metascraper-logo:
-    specifier: ^5.43.3
-    version: 5.43.3
+    specifier: ^5.43.4
+    version: 5.43.4
   metascraper-logo-favicon:
-    specifier: ^5.43.3
-    version: 5.43.3
+    specifier: ^5.43.4
+    version: 5.43.4
   metascraper-publisher:
-    specifier: ^5.43.3
-    version: 5.43.3
+    specifier: ^5.43.4
+    version: 5.43.4
   metascraper-readability:
-    specifier: ^5.43.3
-    version: 5.43.3
+    specifier: ^5.43.4
+    version: 5.43.4
   metascraper-title:
-    specifier: ^5.43.3
-    version: 5.43.3
+    specifier: ^5.43.4
+    version: 5.43.4
   metascraper-url:
-    specifier: ^5.43.3
-    version: 5.43.3
+    specifier: ^5.43.4
+    version: 5.43.4
   mode-watcher:
-    specifier: ^0.1.2
-    version: 0.1.2(svelte@5.0.0-next.40)
+    specifier: ^0.2.0
+    version: 0.2.0(svelte@5.0.0-next.40)
   nodemailer:
     specifier: ^6.9.8
     version: 6.9.8
@@ -114,13 +114,13 @@ devDependencies:
     version: 5.1.0(@sveltejs/kit@2.5.0)
   '@sveltejs/kit':
     specifier: 2.5.0
-    version: 2.5.0(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@5.0.0-next.40)(vite@5.1.0-beta.0)
+    version: 2.5.0(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@5.0.0-next.40)(vite@5.1.0-beta.0)
   '@sveltejs/package':
     specifier: 2.2.6
     version: 2.2.6(svelte@5.0.0-next.40)(typescript@5.3.3)
   '@sveltejs/vite-plugin-svelte':
-    specifier: ^3.0.1
-    version: 3.0.1(svelte@5.0.0-next.40)(vite@5.1.0-beta.0)
+    specifier: ^3.0.2
+    version: 3.0.2(svelte@5.0.0-next.40)(vite@5.1.0-beta.0)
   '@tailwindcss/forms':
     specifier: ^0.5.7
     version: 0.5.7(tailwindcss@3.4.1)
@@ -148,6 +148,9 @@ devDependencies:
   eslint-plugin-svelte:
     specifier: 2.35.1
     version: 2.35.1(eslint@8.56.0)(svelte@5.0.0-next.40)
+  open-props:
+    specifier: ^1.6.18
+    version: 1.6.18
   postcss:
     specifier: ^8.4.33
     version: 8.4.33
@@ -215,12 +218,30 @@ packages:
       preact-render-to-string: 5.2.3(preact@10.11.3)
     dev: false
 
-  /@auth/prisma-adapter@1.0.17(@prisma/client@5.8.1)(nodemailer@6.9.8):
-    resolution: {integrity: sha512-R+FYCczU08zM742x8D2lEDa4yH6bubaE71ulzlHVcUr/e0tGpFuvoqOZxgjVUoFHFZp4aHKI/WBw0IGUFK6R6g==}
+  /@auth/core@0.25.0(nodemailer@6.9.8):
+    resolution: {integrity: sha512-UxENsD+WNlY1NOFsr3Ygc7F1Ypbia8VCd9NU8cbAhSJ0Z8dtyZ0xmssRo1G3ZW50QnW0AaAMuYzY5oumnPMQzA==}
+    peerDependencies:
+      nodemailer: ^6.8.0
+    peerDependenciesMeta:
+      nodemailer:
+        optional: true
+    dependencies:
+      '@panva/hkdf': 1.1.1
+      '@types/cookie': 0.6.0
+      cookie: 0.6.0
+      jose: 5.1.3
+      nodemailer: 6.9.8
+      oauth4webapi: 2.4.0
+      preact: 10.11.3
+      preact-render-to-string: 5.2.3(preact@10.11.3)
+    dev: false
+
+  /@auth/prisma-adapter@1.2.0(@prisma/client@5.8.1)(nodemailer@6.9.8):
+    resolution: {integrity: sha512-yn1ZHX/a57x8hhU+rwi+GL1IHx8k92Fhqk5w9R5toAtO9PxAr9xD+sNjD0OgrAMrO7GttKyW/mac6t8G0NYDEg==}
     peerDependencies:
       '@prisma/client': '>=2.26.0 || >=3 || >=4 || >=5'
     dependencies:
-      '@auth/core': 0.23.0(nodemailer@6.9.8)
+      '@auth/core': 0.25.0(nodemailer@6.9.8)
       '@prisma/client': 5.8.1(prisma@5.8.1)
     transitivePeerDependencies:
       - nodemailer
@@ -614,8 +635,8 @@ packages:
       svelte: 5.0.0-next.40
     dev: false
 
-  /@metascraper/helpers@5.43.3:
-    resolution: {integrity: sha512-+cWyeSUz2sYyGsqrN6bxlMp89BwkI3tfBgwXQ1yVhE8jkyCyQrLmi4c9qOdh7r21oc4LJw6jhKCMjsYZWLdNxw==}
+  /@metascraper/helpers@5.43.4:
+    resolution: {integrity: sha512-Ji0D+6nIfwMwNbpdYY51bUbRsQI6G/kI19UiZByDtC/K8Ka4aXWsBhVKoUl0T7UrgHhy+UslII4ZzxLVRobG4g==}
     engines: {node: '>= 16'}
     dependencies:
       audio-extensions: 0.0.0
@@ -906,7 +927,7 @@ packages:
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
     dependencies:
-      '@sveltejs/kit': 2.5.0(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@5.0.0-next.40)(vite@5.1.0-beta.0)
+      '@sveltejs/kit': 2.5.0(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@5.0.0-next.40)(vite@5.1.0-beta.0)
       import-meta-resolve: 4.0.0
     dev: true
 
@@ -915,7 +936,7 @@ packages:
     peerDependencies:
       '@sveltejs/kit': ^2.4.0
     dependencies:
-      '@sveltejs/kit': 2.5.0(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@5.0.0-next.40)(vite@5.1.0-beta.0)
+      '@sveltejs/kit': 2.5.0(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@5.0.0-next.40)(vite@5.1.0-beta.0)
       '@vercel/nft': 0.26.2
       esbuild: 0.19.11
     transitivePeerDependencies:
@@ -950,7 +971,7 @@ packages:
       vite: 5.1.0-beta.0
     dev: false
 
-  /@sveltejs/kit@2.5.0(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@5.0.0-next.40)(vite@5.1.0-beta.0):
+  /@sveltejs/kit@2.5.0(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@5.0.0-next.40)(vite@5.1.0-beta.0):
     resolution: {integrity: sha512-1uyXvzC2Lu1FZa30T4y5jUAC21R309ZMRG0TPt+PPPbNUoDpy8zSmSNVWYaBWxYDqLGQ5oPNWvjvvF2IjJ1jmA==}
     engines: {node: '>=18.13'}
     hasBin: true
@@ -960,7 +981,7 @@ packages:
       svelte: ^4.0.0 || ^5.0.0-next.0
       vite: ^5.0.3
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 3.0.1(svelte@5.0.0-next.40)(vite@5.1.0-beta.0)
+      '@sveltejs/vite-plugin-svelte': 3.0.2(svelte@5.0.0-next.40)(vite@5.1.0-beta.0)
       '@types/cookie': 0.6.0
       cookie: 0.6.0
       devalue: 4.3.2
@@ -1009,7 +1030,7 @@ packages:
       - supports-color
     dev: false
 
-  /@sveltejs/vite-plugin-svelte-inspector@2.0.0(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@5.0.0-next.40)(vite@5.1.0-beta.0):
+  /@sveltejs/vite-plugin-svelte-inspector@2.0.0(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@5.0.0-next.40)(vite@5.1.0-beta.0):
     resolution: {integrity: sha512-gjr9ZFg1BSlIpfZ4PRewigrvYmHWbDrq2uvvPB1AmTWKuM+dI1JXQSUu2pIrYLb/QncyiIGkFDFKTwJ0XqQZZg==}
     engines: {node: ^18.0.0 || >=20}
     peerDependencies:
@@ -1017,7 +1038,7 @@ packages:
       svelte: ^4.0.0 || ^5.0.0-next.0
       vite: ^5.0.0
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 3.0.1(svelte@5.0.0-next.40)(vite@5.1.0-beta.0)
+      '@sveltejs/vite-plugin-svelte': 3.0.2(svelte@5.0.0-next.40)(vite@5.1.0-beta.0)
       debug: 4.3.4
       svelte: 5.0.0-next.40
       vite: 5.1.0-beta.0
@@ -1044,14 +1065,14 @@ packages:
       - supports-color
     dev: false
 
-  /@sveltejs/vite-plugin-svelte@3.0.1(svelte@5.0.0-next.40)(vite@5.1.0-beta.0):
-    resolution: {integrity: sha512-CGURX6Ps+TkOovK6xV+Y2rn8JKa8ZPUHPZ/NKgCxAmgBrXReavzFl8aOSCj3kQ1xqT7yGJj53hjcV/gqwDAaWA==}
+  /@sveltejs/vite-plugin-svelte@3.0.2(svelte@5.0.0-next.40)(vite@5.1.0-beta.0):
+    resolution: {integrity: sha512-MpmF/cju2HqUls50WyTHQBZUV3ovV/Uk8k66AN2gwHogNAG8wnW8xtZDhzNBsFJJuvmq1qnzA5kE7YfMJNFv2Q==}
     engines: {node: ^18.0.0 || >=20}
     peerDependencies:
       svelte: ^4.0.0 || ^5.0.0-next.0
       vite: ^5.0.0
     dependencies:
-      '@sveltejs/vite-plugin-svelte-inspector': 2.0.0(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@5.0.0-next.40)(vite@5.1.0-beta.0)
+      '@sveltejs/vite-plugin-svelte-inspector': 2.0.0(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@5.0.0-next.40)(vite@5.1.0-beta.0)
       debug: 4.3.4
       deepmerge: 4.3.1
       kleur: 4.1.5
@@ -1318,8 +1339,8 @@ packages:
       - supports-color
     dev: true
 
-  /@xenova/transformers@2.14.0:
-    resolution: {integrity: sha512-rQ3O7SW5EM64b6XFZGx3XQ2cfiroefxUwU9ShfSpEZyhd082GvwNJJKndxgaukse1hZP1JUDoT0DfjDiq4IZiw==}
+  /@xenova/transformers@2.14.2:
+    resolution: {integrity: sha512-R0MBCNgxsQ/LHfX2qQLjNGngPepohkjkyFn4axNe5Ui4L2KC8l/4AmJd4t9w8oeCbqAfZrxXXiFWpF5yXuCTxQ==}
     dependencies:
       '@huggingface/jinja': 0.1.2
       onnxruntime-web: 1.14.0
@@ -1527,8 +1548,8 @@ packages:
       file-uri-to-path: 1.0.0
     dev: true
 
-  /bits-ui@0.15.1(svelte@5.0.0-next.40):
-    resolution: {integrity: sha512-1Np8bT6W6SC2tKESfm0CySW+7+xU5S0GuUZqIxC41atZE3WIRiRlzXEYHxW88w6UaLFzZ51ns4E7pchkdV5XCQ==}
+  /bits-ui@0.16.0(svelte@5.0.0-next.40):
+    resolution: {integrity: sha512-HEkuVDyUG9dTWtKujKpdDsGOe9GRmuYOEF9yGbjVwNazxMQDQa9deUX8vM3ofGBWaJgr1cEu88p38kP5Z5gQ8w==}
     peerDependencies:
       svelte: ^4.0.0
     dependencies:
@@ -2321,8 +2342,8 @@ packages:
       mime-types: 2.1.35
     dev: false
 
-  /formsnap@0.4.2(svelte@5.0.0-next.40)(sveltekit-superforms@1.13.4)(zod@3.22.4):
-    resolution: {integrity: sha512-iUhGDUcjUW9tCOYLZ1rbNR1wkjtEbrXDxhUnl7+zPKjP5K8ikDfhZWH1cquKdUcHJoSE7M/Rruvg0fNQMjSNtA==}
+  /formsnap@0.4.3(svelte@5.0.0-next.40)(sveltekit-superforms@1.13.4)(zod@3.22.4):
+    resolution: {integrity: sha512-PWVq78XVUHhAU1tcVGKeGamk6B4Opkk1uVNRW2YofiQpnA5Bry1c3TQjB9cVDw5u4oAwmDvIoAzVHlrAIgc+tw==}
     peerDependencies:
       svelte: ^4.0.0
       sveltekit-superforms: ^1.7.1
@@ -2931,11 +2952,11 @@ packages:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
 
-  /metascraper-author@5.43.3:
-    resolution: {integrity: sha512-qh67wa5wWWy8dgd6sMpGJKhQMNxwdC9gr7dylPwx2nwlwcMajj3TqO+tTk8IJU27gId+EjSZ2SQEbbCu3Ta2VA==}
+  /metascraper-author@5.43.4:
+    resolution: {integrity: sha512-TetqU5/HyTKH4j/3O8UmrNrJgsHYmIs5kbdmHCvkGIZM40Oq1DnD3hbwcN9b0rYC3pueE3j1uIpYUqFlaoQRvw==}
     engines: {node: '>= 16'}
     dependencies:
-      '@metascraper/helpers': 5.43.3
+      '@metascraper/helpers': 5.43.4
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -2943,12 +2964,12 @@ packages:
       - utf-8-validate
     dev: false
 
-  /metascraper-clearbit@5.43.3:
-    resolution: {integrity: sha512-VXtV320Mf1efodSbnTK6C38fneY4Xc8Y1xCY0XH7o2ZIWRajwQxbHSTcN1zEFVuwYbsYJ+7nGessi/rE6mPkfg==}
+  /metascraper-clearbit@5.43.4:
+    resolution: {integrity: sha512-wfbTIS64l964ExcafWkNV0hbdJeYd5IREyBBL2+2p36kWvsUDXlnYajxQB2boYkC8IjmjxMNhhQreLzCmnEIXA==}
     engines: {node: '>= 16'}
     dependencies:
       '@keyvhq/memoize': 2.1.0
-      '@metascraper/helpers': 5.43.3
+      '@metascraper/helpers': 5.43.4
       async-memoize-one: 1.1.6
       got: 11.8.6
       lodash: 4.17.21
@@ -2959,11 +2980,11 @@ packages:
       - utf-8-validate
     dev: false
 
-  /metascraper-date@5.43.3:
-    resolution: {integrity: sha512-YTy6IAqcn5TQN2/ZkZ1y945S/YzAUPkua4ULU2TZ2QTlxx6YV7yJ44GU6YWJyTTsKV4jBTYCCTsxapJ0xBmFhg==}
+  /metascraper-date@5.43.4:
+    resolution: {integrity: sha512-6jyFeP7NYLJHf7nfn1ke9q/7tFmWESihE9VqfY+pGM2bqeAryZA6jVZGU5K4fKYEaaxcm5gPb+etQzv8w1BTUA==}
     engines: {node: '>= 16'}
     dependencies:
-      '@metascraper/helpers': 5.43.3
+      '@metascraper/helpers': 5.43.4
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -2971,11 +2992,11 @@ packages:
       - utf-8-validate
     dev: false
 
-  /metascraper-description@5.43.3:
-    resolution: {integrity: sha512-t7m47heGjBTmnllwV87HQAOJGVMpBTVeI+76aS1YWhhQprxx3uBBqW1FBfpL/L8Q7M7QMwm1aZtRTLYX67d/Mw==}
+  /metascraper-description@5.43.4:
+    resolution: {integrity: sha512-VtV9ifxrgbNbOU/nfF0wipTZNaIjEVgEXPEvYpOHoC2ZcePm2RyUSUUZvyV4EdkKQUOgVwhltzcENN3x/0vW6A==}
     engines: {node: '>= 16'}
     dependencies:
-      '@metascraper/helpers': 5.43.3
+      '@metascraper/helpers': 5.43.4
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -2983,11 +3004,11 @@ packages:
       - utf-8-validate
     dev: false
 
-  /metascraper-feed@5.43.3:
-    resolution: {integrity: sha512-jEgYiv0Vq4prTC8DFd/jYo+QQrkwuO6N7tQdAzEj5DVFD036Qz8JRPUFXMZ81YjPTjK8cLikPwilFHeaQpClyg==}
+  /metascraper-feed@5.43.4:
+    resolution: {integrity: sha512-o8FjYQcQVXXBgEr7aR0C+EMRQYYcO8kitZJS0dnUzK/KOKdFuIDTB68vRQPN7T9kgy/e+uF3NtGjYZdbXZuw0Q==}
     engines: {node: '>= 16'}
     dependencies:
-      '@metascraper/helpers': 5.43.3
+      '@metascraper/helpers': 5.43.4
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -2995,11 +3016,11 @@ packages:
       - utf-8-validate
     dev: false
 
-  /metascraper-image@5.43.3:
-    resolution: {integrity: sha512-3q/yDjvJlj/J57e8NZxlGoZv4VtCHqirFOTSSys2hQfZ1GizJ5wrN9vazWNojnPPxAwpk5J+3ayYXTHCAaV9Jg==}
+  /metascraper-image@5.43.4:
+    resolution: {integrity: sha512-yBrsPKpOc2OHhY0T+Uzaekdnn4xXcqAcUJme9MPfi1idV7EjoGMtKQuSYyXyckHluwg3s0xnBVmQFXMjedlkgg==}
     engines: {node: '>= 16'}
     dependencies:
-      '@metascraper/helpers': 5.43.3
+      '@metascraper/helpers': 5.43.4
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -3007,11 +3028,11 @@ packages:
       - utf-8-validate
     dev: false
 
-  /metascraper-lang@5.43.3:
-    resolution: {integrity: sha512-xuq4ib9Ju7ugIOF04X51A6VLiNlEXCx6Fx887P8UZv4T1YFkdXxahEKRGQP7tIo9HXFfcHbrVULyZwpa97GgMQ==}
+  /metascraper-lang@5.43.4:
+    resolution: {integrity: sha512-w9YOCzdRhbVBdwqbLXafpYw4Wi74lZvqJZg2pGMDHU6C6IbegzEgspz83sXyqSBk2jpU967goK1QaaLVyZzjvw==}
     engines: {node: '>= 16'}
     dependencies:
-      '@metascraper/helpers': 5.43.3
+      '@metascraper/helpers': 5.43.4
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -3019,12 +3040,12 @@ packages:
       - utf-8-validate
     dev: false
 
-  /metascraper-logo-favicon@5.43.3:
-    resolution: {integrity: sha512-p8rHqa23/IZvYNKznJ0EZgp9OKlrL5QEjsEds2viZhoeRLMyyZ0gL5OCCjv+abhHqsVAFpx95+Ip4h0AzdssUg==}
+  /metascraper-logo-favicon@5.43.4:
+    resolution: {integrity: sha512-4JO4sBaBSzWzen7u+WVWOdY1mipaGw/URI1l14t4RKGgxFtNnyHDDuPK4pnFYxV7gbpItI2FSKVUvSn5+JEaEg==}
     engines: {node: '>= 16'}
     dependencies:
       '@keyvhq/memoize': 2.1.0
-      '@metascraper/helpers': 5.43.3
+      '@metascraper/helpers': 5.43.4
       lodash: 4.17.21
       reachable-url: 1.7.2
     transitivePeerDependencies:
@@ -3034,11 +3055,11 @@ packages:
       - utf-8-validate
     dev: false
 
-  /metascraper-logo@5.43.3:
-    resolution: {integrity: sha512-g8bbyJ9MFjRH5uePXLItrj3E+6GtFibElM7+FR8QJDOPl1Ou9A13GS1bJZefsShYnrgWk4RCbqMvE9tq+qEFeA==}
+  /metascraper-logo@5.43.4:
+    resolution: {integrity: sha512-KRl/s931Z3OTrA2CMOzVws4O6bXAYynjOO6wSa+vRVWlI3iQ0rZUZF9u2mmCvCDzsESnSBO0M2b7k/AX9QXqow==}
     engines: {node: '>= 16'}
     dependencies:
-      '@metascraper/helpers': 5.43.3
+      '@metascraper/helpers': 5.43.4
       lodash: 4.17.21
     transitivePeerDependencies:
       - bufferutil
@@ -3047,11 +3068,11 @@ packages:
       - utf-8-validate
     dev: false
 
-  /metascraper-publisher@5.43.3:
-    resolution: {integrity: sha512-XzPR+KBuo4OjI0LsxMslyLtpbkPrFwAhRfYljSfQ00LBQiczO8fHTaKd8Hqs+cXtl7zUd8xmsXgO7xFkMV8tMw==}
+  /metascraper-publisher@5.43.4:
+    resolution: {integrity: sha512-lhJgLb9RiZMhCj/rbMyMd8x9+7zWE45yUVrw7bq61Nscg4G5mRdZ3vNJo42Ip1iJw5/kntg51+4KBq6miOBfzg==}
     engines: {node: '>= 16'}
     dependencies:
-      '@metascraper/helpers': 5.43.3
+      '@metascraper/helpers': 5.43.4
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -3059,11 +3080,11 @@ packages:
       - utf-8-validate
     dev: false
 
-  /metascraper-readability@5.43.3:
-    resolution: {integrity: sha512-D6k2szdWim1Va8qHAwhY+bS+DEpjPyjbbbIzOyDuHAznuAHFo6joE73p/lAzxIKwfjMgqN23fiuDOmPAJyE1EQ==}
+  /metascraper-readability@5.43.4:
+    resolution: {integrity: sha512-vBULigypdNrMNBChEz/C7SGaobCOnkQpWo9JWl/bI/J3vXcbqWhOhILYbuXyxATEeTTUvqDYDly56aBNY0u2+A==}
     engines: {node: '>= 16'}
     dependencies:
-      '@metascraper/helpers': 5.43.3
+      '@metascraper/helpers': 5.43.4
       '@mozilla/readability': 0.5.0
       jsdom: 23.0.1
     transitivePeerDependencies:
@@ -3073,11 +3094,11 @@ packages:
       - utf-8-validate
     dev: false
 
-  /metascraper-title@5.43.3:
-    resolution: {integrity: sha512-T/vp+s/hqaEW2D7h/ln2O/V+tXk5UU+eWHO//FwjIxqjLZgT+ZvuliBcSydie3q0ebASg975Qbh7hVSLopxxVA==}
+  /metascraper-title@5.43.4:
+    resolution: {integrity: sha512-KjqTYW/7NkgRF5pKcmu/DHAZDhYuGWR9XOhfygNc+jQf5eS4bUa7z5Icb3uTRSdevnAY3cIiEr+zKP5mQEQ57g==}
     engines: {node: '>= 16'}
     dependencies:
-      '@metascraper/helpers': 5.43.3
+      '@metascraper/helpers': 5.43.4
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -3085,11 +3106,11 @@ packages:
       - utf-8-validate
     dev: false
 
-  /metascraper-url@5.43.3:
-    resolution: {integrity: sha512-Fwn1f4TF9saE7KnHbS9+ErdaTt3MNTn09C6EYl++uK+nvrnxMljEo1iAqXJ0d0BN8PjhrNdCcVEulAPh1BuU1A==}
+  /metascraper-url@5.43.4:
+    resolution: {integrity: sha512-dWs11Co1cjroWfUs5BA9rV5DnUVZsd5t1YVFoQRJJr36Cs5mKQ8WAPHGe1Ls7ma/1finiprkAhsj3d3LECgY0A==}
     engines: {node: '>= 16'}
     dependencies:
-      '@metascraper/helpers': 5.43.3
+      '@metascraper/helpers': 5.43.4
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -3097,11 +3118,11 @@ packages:
       - utf-8-validate
     dev: false
 
-  /metascraper@5.43.3:
-    resolution: {integrity: sha512-mQPrjpnO3f/w2+9duRgpZHxE8jE2Gpa5Bxyt+D/XHvu9l2DMxKNG1fVBVw0+j8ZAjyrpN6QLndk3prUdKO8cwQ==}
+  /metascraper@5.43.4:
+    resolution: {integrity: sha512-wHJjM9H3h+6Z4T3W0sTb99nSWY7YugjUFsNCb9V5YMG/pM6oJ+Ypsdf3E+2ptlnqADOb35vtyD7qqe6f8IAh4g==}
     engines: {node: '>= 16'}
     dependencies:
-      '@metascraper/helpers': 5.43.3
+      '@metascraper/helpers': 5.43.4
       cheerio: 1.0.0-rc.12
       lodash: 4.17.21
       whoops: 4.1.7
@@ -3263,8 +3284,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  /mode-watcher@0.1.2(svelte@5.0.0-next.40):
-    resolution: {integrity: sha512-XTdPCdqC3kqSvB+Q262Kor983YJkkB2Z3vj9uqg5IqKQpOdiz+xB99Jihp8sWbyM67drC7KKp0Nt5FzCypZi2g==}
+  /mode-watcher@0.2.0(svelte@5.0.0-next.40):
+    resolution: {integrity: sha512-NCo72EColWhNjMWXr+U9hjJS6ixCFEADfvj44XFLUWEkR/dsbJxnOX6bkxM+i1DWmP/nRhKI+rr2Z2nt+TZSGA==}
     peerDependencies:
       svelte: ^4.0.0
     dependencies:
@@ -3481,6 +3502,10 @@ packages:
       onnxruntime-common: 1.14.0
       platform: 1.3.6
     dev: false
+
+  /open-props@1.6.18:
+    resolution: {integrity: sha512-xhkbGo6vFdYHWR9mt81p4mlPoRLQHunA6XJAuQ2cUyvoOGKGxDj8dGgXDIbR1EMJVyHPxU1AbtfbloAIRLHWKw==}
+    dev: true
 
   /optionator@0.9.3:
     resolution: {integrity: sha512-JjCoypp+jKn1ttEFExxhetCKeJt9zhAgAve5FXHixTvFDW/5aEktX9bufBKLRRMdU7bNtpLfcGu94B3cdEJgjg==}
@@ -4417,7 +4442,7 @@ packages:
       svelte: 3.x || 4.x
       zod: 3.x
     dependencies:
-      '@sveltejs/kit': 2.5.0(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@5.0.0-next.40)(vite@5.1.0-beta.0)
+      '@sveltejs/kit': 2.5.0(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@5.0.0-next.40)(vite@5.1.0-beta.0)
       devalue: 4.3.2
       klona: 2.0.6
       svelte: 5.0.0-next.40

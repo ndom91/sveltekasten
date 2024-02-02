@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "open-props/shadows";
+@import "open-props/easings";
+@import "open-props/animations";
+
 @layer base {
   :root {
     --background: 0 0% 100%;

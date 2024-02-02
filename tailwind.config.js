@@ -1,4 +1,5 @@
 import { fontFamily } from "tailwindcss/defaultTheme"
+import { StaticShadows } from "open-props/src/shadows"
 
 /** @type {import('tailwindcss').Config} */
 const config = {
@@ -25,6 +26,14 @@ const config = {
       "4xl": "clamp(3.05rem, 3.54vw + 2.17rem, 5rem)",
       "5xl": "clamp(3.81rem, 5.18vw + 2.52rem, 6.66rem)",
       "6xl": "clamp(4.77rem, 7.48vw + 2.9rem, 8.88rem)",
+    },
+    boxShadow: {
+      xs: StaticShadows["--shadow-1"],
+      sm: StaticShadows["--shadow-2"],
+      md: StaticShadows["--shadow-3"],
+      lg: StaticShadows["--shadow-4"],
+      xl: StaticShadows["--shadow-5"],
+      "2xl": StaticShadows["--shadow-6"],
     },
     extend: {
       transitionProperty: {
