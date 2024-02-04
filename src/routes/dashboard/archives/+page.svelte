@@ -42,7 +42,7 @@
     // Skip if all items already loaded
     if (allItems.length >= totalItemCount) return
 
-    const res = await fetch(`/api/bookmarks?skip=${skip}&limit=${limit}`)
+    const res = await fetch(`/api/v1/bookmarks?skip=${skip}&limit=${limit}`)
     const { data } = await res.json()
     if (data) {
       allItems.push(...data)
@@ -51,7 +51,7 @@
 
   let activeBookmarks: () => Promise<(typeof allItems)[]> = $derived(async () => {
     if (!ui.searchQuery) return allItems
-    const res = await fetch("/api/search", {
+    const res = await fetch("/api/v1/search", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

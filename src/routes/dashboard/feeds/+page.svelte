@@ -8,8 +8,8 @@
   import { infiniteScroll } from "$lib/components/infinite-scroll"
   import { invalidateAll } from "$app/navigation"
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
-  import { DEFAULT_SPEAKER } from "$lib/transformers/consts"
-  import ttsWorkerUrl from "$lib/transformers/worker?url"
+  import ttsWorkerUrl from "$lib/transformers/tts-worker?url"
+  import summaryWorkerUrl from "$lib/transformers/summary-worker?url"
 
   const ui = useInterface()
   const { data } = $props()
@@ -21,31 +21,28 @@
   const visibility = documentVisibilityStore()
   let prevVisibility: DocumentVisibilityState = "visible"
 
-  // Model
+  // TTS Model
   let progressItems = $state<TODO>([])
   let disabled = $state(false)
-  let selectedSpeaker = $state(DEFAULT_SPEAKER)
-  let worker = $state<Worker>()
+  let ttsWorker = $state<Worker>()
 
   $effect(() => {
-    if (!worker) {
-      worker = new Worker(new URL(ttsWorkerUrl, import.meta.url), {
+    if (!ttsWorker) {
+      ttsWorker = new Worker(new URL(ttsWorkerUrl, import.meta.url), {
         type: "module",
       })
     }
 
     const onMessageReceived = (e: TODO) => {
-      console.log("msg: ", e.data)
       switch (e.data.status) {
         case "initiate":
           // Model file start load: add a new progress item to the list.
-          // ready = false
           progressItems.push(e.data)
           break
 
         case "progress":
           // Model file progress: update one of the progress items.
-          progressItems = progressItems.map((item) => {
+          progressItems = progressItems.map((item: TODO) => {
             if (item.file === e.data.file) {
               return { ...item, progress: e.data.progress }
             }
@@ -53,10 +50,10 @@
           })
           break
 
-        // case "done":
-        //   // Model file loaded: remove the progress item from the list.
-        //   setProgressItems((prev) => prev.filter((item) => item.file !== e.data.file))
-        //   break
+        case "done":
+          // Model file loaded: remove the progress item from the list.
+          progressItems = progressItems.filter((item: TODO) => item.file !== e.data.file)
+          break
 
         case "ready":
           console.log("pipeline ready")
@@ -65,7 +62,6 @@
           break
 
         case "complete":
-          // Generation complete: re-enable the "Translate" button
           disabled = false
 
           const blobUrl = URL.createObjectURL(e.data.output)
@@ -77,21 +73,55 @@
       }
     }
 
-    // Attach the callback function as an event listener.
-    worker.addEventListener("message", onMessageReceived)
+    ttsWorker.addEventListener("message", onMessageReceived)
 
-    // Define a cleanup function for when the component is unmounted.
-    return () => worker?.removeEventListener("message", onMessageReceived)
+    return () => ttsWorker?.removeEventListener("message", onMessageReceived)
   })
 
   const handleGenerateSpeech = (text: string) => {
-    if (!worker) return
+    if (!ttsWorker) return
     console.time("audio.generate")
     disabled = true
     ui.textToSpeechLoading = true
-    worker.postMessage({
+    ttsWorker.postMessage({
       text,
-      speaker_id: selectedSpeaker,
+    })
+  }
+
+  // Summary Worker
+  let summaryWorker = $state<Worker>()
+
+  $effect(() => {
+    if (!summaryWorker) {
+      summaryWorker = new Worker(new URL(summaryWorkerUrl, import.meta.url), {
+        type: "module",
+      })
+    }
+
+    const onMessageReceived = (e: TODO) => {
+      switch (e.data.status) {
+        case "complete":
+          disabled = false
+
+          ui.summarizationLoading = false
+          console.log("Summary:", e.data.output)
+          console.timeEnd("summary.generate")
+          break
+      }
+    }
+
+    summaryWorker.addEventListener("message", onMessageReceived)
+
+    return () => summaryWorker?.removeEventListener("message", onMessageReceived)
+  })
+
+  const handleSummarizeText = (text: string) => {
+    if (!summaryWorker) return
+    console.time("summary.generate")
+    disabled = true
+    ui.summarizationLoading = true
+    summaryWorker.postMessage({
+      text,
     })
   }
 
@@ -141,7 +171,7 @@
     )
       return
 
-    const res = await fetch(`/api/feeds?skip=${skip}&limit=${limit}`)
+    const res = await fetch(`/api/v1/feeds?skip=${skip}&limit=${limit}`)
     const { data: additionalResults } = await res.json()
     allItems.push(...additionalResults)
   }
@@ -162,7 +192,7 @@
           return feed?.visible
         })
 
-    const res = await fetch("/api/search", {
+    const res = await fetch("/api/v1/search", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -251,7 +281,7 @@
           {/each}
         {:then feedEntries}
           {#each feedEntries as feedEntry}
-            <FeedRow {feedEntry} {handleGenerateSpeech} />
+            <FeedRow {feedEntry} {handleSummarizeText} {handleGenerateSpeech} />
           {:else}
             <div class="my-8 w-full text-3xl text-center">No entries found</div>
           {/each}

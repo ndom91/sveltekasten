@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { page } from "$app/stores"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { HomeScroller } from "$lib/components/home-scroller"
 

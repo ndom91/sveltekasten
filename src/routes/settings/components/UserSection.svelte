@@ -1,27 +1,62 @@
 <script lang="ts">
+  // import { untrack, onMount } from "svelte"
   import { page } from "$app/stores"
   import { Button } from "$lib/components/ui/button"
   import { Input } from "$lib/components/ui/input"
+  import { Checkbox } from "$lib/components/ui/checkbox"
   import * as Card from "$lib/components/ui/card"
   import { clipboard } from "$lib/utils/clipboard"
+  import { useInterface } from "$state/ui.svelte"
+
+  $inspect($page.data)
+
+  const ui = useInterface()
+
+  let ttsEnabled = $state($page.data.user?.settings?.ai?.tts ?? true)
+  let summarizationEnabled = $state($page.data.user?.settings?.ai?.tts ?? true)
+  let transcriptionEnabled = $state($page.data.user?.settings?.ai?.tts ?? true)
+
+  async function handleSettingsUpdate(e: string | boolean) {
+    try {
+      console.log("handleSettingsUpdate", e)
+      await fetch("/api/v1/user", {
+        method: "PUT",
+        body: JSON.stringify({
+          data: {
+            settings: {
+              ai: {
+                tts: ttsEnabled,
+                summarization: summarizationEnabled,
+                transcription: transcriptionEnabled,
+              },
+            },
+          },
+        }),
+      })
+    } catch (error: any) {
+      console.error(error)
+    }
+  }
 </script>
 
-<div class="flex flex-col items-start justify-start gap-2">
+<div class="flex flex-col gap-2 justify-start items-start">
   <Card.Root class="w-full">
     <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
       <Card.Title>API Token <i>TODO</i></Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
-      <div class="flex items-center gap-2">
+      <div class="flex gap-2 items-center">
         For use in the <a href="https://docs.briefkastenhq.com" target="_blank" class="underline">
           briefkasten extension</a
         >
         you can use the following token:
-        <div class="flex items-center justify-between rounded-md bg-zinc-100 p-2 font-mono dark:bg-zinc-700">
-          {$page.data.session?.user?.userId}
+        <div
+          class="flex justify-between items-center p-2 font-mono rounded-md bg-zinc-100 dark:bg-zinc-700"
+        >
+          {$page.data?.session?.user?.userId}
           <button
-            use:clipboard={$page.data.session?.user?.userId}
-            class="h-8 rounded-md bg-transparent p-1 outline-none focus:outline-none focus:ring-2 focus:ring-zinc-300"
+            use:clipboard={$page.data?.session?.user?.userId ?? ""}
+            class="p-1 h-8 bg-transparent rounded-md outline-none focus:ring-2 focus:outline-none focus:ring-zinc-300"
           >
             <svg
               class="size-4"
@@ -46,10 +81,77 @@
   </Card.Root>
   <Card.Root class="w-full">
     <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
+      <Card.Title>AI Settings</Card.Title>
+    </Card.Header>
+    <Card.Content class="p-4">
+      <div class="flex flex-col gap-4 items-start">
+        <p>
+          You can manage any of the AI features here. All of these AI features are enabled by the <a
+            class="underline"
+            href="https://github.com/xenova/transformers.js">transformers.js</a
+          >
+          library, meaning the models are downloaded and run in your browser. That has the advantage
+          of significantly increased security, with the disadvantage of lower performance / longer inference
+          times.
+        </p>
+        <div class="flex flex-col gap-4 items-start">
+          <div class="flex gap-4 items-center">
+            <Checkbox
+              id="summarization"
+              onCheckedChange={handleSettingsUpdate}
+              bind:checked={summarizationEnabled}
+            />
+            <div>
+              <label for="summarization" class="">
+                Summarization
+                <div class="text-neutral-400 dark:text-neutral-500">
+                  Our summaries feature is using the <code>Xenova/distilbart-cnn-6-6</code> model and
+                  takes about ~30s on average to summarize a medium length article. We recommend this
+                  one for day-to-day use.
+                </div>
+              </label>
+            </div>
+          </div>
+          <div class="flex gap-4 items-center">
+            <Checkbox id="tts" onCheckedChange={handleSettingsUpdate} bind:checked={ttsEnabled} />
+            <label for="tts" class="">
+              Text to Speech
+              <div class="text-neutral-400 dark:text-neutral-500">
+                Our text-to-speech feature is using the <code>Xenova/speecht5_tts</code> model and takes
+                about ~10s on average to generate good quality voice audio for each sentence of text.
+                Therefore, this model is really only good for experimentation at this point. Generating
+                the voice data for a while article / post is not feasible at the moment.
+              </div>
+            </label>
+          </div>
+          <div class="flex gap-4 items-center">
+            <Checkbox
+              id="transcriber"
+              onCheckedChange={handleSettingsUpdate}
+              bind:checked={transcriptionEnabled}
+            />
+            <label for="transcriber" class="">
+              Transcriber
+              <div class="text-neutral-400 dark:text-neutral-500">
+                Our speech to text (transcriber) feature is using the <code
+                  >Xenova/whisper-tiny</code
+                >
+                model and takes about ~20s on average after recording has stopped to generate a fairly
+                accurate transcription. We feel comfortable recommending this one for daily use in notes.
+                Note: We currently only support transcription in <b>English</b>.
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </Card.Content>
+  </Card.Root>
+  <Card.Root class="w-full">
+    <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
       <Card.Title>Import <i>TODO</i></Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
-      <div class="flex flex-col items-start gap-2">
+      <div class="flex flex-col gap-4 items-start">
         <p>
           Upload a file exported from another tool, or your browser. Click browse or drop a <code
             >*.html</code
@@ -65,7 +167,7 @@
       <Card.Title>Export <i>TODO</i></Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
-      <div class="flex flex-col items-start gap-2">
+      <div class="flex flex-col gap-4 items-start">
         <p>
           Save your bookmarks from Briefkasten to an html file. This is a standardized bookmarks
           format which you can use to import your saved items to any other bookmarks manager or
@@ -80,7 +182,7 @@
       <Card.Title>About</Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
-      <div class="flex flex-col items-start gap-2">
+      <div class="flex flex-col gap-4 items-start">
         <p>
           This is an open-source project written mainly by <a
             href="https://ndo.dev"
@@ -88,7 +190,7 @@
             class="underline">ndom91</a
           >. More information can be found at the links below.
         </p>
-        <ul class="list-inside list-disc">
+        <ul class="list-disc list-inside">
           <li>
             Repository: <a
               class="font-mono font-bold"

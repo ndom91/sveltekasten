@@ -16,7 +16,7 @@
   }
 
   const handleMarkAllRead = async (feed: Feed) => {
-    await fetch("/api/feeds/mark-all-read", {
+    await fetch("/api/v1/feeds/mark-all-read", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

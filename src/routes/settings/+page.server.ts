@@ -93,7 +93,23 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
       orderBy: { createdAt: "desc" },
     })
 
+    const user = await prisma.user.findUnique({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        emailVerified: true,
+        image: true,
+        settings: true,
+        createdAt: true,
+      },
+      where: {
+        id: session?.user?.userId,
+      },
+    })
+
     return {
+      user,
       session,
       feeds: {
         data: feedData,

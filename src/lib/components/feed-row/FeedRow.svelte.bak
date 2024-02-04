@@ -48,7 +48,7 @@
       ...feedEntry,
       unread: target ?? !feedEntry.unread,
     }
-    await fetch(`/api/feeds`, {
+    await fetch(`/api/v1/feeds`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

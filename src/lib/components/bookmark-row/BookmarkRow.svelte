@@ -33,7 +33,7 @@
     isOptionsOpen = false
   }
   const handleArchive = async () => {
-    await fetch(`/api/bookmarks`, {
+    await fetch(`/api/v1/bookmarks`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
