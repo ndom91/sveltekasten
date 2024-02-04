@@ -8,7 +8,11 @@ const providers: Provider[] = []
 
 if (env.AUTH_GITHUB_ID && env.AUTH_GITHUB_SECRET) {
   const GitHub = await import("@auth/sveltekit/providers/github")
-  providers.push(GitHub.default({}))
+  providers.push(
+    GitHub.default({
+      allowDangerousEmailAccountLinking: true,
+    }),
+  )
 }
 
 if (env.AUTH_GOOGLE_ID && env.AUTH_GOOGLE_SECRET) {
