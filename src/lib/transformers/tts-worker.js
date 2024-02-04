@@ -7,8 +7,8 @@ import {
 } from "@xenova/transformers"
 import { encodeWAV } from "./utils"
 
-// Disable local model checks
 env.allowLocalModels = false
+env.useBrowserCache = true
 
 // Use the Singleton pattern to enable lazy construction of the pipeline.
 class MyTextToSpeechPipeline {
@@ -19,29 +19,29 @@ class MyTextToSpeechPipeline {
   static vocoder_id = "Xenova/speecht5_hifigan"
 
   static tokenizer_instance = null
-  static model_instance = null
-  static vocoder_instance = null
+  static model_instance = undefined
+  static vocoder_instance = undefined
 
-  static async getInstance(progress_callback = null) {
+  static async getInstance(progress_callback = undefined) {
     if (this.tokenizer_instance === null) {
       this.tokenizer = AutoTokenizer.from_pretrained(this.model_id, { progress_callback })
     }
 
-    if (this.model_instance === null) {
+    if (this.model_instance === undefined) {
       this.model_instance = SpeechT5ForTextToSpeech.from_pretrained(this.model_id, {
         quantized: false,
         progress_callback,
       })
     }
 
-    if (this.vocoder_instance === null) {
+    if (this.vocoder_instance === undefined) {
       this.vocoder_instance = SpeechT5HifiGan.from_pretrained(this.vocoder_id, {
         quantized: false,
         progress_callback,
       })
     }
 
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve) => {
       const result = await Promise.all([this.tokenizer, this.model_instance, this.vocoder_instance])
       self.postMessage({
         status: "ready",
@@ -50,20 +50,20 @@ class MyTextToSpeechPipeline {
     })
   }
 
-  static async getSpeakerEmbeddings(speaker_id) {
-    // e.g., `cmu_us_awb_arctic-wav-arctic_a0001`
-    const speaker_embeddings_url = `${this.BASE_URL}${speaker_id}.bin`
-    const speaker_embeddings = new Tensor(
-      "float32",
-      new Float32Array(await (await fetch(speaker_embeddings_url)).arrayBuffer()),
-      [1, 512],
-    )
-    return speaker_embeddings
-  }
+  // static async getSpeakerEmbeddings(speaker_id) {
+  //   // e.g., `cmu_us_awb_arctic-wav-arctic_a0001`
+  //   const speaker_embeddings_url = `${this.BASE_URL}${speaker_id}.bin`
+  //   const speaker_embeddings = new Tensor(
+  //     "float32",
+  //     new Float32Array(await (await fetch(speaker_embeddings_url)).arrayBuffer()),
+  //     [1, 512],
+  //   )
+  //   return speaker_embeddings
+  // }
 }
 
 // Mapping of cached speaker embeddings
-const speaker_embeddings_cache = new Map()
+// const speaker_embeddings_cache = new Map()
 
 // Listen for messages from the main thread
 self.addEventListener("message", async (event) => {
@@ -77,11 +77,23 @@ self.addEventListener("message", async (event) => {
   const { input_ids } = tokenizer(event.data.text)
 
   // Load the speaker embeddings
-  let speaker_embeddings = speaker_embeddings_cache.get(event.data.speaker_id)
-  if (speaker_embeddings === undefined) {
-    speaker_embeddings = await MyTextToSpeechPipeline.getSpeakerEmbeddings(event.data.speaker_id)
-    speaker_embeddings_cache.set(event.data.speaker_id, speaker_embeddings)
-  }
+  // let speaker_embeddings = speaker_embeddings_cache.get(event.data.speaker_id)
+  // if (speaker_embeddings === undefined) {
+  //   speaker_embeddings = await MyTextToSpeechPipeline.getSpeakerEmbeddings(event.data.speaker_id)
+  //   speaker_embeddings_cache.set(event.data.speaker_id, speaker_embeddings)
+  // }
+
+  const speaker_embeddings_data = new Float32Array(
+    await (
+      await fetch(
+        "https://huggingface.co/datasets/Xenova/transformers.js-docs/resolve/main/speaker_embeddings.bin",
+      )
+    ).arrayBuffer(),
+  )
+  const speaker_embeddings = new Tensor("float32", speaker_embeddings_data, [
+    1,
+    speaker_embeddings_data.length,
+  ])
 
   // Generate the waveform
   const { waveform } = await model.generate_speech(input_ids, speaker_embeddings, { vocoder })

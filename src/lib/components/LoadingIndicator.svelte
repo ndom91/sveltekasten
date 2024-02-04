@@ -7,7 +7,7 @@
 
 <div class={cn("min-h-2 grid place-items-center rounded-lg", className)}>
   <svg
-    class="w-4 h-4 animate-spin text-gray-900/50"
+    class="w-4 h-4 animate-spin"
     viewBox="0 0 64 64"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +27,6 @@
       stroke-width="5"
       stroke-linecap="round"
       stroke-linejoin="round"
-      class="text-gray-900"
     >
     </path>
   </svg>

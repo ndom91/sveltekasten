@@ -53,9 +53,18 @@ let metadataSidebarData = $state<MetadataSidebarData>({
 let metadataSidebarEditMode = $state(false)
 let userSidebarOpen = $state(false)
 let quickAddOpen = $state(false)
+
+// AI Features
 let textToSpeechContent = $state("")
 let textToSpeechAudioBlob = $state("")
 let textToSpeechLoading = $state(false)
+let summarizationLoading = $state(false)
+let summarizationContent = $state("")
+let aiFeaturesPreferences = $state({
+  tts: true,
+  summarization: true,
+  transcription: true,
+})
 
 export function useInterface() {
   return {
@@ -79,7 +88,7 @@ export function useInterface() {
       showUnreadOnly = query
     },
 
-    // text2speed
+    // AI
     get textToSpeechContent() {
       return textToSpeechContent
     },
@@ -97,6 +106,28 @@ export function useInterface() {
     },
     set textToSpeechLoading(query) {
       textToSpeechLoading = query
+    },
+    get aiFeaturesPreferences() {
+      return aiFeaturesPreferences
+    },
+    set aiFeaturesPreferences(query) {
+      console.log("aiSet.query", query)
+
+      aiFeaturesPreferences = query
+    },
+
+    // Bart Summarization
+    get summarizationLoading() {
+      return summarizationLoading
+    },
+    set summarizationLoading(query) {
+      summarizationLoading = query
+    },
+    get summarizationContent() {
+      return summarizationContent
+    },
+    set summarizationContent(query) {
+      summarizationContent = query
     },
 
     // UI Elements

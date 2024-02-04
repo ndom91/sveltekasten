@@ -11,11 +11,12 @@
 
   const ui = useInterface()
 
-  let { feedEntry, handleGenerateSpeech } = $props<{
+  let { feedEntry, handleGenerateSpeech, handleSummarizeText } = $props<{
     feedEntry: FeedEntry & {
       feedMedia: FeedEntryMedia[]
     }
     handleGenerateSpeech: (text: string) => void
+    handleSummarizeText: (text: string) => void
   }>()
 
   let isOptionsOpen = $state(false)
@@ -56,13 +57,16 @@
     handleGenerateSpeech(feedEntry.title)
     // ui.textToSpeechContent = feedEntry.title ?? ""
   }
+  const handleStartTextSummarization = () => {
+    handleSummarizeText(feedEntry.content ?? "")
+  }
 
   const handleMarkAsUnread = async (target: boolean | null = null) => {
     feedEntry = {
       ...feedEntry,
       unread: target ?? !feedEntry.unread,
     }
-    await fetch(`/api/feeds`, {
+    await fetch(`/api/v1/feeds`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -160,6 +164,7 @@
       {handleToggleCardOpen}
       {handleMarkAsUnread}
       {handleSetTextToSpeechContent}
+      {handleStartTextSummarization}
     />
   {/await}
 </div>
