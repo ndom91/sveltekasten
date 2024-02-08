@@ -62,7 +62,7 @@ export const { signIn, signOut, handle } = SvelteKitAuth({
   providers,
   callbacks: {
     session: async ({ session, token }) => {
-      if (token && session.user) {
+      if (token?.sub && session.user) {
         session.user.userId = token.sub
       }
       return session
