@@ -16,6 +16,7 @@
   let summarizationEnabled = $state($page.data.user?.settings?.ai?.tts ?? true)
   let transcriptionEnabled = $state($page.data.user?.settings?.ai?.tts ?? true)
 
+  // TODO: Send correct updated checkbox state per individual checkbox
   async function handleSettingsUpdate(e: string | boolean) {
     try {
       console.log("handleSettingsUpdate", e)

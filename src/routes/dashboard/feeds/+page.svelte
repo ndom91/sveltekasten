@@ -9,7 +9,7 @@
   import { invalidateAll } from "$app/navigation"
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
   import ttsWorkerUrl from "$lib/transformers/tts-worker?url"
-  import summaryWorkerUrl from "$lib/transformers/summary-worker?url"
+  import summaryWorkerUrl from "$lib/transformers/translate-worker?url"
 
   const ui = useInterface()
   const { data } = $props()
