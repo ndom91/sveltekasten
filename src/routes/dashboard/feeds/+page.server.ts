@@ -10,9 +10,6 @@ export const load: PageServerLoad = async ({ locals, url }) => {
       const fromUrl = url.pathname + url.search
       redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
     }
-    // if (!session?.user?.userId) {
-    //   return fail(401, { type: "error", error: "Unauthenticated" })
-    // }
     const skip = Number(url.searchParams.get("skip") ?? "0")
     const limit = Number(url.searchParams.get("limit") ?? "10")
 

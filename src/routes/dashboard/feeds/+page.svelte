@@ -10,6 +10,7 @@
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
   import ttsWorkerUrl from "$lib/transformers/tts-worker?url"
   import summaryWorkerUrl from "$lib/transformers/translate-worker?url"
+  import PaginationNextButton from "$/lib/components/ui/pagination/pagination-next-button.svelte"
 
   const ui = useInterface()
   const { data } = $props()
@@ -128,6 +129,7 @@
   $effect(() => {
     if (prevVisibility === "hidden" && $visibility === "visible") {
       invalidateAll()
+      pageNumber = 1
     }
     prevVisibility = $visibility
   })
