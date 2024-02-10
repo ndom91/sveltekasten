@@ -2,6 +2,7 @@ import type { Handle } from "@sveltejs/kit"
 import { dev } from "$app/environment"
 import { sequence } from "@sveltejs/kit/hooks"
 import { handle as handleAuth } from "./auth"
+import { providerMap } from "./auth"
 
 const logger: Handle = async ({ event, resolve }) => {
   if (!dev) {
@@ -19,12 +20,12 @@ const logger: Handle = async ({ event, resolve }) => {
 }
 
 const handleGlobal: Handle = async ({ event, resolve }) => {
-  // event.locals.providers = providers.map((provider) => ({
-  //   id: provider.id as string,
-  //   name: provider.name,
-  // }))
+  event.locals.providers = providerMap.map((provider) => ({
+    id: provider.id as string,
+    name: provider.name,
+  }))
   const response = await resolve(event)
   return response
 }
 
-export const handle = sequence(logger, handleAuth) //, handleGlobal)
+export const handle = sequence(logger, handleAuth, handleGlobal)

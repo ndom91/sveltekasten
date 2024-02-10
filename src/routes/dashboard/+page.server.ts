@@ -11,7 +11,6 @@ export const load: PageServerLoad = async ({ locals, url }) => {
   }
 
   try {
-    const session = await locals.auth()
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }

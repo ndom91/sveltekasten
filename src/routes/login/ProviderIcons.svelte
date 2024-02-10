@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let provider: string = ""
+  const { provider } = $props<{ provider: string }>()
 </script>
 
 <div class="">

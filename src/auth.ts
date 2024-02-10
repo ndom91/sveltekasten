@@ -52,11 +52,9 @@ if (env.AUTH_SMTP_HOST && env.AUTH_SMTP_USER && env.AUTH_SMTP_PASSWORD) {
   )
 }
 
-const providerMap = providers.map((provider) => {
+export const providerMap = providers.map((provider) => {
   return { id: provider.id, name: provider.name }
 })
-
-export { providerMap }
 
 export const { signIn, signOut, handle } = SvelteKitAuth({
   providers,

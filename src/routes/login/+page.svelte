@@ -4,9 +4,9 @@
   import { twJoin } from "tailwind-merge"
   import { page } from "$app/stores"
   import { SignIn } from "@auth/sveltekit/components"
+  // import { signIn } from "$/auth"
 
   $inspect($page.data.providers)
-  const { form } = $props()
 
   const providerButtonStyles = (provider: string): string => {
     switch (provider) {
@@ -65,9 +65,11 @@
               <SignIn
                 provider="email"
                 signInPage="signin"
-                callbackUrl={$page.data.redirectTo
-                  ? `/${decodeURIComponent($page.data.redirectTo).slice(1)}`
-                  : `/dashboard`}
+                options={{
+                  redirectTo: $page.data.redirectTo
+                    ? `/${decodeURIComponent($page.data.redirectTo).slice(1)}`
+                    : `/dashboard`,
+                }}
                 className="flex justify-center items-center px-4 mt-2 space-x-2 w-full h-12 text-base font-light text-white rounded transition focus:ring-2 focus:ring-offset-2 focus:outline-none bg-slate-800 hover:bg-slate-900 focus:ring-slate-800"
                 >Continue</SignIn
               >
@@ -91,6 +93,7 @@
               className="w-full"
             >
               <div
+                slot="submitButton"
                 class={twJoin(
                   "mt-2 flex h-12 w-full items-center space-x-2 rounded px-4 text-base font-light transition focus:outline-none focus:ring-2 focus:ring-slate-800 focus:ring-offset-2",
                   providerButtonStyles(provider.id),
