@@ -73,7 +73,6 @@ export const { signIn, signOut, handle } = SvelteKitAuth({
   session: {
     strategy: "jwt",
   },
-  // @ts-expect-error
   adapter: PrismaAdapter(prisma),
   debug: true,
   secret: env.AUTH_SECRET,
