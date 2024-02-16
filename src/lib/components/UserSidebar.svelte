@@ -35,9 +35,16 @@
   )}
 >
   <div class="p-4">
-    <Button class="mx-auto" size="icon" variant="ghost" on:click={ui.toggleUserSidebar}>
-      <Logo class="size-8 text-zinc-800 dark:text-zinc-50" />
-      <span class="sr-only">Toggle navigation menu</span>
+    <Button
+      class={cn("flex mx-auto w-full", ui.userSidebarOpen ? "justify-start" : "justify-center")}
+      size="icon"
+      variant="ghost"
+      on:click={ui.toggleUserSidebar}
+    >
+      <Logo class="!size-8 text-zinc-800 dark:text-zinc-50" />
+      {#if ui.userSidebarOpen}
+        <span class="mx-auto text-xl font-light">Briefkasten</span>
+      {/if}
     </Button>
     <div
       class={cn(
