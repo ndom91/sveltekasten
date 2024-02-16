@@ -14,6 +14,7 @@ const config = {
       $: "src",
       $stores: "src/stores",
       $assets: "src/lib/assets",
+      $schemas: "src/lib/schemas",
       $lib: "src/lib",
       $zod: "src/lib/types/prisma",
       $state: "src/state",

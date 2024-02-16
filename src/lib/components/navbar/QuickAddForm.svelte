@@ -6,8 +6,7 @@
   import { Button } from "$lib/components/ui/button"
   import * as Select from "$lib/components/ui/select"
   import { Label } from "$lib/components/ui/label"
-  // @TODO: Add validation back
-  import { formSchema as schema, type FormSchema } from "$/routes/schema"
+  import { formSchema, type FormSchema } from "$schemas/quick-add"
   import { zodClient } from "sveltekit-superforms/adapters"
   import { superForm } from "sveltekit-superforms/client"
   import SuperDebug from "sveltekit-superforms"
@@ -18,10 +17,10 @@
   import type { Tag } from "$zod"
 
   const ui = useInterface()
-  $inspect($page.data)
+
   const { form, errors, constraints, enhance, submitting, delayed } = superForm($page.data.form, {
     dataType: "json",
-    validators: zodClient(schema),
+    validators: zodClient(formSchema),
     onUpdated: ({ form }) => {
       if (form.message?.text) {
         toast.success(form.message.text)
@@ -32,7 +31,8 @@
       formElement.reset()
     },
   })
-  $inspect($constraints)
+
+  $inspect($page.data)
 
   const tagValues = $derived(
     ($page.data.tags as Tag[]).map((tag) => ({ value: tag.id, label: tag.name })),
@@ -49,7 +49,7 @@
       aria-invalid={$errors.title ? "true" : undefined}
       {...$constraints.title}
       class={cn(
-        "flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+        "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-background file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
         $errors.title ? "border-red-300" : "",
       )}
     />
@@ -65,7 +65,7 @@
       aria-invalid={$errors.url ? "true" : undefined}
       {...$constraints.url}
       class={cn(
-        "flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+        "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-background file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
         $errors.url ? "border-red-300" : "",
       )}
     />
@@ -81,10 +81,10 @@
         label: cat.name,
       }))}
     >
-      <Select.Trigger class="w-full">
+      <Select.Trigger class="w-full bg-background">
         <Select.Value placeholder="Choose a category" />
       </Select.Trigger>
-      <Select.Input />
+      <Select.Input class="bg-background" />
       <Select.Content>
         {#each $page.data?.categories as category (category.id)}
           <Select.Item value={category.id}>{category.name}</Select.Item>
@@ -96,8 +96,9 @@
 
   <div class="flex flex-col gap-2 align-start">
     <Label for="tags">Tags</Label>
-    <!-- <TagInput setFormTags={(v) => ($form.tagIds = v)} tags={tagValues} class="bg-transparent" /> -->
+    <TagInput setFormTags={(v) => ($form.tagIds = v)} tags={tagValues} />
     <input type="hidden" name="tagIds" id="tagIds" value={$form.tagIds} />
+    {#if $errors.tags}<span class="text-xs text-red-400">{$errors.tags}</span>{/if}
   </div>
 
   <div class="flex flex-col gap-2 align-start">
@@ -110,7 +111,7 @@
       aria-invalid={$errors.description ? "true" : undefined}
       {...$constraints.description}
       class={cn(
-        "flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+        "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-background file:text-sm file:font-medium file:text-foreground placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
         $errors.description ? "border-red-300" : "",
       )}
     />

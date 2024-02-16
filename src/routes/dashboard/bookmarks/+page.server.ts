@@ -1,7 +1,7 @@
 import prisma from "$lib/prisma"
 import { redirect } from "@sveltejs/kit"
 import { fail } from "@sveltejs/kit"
-import { formSchema } from "../../schema"
+import { formSchema } from "$schemas/quick-add"
 import { superValidate } from "sveltekit-superforms"
 import { zod } from "sveltekit-superforms/adapters"
 import type { Actions } from "./$types"
@@ -135,21 +135,21 @@ export const actions: Actions = {
           },
           tags: tagIds
             ? {
-                create: tagIds.map((tagId) => ({
-                  tag: {
-                    connect: {
-                      id: tagId,
-                    },
+              create: tagIds.map((tagId) => ({
+                tag: {
+                  connect: {
+                    id: tagId,
                   },
-                })),
-              }
+                },
+              })),
+            }
             : {},
           category: categoryId
             ? {
-                connect: {
-                  id: categoryId,
-                },
-              }
+              connect: {
+                id: categoryId,
+              },
+            }
             : {},
         },
       })
@@ -169,7 +169,7 @@ export const actions: Actions = {
 
 export const load: PageServerLoad = async (event) => {
   const session = await event.locals?.auth()
-  const form = await superValidate(zod(formSchema))
+  // const form = await superValidate(zod(formSchema))
 
   if (!session && event.url.pathname !== "/login") {
     const fromUrl = event.url.pathname + event.url.search
@@ -200,12 +200,11 @@ export const load: PageServerLoad = async (event) => {
     })
 
     return {
-      form,
       bookmarks: data,
       count,
       session,
     }
   } catch (error: any) {
-    return { bookmarks: [], count: 1, error: error.message ?? error, form }
+    return { bookmarks: [], count: 1, error: error.message ?? error }
   }
 }
