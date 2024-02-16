@@ -56,9 +56,11 @@
   {#await import("./DeleteDialog.svelte") then { default: DeleteDialog }}
     <svelte:component this={DeleteDialog} bind:open={isDeleteDialogOpen} bookmarkId={bookmark.id} />
   {/await}
-  <div>
-    <img src={bookmark.image} alt="Bookmark Screenshot" class="object-cover rounded-md" />
-  </div>
+  <img
+    src={bookmark.image}
+    alt="Bookmark Screenshot"
+    class="object-cover rounded-md border border-neutral-100"
+  />
   <div class="flex flex-col gap-2">
     <span class="text-xl font-bold line-clamp-1 text-clip">
       {bookmark.title}
@@ -74,7 +76,7 @@
     </div>
     <span class="flex flex-wrap gap-2">
       <Badge variant="default">
-        {format(bookmark.createdAt, "H:mm - d MMM yyyy")}
+        {format(bookmark.createdAt, "H:mm | d MMM yyyy")}
       </Badge>
       {#if bookmark.category?.name}
         <Badge variant="secondary">
@@ -86,7 +88,6 @@
           {#each bookmark.tags as tag}
             <Badge variant="outline">
               {tag.tag.name}
-              {tag.tag.emoji}
             </Badge>
           {/each}
         </span>

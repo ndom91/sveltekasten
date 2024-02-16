@@ -31,8 +31,8 @@ const config = {
         border: "hsl(var(--border) / <alpha-value>)",
         input: "hsl(var(--input) / <alpha-value>)",
         ring: "hsl(var(--ring) / <alpha-value>)",
-        background: "hsl(var(--background) / <alpha-value>)",
-        background: "color(display-p3 0.035294 0.035294 0.043137 / 1.000000)",
+        // background: "hsl(var(--background) / <alpha-value>)",
+        background: "var(--background)",
         foreground: "hsl(var(--foreground) / <alpha-value>)",
         primary: {
           DEFAULT: "hsl(var(--primary) / <alpha-value>)",
