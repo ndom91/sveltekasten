@@ -169,7 +169,6 @@ export const actions: Actions = {
 
 export const load: PageServerLoad = async (event) => {
   const session = await event.locals?.auth()
-  // const form = await superValidate(zod(formSchema))
 
   if (!session && event.url.pathname !== "/login") {
     const fromUrl = event.url.pathname + event.url.search

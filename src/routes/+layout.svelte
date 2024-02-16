@@ -1,15 +1,17 @@
 <script lang="ts">
-  // import { Toaster } from "$lib/components/ui/sonner"
   import { Toaster } from "svelte-french-toast"
+  // import { Toaster } from "$lib/components/ui/sonner"
   import { goto, onNavigate } from "$app/navigation"
   import KeyboardShortcutsHelp from "$lib/components/KeyboardShortcutsHelp.svelte"
   import "$lib/styles/global.css"
 
   // View transition
   onNavigate((navigation) => {
+    // @ts-expect-error New method, only available in Chromium
     if (!document.startViewTransition) return
 
     return new Promise((resolve) => {
+      // @ts-expect-error New method, only available in Chromium
       document.startViewTransition(async () => {
         resolve()
         await navigation.complete
