@@ -159,9 +159,6 @@ p {
 }
 
 /* svelte-french-toast icon */
-.toaster .wrapper .indicator {
-  min-width: 6px !important;
-  min-height: 6px !important;
-  width: 6px !important;
-  height: 6px !important;
+.toaster .wrapper .base > div:not(.message) {
+  font-size: 14px !important;
 }
