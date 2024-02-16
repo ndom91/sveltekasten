@@ -2,7 +2,7 @@
   import { page } from "$app/stores"
   import { Button } from "$lib/components/ui/button"
   import { enhance } from "$app/forms"
-  import { form_action } from "$lib/form_action"
+  import { handleActionResults } from "$lib/utils/form-action"
   import * as Card from "$lib/components/ui/card"
   import { buttonVariants } from "$lib/components/ui/button"
   import type { Feed } from "$zod"
@@ -88,7 +88,7 @@
       <form
         action="/settings?/addFeed"
         method="post"
-        use:enhance={form_action()}
+        use:enhance={handleActionResults()}
         class="flex gap-2"
       >
         <input

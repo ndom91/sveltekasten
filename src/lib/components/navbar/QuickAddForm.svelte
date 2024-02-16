@@ -81,14 +81,14 @@
       }))}
     >
       <Select.Trigger class="w-full bg-background">
-        <Select.Value placeholder="Choose a category" />
+        <Select.Value placeholder="Choose a category" bind:value={$formData.categoryId} />
       </Select.Trigger>
-      <Select.Input class="bg-background" />
       <Select.Content>
         {#each $page.data?.categories as category (category.id)}
           <Select.Item value={category.id}>{category.name}</Select.Item>
         {/each}
       </Select.Content>
+      <Select.Input class="bg-background" name="categoryId" />
     </Select.Root>
     {#if $errors.category}<span class="text-xs text-red-400">{$errors.category}</span>{/if}
   </div>

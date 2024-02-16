@@ -1,7 +1,7 @@
 <script lang="ts">
   import * as Table from "$lib/components/ui/table"
   import { enhance } from "$app/forms"
-  import { form_action } from "$lib/form_action"
+  import { handleActionResults } from "$lib/utils/form-action"
   import { Button } from "$lib/components/ui/button"
   import { Input } from "$lib/components/ui/input"
   import { format } from "date-fns"
@@ -13,12 +13,12 @@
   <title>Briefkasten | Tags</title>
   <meta name="description" content="This is where the description goes for SEO" />
 </svelte:head>
-<main class="mx-auto w-full p-4">
-  <div class="align-start flex flex-col justify-start gap-2">
+<main class="p-4 mx-auto w-full">
+  <div class="flex flex-col gap-2 justify-start align-start">
     <Table.Root>
       <Table.Header>
         <Table.Row>
-          <Table.Head class="min-w-48 w-1/4">Name</Table.Head>
+          <Table.Head class="w-1/4 min-w-48">Name</Table.Head>
           <Table.Head>Emoji</Table.Head>
           <Table.Head class="text-right">Created At</Table.Head>
         </Table.Row>
@@ -36,8 +36,8 @@
     <form
       method="post"
       action="?/createTag"
-      use:enhance={form_action()}
-      class="flex items-center justify-start gap-4"
+      use:enhance={handleActionResults()}
+      class="flex gap-4 justify-start items-center"
     >
       <div class="flex gap-2">
         <svg

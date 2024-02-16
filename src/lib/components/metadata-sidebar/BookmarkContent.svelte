@@ -2,7 +2,7 @@
   import { cn } from "$lib/utils/style"
   import { page } from "$app/stores"
   import { enhance } from "$app/forms"
-  import { form_action } from "$lib/form_action"
+  import { handleActionResults } from "$lib/utils/form-action"
   import { useInterface } from "$state/ui.svelte"
 
   import { Label } from "$lib/components/ui/label"
@@ -29,7 +29,7 @@
 <form
   method="post"
   action="/dashboard?/saveMetadataEdits"
-  use:enhance={form_action()}
+  use:enhance={handleActionResults()}
   class="flex gap-4 justify-start items-center h-full"
 >
   <input type="hidden" name="id" value={ui.metadataSidebarData.bookmark.id} />

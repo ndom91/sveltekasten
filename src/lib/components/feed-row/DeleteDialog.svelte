@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { ActionData } from "./$types"
   import { enhance } from "$app/forms"
-  import { form_action } from "$lib/form_action"
+  import { handleActionResults } from "$lib/utils/form-action"
   import { buttonVariants } from "$lib/components/ui/button"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
 
@@ -30,7 +30,7 @@
     <AlertDialog.Footer>
       <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
       <AlertDialog.Action asChild>
-        <form action="?/deleteBookmark" method="post" use:enhance={form_action()}>
+        <form action="?/deleteBookmark" method="post" use:enhance={handleActionResults()}>
           <input type="hidden" name="bookmarkId" value={bookmarkId} />
           <button class={buttonVariants({ variant: "destructive" })} type="submit">
             Continue
