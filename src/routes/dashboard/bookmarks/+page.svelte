@@ -107,7 +107,7 @@
       )
       const targetLink = allItems[currentActiveElementIndex]?.url
       if (!targetLink) {
-        toast.error("No item selected")
+        toast.error("No item selected", { icon: "🚫" })
         return
       }
       window.open(targetLink, "_target")

@@ -161,4 +161,5 @@ p {
 /* svelte-french-toast icon */
 .toaster .wrapper .base > div:not(.message) {
   font-size: 14px !important;
+  min-width: 16px !important;
 }
