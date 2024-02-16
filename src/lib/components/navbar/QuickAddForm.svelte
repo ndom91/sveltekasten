@@ -6,10 +6,9 @@
   import { Button } from "$lib/components/ui/button"
   import * as Select from "$lib/components/ui/select"
   import { Label } from "$lib/components/ui/label"
-  import { formSchema, type FormSchema } from "$schemas/quick-add"
+  import { formSchema } from "$schemas/quick-add"
   import { zodClient } from "sveltekit-superforms/adapters"
-  import { superForm } from "sveltekit-superforms/client"
-  import SuperDebug from "sveltekit-superforms"
+  import SuperDebug, { superForm } from "sveltekit-superforms"
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
   import TagInput from "$lib/components/TagInput.svelte"
   import toast from "svelte-french-toast"
@@ -18,8 +17,7 @@
 
   const ui = useInterface()
 
-  const { form, errors, constraints, enhance, submitting, delayed } = superForm($page.data.form, {
-    dataType: "json",
+  const form = superForm($page.data.form, {
     validators: zodClient(formSchema),
     onUpdated: ({ form }) => {
       if (form.message?.text) {
@@ -31,6 +29,7 @@
       formElement.reset()
     },
   })
+  const { form: formData, errors, constraints, enhance, submitting, delayed } = form
 
   $inspect($page.data)
 
@@ -45,7 +44,7 @@
     <input
       type="text"
       name="title"
-      bind:value={$form.title}
+      bind:value={$formData.title}
       aria-invalid={$errors.title ? "true" : undefined}
       {...$constraints.title}
       class={cn(
@@ -61,7 +60,7 @@
     <input
       type="text"
       name="url"
-      bind:value={$form.url}
+      bind:value={$formData.url}
       aria-invalid={$errors.url ? "true" : undefined}
       {...$constraints.url}
       class={cn(
@@ -96,9 +95,8 @@
 
   <div class="flex flex-col gap-2 align-start">
     <Label for="tags">Tags</Label>
-    <TagInput setFormTags={(v) => ($form.tagIds = v)} tags={tagValues} />
-    <input type="hidden" name="tagIds" id="tagIds" value={$form.tagIds} />
-    {#if $errors.tags}<span class="text-xs text-red-400">{$errors.tags}</span>{/if}
+    <!-- @ts-ignore -->
+    <TagInput {form} tags={tagValues} field="tagIds" />
   </div>
 
   <div class="flex flex-col gap-2 align-start">
@@ -107,7 +105,7 @@
       type="text"
       name="description"
       placeholder="Leave blank to use auto-generated"
-      bind:value={$form.description}
+      bind:value={$formData.description}
       aria-invalid={$errors.description ? "true" : undefined}
       {...$constraints.description}
       class={cn(
@@ -125,6 +123,6 @@
     Submit
   </Button>
   {#if dev}
-    <SuperDebug data={$form} />
+    <SuperDebug data={$formData} />
   {/if}
 </form>

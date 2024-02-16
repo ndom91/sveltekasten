@@ -3,60 +3,48 @@
     label: string
     value: string
   }
+  type T = Record<string, unknown>
 </script>
 
-<script lang="ts">
-  import * as Command from "$lib/components/ui/command"
-  import * as Popover from "$lib/components/ui/popover"
-  import { Button } from "$lib/components/ui/button"
+<script lang="ts" generics="T extends Record<string, unknown>">
   import { Badge } from "$lib/components/ui/badge"
-  import { tick } from "svelte"
-  import { cn } from "$lib/utils/style"
   import { Combobox } from "bits-ui"
   import { flyAndScale } from "$lib/utils/style"
+  import { formFieldProxy, type SuperForm, type FormPathLeaves } from "sveltekit-superforms"
 
-  let open = $state(false)
   let {
-    setFormTags,
+    form,
     tags = [],
-    class: className,
-    disabled = false,
-    selected = [],
+    field,
   } = $props<{
-    setFormTags: (v: string[]) => void
+    form: SuperForm<T>
+    field: FormPathLeaves<T>
     tags: Tag[]
-    disabled?: boolean
-    class?: string
-    selected?: string[]
   }>()
 
-  let inputValue = $state<string[]>("")
-  let selectedValues = $state([])
+  let inputValue = $state("")
+  let selectedValues = $state<Tag[]>([])
   let filteredTags = $derived(
     inputValue
       ? tags.filter((tag) => tag.label.toLowerCase().includes(inputValue.toLowerCase()))
       : tags,
   )
 
-  function handleTagRemove(event: MouseEvent, value: string) {
-    event.preventDefault()
-    event.stopPropagation()
-    selectedValues.splice(selectedValues.indexOf(value), 1)
-  }
+  // function handleTagRemove(event: MouseEvent, value: string) {
+  //   event.preventDefault()
+  //   event.stopPropagation()
+  //   selectedValues.splice(selectedValues.indexOf(value), 1)
+  // }
 
-  console.log({ tags })
-  $inspect("sV", selectedValues)
-  $inspect("iV", inputValue)
+  let { value, errors } = formFieldProxy(form, field)
+
+  $effect(() => {
+    // @ts-expect-error
+    $value = selectedValues?.map((v) => v.value).join(",")
+  })
 </script>
 
-<Combobox.Root
-  multiple
-  {disabled}
-  items={filteredTags}
-  name="tags"
-  bind:selected={selectedValues}
-  bind:inputValue
->
+<Combobox.Root multiple items={filteredTags} bind:selected={selectedValues} bind:inputValue>
   <div class="relative">
     <svg
       class="absolute top-1/2 -translate-y-1/2 start-[0.6rem] size-5 text-foreground"
@@ -81,6 +69,7 @@
       class="inline-flex py-2 px-3 pl-10 w-full h-10 text-sm rounded-md border transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none truncate border-input bg-background placeholder:text-foreground/50 focus:ring-foreground focus:ring-offset-background"
       placeholder="Select a tag"
       aria-label="Select a tag"
+      aria-invalid={$errors ? "true" : undefined}
     />
     <svg
       class="absolute top-1/2 -translate-y-1/2 end-[0.6rem] size-5 text-neutral-50/50"
@@ -136,7 +125,7 @@
       <span class="block py-2 px-5 text-sm text-muted-foreground"> No results found </span>
     {/each}
   </Combobox.Content>
-  <Combobox.HiddenInput name="selectedTag" />
+  <Combobox.HiddenInput name="tagIds" />
 </Combobox.Root>
 {#if selectedValues.length}
   <div class="flex flex-wrap gap-2 mb-2">
@@ -147,3 +136,4 @@
     {/each}
   </div>
 {/if}
+{#if $errors}<span class="text-xs text-red-400">{$errors}</span>{/if}

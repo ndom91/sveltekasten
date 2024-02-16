@@ -2,7 +2,7 @@ import prisma from "$lib/prisma"
 import { fail } from "@sveltejs/kit"
 import { formSchema } from "$schemas/quick-add"
 import { zod } from "sveltekit-superforms/adapters"
-import { superValidate } from "sveltekit-superforms/server"
+import { superValidate } from "sveltekit-superforms"
 import type { LayoutServerLoad } from "./$types"
 
 export const load: LayoutServerLoad = async ({ locals }) => {
