@@ -2,7 +2,8 @@ import prisma from "$lib/prisma"
 import { redirect } from "@sveltejs/kit"
 import { fail } from "@sveltejs/kit"
 import { formSchema } from "../../schema"
-import { superValidate } from "sveltekit-superforms/server"
+import { superValidate } from "sveltekit-superforms"
+import { zod } from "sveltekit-superforms/adapters"
 import type { Actions } from "./$types"
 import type { PageServerLoad } from "./$types"
 
@@ -94,7 +95,7 @@ export const actions: Actions = {
     return { type: "success", message: "Updated Bookmark" }
   },
   quickAdd: async (event) => {
-    const form = await superValidate(event, formSchema)
+    const form = await superValidate(zod(formSchema))
     if (!form.valid) {
       return fail(400, {
         form,
@@ -166,19 +167,20 @@ export const actions: Actions = {
   },
 }
 
-export const load: PageServerLoad = async ({ locals, url }) => {
-  const session = await locals?.auth()
+export const load: PageServerLoad = async (event) => {
+  const session = await event.locals?.auth()
+  const form = await superValidate(zod(formSchema))
 
-  if (!session && url.pathname !== "/login") {
-    const fromUrl = url.pathname + url.search
+  if (!session && event.url.pathname !== "/login") {
+    const fromUrl = event.url.pathname + event.url.search
     redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
   }
 
   try {
-    const skip = Number(url.searchParams.get("skip") ?? "0")
-    const limit = Number(url.searchParams.get("limit") ?? "10")
+    const skip = Number(event.url.searchParams.get("skip") ?? "0")
+    const limit = Number(event.url.searchParams.get("limit") ?? "10")
 
-    const session = await locals.auth()
+    const session = await event.locals.auth()
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
@@ -198,17 +200,12 @@ export const load: PageServerLoad = async ({ locals, url }) => {
     })
 
     return {
+      form,
       bookmarks: data,
       count,
       session,
     }
-  } catch (error) {
-    let message
-    if (typeof error === "string") {
-      message = error
-    } else if (error instanceof Error) {
-      message = error.message
-    }
-    return { bookmarks: [], count: 1, error: message }
+  } catch (error: any) {
+    return { bookmarks: [], count: 1, error: error.message ?? error, form }
   }
 }

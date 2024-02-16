@@ -9,6 +9,7 @@ const logger: Handle = async ({ event, resolve }) => {
     return resolve(event)
   }
   const start_time = Date.now()
+
   // Wait on response, run other hooks and load
   const response = await resolve(event)
 
@@ -19,13 +20,14 @@ const logger: Handle = async ({ event, resolve }) => {
   return response
 }
 
-const handleGlobal: Handle = async ({ event, resolve }) => {
-  event.locals.providers = providerMap.map((provider) => ({
-    id: provider.id as string,
-    name: provider.name,
-  }))
-  const response = await resolve(event)
-  return response
+const handleLoginProviders: Handle = async ({ event, resolve }) => {
+  if (event.route.id === "/login") {
+    event.locals.providers = providerMap.map((provider) => ({
+      id: provider.id as string,
+      name: provider.name,
+    }))
+  }
+  return resolve(event)
 }
 
-export const handle = sequence(logger, handleAuth, handleGlobal)
+export const handle = sequence(logger, handleAuth, handleLoginProviders)

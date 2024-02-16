@@ -1,5 +1,5 @@
 <script lang="ts">
-  import EmptyIllustration from "$lib/assets/blob2.png"
+  import EmptyIllustration from "$lib/assets/new.png"
   import Arrow from "$lib/assets/arrow.svg?raw"
   const { arrow = true } = $props()
 </script>
@@ -10,6 +10,6 @@
   </div>
 {/if}
 <div class="flex flex-col items-center mx-auto w-1/2">
-  <img src={EmptyIllustration} alt="Empty" class="w-full max-w-lg grayscale" />
+  <img src={EmptyIllustration} alt="Empty" class="w-full max-w-xl grayscale dark:invert" />
   <p class="mb-4 text-2xl font-light">Looks like there's nothing here!</p>
 </div>

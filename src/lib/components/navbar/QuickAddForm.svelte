@@ -8,8 +8,9 @@
   import { Label } from "$lib/components/ui/label"
   // @TODO: Add validation back
   import { formSchema as schema, type FormSchema } from "$/routes/schema"
+  import { zodClient } from "sveltekit-superforms/adapters"
   import { superForm } from "sveltekit-superforms/client"
-  import SuperDebug from "sveltekit-superforms/client/SuperDebug.svelte"
+  import SuperDebug from "sveltekit-superforms"
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
   import TagInput from "$lib/components/TagInput.svelte"
   import toast from "svelte-french-toast"
@@ -17,8 +18,10 @@
   import type { Tag } from "$zod"
 
   const ui = useInterface()
-
+  $inspect($page.data)
   const { form, errors, constraints, enhance, submitting, delayed } = superForm($page.data.form, {
+    dataType: "json",
+    validators: zodClient(schema),
     onUpdated: ({ form }) => {
       if (form.message?.text) {
         toast.success(form.message.text)
@@ -29,13 +32,14 @@
       formElement.reset()
     },
   })
+  $inspect($constraints)
 
   const tagValues = $derived(
     ($page.data.tags as Tag[]).map((tag) => ({ value: tag.id, label: tag.name })),
   )
 </script>
 
-<form method="post" action="/dashboard?/quickAdd" use:enhance class="flex flex-col gap-2">
+<form method="POST" action="/dashboard?/quickAdd" use:enhance class="flex flex-col gap-2">
   <div class="flex flex-col gap-2 align-start">
     <Label for="title">Title</Label>
     <input
@@ -78,7 +82,7 @@
       }))}
     >
       <Select.Trigger class="w-full">
-        <Select.Value placeholder="Category" />
+        <Select.Value placeholder="Choose a category" />
       </Select.Trigger>
       <Select.Input />
       <Select.Content>
@@ -92,7 +96,7 @@
 
   <div class="flex flex-col gap-2 align-start">
     <Label for="tags">Tags</Label>
-    <TagInput setFormTags={(v) => ($form.tagIds = v)} tags={tagValues} class="bg-transparent" />
+    <!-- <TagInput setFormTags={(v) => ($form.tagIds = v)} tags={tagValues} class="bg-transparent" /> -->
     <input type="hidden" name="tagIds" id="tagIds" value={$form.tagIds} />
   </div>
 

@@ -75,9 +75,9 @@ export const { signIn, signOut, handle } = SvelteKitAuth({
   },
   adapter: PrismaAdapter(prisma),
   debug: true,
-  secret: env.AUTH_SECRET,
-  trustHost: Boolean(env.AUTH_TRUST_HOST ?? false),
-  // pages: {
-  //   signIn: "/login",
-  // },
+  // secret: env.AUTH_SECRET,
+  trustHost: true,
+  pages: {
+    signIn: "/login",
+  },
 })
