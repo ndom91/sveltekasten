@@ -65,18 +65,11 @@ export const load: PageServerLoad = async ({ locals, url }) => {
         count: feedCount,
       },
     }
-  } catch (error) {
-    let message
-    if (typeof error === "string") {
-      message = error
-    } else if (error instanceof Error) {
-      message = error.message
-    }
-
+  } catch (error: any) {
     return {
       feedEntries: [],
       count: 0,
-      error: message,
+      error: error.message ?? error,
     }
   }
 }

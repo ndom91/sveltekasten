@@ -24,13 +24,7 @@ export const load: LayoutServerLoad = async ({ locals }) => {
       tags,
       categories,
     }
-  } catch (error) {
-    let message
-    if (typeof error === "string") {
-      message = error
-    } else if (error instanceof Error) {
-      message = error.message
-    }
-    return { categories: [], tags: [], error: message }
+  } catch (error: any) {
+    return { categories: [], tags: [], error: error.message ?? error }
   }
 }

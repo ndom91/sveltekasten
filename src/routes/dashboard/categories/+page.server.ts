@@ -45,13 +45,8 @@ export const actions: Actions = {
       })
 
       return { message: "Category Created", type: "success", form: formData }
-    } catch (error) {
-      let message
-      if (typeof error === "string") {
-        message = error
-      } else if (error instanceof Error) {
-        message = error.message
-      } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    } catch (error: any) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === "P2002") {
           console.log("There is a unique constraint violation, category could not be created")
         }
@@ -61,7 +56,7 @@ export const actions: Actions = {
       return fail(500, {
         message: "Error",
         type: "error",
-        error: message,
+        error: error.message ?? error,
         data: { name, description },
       })
     }
