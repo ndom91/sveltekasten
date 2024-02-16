@@ -60,7 +60,7 @@ export const BookmarkScalarFieldEnumSchema = z.enum(['id','title','url','image',
 
 export const TagsOnBookmarksScalarFieldEnumSchema = z.enum(['bookmarkId','tagId']);
 
-export const TagScalarFieldEnumSchema = z.enum(['id','name','emoji','userId','createdAt','updatedAt']);
+export const TagScalarFieldEnumSchema = z.enum(['id','name','userId','createdAt','updatedAt']);
 
 export const CategoryScalarFieldEnumSchema = z.enum(['id','name','description','userId','createdAt','updatedAt']);
 
@@ -92,7 +92,7 @@ export const BookmarkOrderByRelevanceFieldEnumSchema = z.enum(['id','title','url
 
 export const TagsOnBookmarksOrderByRelevanceFieldEnumSchema = z.enum(['bookmarkId','tagId']);
 
-export const TagOrderByRelevanceFieldEnumSchema = z.enum(['id','name','emoji','userId']);
+export const TagOrderByRelevanceFieldEnumSchema = z.enum(['id','name','userId']);
 
 export const CategoryOrderByRelevanceFieldEnumSchema = z.enum(['id','name','description','userId']);
 
@@ -152,7 +152,6 @@ export type TagsOnBookmarks = z.infer<typeof TagsOnBookmarksSchema>
 export const TagSchema = z.object({
   id: z.string().cuid(),
   name: z.string(),
-  emoji: z.string().nullable(),
   userId: z.string(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
@@ -394,7 +393,6 @@ export const TagCountOutputTypeSelectSchema: z.ZodType<Prisma.TagCountOutputType
 export const TagSelectSchema: z.ZodType<Prisma.TagSelect> = z.object({
   id: z.boolean().optional(),
   name: z.boolean().optional(),
-  emoji: z.boolean().optional(),
   userId: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
@@ -832,7 +830,6 @@ export const TagWhereInputSchema: z.ZodType<Prisma.TagWhereInput> = z.object({
   NOT: z.union([ z.lazy(() => TagWhereInputSchema),z.lazy(() => TagWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  emoji: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   userId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
@@ -843,7 +840,6 @@ export const TagWhereInputSchema: z.ZodType<Prisma.TagWhereInput> = z.object({
 export const TagOrderByWithRelationAndSearchRelevanceInputSchema: z.ZodType<Prisma.TagOrderByWithRelationAndSearchRelevanceInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
-  emoji: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
@@ -871,7 +867,6 @@ export const TagWhereUniqueInputSchema: z.ZodType<Prisma.TagWhereUniqueInput> = 
   OR: z.lazy(() => TagWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => TagWhereInputSchema),z.lazy(() => TagWhereInputSchema).array() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  emoji: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   userId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
@@ -882,7 +877,6 @@ export const TagWhereUniqueInputSchema: z.ZodType<Prisma.TagWhereUniqueInput> = 
 export const TagOrderByWithAggregationInputSchema: z.ZodType<Prisma.TagOrderByWithAggregationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
-  emoji: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
@@ -897,7 +891,6 @@ export const TagScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.TagScalar
   NOT: z.union([ z.lazy(() => TagScalarWhereWithAggregatesInputSchema),z.lazy(() => TagScalarWhereWithAggregatesInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   name: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
-  emoji: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   userId: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
@@ -1768,7 +1761,6 @@ export const TagsOnBookmarksUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Tag
 export const TagCreateInputSchema: z.ZodType<Prisma.TagCreateInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string(),
-  emoji: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   bookmarks: z.lazy(() => TagsOnBookmarksCreateNestedManyWithoutTagInputSchema).optional(),
@@ -1778,7 +1770,6 @@ export const TagCreateInputSchema: z.ZodType<Prisma.TagCreateInput> = z.object({
 export const TagUncheckedCreateInputSchema: z.ZodType<Prisma.TagUncheckedCreateInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string(),
-  emoji: z.string().optional().nullable(),
   userId: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
@@ -1788,7 +1779,6 @@ export const TagUncheckedCreateInputSchema: z.ZodType<Prisma.TagUncheckedCreateI
 export const TagUpdateInputSchema: z.ZodType<Prisma.TagUpdateInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  emoji: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   bookmarks: z.lazy(() => TagsOnBookmarksUpdateManyWithoutTagNestedInputSchema).optional(),
@@ -1798,7 +1788,6 @@ export const TagUpdateInputSchema: z.ZodType<Prisma.TagUpdateInput> = z.object({
 export const TagUncheckedUpdateInputSchema: z.ZodType<Prisma.TagUncheckedUpdateInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  emoji: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -1808,7 +1797,6 @@ export const TagUncheckedUpdateInputSchema: z.ZodType<Prisma.TagUncheckedUpdateI
 export const TagCreateManyInputSchema: z.ZodType<Prisma.TagCreateManyInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string(),
-  emoji: z.string().optional().nullable(),
   userId: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional()
@@ -1817,7 +1805,6 @@ export const TagCreateManyInputSchema: z.ZodType<Prisma.TagCreateManyInput> = z.
 export const TagUpdateManyMutationInputSchema: z.ZodType<Prisma.TagUpdateManyMutationInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  emoji: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
@@ -1825,7 +1812,6 @@ export const TagUpdateManyMutationInputSchema: z.ZodType<Prisma.TagUpdateManyMut
 export const TagUncheckedUpdateManyInputSchema: z.ZodType<Prisma.TagUncheckedUpdateManyInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  emoji: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -2804,7 +2790,6 @@ export const TagNameUserIdCompoundUniqueInputSchema: z.ZodType<Prisma.TagNameUse
 export const TagCountOrderByAggregateInputSchema: z.ZodType<Prisma.TagCountOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
-  emoji: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional()
@@ -2813,7 +2798,6 @@ export const TagCountOrderByAggregateInputSchema: z.ZodType<Prisma.TagCountOrder
 export const TagMaxOrderByAggregateInputSchema: z.ZodType<Prisma.TagMaxOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
-  emoji: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional()
@@ -2822,7 +2806,6 @@ export const TagMaxOrderByAggregateInputSchema: z.ZodType<Prisma.TagMaxOrderByAg
 export const TagMinOrderByAggregateInputSchema: z.ZodType<Prisma.TagMinOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
-  emoji: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional()
@@ -4533,7 +4516,6 @@ export const BookmarkCreateOrConnectWithoutTagsInputSchema: z.ZodType<Prisma.Boo
 export const TagCreateWithoutBookmarksInputSchema: z.ZodType<Prisma.TagCreateWithoutBookmarksInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string(),
-  emoji: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   user: z.lazy(() => UserCreateNestedOneWithoutTagsInputSchema).optional()
@@ -4542,7 +4524,6 @@ export const TagCreateWithoutBookmarksInputSchema: z.ZodType<Prisma.TagCreateWit
 export const TagUncheckedCreateWithoutBookmarksInputSchema: z.ZodType<Prisma.TagUncheckedCreateWithoutBookmarksInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string(),
-  emoji: z.string().optional().nullable(),
   userId: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional()
@@ -4608,7 +4589,6 @@ export const TagUpdateToOneWithWhereWithoutBookmarksInputSchema: z.ZodType<Prism
 export const TagUpdateWithoutBookmarksInputSchema: z.ZodType<Prisma.TagUpdateWithoutBookmarksInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  emoji: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   user: z.lazy(() => UserUpdateOneWithoutTagsNestedInputSchema).optional()
@@ -4617,7 +4597,6 @@ export const TagUpdateWithoutBookmarksInputSchema: z.ZodType<Prisma.TagUpdateWit
 export const TagUncheckedUpdateWithoutBookmarksInputSchema: z.ZodType<Prisma.TagUncheckedUpdateWithoutBookmarksInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  emoji: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -5174,7 +5153,6 @@ export const BookmarkCreateManyUserInputEnvelopeSchema: z.ZodType<Prisma.Bookmar
 export const TagCreateWithoutUserInputSchema: z.ZodType<Prisma.TagCreateWithoutUserInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string(),
-  emoji: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   bookmarks: z.lazy(() => TagsOnBookmarksCreateNestedManyWithoutTagInputSchema).optional()
@@ -5183,7 +5161,6 @@ export const TagCreateWithoutUserInputSchema: z.ZodType<Prisma.TagCreateWithoutU
 export const TagUncheckedCreateWithoutUserInputSchema: z.ZodType<Prisma.TagUncheckedCreateWithoutUserInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string(),
-  emoji: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   bookmarks: z.lazy(() => TagsOnBookmarksUncheckedCreateNestedManyWithoutTagInputSchema).optional()
@@ -5447,7 +5424,6 @@ export const TagScalarWhereInputSchema: z.ZodType<Prisma.TagScalarWhereInput> = 
   NOT: z.union([ z.lazy(() => TagScalarWhereInputSchema),z.lazy(() => TagScalarWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  emoji: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   userId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
@@ -6237,7 +6213,6 @@ export const BookmarkCreateManyUserInputSchema: z.ZodType<Prisma.BookmarkCreateM
 export const TagCreateManyUserInputSchema: z.ZodType<Prisma.TagCreateManyUserInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string(),
-  emoji: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional()
 }).strict();
@@ -6406,7 +6381,6 @@ export const BookmarkUncheckedUpdateManyWithoutUserInputSchema: z.ZodType<Prisma
 export const TagUpdateWithoutUserInputSchema: z.ZodType<Prisma.TagUpdateWithoutUserInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  emoji: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   bookmarks: z.lazy(() => TagsOnBookmarksUpdateManyWithoutTagNestedInputSchema).optional()
@@ -6415,7 +6389,6 @@ export const TagUpdateWithoutUserInputSchema: z.ZodType<Prisma.TagUpdateWithoutU
 export const TagUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prisma.TagUncheckedUpdateWithoutUserInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  emoji: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   bookmarks: z.lazy(() => TagsOnBookmarksUncheckedUpdateManyWithoutTagNestedInputSchema).optional()
@@ -6424,7 +6397,6 @@ export const TagUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prisma.TagUnche
 export const TagUncheckedUpdateManyWithoutUserInputSchema: z.ZodType<Prisma.TagUncheckedUpdateManyWithoutUserInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  emoji: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();

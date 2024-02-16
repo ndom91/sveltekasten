@@ -19,7 +19,6 @@
       <Table.Header>
         <Table.Row>
           <Table.Head class="w-1/4 min-w-48">Name</Table.Head>
-          <Table.Head>Emoji</Table.Head>
           <Table.Head class="text-right">Created At</Table.Head>
         </Table.Row>
       </Table.Header>
@@ -27,7 +26,6 @@
         {#each data.tags as tag (tag.id)}
           <Table.Row>
             <Table.Cell class="font-medium">{tag.name}</Table.Cell>
-            <Table.Cell>{tag.emoji}</Table.Cell>
             <Table.Cell class="text-right">{format(tag.createdAt, "d MMM yyyy")}</Table.Cell>
           </Table.Row>
         {/each}
@@ -59,7 +57,6 @@
         <span> Create New </span>
       </div>
       <Input class="w-48" placeholder="Name" id="name" name="name" type="text" />
-      <Input class="w-48" placeholder="Emoji" id="emoji" name="emoji" type="text" />
       <Button variant="secondary" type="submit" class="w-24">Create</Button>
     </form>
   </div>

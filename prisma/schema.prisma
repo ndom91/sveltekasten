@@ -51,7 +51,6 @@ model TagsOnBookmarks {
 model Tag {
   id        String            @id @default(cuid())
   name      String
-  emoji     String?
   bookmarks TagsOnBookmarks[]
   user      User?             @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId    String
