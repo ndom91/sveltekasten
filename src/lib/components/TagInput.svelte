@@ -12,6 +12,8 @@
   import { Badge } from "$lib/components/ui/badge"
   import { tick } from "svelte"
   import { cn } from "$lib/utils/style"
+  import { Combobox } from "bits-ui"
+  import { flyAndScale } from "$lib/utils/style"
 
   let open = $state(false)
   let {
@@ -28,112 +30,120 @@
     selected?: string[]
   }>()
 
-  const selectedValue = $state<string[]>(selected)
-
-  function closeAndFocusTrigger(triggerId: string) {
-    open = false
-    tick().then(() => {
-      document.getElementById(triggerId)?.focus()
-    })
-  }
+  let inputValue = $state<string[]>("")
+  let selectedValues = $state([])
+  let filteredTags = $derived(
+    inputValue
+      ? tags.filter((tag) => tag.label.toLowerCase().includes(inputValue.toLowerCase()))
+      : tags,
+  )
 
   function handleTagRemove(event: MouseEvent, value: string) {
     event.preventDefault()
     event.stopPropagation()
-    selectedValue.splice(selectedValue.indexOf(value), 1)
+    selectedValues.splice(selectedValues.indexOf(value), 1)
   }
+
+  console.log({ tags })
+  $inspect("sV", selectedValues)
+  $inspect("iV", inputValue)
 </script>
 
-<Popover.Root bind:open let:ids>
-  <Popover.Trigger asChild let:builder>
-    <Button
-      builders={[builder]}
-      variant="outline"
-      {disabled}
-      role="combobox"
-      aria-expanded={open}
-      class={cn("w-full justify-between", className)}
+<Combobox.Root
+  multiple
+  {disabled}
+  items={filteredTags}
+  name="tags"
+  bind:selected={selectedValues}
+  bind:inputValue
+>
+  <div class="relative">
+    <svg
+      class="absolute top-1/2 -translate-y-1/2 start-[0.6rem] size-5 text-foreground"
+      data-slot="icon"
+      fill="none"
+      aria-label="tag"
+      stroke-width="1.5"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
     >
-      <div class="flex gap-2 justify-start w-full truncate">
-        {#each selectedValue as value}
-          <Badge class="text-sm">
-            {tags.find((tag) => tag.value === value)?.label}
-            <Button
-              onclickcapture={(e: MouseEvent) => handleTagRemove(e, value)}
-              variant="link"
-              class="p-0 h-auto text-black"
-            >
-              <svg
-                class="ml-1 size-4"
-                data-slot="icon"
-                fill="none"
-                stroke-width="1.5"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"
-                ></path>
-              </svg>
-            </Button>
-          </Badge>
-        {:else}
-          Select tags..
-        {/each}
-      </div>
-      <svg
-        class="ml-2 opacity-50 size-4"
-        data-slot="icon"
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"
+      ></path>
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z"></path>
+    </svg>
+
+    <Combobox.Input
+      class="inline-flex py-2 px-3 pl-10 w-full h-10 text-sm rounded-md border transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none truncate border-input bg-background placeholder:text-foreground/50 focus:ring-foreground focus:ring-offset-background"
+      placeholder="Select a tag"
+      aria-label="Select a tag"
+    />
+    <svg
+      class="absolute top-1/2 -translate-y-1/2 end-[0.6rem] size-5 text-neutral-50/50"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 256 256"
+    >
+      <rect width="256" height="256" fill="none" />
+      <polyline
+        points="80 176 128 224 176 176"
         fill="none"
-        stroke-width="1.5"
         stroke="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="12"
+      />
+      <polyline
+        points="80 80 128 32 176 80"
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="12"
+      />
+    </svg>
+  </div>
+  <Combobox.Content
+    class="p-2 w-full rounded-md border outline-none border-neutral-50 bg-background shadow-popover dark:border-neutral-700"
+    transition={flyAndScale}
+    sideOffset={8}
+  >
+    {#each filteredTags as tag (tag.value)}
+      <Combobox.Item
+        class="flex items-center py-1 pr-1.5 pl-4 w-full h-8 text-sm rounded-md transition-all duration-75 outline-none select-none data-[highlighted]:bg-popover"
+        value={tag.value}
+        label={tag.label}
       >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
-        ></path>
-      </svg>
-    </Button>
-  </Popover.Trigger>
-  <Popover.Content sameWidth class="p-0">
-    <Command.Root>
-      <Command.Input placeholder="Search tags" />
-      <Command.Empty>No tag found.</Command.Empty>
-      <Command.Group>
-        {#each tags as tag}
-          <Command.Item
-            value={tag.value}
-            onSelect={(currentValue) => {
-              if (selectedValue.includes(currentValue)) {
-                selectedValue.splice(selectedValue.indexOf(currentValue), 1)
-              } else {
-                selectedValue.push(currentValue)
-                setFormTags(selectedValue)
-              }
-              closeAndFocusTrigger(ids.trigger)
-            }}
-          >
-            <svg
-              class={cn("size-4 mr-2", !selectedValue.includes(tag.value) && "text-transparent")}
-              data-slot="icon"
+        {tag.label}
+        <Combobox.ItemIndicator class="ml-auto" asChild={false}>
+          <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+            <rect width="256" height="256" fill="none" />
+            <polyline
+              points="40 144 96 200 224 72"
               fill="none"
-              stroke-width="1.5"
               stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"></path>
-            </svg>
-            {tag.label}
-          </Command.Item>
-        {/each}
-      </Command.Group>
-    </Command.Root>
-  </Popover.Content>
-</Popover.Root>
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="16"
+            />
+          </svg>
+        </Combobox.ItemIndicator>
+      </Combobox.Item>
+    {:else}
+      <span class="block py-2 px-5 text-sm text-muted-foreground"> No results found </span>
+    {/each}
+  </Combobox.Content>
+  <Combobox.HiddenInput name="selectedTag" />
+</Combobox.Root>
+{#if selectedValues.length}
+  <div class="flex flex-wrap gap-2 mb-2">
+    {#each selectedValues as tag (tag.value)}
+      <Badge class="text-xs">
+        {tag.label}
+      </Badge>
+    {/each}
+  </div>
+{/if}
