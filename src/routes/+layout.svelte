@@ -1,8 +1,9 @@
 <script lang="ts">
+  // import { Toaster } from "$lib/components/ui/sonner"
   import { Toaster } from "svelte-french-toast"
   import { goto, onNavigate } from "$app/navigation"
   import KeyboardShortcutsHelp from "$lib/components/KeyboardShortcutsHelp.svelte"
-  import "$lib/styles/style.css"
+  import "$lib/styles/global.css"
 
   // View transition
   onNavigate((navigation) => {
@@ -65,5 +66,8 @@
 {#if showKeyboardShortcuts}
   <KeyboardShortcutsHelp bind:open={showKeyboardShortcuts} />
 {/if}
-<Toaster />
+<Toaster
+  position="bottom-right"
+  toastOptions={{ style: "background-color: #171717; color: #fff" }}
+/>
 <slot />

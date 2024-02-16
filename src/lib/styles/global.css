@@ -157,3 +157,11 @@ p {
 .prose iframe {
   @apply !relative !aspect-video !max-w-screen-md;
 }
+
+/* svelte-french-toast icon */
+.toaster .wrapper .indicator {
+  min-width: 6px !important;
+  min-height: 6px !important;
+  width: 6px !important;
+  height: 6px !important;
+}
