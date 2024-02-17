@@ -18,7 +18,6 @@
   }
   const handleMetadataSidebarOpen = () => {
     ui.setMetadataSidebarData({
-      // @ts-expect-error
       bookmark,
       categories: $page.data.categories,
       tags: $page.data.tags,
@@ -26,6 +25,7 @@
     ui.toggleMetadataSidebar(true)
     ui.toggleMetadataSidebarEditMode(false)
   }
+  $inspect("bookmarkrow.ui", ui)
   const openButtonGroup = () => {
     isOptionsOpen = true
   }
@@ -87,7 +87,7 @@
         <span class="flex flex-wrap gap-2">
           {#each bookmark.tags as tag}
             <Badge variant="outline">
-              {tag.tag.name}
+              {tag.name}
             </Badge>
           {/each}
         </span>

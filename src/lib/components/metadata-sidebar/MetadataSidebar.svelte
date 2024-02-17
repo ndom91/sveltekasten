@@ -15,7 +15,7 @@
     }
   }
 
-  const bookmarkPage = $derived($page.url.pathname === "/dashboard")
+  const bookmarkPage = $derived($page.url.pathname === "/dashboard/bookmarks")
   const feedPage = $derived($page.url.pathname === "/dashboard/feeds")
 </script>
 

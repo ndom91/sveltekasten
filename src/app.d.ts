@@ -19,7 +19,7 @@ type Provider = {
 declare global {
   type TODO = any
   type LoadBookmarkResult = Bookmark & { metadata: Record<string, any> | JsonValue } & {
-    tags: { tag: Tag }[]
+    tags: Tag[]
   } & { category: Category | null }
   type LoadFeedEntry = FeedEntry & { feed: Feed; feedMedia: FeedEntryMedia | null }
 

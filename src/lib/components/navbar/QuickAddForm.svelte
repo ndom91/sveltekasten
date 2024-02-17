@@ -31,9 +31,6 @@
         toast.error(message.text)
       }
     },
-    // onSubmit: ({ formElement }) => {
-    //   formElement.reset()
-    // },
   })
   const { form: formData, message, errors, constraints, enhance, submitting, delayed } = form
   // @ts-expect-error

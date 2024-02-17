@@ -1,16 +1,7 @@
-import type { Bookmark, Category, Tag } from "$zod"
-
-type LoadedBookmark = Bookmark & {
-  metadata: Record<string, string>
-  tags: {
-    tag: Tag
-  }[]
-} & {
-  category: Category
-}
+import type { Category, Tag } from "$zod"
 
 type MetadataSidebarData = {
-  bookmark: LoadedBookmark
+  bookmark?: LoadBookmarkResult
   categories?: Category[]
   tags?: Tag[]
 }
@@ -25,28 +16,7 @@ let showUnreadOnly = $state(false)
 // Sidebars
 let metadataSidebarOpen = $state(false)
 let metadataSidebarData = $state<MetadataSidebarData>({
-  bookmark: {
-    id: "",
-    category: {
-      userId: "",
-      description: "",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      id: "",
-      name: "",
-    },
-    title: "",
-    url: "",
-    image: "",
-    imageBlur: "",
-    desc: "",
-    categoryId: "",
-    tags: [],
-    metadata: {},
-    userId: "",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
+  bookmark: undefined,
   categories: [],
   tags: [],
 })
@@ -145,6 +115,9 @@ export function useInterface() {
     },
     get quickAddOpen() {
       return quickAddOpen
+    },
+    set quickAddOpen(data) {
+      quickAddOpen = data
     },
     toggleMetadataSidebar: (target?: boolean): boolean =>
       (metadataSidebarOpen = target ?? !metadataSidebarOpen),
