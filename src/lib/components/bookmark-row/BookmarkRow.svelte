@@ -25,7 +25,6 @@
     ui.toggleMetadataSidebar(true)
     ui.toggleMetadataSidebarEditMode(false)
   }
-  $inspect("bookmarkrow.ui", ui)
   const openButtonGroup = () => {
     isOptionsOpen = true
   }

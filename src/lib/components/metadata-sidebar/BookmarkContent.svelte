@@ -24,6 +24,10 @@
     toast.success(`Copied ${color} clipboard!`)
     navigator.clipboard.writeText(color)
   }
+
+  const tagValues = $derived(
+    ui.metadataSidebarData.bookmark.tags.map((tag) => ({ value: tag.id, label: tag.name })),
+  )
 </script>
 
 <form
@@ -151,13 +155,14 @@
     </div>
     <div class="flex flex-col gap-2">
       <Label for="category">Tags</Label>
-      <TagInput
-        tags={$page.data?.tags.map((tag: Tag) => ({ value: tag.id, label: tag.name }))}
-        disabled={!isEditMode}
-        setFormTags={(v) => (ui.metadataSidebarData.bookmark.tags = v)}
-        selected={ui.metadataSidebarData.bookmark?.tags?.map((tag: TagsOnBookmarks) => tag.tagId) ?? []}
-        class="bg-transparent"
-      />
+      <TagInput {form} tags={tagValues} field="tagIds" class="bg-transparent" />
+      <!-- <TagInput -->
+      <!--   tags={$page.data?.tags.map((tag: Tag) => ({ value: tag.id, label: tag.name }))} -->
+      <!--   disabled={!isEditMode} -->
+      <!--   setFormTags={(v) => (ui.metadataSidebarData.bookmark.tags = v)} -->
+      <!--   selected={ui.metadataSidebarData.bookmark?.tags?.map((tag: TagsOnBookmarks) => tag.tagId) ?? []} -->
+      <!--   class="bg-transparent" -->
+      <!-- /> -->
       <input type="hidden" name="tagIds" id="tagIds" value={ui.metadataSidebarData.tags} />
     </div>
     {#if ui.metadataSidebarData.bookmark.image}
