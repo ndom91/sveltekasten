@@ -2,7 +2,7 @@ import prisma from "$lib/prisma"
 import { redirect } from "@sveltejs/kit"
 import { fail } from "@sveltejs/kit"
 import { formSchema } from "$schemas/quick-add"
-import { superValidate } from "sveltekit-superforms"
+import { superValidate, message } from "sveltekit-superforms"
 import { zod } from "sveltekit-superforms/adapters"
 import type { Actions } from "./$types"
 import type { PageServerLoad } from "./$types"
@@ -95,7 +95,7 @@ export const actions: Actions = {
     return { type: "success", message: "Updated Bookmark" }
   },
   quickAdd: async (event) => {
-    const form = await superValidate(zod(formSchema))
+    const form = await superValidate(event.request, zod(formSchema))
     if (!form.valid) {
       return fail(400, {
         form,
@@ -115,10 +115,10 @@ export const actions: Actions = {
       const metadata = await metascraperClient({ html: await resp.text(), url: url })
       const image = metadata.image ? metadata.image : (metadata.logo as string)
 
+      // TODO: Disabled due to splashy/sharp missing in Vercel node env (?)
       // const imageResponse = await fetch(image)
       // const imageBuffer = await imageResponse.arrayBuffer()
       // const palette = await splashy(Buffer.from(imageBuffer))
-
       // metadata.palette = palette
 
       const bookmark = await prisma.bookmark.create({
@@ -154,12 +154,10 @@ export const actions: Actions = {
         },
       })
 
-      return {
-        form,
+      return message(form, {
         bookmark: bookmark,
-        message: "Added Successfully",
-        type: "success",
-      }
+        text: "Bookmark Added!",
+      })
     } catch (error) {
       console.error(error)
       fail(500, { type: "error", message: "Failed to add bookmark" })

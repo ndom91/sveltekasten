@@ -59,7 +59,7 @@
   <img
     src={bookmark.image}
     alt="Bookmark Screenshot"
-    class="object-cover rounded-md border border-neutral-100"
+    class="object-cover rounded-md border border-neutral-100 dark:border-neutral-700"
   />
   <div class="flex flex-col gap-2">
     <span class="text-xl font-bold line-clamp-1 text-clip">
