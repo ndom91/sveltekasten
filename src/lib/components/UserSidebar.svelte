@@ -6,6 +6,7 @@
   import Logo from "$lib/assets/Logo.svelte"
   import { cn } from "$lib/utils/style"
   import { useInterface } from "$state/ui.svelte"
+  import { flyAndScale } from "$lib/utils/style"
 
   const ui = useInterface()
 
@@ -30,7 +31,7 @@
 <svelte:window on:keydown={handleKeyDown} />
 <aside
   class={cn(
-    "space-between relative flex h-screen flex-grow flex-col border-r bg-zinc-50 transition-width dark:border-r-zinc-800 dark:bg-zinc-900",
+    "space-between relative flex h-screen flex-grow flex-col border-r bg-neutral-50 transition-width dark:border-r-zinc-800 dark:bg-zinc-900",
     ui.userSidebarOpen ? "w-[clamp(10vw,_20rem,_30vw)]" : "w-20",
   )}
 >
@@ -41,7 +42,7 @@
       variant="ghost"
       on:click={ui.toggleUserSidebar}
     >
-      <Logo class="!size-8 text-zinc-800 dark:text-zinc-50" />
+      <Logo class="!size-8" />
       {#if ui.userSidebarOpen}
         <span class="mx-auto text-xl font-light">Briefkasten</span>
       {/if}
@@ -92,7 +93,12 @@
             {/if}
           </Button>
         </Tooltip.Trigger>
-        <Tooltip.Content side="right">
+        <Tooltip.Content
+          side="right"
+          transition={flyAndScale}
+          transitionConfig={{ y: 8, duration: 150 }}
+          sideOffset={8}
+        >
           <p>Dashboard</p>
         </Tooltip.Content>
       </Tooltip.Root>
@@ -129,7 +135,12 @@
             {/if}
           </Button>
         </Tooltip.Trigger>
-        <Tooltip.Content side="right">
+        <Tooltip.Content
+          side="right"
+          transition={flyAndScale}
+          transitionConfig={{ y: 8, duration: 150 }}
+          sideOffset={8}
+        >
           <p>Bookmarks</p>
         </Tooltip.Content>
       </Tooltip.Root>
@@ -167,7 +178,12 @@
             {/if}
           </Button>
         </Tooltip.Trigger>
-        <Tooltip.Content side="right">
+        <Tooltip.Content
+          side="right"
+          transition={flyAndScale}
+          transitionConfig={{ y: 8, duration: 150 }}
+          sideOffset={8}
+        >
           <p>RSS Feeds</p>
         </Tooltip.Content>
       </Tooltip.Root>
@@ -204,7 +220,12 @@
             {/if}
           </Button>
         </Tooltip.Trigger>
-        <Tooltip.Content side="right">
+        <Tooltip.Content
+          side="right"
+          transition={flyAndScale}
+          transitionConfig={{ y: 8, duration: 150 }}
+          sideOffset={8}
+        >
           <p>Archives</p>
         </Tooltip.Content>
       </Tooltip.Root>
@@ -242,7 +263,12 @@
             {/if}
           </Button>
         </Tooltip.Trigger>
-        <Tooltip.Content side="right">
+        <Tooltip.Content
+          side="right"
+          transition={flyAndScale}
+          transitionConfig={{ y: 8, duration: 150 }}
+          sideOffset={8}
+        >
           <p>Categories</p>
         </Tooltip.Content>
       </Tooltip.Root>
@@ -281,7 +307,12 @@
             {/if}
           </Button>
         </Tooltip.Trigger>
-        <Tooltip.Content side="right">
+        <Tooltip.Content
+          side="right"
+          transition={flyAndScale}
+          transitionConfig={{ y: 8, duration: 150 }}
+          sideOffset={8}
+        >
           <p>Tags</p>
         </Tooltip.Content>
       </Tooltip.Root>

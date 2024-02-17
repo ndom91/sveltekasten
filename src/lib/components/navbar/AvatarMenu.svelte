@@ -7,6 +7,7 @@
   import { ModeWatcher, mode, toggleMode } from "mode-watcher"
   import { version } from "$app/environment"
   import { SignOut } from "@auth/sveltekit/components"
+  import { flyAndScale } from "$lib/utils/style"
 
   let isDarkMode = $derived($mode === "dark")
 </script>
@@ -26,13 +27,17 @@
       <Avatar.Fallback><Skeleton class="w-full h-full rounded-full" /></Avatar.Fallback>
     </Avatar.Root>
   </DropdownMenu.Trigger>
-  <DropdownMenu.Content transition={blur} transitionConfig={{ delay: 0, duration: 250 }}>
+  <DropdownMenu.Content
+    transition={flyAndScale}
+    transitionConfig={{ y: 10, duration: 250 }}
+    sideOffset={8}
+  >
     <DropdownMenu.Group>
       <DropdownMenu.Label class="justify-start w-full line-clamp-2 truncate">
         <div>
           {$page.data.session?.user?.name ?? $page.data.session?.user?.email}
         </div>
-        <div class="text-zinc-200 dark:text-zinc-600">{version}</div>
+        <div class="font-light text-zinc-400 dark:text-zinc-600">{version}</div>
       </DropdownMenu.Label>
       <DropdownMenu.Separator />
       <DropdownMenu.CheckboxItem
