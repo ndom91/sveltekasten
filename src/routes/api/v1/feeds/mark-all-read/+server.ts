@@ -23,13 +23,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     })
 
     return json({ data })
-  } catch (error) {
-    let message
-    if (typeof error === "string") {
-      message = error
-    } else if (error instanceof Error) {
-      message = error.message
-    }
-    return fail(401, { data: [], error: message })
+  } catch (error: any) {
+    return fail(401, { data: [], error: error.message ?? error })
   }
 }
