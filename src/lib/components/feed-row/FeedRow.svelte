@@ -108,16 +108,14 @@
   {#if feedEntry.unread}
     <div class="absolute top-2 left-2 bg-emerald-400 rounded-full duration-1000 size-4" />
   {/if}
-  <div>
-    <img
-      src={feedEntry.feedMedia?.[0]?.href ??
-        `https://picsum.photos/seed/${encodeURIComponent(
-          feedEntry.title.replaceAll(" ", "").substring(0, 5).toLowerCase(),
-        )}/240/153.webp`}
-      alt="Feed Item Hero"
-      class="object-cover rounded-md"
-    />
-  </div>
+  <img
+    src={feedEntry.feedMedia?.[0]?.href ??
+      `https://picsum.photos/seed/${encodeURIComponent(
+        feedEntry.title.replaceAll(" ", "").substring(0, 5).toLowerCase(),
+      )}/240/153.webp`}
+    alt="Feed Item Hero"
+    class="object-cover object-center w-48 h-24 rounded-md"
+  />
   <div class="flex flex-col justify-between">
     <span class="w-auto text-xl font-bold line-clamp-1 min-h-[28px]">
       {feedEntry.title}

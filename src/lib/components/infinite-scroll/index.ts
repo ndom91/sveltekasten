@@ -1,5 +1,5 @@
 type IntersectionObserverProps = {
-  fetch: () => void
+  fetch: () => Promise<void>
   element: HTMLElement
 }
 
@@ -9,13 +9,12 @@ export const infiniteScroll = ({
 }: IntersectionObserverProps): IntersectionObserver | null => {
   if (element) {
     const observer = new IntersectionObserver(
-      (entries) => {
-        const first = entries[0]
-        if (first.isIntersecting) {
-          fetch()
+      async (entries) => {
+        if (entries[0].isIntersecting) {
+          await fetch()
         }
       },
-      { threshold: 0.5 },
+      { threshold: 0.25 },
     )
     observer.observe(element)
     return observer

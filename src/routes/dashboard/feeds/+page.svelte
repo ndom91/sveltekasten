@@ -10,7 +10,6 @@
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
   import ttsWorkerUrl from "$lib/transformers/tts-worker?url"
   import summaryWorkerUrl from "$lib/transformers/translate-worker?url"
-  import PaginationNextButton from "$/lib/components/ui/pagination/pagination-next-button.svelte"
 
   const ui = useInterface()
   const { data } = $props()
@@ -24,11 +23,11 @@
 
   // TTS Model
   let progressItems = $state<TODO>([])
-  let disabled = $state(false)
+  let disabledTtsButton = $state(false)
   let ttsWorker = $state<Worker>()
 
   $effect(() => {
-    if (!ttsWorker) {
+    if (!ttsWorker && ui.aiFeaturesPreferences.tts) {
       ttsWorker = new Worker(new URL(ttsWorkerUrl, import.meta.url), {
         type: "module",
       })
@@ -63,7 +62,7 @@
           break
 
         case "complete":
-          disabled = false
+          disabledTtsButton = false
 
           const blobUrl = URL.createObjectURL(e.data.output)
           console.log(`Audio Set: ${blobUrl}`)
@@ -74,15 +73,15 @@
       }
     }
 
-    ttsWorker.addEventListener("message", onMessageReceived)
+    ttsWorker?.addEventListener("message", onMessageReceived)
 
     return () => ttsWorker?.removeEventListener("message", onMessageReceived)
   })
 
   const handleGenerateSpeech = (text: string) => {
-    if (!ttsWorker) return
+    if (!ttsWorker || !ui.aiFeaturesPreferences.tts) return
     console.time("audio.generate")
-    disabled = true
+    disabledTtsButton = true
     ui.textToSpeechLoading = true
     ttsWorker.postMessage({
       text,
@@ -93,7 +92,7 @@
   let summaryWorker = $state<Worker>()
 
   $effect(() => {
-    if (!summaryWorker) {
+    if (!summaryWorker && ui.aiFeaturesPreferences.summarization) {
       summaryWorker = new Worker(new URL(summaryWorkerUrl, import.meta.url), {
         type: "module",
       })
@@ -102,7 +101,7 @@
     const onMessageReceived = (e: TODO) => {
       switch (e.data.status) {
         case "complete":
-          disabled = false
+          disabledTtsButton = false
 
           ui.summarizationLoading = false
           console.log("Summary:", e.data.output)
@@ -111,32 +110,28 @@
       }
     }
 
-    summaryWorker.addEventListener("message", onMessageReceived)
+    summaryWorker?.addEventListener("message", onMessageReceived)
 
     return () => summaryWorker?.removeEventListener("message", onMessageReceived)
   })
 
   const handleSummarizeText = (text: string) => {
-    if (!summaryWorker) return
+    if (!summaryWorker || !ui.aiFeaturesPreferences.summarization) return
     console.time("summary.generate")
-    disabled = true
+    disabledTtsButton = true
     ui.summarizationLoading = true
     summaryWorker.postMessage({
       text,
     })
   }
 
+  // Page visibility auto refresh
   $effect(() => {
     if (prevVisibility === "hidden" && $visibility === "visible") {
       invalidateAll()
       pageNumber = 1
     }
     prevVisibility = $visibility
-  })
-
-  // Update local state when load fn data has changed
-  $effect(() => {
-    allItems = data.feedEntries?.data ?? []
   })
 
   // Log error from page server loading
@@ -162,8 +157,9 @@
   // Load more items on infinite scroll
   const loadMore = async (p: number) => {
     pageNumber = p
-    const limit = 10
-    const skip = 10 * (pageNumber - 1)
+    const loadCount = 20
+    const limit = loadCount
+    const skip = loadCount * (pageNumber - 1)
 
     if (
       // Skip if all items already loaded
@@ -179,7 +175,7 @@
   }
 
   // Handle search input
-  let activeFeedEntries = $derived(async () => {
+  let getActiveFeedItems = $derived(async () => {
     if (!ui.searchQuery)
       return allItems
         .filter((item: LoadFeedEntry) => {
@@ -222,7 +218,7 @@
   })
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.repeat || e.target instanceof HTMLInputElement) return
+    if (e.target instanceof HTMLInputElement) return
     if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "j" || e.key === "k") {
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
@@ -235,7 +231,7 @@
           : currentActiveElementIndex - 1
       const nextElement = document.querySelector(
         `[data-id="${allItems[nextIndex]?.id}"]`,
-      ) as HTMLElement
+      ) as HTMLDivElement
 
       if (nextElement) {
         nextElement.focus()
@@ -267,8 +263,8 @@
 <main class="h-full">
   <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start">
     {#if data.feedEntries?.count > 0}
-      <div bind:this={listWrapperEl} class="overflow-scroll h-full">
-        {#await activeFeedEntries()}
+      <div bind:this={listWrapperEl} class="overflow-y-scroll h-full">
+        {#await getActiveFeedItems()}
           {#each Array.from({ length: 10 }) as _}
             <div class="h-40 text-3xl">
               <div class="flex gap-4 items-start p-4 mx-4 w-full opacity-10">
@@ -287,7 +283,7 @@
           {:else}
             <div class="my-8 w-full text-3xl text-center">No entries found</div>
           {/each}
-          <div bind:this={elementRef} class="w-full h-48 text-xl font-light" />
+          <div bind:this={elementRef} class="w-full h-48" />
         {:catch error}
           <div class="my-4 w-full text-3xl text-center">
             {error}

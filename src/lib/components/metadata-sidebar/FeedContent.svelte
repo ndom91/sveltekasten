@@ -9,11 +9,6 @@
   const ui = useInterface()
 
   const { data: feeds } = $page.data.feeds as PageServerLoad.feeds.data
-  let showUnreadOnly = $state(false)
-
-  const handleToggleUnreadOnly = () => {
-    ui.showUnreadOnly = !ui.showUnreadOnly
-  }
 
   const handleMarkAllRead = async (feed: Feed) => {
     await fetch("/api/v1/feeds/mark-all-read", {
@@ -35,11 +30,7 @@
     </div>
     <div class="grid gap-y-4 justify-start grid-cols-[30px_1fr]">
       <div class="flex justify-center items-start pt-1">
-        <Checkbox
-          on:click={handleToggleUnreadOnly}
-          id="unread-only"
-          bind:checked={showUnreadOnly}
-        />
+        <Checkbox id="unread-only" bind:checked={ui.showUnreadOnly} />
       </div>
       <div class="flex flex-col gap-2 items-start">Unread Only</div>
     </div>

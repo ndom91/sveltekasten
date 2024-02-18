@@ -5,12 +5,14 @@
   import { useInterface } from "$state/ui.svelte"
   import { BookmarkRow } from "$lib/components/bookmark-row"
   import { infiniteScroll } from "$lib/components/infinite-scroll"
+  import { Logger, loggerLevels } from "$lib/utils/logger"
 
   const ui = useInterface()
   const { data } = $props()
   let pageNumber = $state(1)
   let totalItemCount = $state<number>(data.count ?? 1)
   let allItems = $state<LoadBookmarkResult[]>(data.bookmarks!)
+  const logger = new Logger({ level: loggerLevels.DEBUG })
 
   $effect(() => {
     allItems = data.bookmarks ?? []
@@ -125,7 +127,7 @@
 <main class="h-full">
   <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2">
     {#if data.bookmarks}
-      <div class="overflow-scroll h-full">
+      <div class="overflow-y-scroll h-full">
         {#await activeBookmarks()}
           <div class="my-8 w-full text-3xl text-center">Loading...</div>
         {:then bookmarks}
