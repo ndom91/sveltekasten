@@ -32,7 +32,7 @@
       <div class="flex justify-center items-start pt-1">
         <Checkbox id="unread-only" bind:checked={ui.showUnreadOnly} />
       </div>
-      <div class="flex flex-col gap-2 items-start">Unread Only</div>
+      <label for="unread-only" class="flex flex-col gap-2 items-start">Unread Only</label>
     </div>
     <div class="grid gap-y-4 justify-start grid-cols-[30px_1fr]">
       {#each feeds as feed}
@@ -40,14 +40,14 @@
           <Checkbox id={new URL(feed.url).host} bind:checked={feed.visible} />
         </div>
         <div class="flex flex-col gap-2 items-start">
-          <div class="flex gap-2 justify-start items-center">
+          <label for={new URL(feed.url).host} class="flex gap-2 justify-start items-center">
             <span> {new URL(feed.url).host} </span>
             <img
               src={`https://icons.duckduckgo.com/ip9/${new URL(feed.url).hostname}.ico`}
               alt="URL Favicon"
               class="rounded-full size-6"
             />
-          </div>
+          </label>
           <div class="line-clamp-2 dark:text-zinc-600">
             {feed.description}
           </div>

@@ -1,7 +1,7 @@
 import prisma from "$lib/prisma"
 import { fail, redirect } from "@sveltejs/kit"
 import { Prisma } from "@prisma/client"
-import { TagCreateInputSchema } from "$zod"
+import { TagCreateInputSchema, Tag } from "$zod"
 import type { Actions, PageServerLoad } from "./$types"
 import type { ZodError } from "zod"
 
@@ -31,16 +31,16 @@ export const actions: Actions = {
     if (!session?.user?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
-    const formData = Object.fromEntries(await request.formData())
-    const { name, emoji } = formData as { name: string; emoji: string }
+    const formData = await request.formData()
+    // TODO: Check wtf is up with this FormData.enties() not working for some reason
+    const dataEntries = Object.fromEntries(formData.entries())
 
     try {
       TagCreateInputSchema.parse(formData)
 
       await prisma.tag.create({
         data: {
-          name,
-          emoji,
+          name: formData.get("name") as string,
           userId: session.user.userId,
         },
       })
