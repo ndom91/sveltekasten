@@ -152,14 +152,7 @@
         </svg>
         <span> Create New </span>
       </div>
-      <Input
-        class="w-48"
-        placeholder="Tag Name"
-        id="tag-name"
-        name="tag-name"
-        type="text"
-        autocomplete="off"
-      />
+      <Input class="w-48" placeholder="Tag Name" id="name" name="name" type="text" data-1p-ignore />
       <Button variant="secondary" type="submit" class="w-24">Create</Button>
     </form>
   </div>

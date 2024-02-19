@@ -4,12 +4,8 @@
 
   const { id } = $props<{ id: string }>()
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     console.log("Delete", id)
-  }
-
-  const handleEdit = async () => {
-    console.log("Edit", id)
     await fetch(`/api/v1/tags`, {
       method: "DELETE",
       headers: {
@@ -17,6 +13,10 @@
       },
       body: JSON.stringify({ id }),
     })
+  }
+
+  const handleEdit = async () => {
+    console.log("Edit", id)
   }
 </script>
 

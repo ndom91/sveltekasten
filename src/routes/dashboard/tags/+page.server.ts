@@ -32,20 +32,19 @@ export const actions: Actions = {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
     const formData = await request.formData()
-    // TODO: Check wtf is up with this FormData.enties() not working for some reason
     const dataEntries = Object.fromEntries(formData.entries())
 
     try {
-      TagCreateInputSchema.parse(formData)
+      const parsedData = TagCreateInputSchema.parse(dataEntries)
 
       await prisma.tag.create({
         data: {
-          name: formData.get("name") as string,
+          name: parsedData.name,
           userId: session.user.userId,
         },
       })
 
-      return { message: "Tag Created", type: "success", form: formData }
+      return { message: "Tag Created", type: "success", form: dataEntries }
     } catch (err: ZodError | any) {
       if (err instanceof Prisma.PrismaClientKnownRequestError) {
         if (err.code === "P2002") {
@@ -58,7 +57,7 @@ export const actions: Actions = {
         message: "Error",
         type: "error",
         errors,
-        data: { name, emoji },
+        data: dataEntries,
       })
     }
   },
