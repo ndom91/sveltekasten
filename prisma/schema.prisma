@@ -32,9 +32,9 @@ model Bookmark {
 
   @@unique([url, userId])
   @@index([userId])
-  @@index([title(ops: raw("gin_trgm_ops"))], type: Gin, name: "title_idx")
-  @@index([desc(ops: raw("gin_trgm_ops"))], type: Gin, name: "desc_idx")
-  @@index([url(ops: raw("gin_trgm_ops"))], type: Gin, name: "url_idx")
+  @@index([title(ops: raw("gin_trgm_ops"))], type: Gin, name: "Bookmark_title_idx")
+  @@index([desc(ops: raw("gin_trgm_ops"))], type: Gin, name: "Bookmark_desc_idx")
+  @@index([url(ops: raw("gin_trgm_ops"))], type: Gin, name: "Bookmark_url_idx")
 }
 
 model TagsOnBookmarks {
