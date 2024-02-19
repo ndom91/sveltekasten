@@ -203,12 +203,20 @@
         },
         orderBy: { published: "desc" },
         where: {
-          title: {
-            search: ui.searchQuery,
-          },
-          content: {
-            search: ui.searchQuery,
-          },
+          OR: [
+            {
+              title: {
+                contains: `%${ui.searchQuery}%`,
+                mode: "insensitive",
+              },
+            },
+            {
+              content: {
+                contains: `%${ui.searchQuery}%`,
+                mode: "insensitive",
+              },
+            },
+          ],
         },
       }),
     })

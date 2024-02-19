@@ -65,15 +65,26 @@
         },
         where: {
           archived: true,
-          title: {
-            search: ui.searchQuery,
-          },
-          url: {
-            search: ui.searchQuery,
-          },
-          desc: {
-            search: ui.searchQuery,
-          },
+          OR: [
+            {
+              title: {
+                contains: `%${ui.searchQuery}%`,
+                mode: "insensitive",
+              },
+            },
+            {
+              url: {
+                contains: `%${ui.searchQuery}%`,
+                mode: "insensitive",
+              },
+            },
+            {
+              desc: {
+                contains: `%${ui.searchQuery}%`,
+                mode: "insensitive",
+              },
+            },
+          ],
         },
       }),
     })
