@@ -32,7 +32,7 @@
 <aside
   class={cn(
     "space-between relative flex h-screen flex-grow flex-col border-r bg-neutral-50 transition-width border-r-neutral-200 dark:border-r-neutral-900 dark:bg-neutral-900",
-    ui.userSidebarOpen ? "w-[clamp(10vw,_20rem,_30vw)]" : "w-20",
+    ui.userSidebarOpen ? "w-[300px]" : "w-20",
   )}
 >
   <div class="p-4">

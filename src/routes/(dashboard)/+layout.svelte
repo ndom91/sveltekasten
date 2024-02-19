@@ -1,15 +1,13 @@
 <script lang="ts">
-  import { Navbar } from "$lib/components/navbar"
   import Sidebar from "$lib/components/UserSidebar.svelte"
   import { MetadataSidebar } from "$/lib/components/metadata-sidebar"
   import { CommandBar } from "$lib/components/command-bar"
 </script>
 
-<div class="flex">
+<div class="flex overflow-hidden">
   <CommandBar />
   <Sidebar />
-  <div class="flex flex-col flex-grow w-full max-w-screen">
-    <Navbar />
+  <div class="flex flex-col w-full">
     <slot />
   </div>
   <MetadataSidebar />

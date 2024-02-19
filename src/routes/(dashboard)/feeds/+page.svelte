@@ -1,5 +1,6 @@
 <script lang="ts">
   import toast from "svelte-french-toast"
+  import { Navbar } from "$lib/components/navbar"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { FeedRow } from "$lib/components/feed-row"
   import { Skeleton } from "$lib/components/ui/skeleton"
@@ -268,41 +269,44 @@
 
 <svelte:window on:keydown={handleKeyDown} />
 
-<main class="h-full">
-  <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start">
-    {#if data.feedEntries?.count > 0}
-      <div bind:this={listWrapperEl} class="overflow-y-scroll h-full">
-        {#await getActiveFeedItems()}
-          {#each Array.from({ length: 10 }) as _}
-            <div class="h-40 text-3xl">
-              <div class="flex gap-4 items-start p-4 mx-4 w-full opacity-10">
-                <Skeleton class="w-52 h-28 rounded-md" />
-                <div class="flex flex-col gap-4 items-start w-full">
-                  <Skeleton class="w-3/4 h-4 min-w-[300px]" />
-                  <Skeleton class="w-4/5 h-10 min-w-[400px]" />
-                  <Skeleton class="w-96 h-4 min-w-[100px]" />
+<Navbar />
+<div class="flex overflow-y-scroll flex-col">
+  <main class="h-full">
+    <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start">
+      {#if data.feedEntries?.count > 0}
+        <div bind:this={listWrapperEl} class="overflow-y-scroll h-full">
+          {#await getActiveFeedItems()}
+            {#each Array.from({ length: 10 }) as _}
+              <div class="h-40 text-3xl">
+                <div class="flex gap-4 items-start p-4 mx-4 w-full opacity-10">
+                  <Skeleton class="w-52 h-28 rounded-md" />
+                  <div class="flex flex-col gap-4 items-start w-full">
+                    <Skeleton class="w-3/4 h-4 min-w-[300px]" />
+                    <Skeleton class="w-4/5 h-10 min-w-[400px]" />
+                    <Skeleton class="w-96 h-4 min-w-[100px]" />
+                  </div>
                 </div>
               </div>
+            {/each}
+          {:then feedEntries}
+            {#each feedEntries as feedEntry}
+              <FeedRow {feedEntry} {handleSummarizeText} {handleGenerateSpeech} />
+            {:else}
+              <div class="my-8 w-full text-3xl text-center">No entries found</div>
+            {/each}
+            <div bind:this={elementRef} class="w-full h-48" />
+          {:catch error}
+            <div class="my-4 w-full text-3xl text-center">
+              {error}
             </div>
-          {/each}
-        {:then feedEntries}
-          {#each feedEntries as feedEntry}
-            <FeedRow {feedEntry} {handleSummarizeText} {handleGenerateSpeech} />
-          {:else}
-            <div class="my-8 w-full text-3xl text-center">No entries found</div>
-          {/each}
-          <div bind:this={elementRef} class="w-full h-48" />
-        {:catch error}
-          <div class="my-4 w-full text-3xl text-center">
-            {error}
-          </div>
-        {/await}
-      </div>
-    {:else}
-      <EmptyState />
-      <p class="mx-auto w-1/2 text-center text-muted-foreground">
-        Get started by adding a feed in <a class="underline" href="/settings">settings</a>
-      </p>
-    {/if}
-  </div>
-</main>
+          {/await}
+        </div>
+      {:else}
+        <EmptyState />
+        <p class="mx-auto w-1/2 text-center text-muted-foreground">
+          Get started by adding a feed in <a class="underline" href="/settings">settings</a>
+        </p>
+      {/if}
+    </div>
+  </main>
+</div>

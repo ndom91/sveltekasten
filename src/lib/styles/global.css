@@ -135,12 +135,11 @@ p {
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  border-radius: 100vh;
   background: transparent;
 }
 
@@ -148,11 +147,18 @@ p {
   background: #3c3b3b3b;
   border-radius: 100vh;
   transition: all 250ms ease-in-out;
+  cursor: pointer;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #3c3b3b4b;
-  cursor: pointer;
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+@supports (scrollbar-width: thin) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #3c3b3b3b #00000000;
+  }
 }
 
 /* RSS Feed Content */

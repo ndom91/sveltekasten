@@ -1,5 +1,6 @@
 <script lang="ts">
   import toast from "svelte-french-toast"
+  import { Navbar } from "$lib/components/navbar"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
   import { useInterface } from "$state/ui.svelte"
@@ -137,30 +138,33 @@
 
 <svelte:window on:keydown={handleKeyDown} />
 
-<main class="h-full">
-  <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2">
-    {#if data.bookmarks}
-      <div class="overflow-y-scroll h-full">
-        {#await activeBookmarks()}
-          <div class="my-8 w-full text-3xl text-center">Loading...</div>
-        {:then bookmarks}
-          {#each bookmarks as bookmark}
-            <BookmarkRow {bookmark} />
-          {:else}
-            {@render emptyHelper()}
-          {/each}
-          <div bind:this={elementRef} class="w-full h-24" />
-        {:catch error}
-          <div class="my-4 w-full text-3xl text-center">
-            {error}
-          </div>
-        {/await}
-      </div>
-    {:else}
-      {@render emptyHelper()}
-    {/if}
-  </div>
-</main>
+<Navbar />
+<div class="flex overflow-y-scroll flex-col">
+  <main class="h-full">
+    <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2">
+      {#if data.bookmarks}
+        <div class="overflow-y-scroll h-full">
+          {#await activeBookmarks()}
+            <div class="my-8 w-full text-3xl text-center">Loading...</div>
+          {:then bookmarks}
+            {#each bookmarks as bookmark}
+              <BookmarkRow {bookmark} />
+            {:else}
+              {@render emptyHelper()}
+            {/each}
+            <div bind:this={elementRef} class="w-full h-24" />
+          {:catch error}
+            <div class="my-4 w-full text-3xl text-center">
+              {error}
+            </div>
+          {/await}
+        </div>
+      {:else}
+        {@render emptyHelper()}
+      {/if}
+    </div>
+  </main>
+</div>
 
 {#snippet emptyHelper()}
   <EmptyState />
