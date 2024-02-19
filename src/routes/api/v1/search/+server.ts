@@ -19,7 +19,10 @@ export const POST: RequestHandler = async ({ request, locals, url }) => {
     let returnData
     const skip = Number(url.searchParams.get("skip") ?? "0")
     const limit = Number(url.searchParams.get("limit") ?? "10")
-    const { where, include, orderBy, type = "feedEntry" } = (await request.json()) as RequestBody
+    const { where, include, orderBy, type } = (await request.json()) as RequestBody
+    if (!type) {
+      return fail(401, { type: "error", error: "Missing 'type' parameter" })
+    }
 
     const [data, count] = await prisma[type].findManyAndCount({
       take: limit + skip,
@@ -34,13 +37,13 @@ export const POST: RequestHandler = async ({ request, locals, url }) => {
 
     if (type === "bookmark") {
       returnData = data.map((bookmark) => {
-        return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) }
+        return { ...bookmark, tags: bookmark.tags?.map((tag) => tag.tag) }
       }) as LoadBookmarkResult[]
     } else {
       returnData = data
     }
 
-    return new Response(JSON.stringify({ data: returnData, count }))
+    return json({ data: returnData, count })
   } catch (error: any) {
     console.error("Search Error", error)
     return fail(401, { data: [], error: error.message ?? error })

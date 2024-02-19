@@ -82,7 +82,7 @@
           {bookmark.category.name}
         </Badge>
       {/if}
-      {#if bookmark.tags.length}
+      {#if bookmark.tags?.length}
         <span class="flex flex-wrap gap-2">
           {#each bookmark.tags as tag}
             <Badge variant="outline">

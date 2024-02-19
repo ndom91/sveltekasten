@@ -36,6 +36,8 @@
     }
   })
 
+  // TODO: Scroll / highlight previous story again
+  // See: https://svelte-5-preview.vercel.app/docs/old-vs-new#autoscroll
   // Load more items on infinite scroll
   const loadMore = async (p: number) => {
     pageNumber = p
