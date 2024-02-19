@@ -3,7 +3,7 @@
   const { item } = $props<{ item: LoadBookmarkResult }>()
 </script>
 
-<div class="flex flex-col gap-2 p-4 m-4 rounded-md max-w-72 bg-zinc-800">
+<div class="flex flex-col gap-2 p-4 m-4 rounded-md max-w-72 bg-neutral-200 dark:bg-neutral-800">
   <img src={item.image} alt={item.title} class="rounded-sm aspect-video" />
   <div class="max-w-full truncate">
     <div class="flex justify-between">

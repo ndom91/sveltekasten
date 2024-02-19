@@ -40,7 +40,7 @@
   </div>
   <div class="flex gap-4 justify-end items-center">
     {#if !simple}
-      {#if ui.textToSpeechAudioBlob}
+      {#if ui.textToSpeechAudioBlob && ui.aiFeaturesPreferences.tts}
         <audio controls autoplay>
           <source src={ui.textToSpeechAudioBlob} type="audio/wav" />
         </audio>
@@ -79,7 +79,7 @@
       </div>
       <Popover.Root bind:open={ui.quickAddOpen}>
         <Tooltip.Root>
-          <Popover.Trigger tabIndex={-1} />
+          <Popover.Trigger tabindex={-1} />
           <Tooltip.Trigger asChild>
             <div
               class="rounded-full transition duration-300 focus-within:rounded-full focus-within:ring-2 focus-within:outline-none dark:focus-within:ring-zinc-800 focus-within:ring-zinc-300"

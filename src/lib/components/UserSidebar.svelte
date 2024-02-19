@@ -31,7 +31,7 @@
 <svelte:window on:keydown={handleKeyDown} />
 <aside
   class={cn(
-    "space-between relative flex h-screen flex-grow flex-col border-r bg-neutral-50 transition-width dark:border-r-zinc-800 dark:bg-zinc-900",
+    "space-between relative flex h-screen flex-grow flex-col border-r bg-neutral-50 transition-width border-r-neutral-200 dark:border-r-neutral-900 dark:bg-neutral-900",
     ui.userSidebarOpen ? "w-[clamp(10vw,_20rem,_30vw)]" : "w-20",
   )}
 >
@@ -49,7 +49,7 @@
     </Button>
     <div
       class={cn(
-        "mx-auto my-4 w-2/3 rounded-full border-b-2 border-zinc-100 dark:border-zinc-800",
+        "mx-auto my-4 w-2/3 rounded-full border-b-2 border-neutral-200 dark:border-neutral-800",
         ui.userSidebarOpen ? "mx-0 w-full" : "",
       )}
     />
@@ -66,8 +66,8 @@
             builders={[tooltipBuilder]}
             data-sveltekit-preload-data="hover"
             class={cn(
-              "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0 dark:focus:ring-zinc-800",
-              activePage() === "home" ? "ring-2 ring-zinc-300 dark:ring-zinc-800" : "",
+              "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:ring-offset-0 dark:focus:ring-neutral-800",
+              activePage() === "home" ? "ring-2 ring-neutral-300 dark:ring-neutral-800" : "",
             )}
             href="/"
           >
@@ -109,8 +109,8 @@
             builders={[tooltipBuilder]}
             data-sveltekit-preload-data="hover"
             class={cn(
-              "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0 dark:focus:ring-zinc-800",
-              activePage() === "bookmarks" ? "ring-2 ring-zinc-300 dark:ring-zinc-800" : "",
+              "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:ring-offset-0 dark:focus:ring-neutral-800",
+              activePage() === "bookmarks" ? "ring-2 ring-neutral-300 dark:ring-neutral-800" : "",
             )}
             href="/bookmarks"
           >
@@ -151,8 +151,8 @@
             builders={[tooltipBuilder]}
             data-sveltekit-preload-data="hover"
             class={cn(
-              "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0 dark:focus:ring-zinc-800",
-              activePage() === "feeds" ? "ring-2 ring-zinc-300 dark:ring-zinc-800" : "",
+              "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:ring-offset-0 dark:focus:ring-neutral-800",
+              activePage() === "feeds" ? "ring-2 ring-neutral-300 dark:ring-neutral-800" : "",
             )}
             href="/feeds"
           >
@@ -194,8 +194,8 @@
             builders={[tooltipBuilder]}
             data-sveltekit-preload-data="hover"
             class={cn(
-              "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0 dark:focus:ring-zinc-800",
-              activePage() === "archives" ? "ring-2 ring-zinc-300 dark:ring-zinc-800" : "",
+              "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:ring-offset-0 dark:focus:ring-neutral-800",
+              activePage() === "archives" ? "ring-2 ring-neutral-300 dark:ring-neutral-800" : "",
             )}
             href="/archives"
           >
@@ -236,8 +236,8 @@
             builders={[tooltipBuilder]}
             data-sveltekit-preload-data="hover"
             class={cn(
-              "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0 dark:focus:ring-zinc-800",
-              activePage() === "categories" ? "ring-2 ring-zinc-300 dark:ring-zinc-800" : "",
+              "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:ring-offset-0 dark:focus:ring-neutral-800",
+              activePage() === "categories" ? "ring-2 ring-neutral-300 dark:ring-neutral-800" : "",
             )}
             href="/categories"
           >
@@ -278,8 +278,8 @@
             variant="ghost"
             builders={[tooltipBuilder]}
             class={cn(
-              "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0 dark:focus:ring-zinc-800",
-              activePage() === "tags" ? "ring-2 ring-zinc-300 dark:ring-zinc-800" : "",
+              "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:ring-offset-0 dark:focus:ring-neutral-800",
+              activePage() === "tags" ? "ring-2 ring-neutral-300 dark:ring-neutral-800" : "",
             )}
             data-sveltekit-preload-data="hover"
             href="/tags"
@@ -326,7 +326,7 @@
   >
     <div
       class={cn(
-        "mx-auto my-4 w-2/3 rounded-full border-b-2 border-zinc-100 dark:border-zinc-800",
+        "mx-auto my-4 w-2/3 rounded-full border-b-2 border-neutral-200 dark:border-neutral-800",
         ui.userSidebarOpen ? "mx-0 w-full" : "",
       )}
     />

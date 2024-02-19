@@ -12,7 +12,7 @@
 </script>
 
 <section
-  class="relative flex flex-col mx-4 max-w-full rounded-lg bg-zinc-900 overflow-hidden after:pointer-events-none after:absolute after:bottom-0 after:right-0 after:h-96 after:w-24 after:shadow-[inset_-100px_0px_35px_-55px_#141414]"
+  class="relative flex flex-col mx-4 max-w-full rounded-lg dark:bg-neutral-900 bg-neutral-100 overflow-hidden after:pointer-events-none after:absolute after:bottom-0 after:right-0 after:h-96 after:w-24 after:shadow-[inset_-100px_0px_35px_-55px_#ddd] dark:after:shadow-[inset_-100px_0px_35px_-55px_#141414]"
 >
   <div class="flex z-10 flex-grow justify-between mx-4 mt-4 mr-8">
     <h2 class="text-2xl font-thin">
@@ -83,7 +83,7 @@
             stroke-width="16"
           />
         </svg>
-        <span class="text-muted">See more</span>
+        <span class="text-neutral-600 dark:text-neutral-500">See more</span>
       </a>
     {/if}
   </div>
