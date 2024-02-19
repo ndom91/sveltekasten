@@ -118,8 +118,10 @@
 }
 
 /* 2024 Reset */
-textarea {
-  form-sizing: content;
+@supports (field-sizing: content) {
+  textarea {
+    field-sizing: content;
+  }
 }
 
 h1,

@@ -1,19 +1,23 @@
 <script lang="ts">
-  import { cn } from "$lib/utils/style"
   import { page } from "$app/stores"
-  import { enhance } from "$app/forms"
+  import { dev } from "$app/environment"
+  import { enhance as skEnhance } from "$app/forms"
+  import { zodClient } from "sveltekit-superforms/adapters"
+  import SuperDebug, { superForm, fieldProxy } from "sveltekit-superforms"
+  import { format } from "date-fns"
+  import toast from "svelte-french-toast"
+  import type { Tag } from "$zod"
+
+  import { cn } from "$lib/utils/style"
   import { handleActionResults } from "$lib/utils/form-action"
   import { useInterface } from "$state/ui.svelte"
+  import { formSchema as metadataSchema } from "$schemas/metadata-sidebar"
 
   import { Label } from "$lib/components/ui/label"
   import { Button } from "$lib/components/ui/button"
   import * as Select from "$lib/components/ui/select"
   import * as Tooltip from "$lib/components/ui/tooltip"
   import TagInput from "$lib/components/TagInput.svelte"
-
-  import { format } from "date-fns"
-  import toast from "svelte-french-toast"
-  import type { Tag, TagsOnBookmarks } from "$zod"
 
   const ui = useInterface()
 
@@ -25,17 +29,36 @@
     navigator.clipboard.writeText(color)
   }
 
+  const form = superForm($page.data.metadataForm, {
+    customValidity: true,
+    validators: zodClient(metadataSchema),
+    onUpdated: ({ form }) => {
+      if (form.message?.text) {
+        toast.success(form.message.text)
+      }
+    },
+    onError: ({ result }) => {
+      if (result.type === "error") {
+        toast.error(result.error.message)
+      }
+    },
+  })
+  const { form: formData, message, errors, constraints, enhance, submitting, delayed } = form
+  // @ts-expect-error
+  const categoryProxy = fieldProxy(form, "categoryId", {})
+
   $inspect("metadataSidebarData", ui.metadataSidebarData)
+  $inspect("page", $page.data)
 
   const tagValues = $derived(
-    ui.metadataSidebarData.bookmark.tags.map((tag) => ({ value: tag.id, label: tag.name })),
+    $page.data.tags.map((tag: Tag) => ({ value: tag.id, label: tag.name })),
   )
 </script>
 
 <form
   method="post"
   action="?/saveMetadataEdits"
-  use:enhance={handleActionResults()}
+  use:skEnhance={handleActionResults()}
   class="flex gap-4 justify-start items-center w-full h-full"
 >
   <div class="flex flex-col gap-4 p-6 w-full h-full">
@@ -140,7 +163,7 @@
           {/if}
         </div>
       </div>
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col gap-2 grow-wrap">
         <Label for="description">Description</Label>
         <textarea
           rows="4"
@@ -186,7 +209,7 @@
       </div>
       <div class="flex flex-col gap-2">
         <Label for="category">Tags</Label>
-        <TagInput {form} tags={tagValues} field="tagIds" class="bg-transparent" />
+        <TagInput {form} tags={tagValues} field="tagIds" disabled={!isEditMode} />
         <!-- <TagInput -->
         <!--   tags={$page.data?.tags.map((tag: Tag) => ({ value: tag.id, label: tag.name }))} -->
         <!--   disabled={!isEditMode} -->
@@ -252,6 +275,9 @@
           <Button type="submit" class="w-full" variant="default">Save</Button>
         </div>
       {/if}
+    {/if}
+    {#if dev}
+      <SuperDebug data={$formData} />
     {/if}
   </div>
 </form>

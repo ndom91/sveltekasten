@@ -157,6 +157,9 @@ devDependencies:
   postcss:
     specifier: ^8.4.35
     version: 8.4.35
+  postcss-nesting:
+    specifier: ^12.0.3
+    version: 12.0.3(postcss@8.4.35)
   prettier:
     specifier: 3.2.5
     version: 3.2.5
@@ -265,6 +268,15 @@ packages:
     dependencies:
       regenerator-runtime: 0.14.1
     dev: false
+
+  /@csstools/selector-specificity@3.0.2(postcss-selector-parser@6.0.13):
+    resolution: {integrity: sha512-RpHaZ1h9LE7aALeQXmXrJkRG84ZxIsctEN2biEUmFyKpzFM3zZ35eUMcIzZFsw/2olQE6v69+esEqU2f1MKycg==}
+    engines: {node: ^14 || ^16 || >=18}
+    peerDependencies:
+      postcss-selector-parser: ^6.0.13
+    dependencies:
+      postcss-selector-parser: 6.0.13
+    dev: true
 
   /@esbuild/aix-ppc64@0.19.11:
     resolution: {integrity: sha512-FnzU0LyE3ySQk7UntJO4+qIiQgI7KoODnZg5xzXIrFJlKd2P2gwHsHY4927xj9y5PJmJSzULiUCWmv7iWnNa7g==}
@@ -3800,6 +3812,17 @@ packages:
     dependencies:
       postcss: 8.4.35
       postcss-selector-parser: 6.0.13
+
+  /postcss-nesting@12.0.3(postcss@8.4.35):
+    resolution: {integrity: sha512-yrtMRPFNkfZMv9ikBvZ/Eh3RxhpMBKQ3KzD7LCY8+jYVlgju/Mdcxi4JY8bW2Y7ISXw8GTLuF/o+kFtp+yaVfQ==}
+    engines: {node: ^14 || ^16 || >=18}
+    peerDependencies:
+      postcss: ^8.4
+    dependencies:
+      '@csstools/selector-specificity': 3.0.2(postcss-selector-parser@6.0.13)
+      postcss: 8.4.35
+      postcss-selector-parser: 6.0.13
+    dev: true
 
   /postcss-safe-parser@6.0.0(postcss@8.4.35):
     resolution: {integrity: sha512-FARHN8pwH+WiS2OPCxJI8FuRJpTVnn6ZNFiqAM2aeW2LwTHWWmWgIyKC6cUo0L8aeKiF/14MNvnpls6R2PBeMQ==}

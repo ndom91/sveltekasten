@@ -1,7 +1,8 @@
 import prisma from "$lib/prisma"
 import { redirect } from "@sveltejs/kit"
 import { fail } from "@sveltejs/kit"
-import { formSchema } from "$schemas/quick-add"
+import { formSchema as quickAddSchema } from "$schemas/quick-add"
+import { formSchema as metadataSchema } from "$schemas/metadata-sidebar"
 import { superValidate, message } from "sveltekit-superforms"
 import { zod } from "sveltekit-superforms/adapters"
 import type { Actions } from "./$types"
@@ -95,7 +96,7 @@ export const actions: Actions = {
     return { type: "success", message: "Updated Bookmark" }
   },
   quickAdd: async (event) => {
-    const form = await superValidate(event.request, zod(formSchema))
+    const form = await superValidate(event.request, zod(quickAddSchema))
     if (!form.valid) {
       return fail(400, {
         form,
@@ -201,6 +202,7 @@ export const load: PageServerLoad = async (event) => {
     })
 
     return {
+      metadataForm: await superValidate(zod(metadataSchema)),
       bookmarks,
       count,
       session,

@@ -147,8 +147,8 @@
           {#await activeBookmarks()}
             <div class="my-8 w-full text-3xl text-center">Loading...</div>
           {:then bookmarks}
-            {#each bookmarks as bookmark}
-              <BookmarkRow {bookmark} />
+            {#each bookmarks as bookmark, i}
+              <BookmarkRow bind:bookmark={bookmarks[i]} />
             {:else}
               {@render emptyHelper()}
             {/each}

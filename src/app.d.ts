@@ -1,6 +1,6 @@
 import type { Bookmark, Tag, Category } from "$zod"
 import "@auth/sveltekit"
-import type { JsonValue } from "@prisma/client/runtime/library"
+import type { JsonValueType } from "$zod"
 
 declare module "@auth/sveltekit/jwt" {
   interface JWT {
@@ -18,7 +18,7 @@ type Provider = {
 // and what to do when importing types
 declare global {
   type TODO = any
-  type LoadBookmarkResult = Bookmark & { metadata: Record<string, any> | JsonValue } & {
+  type LoadBookmarkResult = Bookmark & { metadata: Record<string, any> | JsonValueType } & {
     tags: Tag[]
   } & { category: Category | null }
   type LoadFeedEntry = FeedEntry & { feed: Feed; feedMedia: FeedEntryMedia | null }
