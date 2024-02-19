@@ -32,7 +32,7 @@
 
 <form
   method="post"
-  action="/dashboard?/saveMetadataEdits"
+  action="?/saveMetadataEdits"
   use:enhance={handleActionResults()}
   class="flex gap-4 justify-start items-center h-full"
 >

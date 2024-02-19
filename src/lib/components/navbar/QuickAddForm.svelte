@@ -26,9 +26,9 @@
       }
       ui.toggleQuickAdd()
     },
-    onError: ({ result, message }) => {
-      if (message?.text) {
-        toast.error(message.text)
+    onError: ({ result }) => {
+      if (result.type === "error") {
+        toast.error(result.error.message)
       }
     },
   })
@@ -43,7 +43,7 @@
   )
 </script>
 
-<form method="POST" action="/dashboard/bookmarks?/quickAdd" use:enhance class="flex flex-col gap-2">
+<form method="POST" action="/bookmarks?/quickAdd" use:enhance class="flex flex-col gap-2">
   <div class="flex flex-col gap-2 align-start">
     <Label class="flex justify-between items-end" for="title"
       >Title<small class="text-neutral-400 dark:text-neutral-600">required</small></Label

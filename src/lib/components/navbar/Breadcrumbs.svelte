@@ -14,7 +14,7 @@
       return { label: t, href: tokenPath }
     })
 
-    crumbs.unshift({ label: "Home", href: "/dashboard" })
+    crumbs.unshift({ label: "Home", href: "/" })
   }
 </script>
 

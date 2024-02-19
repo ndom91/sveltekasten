@@ -26,7 +26,7 @@
         - {$page.error?.message}
       {/if}
     </span>
-    <Button variant="default" href="/dashboard" class="w-64">
+    <Button variant="default" href="/" class="w-64">
       <svg
         class="mr-2 size-5"
         aria-label="home"

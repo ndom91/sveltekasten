@@ -15,8 +15,8 @@
     }
   }
 
-  const bookmarkPage = $derived($page.url.pathname === "/dashboard/bookmarks")
-  const feedPage = $derived($page.url.pathname === "/dashboard/feeds")
+  const bookmarkPage = $derived($page.url.pathname === "/bookmarks")
+  const feedPage = $derived($page.url.pathname === "/feeds")
 </script>
 
 <svelte:window on:keydown={handleKeyDown} />

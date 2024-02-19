@@ -19,7 +19,7 @@
         : type.charAt(0).toUpperCase() + type.slice(1)}
     </h2>
     {#if items.length}
-      <a data-sveltekit-preload-data="hover" href={`/dashboard/${type}`}>See more</a>
+      <a data-sveltekit-preload-data="hover" href={`/${type}`}>See more</a>
     {/if}
   </div>
   <div class="flex overflow-x-auto">

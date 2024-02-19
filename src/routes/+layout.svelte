@@ -29,27 +29,27 @@
     }
     if (e.shiftKey && e.key === "!") {
       e.preventDefault()
-      goto("/dashboard")
+      goto("/")
     }
     if (e.shiftKey && e.key === "@") {
       e.preventDefault()
-      goto("/dashboard/bookmarks")
+      goto("/bookmarks")
     }
     if (e.shiftKey && e.key === "#") {
       e.preventDefault()
-      goto("/dashboard/feeds")
+      goto("/feeds")
     }
     if (e.shiftKey && e.key === "$") {
       e.preventDefault()
-      goto("/dashboard/archives")
+      goto("/archives")
     }
     if (e.shiftKey && e.key === "%") {
       e.preventDefault()
-      goto("/dashboard/categories")
+      goto("/categories")
     }
     if (e.shiftKey && e.key === "^") {
       e.preventDefault()
-      goto("/dashboard/tags")
+      goto("/tags")
     }
     if (e.shiftKey && e.key === "&") {
       e.preventDefault()

@@ -6,8 +6,6 @@ import { superValidate, message } from "sveltekit-superforms"
 import { zod } from "sveltekit-superforms/adapters"
 import type { Actions } from "./$types"
 import type { PageServerLoad } from "./$types"
-import type { BookmarkUpdateWithoutUserInputSchema, Bookmark, TagsOnBookmarks } from "$zod"
-import { z } from "zod"
 
 // import splashy from "splashy"
 import metascraper from "metascraper"

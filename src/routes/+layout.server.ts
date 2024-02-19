@@ -10,12 +10,12 @@ export const load: LayoutServerLoad = async (event) => {
   }
 
   // If there is a session, don't let the user stay on "/"
-  if (session?.user && (event.url.pathname == "/" || event.url.pathname == "/login")) {
+  if (session?.user && event.url.pathname == "/login") {
     const redirectTo = event.url.searchParams.get("redirectTo")
     if (redirectTo) {
       redirect(303, `/${decodeURIComponent(redirectTo).slice(1)}`)
     }
-    redirect(303, `/dashboard`)
+    redirect(303, `/`)
   }
 
   return {

@@ -19,12 +19,12 @@
 
   const activePage = $derived(() => {
     const path = $page.url.pathname
-    if (path === "/dashboard") return "home"
-    if (path === "/dashboard/bookmarks") return "bookmarks"
-    if (path === "/dashboard/feeds") return "feeds"
-    if (path === "/dashboard/categories") return "categories"
-    if (path === "/dashboard/tags") return "tags"
-    if (path === "/dashboard/archives") return "archives"
+    if (path === "/") return "home"
+    if (path === "/bookmarks") return "bookmarks"
+    if (path === "/feeds") return "feeds"
+    if (path === "/categories") return "categories"
+    if (path === "/tags") return "tags"
+    if (path === "/archives") return "archives"
   })
 </script>
 
@@ -69,7 +69,7 @@
               "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0 dark:focus:ring-zinc-800",
               activePage() === "home" ? "ring-2 ring-zinc-300 dark:ring-zinc-800" : "",
             )}
-            href="/dashboard"
+            href="/"
           >
             <svg
               class="size-6"
@@ -112,7 +112,7 @@
               "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0 dark:focus:ring-zinc-800",
               activePage() === "bookmarks" ? "ring-2 ring-zinc-300 dark:ring-zinc-800" : "",
             )}
-            href="/dashboard/bookmarks"
+            href="/bookmarks"
           >
             <svg
               class="size-6"
@@ -154,7 +154,7 @@
               "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0 dark:focus:ring-zinc-800",
               activePage() === "feeds" ? "ring-2 ring-zinc-300 dark:ring-zinc-800" : "",
             )}
-            href="/dashboard/feeds"
+            href="/feeds"
           >
             <svg
               class="size-6"
@@ -197,7 +197,7 @@
               "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0 dark:focus:ring-zinc-800",
               activePage() === "archives" ? "ring-2 ring-zinc-300 dark:ring-zinc-800" : "",
             )}
-            href="/dashboard/archives"
+            href="/archives"
           >
             <svg
               class="size-6"
@@ -239,7 +239,7 @@
               "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0 dark:focus:ring-zinc-800",
               activePage() === "categories" ? "ring-2 ring-zinc-300 dark:ring-zinc-800" : "",
             )}
-            href="/dashboard/categories"
+            href="/categories"
           >
             <svg
               class="size-6"
@@ -282,7 +282,7 @@
               activePage() === "tags" ? "ring-2 ring-zinc-300 dark:ring-zinc-800" : "",
             )}
             data-sveltekit-preload-data="hover"
-            href="/dashboard/tags"
+            href="/tags"
           >
             <svg
               class="size-6"

@@ -67,7 +67,7 @@
                 options={{
                   redirectTo: $page.data.redirectTo
                     ? `/${decodeURIComponent($page.data.redirectTo).slice(1)}`
-                    : `/dashboard`,
+                    : `/`,
                 }}
                 className="flex justify-center items-center px-4 mt-2 space-x-2 w-full h-12 text-base font-light text-white rounded transition focus:ring-2 focus:ring-offset-2 focus:outline-none bg-slate-800 hover:bg-slate-900 focus:ring-slate-800"
               >
@@ -88,7 +88,7 @@
               options={{
                 redirectTo: $page.data.redirectTo
                   ? `/${decodeURIComponent($page.data.redirectTo).slice(1)}`
-                  : `/dashboard`,
+                  : `/`,
               }}
               className="w-full"
             >
