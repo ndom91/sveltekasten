@@ -1,13 +1,11 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
-  binaryTargets   = ["native", "debian-openssl-3.0.x", "debian-openssl-1.1.x", "linux-arm64-openssl-1.1.x"]
 }
 
 datasource db {
-  provider     = "postgres"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  provider = "postgres"
+  url      = env("DATABASE_URL")
 }
 
 generator zod {
@@ -33,8 +31,10 @@ model Bookmark {
   updatedAt  DateTime          @updatedAt
 
   @@unique([url, userId])
-  @@index([categoryId])
   @@index([userId])
+  @@index([title(ops: raw("gin_trgm_ops"))], type: Gin, name: "title_idx")
+  @@index([desc(ops: raw("gin_trgm_ops"))], type: Gin, name: "desc_idx")
+  @@index([url(ops: raw("gin_trgm_ops"))], type: Gin, name: "url_idx")
 }
 
 model TagsOnBookmarks {
@@ -75,7 +75,7 @@ model Category {
   @@index([userId])
 }
 
-// NextAuth
+// @auth/sveltekit
 model Account {
   id                String   @id @default(cuid())
   userId            String
