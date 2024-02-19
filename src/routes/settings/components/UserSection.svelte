@@ -7,6 +7,7 @@
   import * as Card from "$lib/components/ui/card"
   import { clipboard } from "$lib/utils/clipboard"
   import { useInterface } from "$state/ui.svelte"
+  import { Badge } from "$/lib/components/ui/badge"
 
   $inspect($page.data)
 
@@ -82,7 +83,10 @@
   </Card.Root>
   <Card.Root class="w-full">
     <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
-      <Card.Title>AI Settings</Card.Title>
+      <Card.Title class="flex justify-between items-center w-full">
+        <span>AI Settings</span>
+        <Badge>Experimental</Badge>
+      </Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
       <div class="flex flex-col gap-4 items-start">
@@ -91,9 +95,10 @@
             class="underline"
             href="https://github.com/xenova/transformers.js">transformers.js</a
           >
-          library, meaning the models are downloaded and run in your browser. That has the advantage
-          of significantly increased security, with the disadvantage of lower performance / longer inference
-          times.
+          library, meaning <b>the models are downloaded and run in your browser</b>. That has the
+          advantage of significantly increased security and no need for a third-party API key. That
+          means it also comes with the disadvantage of lower performance / longer inference times.
+          These are all in an experimental stage, but we wanted to share them anyway!
         </p>
         <div class="flex flex-col gap-4 items-start">
           <div class="flex gap-4 items-center">
@@ -104,7 +109,7 @@
             />
             <div>
               <label for="summarization" class="">
-                Summarization
+                <div class="text-xl">Summarization</div>
                 <div class="text-neutral-400 dark:text-neutral-500">
                   Our summaries feature is using the <code>Xenova/distilbart-cnn-6-6</code> model and
                   takes about ~30s on average to summarize a medium length article. We recommend this
@@ -116,7 +121,7 @@
           <div class="flex gap-4 items-center">
             <Checkbox id="tts" onCheckedChange={handleSettingsUpdate} bind:checked={ttsEnabled} />
             <label for="tts" class="">
-              Text to Speech
+              <div class="text-xl">Text to Speech</div>
               <div class="text-neutral-400 dark:text-neutral-500">
                 Our text-to-speech feature is using the <code>Xenova/speecht5_tts</code> model and takes
                 about ~10s on average to generate good quality voice audio for each sentence of text.
@@ -132,7 +137,7 @@
               bind:checked={transcriptionEnabled}
             />
             <label for="transcriber" class="">
-              Transcriber
+              <div class="text-xl">Transcriber</div>
               <div class="text-neutral-400 dark:text-neutral-500">
                 Our speech to text (transcriber) feature is using the <code
                   >Xenova/whisper-tiny</code
