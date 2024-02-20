@@ -1,5 +1,12 @@
 import type { Category, Tag } from "$zod"
 
+export const TTSLocation = {
+  BROWSER: "BROWSER",
+  SERVER: "SERVER",
+} as const
+
+type TTSLocation = keyof typeof TTSLocation
+
 type MetadataSidebarData = {
   bookmark?: LoadBookmarkResult
   categories?: Category[]
@@ -31,9 +38,17 @@ let textToSpeechLoading = $state(false)
 let summarizationLoading = $state(false)
 let summarizationContent = $state("")
 let aiFeaturesPreferences = $state({
-  tts: true,
-  summarization: true,
-  transcription: true,
+  tts: {
+    enabled: true,
+    location: TTSLocation.SERVER,
+    speaker: "en-US-GuyNeural",
+  },
+  summarization: {
+    enabled: true,
+  },
+  transcription: {
+    enabled: true,
+  },
 })
 
 export function useInterface() {

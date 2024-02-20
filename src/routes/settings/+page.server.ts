@@ -62,14 +62,8 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
       const fromUrl = url.pathname + url.search
       redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
     }
-    // if (!session?.user?.userId) {
-    //   return fail(401, { type: "error", error: "Unauthenticated" })
-    // }
-    // const skip = Number(url.searchParams.get("skip") ?? "0")
-    const limit = Number(url.searchParams.get("limit") ?? "10")
-
-    if (limit > 100) {
-      return fail(401, { type: "error", error: "Attempted to load too many items" })
+    if (!session?.user?.userId) {
+      return fail(401, { type: "error", error: "Unauthenticated" })
     }
 
     const [feedData, feedCount] = await prisma.feed.findManyAndCount({
@@ -108,6 +102,8 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
       },
     })
 
+    console.log("server.settings.user", user)
+
     return {
       user,
       session,
@@ -116,13 +112,7 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
         count: feedCount,
       },
     }
-  } catch (error) {
-    let message
-    if (typeof error === "string") {
-      message = error
-    } else if (error instanceof Error) {
-      message = error.message
-    }
-    return { feedEntries: [], count: 0, error: message }
+  } catch (error: any) {
+    return { feedEntries: [], count: 0, error: error.message ?? error }
   }
 }

@@ -70,6 +70,6 @@
 {/if}
 <Toaster
   position="bottom-right"
-  toastOptions={{ style: "background-color: #171717; color: #fff" }}
+  toastOptions={{ style: "background-color: #111111; color: #fff" }}
 />
 <slot />

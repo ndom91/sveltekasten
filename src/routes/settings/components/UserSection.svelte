@@ -1,5 +1,5 @@
 <script lang="ts">
-  // import { untrack, onMount } from "svelte"
+  import toast from "svelte-french-toast"
   import { page } from "$app/stores"
   import { Button } from "$lib/components/ui/button"
   import { Input } from "$lib/components/ui/input"
@@ -8,37 +8,77 @@
   import { clipboard } from "$lib/utils/clipboard"
   import { useInterface } from "$state/ui.svelte"
   import { Badge } from "$/lib/components/ui/badge"
+  import { TTSLocation } from "$state/ui.svelte"
 
   $inspect($page.data)
 
   const ui = useInterface()
 
-  let ttsEnabled = $state($page.data.user?.settings?.ai?.tts ?? true)
-  let summarizationEnabled = $state($page.data.user?.settings?.ai?.tts ?? true)
-  let transcriptionEnabled = $state($page.data.user?.settings?.ai?.tts ?? true)
+  let ttsEnabled = $state($page.data.user?.settings?.ai?.tts?.enabled ?? true)
+  let ttsTarget = $state($page.data.user?.settings?.ai?.tts?.location ?? TTSLocation.SERVER)
+  let ttsSpeaker = $state($page.data.user?.settings?.ai?.tts?.speaker ?? "en-US-GuyNeural")
+  let summarizationEnabled = $state($page.data.user?.settings?.ai?.summarization?.enabled ?? true)
+  let transcriptionEnabled = $state($page.data.user?.settings?.ai?.transcription?.enabled ?? true)
 
-  // TODO: Send correct updated checkbox state per individual checkbox
-  async function handleSettingsUpdate(e: string | boolean) {
-    try {
-      console.log("handleSettingsUpdate", e)
-      await fetch("/api/v1/user", {
-        method: "PUT",
-        body: JSON.stringify({
-          data: {
-            settings: {
-              ai: {
-                tts: ttsEnabled,
-                summarization: summarizationEnabled,
-                transcription: transcriptionEnabled,
+  const updateUser = async (userSettings) => {
+    const userUpdateResponse = await fetch("/api/v1/user", {
+      method: "PUT",
+      body: JSON.stringify({
+        data: {
+          settings: {
+            ai: {
+              tts: {
+                enabled: userSettings.ttsEnabled,
+                speaker: userSettings.ttsSpeaker,
+                location: userSettings.ttsTarget,
+              },
+              summarization: {
+                enabled: userSettings.summarizationEnabled,
+              },
+              transcription: {
+                enabled: userSettings.transcriptionEnabled,
               },
             },
           },
-        }),
-      })
-    } catch (error: any) {
-      console.error(error)
+        },
+      }),
+    })
+    if (userUpdateResponse.ok) {
+      toast.success("Settings updated")
     }
   }
+
+  const speakers = [
+    "en-US-AriaNeural",
+    "en-US-AnaNeural",
+    "en-US-ChristopherNeural",
+    "en-US-EricNeural",
+    "en-US-GuyNeural",
+    "en-US-JennyNeural",
+    "en-US-MichelleNeural",
+    "en-US-RogerNeural",
+    "en-US-SteffanNeural",
+  ]
+
+  // TODO: Send correct updated checkbox state per individual checkbox
+  // async function handleSettingsUpdate(e: string | boolean) {
+
+  $effect(() => {
+    console.log("handleSettingsUpdate.stateValues", {
+      ttsEnabled: ttsEnabled,
+      ttsSpeaker: ttsSpeaker,
+      ttsTarget: ttsTarget,
+      summarizationEnabled: summarizationEnabled,
+      transcriptionEnabled: transcriptionEnabled,
+    })
+    updateUser({
+      ttsEnabled: ttsEnabled,
+      ttsSpeaker: ttsSpeaker,
+      ttsTarget: ttsTarget,
+      summarizationEnabled: summarizationEnabled,
+      transcriptionEnabled: transcriptionEnabled,
+    })
+  })
 </script>
 
 <div class="flex flex-col gap-2 justify-start items-start">
@@ -102,11 +142,7 @@
         </p>
         <div class="flex flex-col gap-4 items-start">
           <div class="flex gap-4 items-center">
-            <Checkbox
-              id="summarization"
-              onCheckedChange={handleSettingsUpdate}
-              bind:checked={summarizationEnabled}
-            />
+            <Checkbox id="summarization" bind:checked={summarizationEnabled} />
             <div>
               <label for="summarization" class="">
                 <div class="text-xl">Summarization</div>
@@ -119,7 +155,7 @@
             </div>
           </div>
           <div class="flex gap-4 items-center">
-            <Checkbox id="tts" onCheckedChange={handleSettingsUpdate} bind:checked={ttsEnabled} />
+            <Checkbox id="tts" bind:checked={ttsEnabled} />
             <label for="tts" class="">
               <div class="text-xl">Text to Speech</div>
               <div class="text-neutral-400 dark:text-neutral-500">
@@ -131,11 +167,7 @@
             </label>
           </div>
           <div class="flex gap-4 items-center">
-            <Checkbox
-              id="transcriber"
-              onCheckedChange={handleSettingsUpdate}
-              bind:checked={transcriptionEnabled}
-            />
+            <Checkbox id="transcriber" bind:checked={transcriptionEnabled} />
             <label for="transcriber" class="">
               <div class="text-xl">Transcriber</div>
               <div class="text-neutral-400 dark:text-neutral-500">

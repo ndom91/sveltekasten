@@ -5,7 +5,7 @@
   import { FeedRow } from "$lib/components/feed-row"
   import { Skeleton } from "$lib/components/ui/skeleton"
 
-  import { useInterface } from "$state/ui.svelte"
+  import { useInterface, TTSLocation } from "$state/ui.svelte"
   import { infiniteScroll } from "$lib/components/infinite-scroll"
   import { invalidateAll } from "$app/navigation"
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
@@ -28,7 +28,12 @@
   let ttsWorker = $state<Worker>()
 
   $effect(() => {
-    if (!ttsWorker && ui.aiFeaturesPreferences.tts) {
+    if (
+      !ui.aiFeaturesPreferences.tts ||
+      ui.aiFeaturesPreferences.ttsLocation !== TTSLocation.BROWSER
+    )
+      return
+    if (!ttsWorker) {
       ttsWorker = new Worker(new URL(ttsWorkerUrl, import.meta.url), {
         type: "module",
       })
@@ -79,8 +84,28 @@
     return () => ttsWorker?.removeEventListener("message", onMessageReceived)
   })
 
-  const handleGenerateSpeech = (text: string) => {
-    if (!ttsWorker || !ui.aiFeaturesPreferences.tts) return
+  const handleGenerateSpeech = async (text: string, id?: string) => {
+    if (!ui.aiFeaturesPreferences.tts) return
+    if (ui.aiFeaturesPreferences.ttsLocation === TTSLocation.SERVER) {
+      const ttsResponse = await fetch("/api/v1/tts", {
+        method: "POST",
+        body: JSON.stringify({
+          speaker,
+          text,
+        }),
+      })
+      const blobData = await ttsResponse.blob()
+      const blobUrl = URL.createObjectURL(blobData)
+      ui.textToSpeechAudioBlob = blobUrl
+      return
+    }
+
+    if (
+      !ttsWorker ||
+      !ui.aiFeaturesPreferences.tts ||
+      ui.aiFeaturesPreferences.ttsLocation !== TTSLocation.BROWSER
+    )
+      return
     console.time("audio.generate")
     disabledTtsButton = true
     ui.textToSpeechLoading = true

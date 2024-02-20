@@ -53,10 +53,12 @@
 
   const handleSetTextToSpeechContent = async () => {
     ui.textToSpeechAudioBlob = ""
-    await tick()
-    handleGenerateSpeech(feedEntry.title)
-    // ui.textToSpeechContent = feedEntry.title ?? ""
+    // Hack to get textContent from HTML String
+    let tmp = document.createElement("div")
+    tmp.innerHTML = feedEntry.content
+    handleGenerateSpeech(tmp.textContent, feedEntry.id)
   }
+
   const handleStartTextSummarization = () => {
     handleSummarizeText(feedEntry.content ?? "")
   }
