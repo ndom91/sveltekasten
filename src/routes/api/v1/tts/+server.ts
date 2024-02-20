@@ -1,4 +1,4 @@
-import { json, fail } from "@sveltejs/kit"
+import { fail } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
 import { createEdgeSpeech } from "$lib/server/generate-tts"
 

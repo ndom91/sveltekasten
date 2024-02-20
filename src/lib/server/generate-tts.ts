@@ -85,7 +85,6 @@ export interface CreateEdgeSpeechCompletionOptions {
 export const createEdgeSpeech = async ({
   payload,
 }: CreateEdgeSpeechCompletionOptions): Promise<Response> => {
-  console.log("createEdgeSpeech.payload", payload)
   const { input, options } = payload
 
   const connectId = randomUUID().replaceAll("-", "")
