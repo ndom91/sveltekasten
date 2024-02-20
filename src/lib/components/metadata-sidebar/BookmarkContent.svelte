@@ -3,7 +3,7 @@
   import { dev } from "$app/environment"
   import { enhance as skEnhance } from "$app/forms"
   import { zodClient } from "sveltekit-superforms/adapters"
-  import SuperDebug, { superForm, fieldProxy } from "sveltekit-superforms"
+  import SuperDebug, { defaults, superForm, fieldProxy } from "sveltekit-superforms"
   import { format } from "date-fns"
   import toast from "svelte-french-toast"
   import type { Tag } from "$zod"
@@ -29,8 +29,18 @@
     navigator.clipboard.writeText(color)
   }
 
-  const form = superForm($page.data.metadataForm, {
+  // const form = superForm(defaults(ui.metadataSidebarData, $page.data.metadataForm), {
+  const defaultData = {
+    id: ui.metadataSidebarData.bookmark?.id,
+    url: ui.metadataSidebarData.bookmark?.url,
+    title: ui.metadataSidebarData.bookmark?.title,
+    description: ui.metadataSidebarData.bookmark?.desc,
+    category: ui.metadataSidebarData.bookmark?.category,
+    tags: ui.metadataSidebarData.bookmark?.tags,
+  }
+  const form = superForm(defaults(defaultData, zodClient(metadataSchema)), {
     customValidity: true,
+    dataType: "json",
     validators: zodClient(metadataSchema),
     onUpdated: ({ form }) => {
       if (form.message?.text) {
