@@ -30,7 +30,7 @@
   $effect(() => {
     if (
       !ui.aiFeaturesPreferences.tts ||
-      ui.aiFeaturesPreferences.ttsLocation !== TTSLocation.BROWSER
+      ui.aiFeaturesPreferences.tts.location !== TTSLocation.BROWSER
     )
       return
     if (!ttsWorker) {
@@ -84,13 +84,13 @@
     return () => ttsWorker?.removeEventListener("message", onMessageReceived)
   })
 
-  const handleGenerateSpeech = async (text: string, id?: string) => {
+  const handleGenerateSpeech = async (text: string) => {
     if (!ui.aiFeaturesPreferences.tts) return
-    if (ui.aiFeaturesPreferences.ttsLocation === TTSLocation.SERVER) {
+    if (ui.aiFeaturesPreferences.tts.location === TTSLocation.SERVER) {
       const ttsResponse = await fetch("/api/v1/tts", {
         method: "POST",
         body: JSON.stringify({
-          speaker,
+          speaker: ui.aiFeaturesPreferences.tts.speaker,
           text,
         }),
       })
@@ -103,7 +103,7 @@
     if (
       !ttsWorker ||
       !ui.aiFeaturesPreferences.tts ||
-      ui.aiFeaturesPreferences.ttsLocation !== TTSLocation.BROWSER
+      ui.aiFeaturesPreferences.tts.location !== TTSLocation.BROWSER
     )
       return
     console.time("audio.generate")

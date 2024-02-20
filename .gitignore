@@ -9,7 +9,10 @@ package
 .vercel
 local.db*
 
+*.mp3
+
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
 haters/
+

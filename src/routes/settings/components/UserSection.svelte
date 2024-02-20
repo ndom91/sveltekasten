@@ -5,18 +5,25 @@
   import { Input } from "$lib/components/ui/input"
   import { Checkbox } from "$lib/components/ui/checkbox"
   import * as Card from "$lib/components/ui/card"
+  import * as Select from "$lib/components/ui/select"
   import { clipboard } from "$lib/utils/clipboard"
   import { useInterface } from "$state/ui.svelte"
   import { Badge } from "$/lib/components/ui/badge"
   import { TTSLocation } from "$state/ui.svelte"
 
-  $inspect($page.data)
+  const capitalize = (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
 
   const ui = useInterface()
 
   let ttsEnabled = $state($page.data.user?.settings?.ai?.tts?.enabled ?? true)
-  let ttsTarget = $state($page.data.user?.settings?.ai?.tts?.location ?? TTSLocation.SERVER)
-  let ttsSpeaker = $state($page.data.user?.settings?.ai?.tts?.speaker ?? "en-US-GuyNeural")
+  let ttsLocation = $state({
+    value: $page.data.user?.settings?.ai?.tts?.location ?? TTSLocation.SERVER,
+    label: capitalize($page.data.user?.settings?.ai?.tts?.location ?? TTSLocation.SERVER),
+  })
+  let ttsSpeaker = $state({
+    value: $page.data.user?.settings?.ai?.tts?.speaker ?? "en-US-GuyNeural",
+    label: $page.data.user?.settings?.ai?.tts?.speaker ?? "en-US-GuyNeural",
+  })
   let summarizationEnabled = $state($page.data.user?.settings?.ai?.summarization?.enabled ?? true)
   let transcriptionEnabled = $state($page.data.user?.settings?.ai?.transcription?.enabled ?? true)
 
@@ -30,7 +37,7 @@
               tts: {
                 enabled: userSettings.ttsEnabled,
                 speaker: userSettings.ttsSpeaker,
-                location: userSettings.ttsTarget,
+                location: userSettings.ttsLocation,
               },
               summarization: {
                 enabled: userSettings.summarizationEnabled,
@@ -44,7 +51,8 @@
       }),
     })
     if (userUpdateResponse.ok) {
-      toast.success("Settings updated")
+      // TODO: Reenable when not running onMount
+      // toast.success("Settings updated")
     }
   }
 
@@ -60,25 +68,21 @@
     "en-US-SteffanNeural",
   ]
 
-  // TODO: Send correct updated checkbox state per individual checkbox
-  // async function handleSettingsUpdate(e: string | boolean) {
-
   $effect(() => {
-    console.log("handleSettingsUpdate.stateValues", {
-      ttsEnabled: ttsEnabled,
-      ttsSpeaker: ttsSpeaker,
-      ttsTarget: ttsTarget,
-      summarizationEnabled: summarizationEnabled,
-      transcriptionEnabled: transcriptionEnabled,
-    })
+    // TODO: do not fire onMount, only on subscribed values change
     updateUser({
       ttsEnabled: ttsEnabled,
-      ttsSpeaker: ttsSpeaker,
-      ttsTarget: ttsTarget,
+      ttsSpeaker: ttsSpeaker.label?.trim(),
+      ttsLocation: ttsLocation.label?.trim(),
       summarizationEnabled: summarizationEnabled,
       transcriptionEnabled: transcriptionEnabled,
     })
   })
+
+  const ttsSelectValues = Object.keys(TTSLocation).map((location) => ({
+    value: location,
+    label: capitalize(location),
+  }))
 </script>
 
 <div class="flex flex-col gap-2 justify-start items-start">
@@ -88,8 +92,12 @@
     </Card.Header>
     <Card.Content class="p-4">
       <div class="flex gap-2 items-center">
-        For use in the <a href="https://docs.briefkastenhq.com" target="_blank" class="underline">
-          briefkasten extension</a
+        For use in the <a
+          href="https://docs.briefkastenhq.com"
+          target="_blank"
+          class="underline underline-offset-4"
+        >
+          Briefkasten Extension</a
         >
         you can use the following token:
         <div
@@ -132,7 +140,7 @@
       <div class="flex flex-col gap-4 items-start">
         <p>
           You can manage any of the AI features here. All of these AI features are enabled by the <a
-            class="underline"
+            class="underline underline-offset-4"
             href="https://github.com/xenova/transformers.js">transformers.js</a
           >
           library, meaning <b>the models are downloaded and run in your browser</b>. That has the
@@ -156,15 +164,54 @@
           </div>
           <div class="flex gap-4 items-center">
             <Checkbox id="tts" bind:checked={ttsEnabled} />
-            <label for="tts" class="">
-              <div class="text-xl">Text to Speech</div>
-              <div class="text-neutral-400 dark:text-neutral-500">
-                Our text-to-speech feature is using the <code>Xenova/speecht5_tts</code> model and takes
-                about ~10s on average to generate good quality voice audio for each sentence of text.
-                Therefore, this model is really only good for experimentation at this point. Generating
-                the voice data for a while article / post is not feasible at the moment.
+            <div>
+              <div class="flex flex-col gap-4 text-neutral-400 dark:text-neutral-500">
+                <label for="tts" class="">
+                  <div class="text-xl text-neutral-50">Text to Speech</div>
+                  <p>
+                    Our text-to-speech feature is using the <code>Xenova/speecht5_tts</code> model and
+                    takes about ~10s on average to generate good quality voice audio for each sentence
+                    of text. Therefore, this model is really only good for experimentation at this point.
+                    Generating the voice data for a while article / post is not feasible at the moment.
+                  </p>
+                </label>
+                <div class="flex gap-2 justify-start items-center">
+                  <Select.Root
+                    name="ttsSpeaker"
+                    items={speakers.map((speaker) => ({
+                      value: speaker,
+                      label: speaker,
+                    }))}
+                    bind:selected={ttsSpeaker}
+                  >
+                    <Select.Trigger class="max-w-sm disabled:cursor-default enabled:bg-zinc-950">
+                      <Select.Value placeholder="Speaker" />
+                    </Select.Trigger>
+                    <Select.Input />
+                    <Select.Content>
+                      {#each speakers as speaker}
+                        <Select.Item value={speaker}>{speaker}</Select.Item>
+                      {/each}
+                    </Select.Content>
+                  </Select.Root>
+                  <Select.Root
+                    name="ttsLocation"
+                    items={ttsSelectValues}
+                    bind:selected={ttsLocation}
+                  >
+                    <Select.Trigger class="max-w-sm disabled:cursor-default enabled:bg-zinc-950">
+                      <Select.Value placeholder="TTS Inference Location" />
+                    </Select.Trigger>
+                    <Select.Input />
+                    <Select.Content>
+                      {#each ttsSelectValues as location}
+                        <Select.Item value={location.value}>{location.label}</Select.Item>
+                      {/each}
+                    </Select.Content>
+                  </Select.Root>
+                </div>
               </div>
-            </label>
+            </div>
           </div>
           <div class="flex gap-4 items-center">
             <Checkbox id="transcriber" bind:checked={transcriptionEnabled} />
@@ -225,7 +272,7 @@
           This is an open-source project written mainly by <a
             href="https://ndo.dev"
             target="blank"
-            class="underline">ndom91</a
+            class="underline underline-offset-4">ndom91</a
           >. More information can be found at the links below.
         </p>
         <ul class="list-disc list-inside">

@@ -7,6 +7,20 @@ export const TTSLocation = {
 
 type TTSLocation = keyof typeof TTSLocation
 
+type AIFeaturesPreferences = {
+  tts: {
+    enabled: boolean
+    location: TTSLocation
+    speaker: string
+  }
+  summarization: {
+    enabled: boolean
+  }
+  transcription: {
+    enabled: boolean
+  }
+}
+
 type MetadataSidebarData = {
   bookmark?: LoadBookmarkResult
   categories?: Category[]
@@ -37,7 +51,7 @@ let textToSpeechAudioBlob = $state("")
 let textToSpeechLoading = $state(false)
 let summarizationLoading = $state(false)
 let summarizationContent = $state("")
-let aiFeaturesPreferences = $state({
+let aiFeaturesPreferences = $state<AIFeaturesPreferences>({
   tts: {
     enabled: true,
     location: TTSLocation.SERVER,

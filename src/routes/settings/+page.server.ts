@@ -102,8 +102,6 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
       },
     })
 
-    console.log("server.settings.user", user)
-
     return {
       user,
       session,
