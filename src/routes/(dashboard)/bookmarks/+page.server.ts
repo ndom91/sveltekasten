@@ -83,6 +83,7 @@ export const actions: Actions = {
           image: form.data.image,
           categoryId: form.data.category.id,
           tags: {
+            deleteMany: {},
             connectOrCreate: form.data.tags.map((tag) => ({
               where: {
                 bookmarkId_tagId: {

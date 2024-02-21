@@ -1,7 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores"
   import { dev } from "$app/environment"
-  // import { enhance as skEnhance } from "$app/forms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import SuperDebug, { defaults, superForm, fieldProxy } from "sveltekit-superforms"
   import { format } from "@formkit/tempo"
@@ -48,6 +47,11 @@
           toast.error(result.error.message)
         }
       },
+      onUpdated: ({ form }) => {
+        if (form.valid) {
+          ui.toggleMetadataSidebarEditMode()
+        }
+      },
     },
   )
   const { form, message, errors, constraints, enhance, submitting, delayed } = superformInstance
@@ -57,7 +61,6 @@
   const tagValues = $derived(
     $page.data.tags.map((tag: Tag) => ({ value: tag.id, label: tag.name })),
   )
-  // use:skEnhance={handleActionResults()}
 </script>
 
 <form
