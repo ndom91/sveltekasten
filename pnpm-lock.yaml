@@ -11,6 +11,9 @@ dependencies:
   '@auth/sveltekit':
     specifier: ^0.13.0
     version: 0.13.0(@sveltejs/kit@2.5.0)(nodemailer@6.9.9)(svelte@5.0.0-next.64)
+  '@formkit/tempo':
+    specifier: ^0.0.10
+    version: 0.0.10
   '@prisma/client':
     specifier: 5.10.1
     version: 5.10.1(prisma@5.10.1)
@@ -26,9 +29,6 @@ dependencies:
   cmdk-sv:
     specifier: ^0.0.13
     version: 0.0.13(svelte@5.0.0-next.64)
-  date-fns:
-    specifier: ^3.3.1
-    version: 3.3.1
   dompurify:
     specifier: ^3.0.9
     version: 3.0.9
@@ -520,6 +520,10 @@ packages:
 
   /@floating-ui/utils@0.1.6:
     resolution: {integrity: sha512-OfX7E2oUDYxtBvsuS4e/jSn4Q9Qb6DzgeYtsAdkPZ47znpoNsMgZw0+tVijiv3uGNR6dgNlty6r9rzIzHjtd/A==}
+    dev: false
+
+  /@formkit/tempo@0.0.10:
+    resolution: {integrity: sha512-eN5IBf2GAqHKjT2R5pnyRnpBi/1URWho5kjqUOBeLbXHmbYtKnKDGD1RIgXRMEMhr2HLP9HcWLkXSanIV2uyOA==}
     dev: false
 
   /@gcornut/valibot-json-schema@0.0.22(@types/json-schema@7.0.15)(esbuild-runner@2.2.2)(esbuild@0.19.11)(valibot@0.28.1):
@@ -1951,10 +1955,6 @@ packages:
     dependencies:
       whatwg-mimetype: 4.0.0
       whatwg-url: 14.0.0
-    dev: false
-
-  /date-fns@3.3.1:
-    resolution: {integrity: sha512-y8e109LYGgoQDveiEBD3DYXKba1jWf5BA8YU1FL5Tvm0BTdEfy54WLCwnuYWZNnzzvALy/QQ4Hov+Q9RVRv+Zw==}
     dev: false
 
   /dayjs@1.11.10:

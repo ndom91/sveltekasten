@@ -5,7 +5,7 @@
   import { handleActionResults } from "$lib/utils/form-action"
   import { Button } from "$lib/components/ui/button"
   import { Input } from "$lib/components/ui/input"
-  import { format } from "date-fns"
+  import { format } from "@formkit/tempo"
   import { writable } from "svelte/store"
   import { createTable, Render, Subscribe, createRender } from "svelte-headless-table"
   import { addSortBy } from "svelte-headless-table/plugins"
@@ -33,7 +33,7 @@
     table.column({
       accessor: "createdAt",
       header: "Created",
-      cell: ({ value }) => format(value, "d MMM yyyy"),
+      cell: ({ value }) => format(value, "medium"),
     }),
     table.column({
       accessor: ({ id }) => id,

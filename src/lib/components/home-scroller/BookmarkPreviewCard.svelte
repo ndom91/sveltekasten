@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { format } from "date-fns"
+  import { format } from "@formkit/tempo"
   const { item } = $props<{ item: LoadBookmarkResult }>()
 </script>
 
@@ -17,7 +17,7 @@
         class="rounded-full size-5"
       />
       <span class="dark:text-neutral-400">
-        {format(item.createdAt, "H:mm d MMM yyyy")}
+        {format(item.createdAt, { date: "medium", time: "short" })}
       </span>
     </div>
     <a href={item.url} target="_blank" class="">

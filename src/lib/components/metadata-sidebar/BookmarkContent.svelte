@@ -4,7 +4,7 @@
   import { enhance as skEnhance } from "$app/forms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import SuperDebug, { defaults, superForm, fieldProxy } from "sveltekit-superforms"
-  import { format } from "date-fns"
+  import { format } from "@formkit/tempo"
   import toast from "svelte-french-toast"
   import type { Tag } from "$zod"
 
@@ -261,7 +261,7 @@
           <span class="font-bold">Added</span>
           {#if ui.metadataSidebarData.bookmark.createdAt}
             <span>
-              {format(ui.metadataSidebarData.bookmark.createdAt, "dd MMM yyyy")}
+              {format(ui.metadataSidebarData.bookmark.createdAt, "medium")}
             </span>
           {/if}
         </div>

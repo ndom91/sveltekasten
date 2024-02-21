@@ -1,6 +1,6 @@
 <script lang="ts">
   import { cn } from "$lib/utils/style"
-  import { format } from "date-fns"
+  import { format } from "@formkit/tempo"
   import { Badge } from "$lib/components/ui/badge"
   import type { FeedEntry, FeedEntryMedia } from "$zod"
   import dompurify from "dompurify"
@@ -145,7 +145,7 @@
     </div>
     <span class="flex flex-wrap gap-2 mt-3">
       <Badge variant="secondary">
-        {format(feedEntry.createdAt, "H:mm d MMM yyyy")}
+        {format(feedEntry.createdAt, { date: "medium", time: "short" })}
       </Badge>
       {#if feedEntry.categories}
         {#each feedEntry.categories as category}

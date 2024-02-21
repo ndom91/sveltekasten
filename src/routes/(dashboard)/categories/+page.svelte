@@ -5,7 +5,7 @@
   import { handleActionResults } from "$lib/utils/form-action"
   import { Button } from "$lib/components/ui/button"
   import { Input } from "$lib/components/ui/input"
-  import { format } from "date-fns"
+  import { format } from "@formkit/tempo"
 
   let { data } = $props()
 </script>
@@ -32,7 +32,7 @@
             <Table.Row>
               <Table.Cell class="font-medium">{category.name}</Table.Cell>
               <Table.Cell>{category.description}</Table.Cell>
-              <Table.Cell class="text-right">{format(category.createdAt, "d MMM yyyy")}</Table.Cell>
+              <Table.Cell class="text-right">{format(category.createdAt, "medium")}</Table.Cell>
             </Table.Row>
           {/each}
         </Table.Body>

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores"
-  import { format } from "date-fns"
+  import { format } from "@formkit/tempo"
   import { Badge } from "$lib/components/ui/badge"
   import { useInterface } from "$state/ui.svelte"
   import { invalidateAll } from "$app/navigation"
@@ -75,7 +75,7 @@
     </div>
     <span class="flex flex-wrap gap-2">
       <Badge variant="default">
-        {format(bookmark.createdAt, "H:mm | d MMM yyyy")}
+        {format(bookmark.createdAt, { date: "medium", time: "short" })}
       </Badge>
       {#if bookmark.category?.name}
         <Badge variant="secondary">
