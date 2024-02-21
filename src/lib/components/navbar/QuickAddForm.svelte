@@ -17,7 +17,7 @@
 
   const ui = useInterface()
 
-  const form = superForm($page.data.form, {
+  const form = superForm($page.data.quickAddForm, {
     customValidity: true,
     validators: zodClient(formSchema),
     onUpdated: ({ form }) => {

@@ -61,39 +61,56 @@ export const actions: Actions = {
     })
     return { type: "success", message: "Deleted Bookmark" }
   },
-  saveMetadataEdits: async ({ request, locals }) => {
-    const session = await locals.auth()
-    if (!session?.user?.userId) {
-      return fail(401, { type: "error", error: "Unauthenticated" })
+  saveMetadata: async ({ request, locals }) => {
+    const form = await superValidate(request, zod(metadataSchema))
+    console.log("server.saveMetadata.form", form)
+
+    try {
+      const session = await locals.auth()
+      if (!session?.user?.userId) {
+        return fail(401, { type: "error", error: "Unauthenticated" })
+      }
+
+      if (!form.valid) {
+        return fail(400, { type: "error", message: "Form invalid", metadataForm: form })
+      }
+
+      await prisma.bookmark.update({
+        data: {
+          title: form.data.title,
+          desc: form.data.description,
+          url: form.data.url,
+          image: form.data.image,
+          categoryId: form.data.category.id,
+          tags: {
+            connectOrCreate: form.data.tags.map((tag) => ({
+              where: {
+                bookmarkId_tagId: {
+                  tagId: tag.id,
+                  bookmarkId: form.data.id,
+                },
+              },
+              create: {
+                tag: {
+                  connect: {
+                    id: tag.id,
+                  },
+                },
+              },
+            })),
+          },
+        },
+        where: {
+          id: form.data.id,
+          userId: session.user.userId,
+        },
+      })
+
+      return { metadataForm: form, type: "success", message: "Updated Bookmark" }
+    } catch (error) {
+      console.error(error)
+      return { metadataForm: form, type: "error", error }
     }
-    const data = await request.formData()
-
-    const id = data.get("id")?.toString() || ""
-    const title = data.get("title")?.toString() || ""
-    const url = data.get("url")?.toString() || ""
-    const desc = data.get("description")?.toString() || ""
-    const categoryId = data.get("categoryId")?.toString() || ""
-    // @TODO: Support updating image
-    // const image = data.get('image')?.toString() || ''
-
-    if (!id) {
-      return fail(400, { type: "error", message: "Missing bookmark id" })
-    }
-
-    await prisma.bookmark.update({
-      data: {
-        title,
-        desc,
-        url,
-        categoryId,
-      },
-      where: {
-        id,
-        userId: session.user.userId,
-      },
-    })
-
-    return { type: "success", message: "Updated Bookmark" }
   },
   quickAdd: async (event) => {
     const form = await superValidate(event.request, zod(quickAddSchema))
@@ -115,12 +132,6 @@ export const actions: Actions = {
       const resp = await fetch(url)
       const metadata = await metascraperClient({ html: await resp.text(), url: url })
       const image = metadata.image ? metadata.image : (metadata.logo as string)
-
-      // TODO: Disabled due to splashy/sharp missing in Vercel node env (?)
-      // const imageResponse = await fetch(image)
-      // const imageBuffer = await imageResponse.arrayBuffer()
-      // const palette = await splashy(Buffer.from(imageBuffer))
-      // metadata.palette = palette
 
       const bookmark = await prisma.bookmark.create({
         data: {
@@ -168,6 +179,9 @@ export const actions: Actions = {
 
 export const load: PageServerLoad = async (event) => {
   const session = await event.locals?.auth()
+  const metadataForm = await superValidate(zod(metadataSchema), {
+    id: "metadataForm",
+  })
 
   if (!session && event.url.pathname !== "/login") {
     const fromUrl = event.url.pathname + event.url.search
@@ -202,12 +216,17 @@ export const load: PageServerLoad = async (event) => {
     })
 
     return {
-      metadataForm: await superValidate(zod(metadataSchema)),
+      metadataForm,
       bookmarks,
       count,
       session,
     }
   } catch (error: any) {
-    return { bookmarks: [], count: 1, error: error.message ?? error }
+    return {
+      bookmarks: [],
+      count: 1,
+      error: error.message ?? error,
+      metadataForm,
+    }
   }
 }

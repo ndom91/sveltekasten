@@ -11,6 +11,7 @@
   import { Combobox } from "bits-ui"
   import { flyAndScale } from "$lib/utils/style"
   import { formFieldProxy, type SuperForm, type FormPathLeaves } from "sveltekit-superforms"
+  import type { Tag as RawTag } from "$zod"
 
   let {
     form,
@@ -21,15 +22,21 @@
     form: SuperForm<T>
     field: FormPathLeaves<T>
     disabled: boolean
-    tags: Tag[]
+    tags: RawTag[]
   }>()
 
   let inputValue = $state("")
-  let selectedValues = $state<Tag[]>([])
+  const { form: formInstance } = form
+  let selectedValues = $state<Tag[]>(
+    ($formInstance.tags as RawTag[]).map((tag) => ({ value: tag.id, label: tag.name })),
+  )
+
+  const tagValues = $derived(tags.map((tag: RawTag) => ({ value: tag.id, label: tag.name })))
+
   let filteredTags = $derived(
     inputValue
-      ? tags.filter((tag) => tag.label.toLowerCase().includes(inputValue.toLowerCase()))
-      : tags,
+      ? tagValues.filter((tag) => tag.label.toLowerCase().includes(inputValue.toLowerCase()))
+      : tagValues,
   )
 
   // function handleTagRemove(event: MouseEvent, value: string) {
@@ -39,19 +46,33 @@
   // }
 
   let { value, errors } = formFieldProxy(form, field)
+  $inspect("tags.value", $value)
 
-  $effect(() => {
-    // @ts-expect-error
-    $value = selectedValues?.map((v) => v.value).join(",")
-  })
+  // $effect(() => {
+  //   console.log("running effect")
+  //   $value = selectedValues?.map((v) => v.value).join(",")
+  // })
 </script>
 
 <Combobox.Root
   multiple
   items={filteredTags}
-  bind:selected={selectedValues}
+  selected={selectedValues}
   bind:inputValue
   {disabled}
+  onSelectedChange={(selectedTags) => {
+    // $value = []
+    console.log("selected change", selectedTags)
+    if (selectedTags) {
+      $value =
+        selectedTags
+          ?.map((t) => {
+            return tags.find((tag) => tag.id === t.value)
+          })
+          .filter(Boolean) ?? []
+      selectedValues = selectedTags
+    }
+  }}
 >
   <div class="relative">
     <svg

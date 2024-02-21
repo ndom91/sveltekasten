@@ -6,6 +6,9 @@ import { superValidate } from "sveltekit-superforms"
 import type { LayoutServerLoad } from "./$types"
 
 export const load: LayoutServerLoad = async ({ locals }) => {
+  const quickAddForm = await superValidate(zod(formSchema), {
+    id: "quickAddForm",
+  })
   try {
     const session = await locals.auth()
     if (!session?.user?.userId) {
@@ -24,12 +27,17 @@ export const load: LayoutServerLoad = async ({ locals }) => {
       }),
     ])
     return {
-      form: await superValidate(zod(formSchema)),
+      quickAddForm,
       tags,
       categories,
       user,
     }
   } catch (error: any) {
-    return { categories: [], tags: [], error: error.message ?? error }
+    return {
+      categories: [],
+      tags: [],
+      error: error.message ?? error,
+      quickAddForm,
+    }
   }
 }

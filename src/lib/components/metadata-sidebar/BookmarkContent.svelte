@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from "$app/stores"
   import { dev } from "$app/environment"
-  import { enhance as skEnhance } from "$app/forms"
+  // import { enhance as skEnhance } from "$app/forms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import SuperDebug, { defaults, superForm, fieldProxy } from "sveltekit-superforms"
   import { format } from "@formkit/tempo"
@@ -23,55 +23,50 @@
 
   const isEditMode = $derived(ui.metadataSidebarEditMode === true)
 
-  const copyColor = (e: MouseEvent, color: string) => {
-    e.preventDefault()
-    toast.success(`Copied ${color} clipboard!`)
-    navigator.clipboard.writeText(color)
-  }
-
-  // const form = superForm(defaults(ui.metadataSidebarData, $page.data.metadataForm), {
   const defaultData = {
     id: ui.metadataSidebarData.bookmark?.id,
     url: ui.metadataSidebarData.bookmark?.url,
     title: ui.metadataSidebarData.bookmark?.title,
     description: ui.metadataSidebarData.bookmark?.desc,
+    image: ui.metadataSidebarData.bookmark?.image,
     category: ui.metadataSidebarData.bookmark?.category,
     tags: ui.metadataSidebarData.bookmark?.tags,
   }
-  const form = superForm(defaults(defaultData, zodClient(metadataSchema)), {
-    customValidity: true,
-    dataType: "json",
-    validators: zodClient(metadataSchema),
-    onUpdated: ({ form }) => {
-      if (form.message?.text) {
-        toast.success(form.message.text)
-      }
+  const superformInstance = superForm(
+    defaults(defaultData, zodClient($page.data.metadataForm)).data,
+    {
+      resetForm: false,
+      dataType: "json",
+      validators: zodClient(metadataSchema),
+      onUpdated: ({ form }) => {
+        if (form.message?.text) {
+          toast.success(form.message.text)
+        }
+      },
+      onError: ({ result }) => {
+        if (result.type === "error") {
+          toast.error(result.error.message)
+        }
+      },
     },
-    onError: ({ result }) => {
-      if (result.type === "error") {
-        toast.error(result.error.message)
-      }
-    },
-  })
-  const { form: formData, message, errors, constraints, enhance, submitting, delayed } = form
-  // @ts-expect-error
-  const categoryProxy = fieldProxy(form, "categoryId", {})
+  )
+  const { form, message, errors, constraints, enhance, submitting, delayed } = superformInstance
 
-  $inspect("metadataSidebarData", ui.metadataSidebarData)
-  $inspect("page", $page.data)
+  $inspect("form", $form)
 
   const tagValues = $derived(
     $page.data.tags.map((tag: Tag) => ({ value: tag.id, label: tag.name })),
   )
+  // use:skEnhance={handleActionResults()}
 </script>
 
 <form
-  method="post"
-  action="?/saveMetadataEdits"
-  use:skEnhance={handleActionResults()}
+  method="POST"
+  action="?/saveMetadata"
+  use:enhance
   class="flex gap-4 justify-start items-center w-full h-full"
 >
-  <div class="flex flex-col gap-4 p-6 w-full h-full">
+  <div class="flex overflow-y-scroll flex-col gap-4 p-6 w-full h-full">
     <div class="flex justify-between items-center">
       <h2>Metadata</h2>
       <Tooltip.Root>
@@ -134,20 +129,21 @@
         <span>button in the actions overlay when hovering over a bookmark.</span>
       </div>
     {:else}
-      <input type="hidden" name="id" value={ui.metadataSidebarData.bookmark.id} />
       <div class="flex flex-col gap-2 items-start">
         <Label for="title">Title</Label>
         <input
           type="text"
           id="title"
-          name="title"
           readonly={!isEditMode}
-          bind:value={ui.metadataSidebarData.bookmark.title}
+          bind:value={$form.title}
+          aria-invalid={$errors.title ? "true" : undefined}
+          {...$constraints.title}
           class={cn(
             "flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
             !isEditMode ? "cursor-default text-muted" : "bg-zinc-100 dark:bg-zinc-950",
           )}
         />
+        {#if $errors.title}<span class="text-xs text-red-400">{$errors.title}</span>{/if}
       </div>
       <div class="flex flex-col gap-2">
         <Label for="url">URL</Label>
@@ -155,9 +151,10 @@
           <input
             type="url"
             id="url"
-            name="url"
             readonly={!isEditMode}
-            bind:value={ui.metadataSidebarData.bookmark.url}
+            bind:value={$form.url}
+            aria-invalid={$errors.url ? "true" : undefined}
+            {...$constraints.url}
             class={cn(
               "flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
               ui.metadataSidebarData.bookmark.metadata?.logo && "pl-10",
@@ -172,37 +169,38 @@
             />
           {/if}
         </div>
+        {#if $errors.url}<span class="text-xs text-red-400">{$errors.title}</span>{/if}
       </div>
       <div class="flex flex-col gap-2 grow-wrap">
         <Label for="description">Description</Label>
         <textarea
           rows="4"
           id="description"
-          name="description"
           readonly={!isEditMode}
-          bind:value={ui.metadataSidebarData.bookmark.desc}
+          bind:value={$form.description}
+          aria-invalid={$errors.description ? "true" : undefined}
+          {...$constraints.description}
           class={cn(
             "flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
             !isEditMode ? "cursor-default text-muted" : "bg-zinc-100 dark:bg-zinc-950",
           )}
         />
+        {#if $errors.description}<span class="text-xs text-red-400">{$errors.title}</span>{/if}
       </div>
       <div class="flex flex-col gap-2">
         <Label for="category">Category</Label>
         <Select.Root
           disabled={!isEditMode}
-          name="categoryId"
           items={ui.metadataSidebarData?.categories?.map((cat) => ({
             value: cat.id,
             label: cat.name,
           }))}
           selected={{
-            value: ui.metadataSidebarData.bookmark.categoryId,
-            label: ui.metadataSidebarData?.categories?.find(
-              (cat) => cat.id === ui.metadataSidebarData.bookmark.categoryId,
-            )?.name,
+            value: $form.category?.id,
+            label: $form.category?.name,
           }}
-          onSelectedChange={(e) => (ui.metadataSidebarData.bookmark.categoryId = e?.value ?? null)}
+          onSelectedChange={(e) =>
+            ($form.category = ui.metadataSidebarData.categories.find((cat) => cat.id === e.value))}
         >
           <Select.Trigger class="w-full disabled:cursor-default enabled:bg-zinc-950">
             <Select.Value placeholder="Category" />
@@ -219,7 +217,12 @@
       </div>
       <div class="flex flex-col gap-2">
         <Label for="category">Tags</Label>
-        <TagInput {form} tags={tagValues} field="tagIds" disabled={!isEditMode} />
+        <TagInput
+          form={superformInstance}
+          tags={$page.data.tags}
+          field="tags"
+          disabled={!isEditMode}
+        />
         <!-- <TagInput -->
         <!--   tags={$page.data?.tags.map((tag: Tag) => ({ value: tag.id, label: tag.name }))} -->
         <!--   disabled={!isEditMode} -->
@@ -227,13 +230,12 @@
         <!--   selected={ui.metadataSidebarData.bookmark?.tags?.map((tag: TagsOnBookmarks) => tag.tagId) ?? []} -->
         <!--   class="bg-transparent" -->
         <!-- /> -->
-        <input type="hidden" name="tagIds" id="tagIds" value={ui.metadataSidebarData.tags} />
       </div>
       {#if ui.metadataSidebarData.bookmark.image}
         <div
           class={cn("w-full rounded-full border-b-2 border-zinc-100 px-8 dark:border-zinc-800")}
         />
-        <div class="flex flex-col gap-2 items-start mb-2 min-h-0">
+        <div class="flex flex-col gap-2 items-start mb-2">
           <h2>Cover Photo</h2>
           <img
             src={ui.metadataSidebarData.bookmark.image}
@@ -243,7 +245,7 @@
         </div>
       {/if}
       <div class={cn("w-full rounded-full border-b-2 border-zinc-100 px-8 dark:border-zinc-800")} />
-      <div class="flex flex-col flex-grow gap-2 items-start mb-2 min-h-0">
+      <div class="flex flex-col flex-grow gap-2 items-start mb-2">
         <h2>Metadata</h2>
         <div class="flex justify-between w-full text-sm">
           <span class="font-bold">Language</span>
@@ -265,29 +267,17 @@
             </span>
           {/if}
         </div>
-        <div class="flex justify-between w-full text-sm">
-          <span class="font-bold">Colors</span>
-          {#if ui.metadataSidebarData.bookmark.metadata?.palette}
-            <div class="flex gap-1">
-              {#each ui.metadataSidebarData.bookmark.metadata?.palette as color}
-                <button
-                  onclick={(e) => copyColor(e, color)}
-                  class="rounded-full size-4"
-                  style={`background-color: ${color}`}
-                />
-              {/each}
-            </div>
-          {/if}
-        </div>
       </div>
       {#if isEditMode}
         <div class="w-full">
           <Button type="submit" class="w-full" variant="default">Save</Button>
         </div>
       {/if}
-    {/if}
-    {#if dev}
-      <SuperDebug data={$formData} />
+      {#if dev}
+        <div class="flex flex-col pt-4">
+          <SuperDebug data={{ $form, $constraints, $errors }} collapsible={true} theme="vscode" />
+        </div>
+      {/if}
     {/if}
   </div>
 </form>
