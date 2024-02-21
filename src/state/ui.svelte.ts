@@ -110,8 +110,6 @@ export function useInterface() {
       return aiFeaturesPreferences
     },
     set aiFeaturesPreferences(query) {
-      console.log("aiSet.query", query)
-
       aiFeaturesPreferences = query
     },
 

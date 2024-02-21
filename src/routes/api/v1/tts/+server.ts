@@ -10,7 +10,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
 
-    const { text, speaker = "en-US-GuyNeural" } = await request.json()
+    const { text, speaker } = await request.json()
 
     const edgeSpeech = await createEdgeSpeech({
       payload: {

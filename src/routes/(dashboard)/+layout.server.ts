@@ -11,18 +11,23 @@ export const load: LayoutServerLoad = async ({ locals }) => {
     if (!session?.user?.userId) {
       fail(401, { type: "error", error: "Unauthenticated" })
     }
-    const [categories, tags] = await prisma.$transaction([
+    const [categories, tags, user] = await prisma.$transaction([
       prisma.category.findMany({
         where: { userId: session?.user?.userId },
       }),
       prisma.tag.findMany({
         where: { userId: session?.user?.userId },
       }),
+      prisma.user.findUnique({
+        select: { settings: true },
+        where: { id: session?.user?.userId },
+      }),
     ])
     return {
       form: await superValidate(zod(formSchema)),
       tags,
       categories,
+      user,
     }
   } catch (error: any) {
     return { categories: [], tags: [], error: error.message ?? error }

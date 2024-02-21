@@ -14,6 +14,9 @@
 
   const ui = useInterface()
   const { data } = $props()
+  // Set current user preferences to store
+  ui.aiFeaturesPreferences = data.user?.settings?.ai
+
   let pageNumber = $state(1)
   let totalItemCount = $state<number>(data.feedEntries?.count)
   let allItems = $state<LoadFeedEntry>(data.feedEntries?.data)
@@ -86,7 +89,7 @@
 
   const handleGenerateSpeech = async (text: string) => {
     if (!ui.aiFeaturesPreferences.tts) return
-    if (ui.aiFeaturesPreferences.tts.location === TTSLocation.SERVER) {
+    if (ui.aiFeaturesPreferences.tts.location.toUpperCase() === TTSLocation.SERVER) {
       const ttsResponse = await fetch("/api/v1/tts", {
         method: "POST",
         body: JSON.stringify({
