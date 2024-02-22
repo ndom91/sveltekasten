@@ -26,6 +26,7 @@
     "@types/ws": "^8.5.10",
     "@typescript-eslint/eslint-plugin": "7.0.2",
     "@typescript-eslint/parser": "7.0.2",
+    "@unlazy/svelte": "^0.11.1",
     "autoprefixer": "^10.4.17",
     "eslint": "8.56.0",
     "eslint-config-prettier": "9.1.0",
@@ -78,6 +79,7 @@
     "sveltekit-superforms": "^2.4.0",
     "tailwind-merge": "^2.2.1",
     "tailwind-variants": "^0.2.0",
+    "thumbhash": "^0.1.1",
     "ws": "^8.16.0",
     "zod": "^3.22.4",
     "zod-prisma-types": "^3.1.6"
@@ -96,7 +98,7 @@
     ],
     "parserOptions": {
       "sourceType": "module",
-      "ecmaVersion": "2023",
+      "ecmaVersion": "latest",
       "extraFileExtensions": [
         ".svelte"
       ]
