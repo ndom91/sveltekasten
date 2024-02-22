@@ -54,7 +54,7 @@
 
 <svelte:head>
   <title>Briefkasten | Tags</title>
-  <meta name="description" content="This is where the description goes for SEO" />
+  <meta name="description" content="RSS Feeds, Bookmarks and more!" />
 </svelte:head>
 
 <Navbar simple />

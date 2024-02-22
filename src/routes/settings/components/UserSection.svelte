@@ -17,7 +17,7 @@
 
   let ttsEnabled = $state($page.data.user?.settings?.ai?.tts?.enabled ?? true)
   let ttsLocation = $state({
-    value: $page.data.user?.settings?.ai?.tts?.location ?? TTSLocation.SERVER,
+    value: $page.data.user?.settings?.ai?.tts?.location.toUpperCase() ?? TTSLocation.SERVER,
     label: capitalize($page.data.user?.settings?.ai?.tts?.location ?? TTSLocation.SERVER),
   })
   let ttsSpeaker = $state({
@@ -85,7 +85,7 @@
   }))
 </script>
 
-<div class="flex flex-col gap-2 justify-start items-start">
+<div class="flex flex-col gap-2 justify-start items-start h-full">
   <Card.Root class="w-full">
     <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
       <Card.Title>API Token <i>TODO</i></Card.Title>
@@ -133,20 +133,29 @@
     <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
       <Card.Title class="flex justify-between items-center w-full">
         <span>AI Settings</span>
-        <Badge>Experimental</Badge>
+        <Badge class="text-sm">Experimental</Badge>
       </Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
       <div class="flex flex-col gap-4 items-start">
         <p>
-          You can manage any of the AI features here. All of these AI features are enabled by the <a
+          You can manage all of your AI features here. All of these AI features that run in the
+          browser are enabled by the <a
             class="underline underline-offset-4"
             href="https://github.com/xenova/transformers.js">transformers.js</a
           >
-          library, meaning <b>the models are downloaded and run in your browser</b>. That has the
-          advantage of significantly increased security and no need for a third-party API key. That
-          means it also comes with the disadvantage of lower performance / longer inference times.
-          These are all in an experimental stage, but we wanted to share them anyway!
+          library from
+          <a class="underline underline-offset-4" href="https://huggingface.co" target="_blank"
+            >Huggingface</a
+          >, meaning
+          <b>the models are downloaded locally and run in your browser</b> when selecting "Read Aloud"
+          on an RSS feed ite, for example.
+        </p>
+        <p>
+          That has the advantage of significantly increased security and no need for a third-party
+          API key. However, it also comes with some disadvantages like lower performance and longer
+          inference times. So be aware, the AI features are all in an experimental stage, but we
+          really wanted to share them with you all already anyway!
         </p>
         <div class="flex flex-col gap-4 items-start">
           <div class="flex gap-4 items-center">
@@ -166,74 +175,102 @@
             <Checkbox id="tts" bind:checked={ttsEnabled} />
             <div>
               <div class="flex flex-col gap-4 text-neutral-400 dark:text-neutral-500">
-                <label for="tts" class="">
-                  <div class="text-xl text-neutral-50">Text to Speech</div>
+                <label for="tts" class="flex flex-col gap-2">
+                  <div class="text-xl text-neutral-800 dark:text-neutral-50">Text to Speech</div>
                   <p>
-                    Our text-to-speech feature is using the <code>Xenova/speecht5_tts</code> model and
-                    takes about ~10s on average to generate good quality voice audio for each sentence
-                    of text. Therefore, this model is really only good for experimentation at this point.
-                    Generating the voice data for a while article / post is not feasible at the moment.
+                    In the browser, our text-to-speech (TTS) feature is using the <code
+                      >Xenova/speecht5_tts</code
+                    > model and takes about ~10s on average to generate good quality voice audio for
+                    each sentence of text. Therefore, this option is really only good for experimentation
+                    at this point.
+                  </p>
+                  <p>
+                    However, we also support a "Server" mode which leverages the Edge browser LLM
+                    APIs for text-to-speech generation. This not only performs significantly better,
+                    but it also supports choosing one of a dozen voices. You can adjust the method
+                    (browser / server) below, as well as select a voice if you've chosen the server
+                    text-to-speed option.
                   </p>
                 </label>
                 <div class="flex gap-2 justify-start items-center">
-                  <Select.Root
-                    name="ttsSpeaker"
-                    items={speakers.map((speaker) => ({
-                      value: speaker,
-                      label: speaker,
-                    }))}
-                    bind:selected={ttsSpeaker}
-                  >
-                    <Select.Trigger class="max-w-sm disabled:cursor-default enabled:bg-zinc-950">
-                      <Select.Value placeholder="Speaker" />
-                    </Select.Trigger>
-                    <Select.Input />
-                    <Select.Content>
-                      {#each speakers as speaker}
-                        <Select.Item value={speaker}>{speaker}</Select.Item>
-                      {/each}
-                    </Select.Content>
-                  </Select.Root>
-                  <Select.Root
-                    name="ttsLocation"
-                    items={ttsSelectValues}
-                    bind:selected={ttsLocation}
-                  >
-                    <Select.Trigger class="max-w-sm disabled:cursor-default enabled:bg-zinc-950">
-                      <Select.Value placeholder="TTS Inference Location" />
-                    </Select.Trigger>
-                    <Select.Input />
-                    <Select.Content>
-                      {#each ttsSelectValues as location}
-                        <Select.Item value={location.value}>{location.label}</Select.Item>
-                      {/each}
-                    </Select.Content>
-                  </Select.Root>
+                  <div class="flex flex-col gap-2 w-56">
+                    <label
+                      for="ttsLocation"
+                      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 data-invalid:text-destructive text-neutral-800 dark:text-neutral-50"
+                      >Method</label
+                    >
+                    <Select.Root
+                      name="ttsLocation"
+                      items={ttsSelectValues}
+                      bind:selected={ttsLocation}
+                    >
+                      <Select.Trigger class="w-full disabled:cursor-default enabled:bg-zinc-950">
+                        <Select.Value placeholder="TTS Inference Location" />
+                      </Select.Trigger>
+                      <Select.Input />
+                      <Select.Content>
+                        {#each ttsSelectValues as location}
+                          <Select.Item value={location.value}>{location.label}</Select.Item>
+                        {/each}
+                      </Select.Content>
+                    </Select.Root>
+                  </div>
+                  <div class="flex flex-col gap-2 w-56">
+                    <label
+                      for="ttsSpeaker"
+                      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 data-invalid:text-destructive text-neutral-800 dark:text-neutral-50"
+                      >Voice</label
+                    >
+                    <Select.Root
+                      name="ttsSpeaker"
+                      items={speakers.map((speaker) => ({
+                        value: speaker,
+                        label: speaker,
+                      }))}
+                      disabled={ttsLocation.value !== TTSLocation.SERVER}
+                      bind:selected={ttsSpeaker}
+                    >
+                      <Select.Trigger
+                        class="w-full disabled:cursor-not-allowed enabled:bg-zinc-950"
+                      >
+                        <Select.Value placeholder="Speaker" />
+                      </Select.Trigger>
+                      <Select.Input />
+                      <Select.Content>
+                        {#each speakers as speaker}
+                          <Select.Item value={speaker}>{speaker}</Select.Item>
+                        {/each}
+                      </Select.Content>
+                    </Select.Root>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="flex gap-4 items-center">
-            <Checkbox id="transcriber" bind:checked={transcriptionEnabled} />
-            <label for="transcriber" class="">
-              <div class="text-xl">Transcriber</div>
-              <div class="text-neutral-400 dark:text-neutral-500">
-                Our speech to text (transcriber) feature is using the <code
-                  >Xenova/whisper-tiny</code
-                >
-                model and takes about ~20s on average after recording has stopped to generate a fairly
-                accurate transcription. We feel comfortable recommending this one for daily use in notes.
-                Note: We currently only support transcription in <b>English</b>.
-              </div>
-            </label>
-          </div>
+          <!-- <div class="flex gap-4 items-center"> -->
+          <!--   <Checkbox id="transcriber" bind:checked={transcriptionEnabled} /> -->
+          <!--   <label for="transcriber" class=""> -->
+          <!--     <div class="text-xl">Transcriber</div> -->
+          <!--     <div class="text-neutral-400 dark:text-neutral-500"> -->
+          <!--       Our speech to text (transcriber) feature is using the <code -->
+          <!--         >Xenova/whisper-tiny</code -->
+          <!--       > -->
+          <!--       model and takes about ~20s on average after recording has stopped to generate a fairly -->
+          <!--       accurate transcription. We feel comfortable recommending this one for daily use in notes. -->
+          <!--       Note: We currently only support transcription in <b>English</b>. -->
+          <!--     </div> -->
+          <!--   </label> -->
+          <!-- </div> -->
         </div>
       </div>
     </Card.Content>
   </Card.Root>
   <Card.Root class="w-full">
     <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
-      <Card.Title>Import <i>TODO</i></Card.Title>
+      <Card.Title class="flex justify-between items-center w-full">
+        <span>Import</span>
+        <Badge class="bg-amber-200">TODO</Badge>
+      </Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
       <div class="flex flex-col gap-4 items-start">
@@ -249,7 +286,10 @@
   </Card.Root>
   <Card.Root class="w-full">
     <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
-      <Card.Title>Export <i>TODO</i></Card.Title>
+      <Card.Title class="flex justify-between items-center w-full">
+        <span>Export</span>
+        <Badge class="bg-amber-200">TODO</Badge>
+      </Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
       <div class="flex flex-col gap-4 items-start">
