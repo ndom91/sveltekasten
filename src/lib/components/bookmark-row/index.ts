@@ -1,5 +1,1 @@
-import BookmarkRow from "./BookmarkRow.svelte"
-
-export {
-  BookmarkRow,
-}
+export { default as BookmarkRow } from "./BookmarkRow.svelte"

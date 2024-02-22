@@ -1,3 +1,1 @@
-import MetadataSidebar from './MetadataSidebar.svelte';
-
-export { MetadataSidebar };
+export { default as MetadataSidebar } from "./MetadataSidebar.svelte"

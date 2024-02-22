@@ -1,3 +1,1 @@
-import HomeScroller from "./HomeScroller.svelte"
-
-export { HomeScroller }
+export { default as HomeScroller } from "./HomeScroller.svelte"

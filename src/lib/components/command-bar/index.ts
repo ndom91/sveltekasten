@@ -1,5 +1,1 @@
-import CommandBar from './CommandBar.svelte';
-
-export {
-  CommandBar
-};
+export { default as CommandBar } from "./CommandBar.svelte"

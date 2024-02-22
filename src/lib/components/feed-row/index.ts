@@ -1,5 +1,1 @@
-import FeedRow from "./FeedRow.svelte"
-
-export {
-  FeedRow,
-}
+export { default as FeedRow } from "./FeedRow.svelte"

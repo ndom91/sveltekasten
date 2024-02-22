@@ -1,3 +1,1 @@
-import AudioPlayer from "./AudioPlayer.svelte"
-
-export { AudioPlayer }
+export { default as AudioPlayer } from "./AudioPlayer.svelte"

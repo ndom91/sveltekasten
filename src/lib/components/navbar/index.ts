@@ -1,11 +1,4 @@
-import AvatarMenu from "./AvatarMenu.svelte"
-import Navbar from "./Navbar.svelte"
-import QuickAddForm from "./QuickAddForm.svelte"
-import Breadcrumbs from "./Breadcrumbs.svelte"
-
-export {
-  AvatarMenu,
-  Navbar,
-  QuickAddForm,
-  Breadcrumbs,
-};
+export { default as AvatarMenu } from "./AvatarMenu.svelte"
+export { default as Navbar } from "./Navbar.svelte"
+export { default as QuickAddForm } from "./QuickAddForm.svelte"
+export { default as Breadcrumbs } from "./Breadcrumbs.svelte"
