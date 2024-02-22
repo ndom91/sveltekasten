@@ -1,4 +1,5 @@
 import prisma from "$lib/prisma"
+import { Prisma } from "@prisma/client"
 import { redirect } from "@sveltejs/kit"
 import { fail } from "@sveltejs/kit"
 import { formSchema as quickAddSchema } from "$schemas/quick-add"
@@ -214,7 +215,7 @@ export const load: PageServerLoad = async (event) => {
       orderBy: { createdAt: "desc" },
     })
 
-    const bookmarks: LoadBookmarkResult[] = data.map((bookmark) => {
+    const bookmarks = data.map((bookmark) => {
       return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) }
     })
 

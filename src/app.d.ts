@@ -18,15 +18,17 @@ type Provider = {
 // and what to do when importing types
 declare global {
   type TODO = any
-  type LoadBookmarkResult = Bookmark & { metadata: Record<string, any> | JsonValueType } & {
-    tags: Tag[]
-  } & { category: Category | null }
-  type LoadFeedEntry = FeedEntry & { feed: Feed; feedMedia: FeedEntryMedia | null }
+
+  type LoadBookmarkResult = Prisma.BookmarkGetPayload<{
+    include: { category: true; tags: { include: { tag: true } } }
+  }>
+  type LoadFeedEntry = Prisma.FeedEntryGetPayload<{
+    include: { feed: true; feedMedia: true }
+  }>
 
   namespace App {
     interface Locals {
       providers: Provider[]
-      test: string
     }
     // interface Platform {}
     // interface PrivateEnv {}
@@ -34,7 +36,6 @@ declare global {
   }
 }
 
-// Requires @auth/sveltekit@0.5.1+
 declare module "@auth/sveltekit" {
   interface User {
     userId: string
