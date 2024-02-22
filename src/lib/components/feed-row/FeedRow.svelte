@@ -116,7 +116,7 @@
         feedEntry.title.replaceAll(" ", "").substring(0, 5).toLowerCase(),
       )}/240/153.webp`}
     alt="Feed Item Hero"
-    class="object-cover object-center w-48 h-24 rounded-md"
+    class="object-cover object-center w-48 h-24 rounded-md border border-neutral-100 dark:border-neutral-800"
   />
   <div class="flex flex-col justify-between">
     <span class="w-auto text-xl font-bold line-clamp-1 min-h-[28px]">

@@ -28,7 +28,7 @@
   let inputValue = $state("")
   const { form: formInstance } = form
   let selectedValues = $state<Tag[]>(
-    ($formInstance.tags as RawTag[]).map((tag) => ({ value: tag.id, label: tag.name })),
+    ($formInstance.tags as RawTag[])?.map((tag) => ({ value: tag.id, label: tag.name })) ?? [],
   )
 
   const tagValues = $derived(tags.map((tag: RawTag) => ({ value: tag.id, label: tag.name })))

@@ -5,10 +5,10 @@ import { formSchema as quickAddSchema } from "$schemas/quick-add"
 import { formSchema as metadataSchema } from "$schemas/metadata-sidebar"
 import { superValidate, message } from "sveltekit-superforms"
 import { zod } from "sveltekit-superforms/adapters"
+import { getThumbhashNode } from "$lib/utils/thumbhash"
 import type { Actions } from "./$types"
 import type { PageServerLoad } from "./$types"
 
-// import splashy from "splashy"
 import metascraper from "metascraper"
 import metascraperDescription from "metascraper-description"
 import metascraperTitle from "metascraper-title"
@@ -62,8 +62,9 @@ export const actions: Actions = {
     return { type: "success", message: "Deleted Bookmark" }
   },
   saveMetadata: async ({ request, locals }) => {
-    const form = await superValidate(request, zod(metadataSchema))
-    console.log("server.saveMetadata.form", form)
+    const form = await superValidate(request, zod(metadataSchema), {
+      id: "saveMetadataForm",
+    })
 
     try {
       const session = await locals.auth()
@@ -107,10 +108,12 @@ export const actions: Actions = {
         },
       })
 
-      return { metadataForm: form, type: "success", message: "Updated Bookmark" }
+      return message(form, {
+        text: "Bookmark Updated",
+      })
     } catch (error) {
       console.error(error)
-      return { metadataForm: form, type: "error", error }
+      return { form, type: "error", error }
     }
   },
   quickAdd: async (event) => {
@@ -133,12 +136,14 @@ export const actions: Actions = {
       const resp = await fetch(url)
       const metadata = await metascraperClient({ html: await resp.text(), url: url })
       const image = metadata.image ? metadata.image : (metadata.logo as string)
+      const b64Thumbhash = await getThumbhashNode(image)
 
       const bookmark = await prisma.bookmark.create({
         data: {
           url,
           title: title,
           image,
+          imageBlur: b64Thumbhash,
           desc: description ? description : metadata.description,
           metadata,
           user: {
@@ -148,21 +153,21 @@ export const actions: Actions = {
           },
           tags: tagIds
             ? {
-              create: tagIds.map((tagId) => ({
-                tag: {
-                  connect: {
-                    id: tagId,
+                create: tagIds.map((tagId) => ({
+                  tag: {
+                    connect: {
+                      id: tagId,
+                    },
                   },
-                },
-              })),
-            }
+                })),
+              }
             : {},
           category: categoryId
             ? {
-              connect: {
-                id: categoryId,
-              },
-            }
+                connect: {
+                  id: categoryId,
+                },
+              }
             : {},
         },
       })
@@ -180,9 +185,6 @@ export const actions: Actions = {
 
 export const load: PageServerLoad = async (event) => {
   const session = await event.locals?.auth()
-  const metadataForm = await superValidate(zod(metadataSchema), {
-    id: "metadataForm",
-  })
 
   if (!session && event.url.pathname !== "/login") {
     const fromUrl = event.url.pathname + event.url.search
@@ -217,17 +219,16 @@ export const load: PageServerLoad = async (event) => {
     })
 
     return {
-      metadataForm,
       bookmarks,
       count,
       session,
     }
   } catch (error: any) {
+    console.error(error)
     return {
       bookmarks: [],
       count: 1,
       error: error.message ?? error,
-      metadataForm,
     }
   }
 }
