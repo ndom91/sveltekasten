@@ -137,7 +137,7 @@
 <svelte:window on:keydown={handleKeyDown} />
 
 <Navbar />
-<div class="flex overflow-y-scroll flex-col">
+<div class="flex flex-col">
   <main class="h-full">
     <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2">
       {#if data.bookmarks.data}
