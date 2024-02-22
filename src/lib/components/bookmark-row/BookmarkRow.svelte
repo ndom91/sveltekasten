@@ -9,7 +9,7 @@
   const ui = useInterface()
   let card = $state<HTMLElement>()
 
-  const { bookmark } = $props<{ bookmark: LoadBookmarkResult }>()
+  const { bookmark } = $props<{ bookmark: LoadBookmark }>()
 
   let isDeleteDialogOpen = $state(false)
   let isOptionsOpen = $state(false)

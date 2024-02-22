@@ -38,7 +38,7 @@ export const POST: RequestHandler = async ({ request, locals, url }) => {
     if (type === "bookmark") {
       returnData = data.map((bookmark) => {
         return { ...bookmark, tags: bookmark.tags?.map((tag) => tag.tag) }
-      }) as LoadBookmarkResult[]
+      }) // satisfies LoadBookmark[]
     } else {
       returnData = data
     }

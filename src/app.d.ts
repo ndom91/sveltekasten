@@ -19,7 +19,7 @@ type Provider = {
 declare global {
   type TODO = any
 
-  type LoadBookmarkResult = Prisma.BookmarkGetPayload<{
+  type LoadBookmark = Prisma.BookmarkGetPayload<{
     include: { category: true; tags: { include: { tag: true } } }
   }>
   type LoadFeedEntry = Prisma.FeedEntryGetPayload<{

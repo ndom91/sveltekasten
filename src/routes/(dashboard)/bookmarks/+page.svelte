@@ -12,7 +12,7 @@
   const { data } = $props()
   let pageNumber = $state(1)
   let totalItemCount = $state<number>(data.count ?? 1)
-  let allItems = $state<LoadBookmarkResult[]>(data.bookmarks!)
+  let allItems = $state<LoadBookmark[]>(data.bookmarks!)
   const logger = new Logger({ level: loggerLevels.DEBUG })
 
   $effect(() => {
