@@ -131,19 +131,25 @@ export const actions: Actions = {
         return fail(401, { type: "error", error: "Unauthenticated" })
       }
       const { userId } = session.user
-      const { title, url, description, categoryId, tagIds: tagIdsString } = form.data
-      const tagIds = tagIdsString?.length ? tagIdsString.split(",") : []
+      const { title, url, description, categoryId, tags } = form.data
 
-      const resp = await fetch(url)
-      const metadata = await metascraperClient({ html: await resp.text(), url: url })
-      const image = metadata.image ? metadata.image : (metadata.logo as string)
-      const b64Thumbhash = await getThumbhashNode(image)
+      const bookmarkUrlResponse = await fetch(url)
+      const metadata = await metascraperClient({ html: await bookmarkUrlResponse.text(), url: url })
+      const imageUrl = metadata.image ? metadata.image : (metadata.logo as string)
+
+      // Continue bookmark saving when sharp or anything chokes on an image
+      let b64Thumbhash = ""
+      try {
+        b64Thumbhash = await getThumbhashNode(imageUrl)
+      } catch (error) {
+        console.error("Failed to get thumbhash", error)
+      }
 
       const bookmark = await prisma.bookmark.create({
         data: {
           url,
           title: title,
-          image,
+          image: imageUrl,
           imageBlur: b64Thumbhash,
           desc: description ? description : metadata.description,
           metadata,
@@ -152,23 +158,23 @@ export const actions: Actions = {
               id: userId,
             },
           },
-          tags: tagIds
+          tags: tags
             ? {
-                create: tagIds.map((tagId) => ({
-                  tag: {
-                    connect: {
-                      id: tagId,
-                    },
+              create: tags.map((tag) => ({
+                tag: {
+                  connect: {
+                    id: tag.id,
                   },
-                })),
-              }
+                },
+              })),
+            }
             : {},
           category: categoryId
             ? {
-                connect: {
-                  id: categoryId,
-                },
-              }
+              connect: {
+                id: categoryId,
+              },
+            }
             : {},
         },
       })

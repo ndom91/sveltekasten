@@ -5,7 +5,15 @@ export const formSchema = z.object({
   url: z.string({ required_error: "A URL is required" }).url().max(100),
   description: z.string().max(500).optional().default(""),
   categoryId: z.string().max(50).optional().default(""),
-  tagIds: z.string().max(500).optional().default(""),
+  tags: z.array(
+    z.object({
+      id: z.string().cuid(),
+      name: z.string(),
+      userId: z.string().min(2).max(50),
+      createdAt: z.date(),
+      updatedAt: z.date(),
+    }),
+  ),
 })
 
 export type FormSchema = typeof formSchema

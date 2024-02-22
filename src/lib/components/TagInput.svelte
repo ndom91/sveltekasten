@@ -20,8 +20,9 @@
     field,
   } = $props<{
     form: SuperForm<T>
-    field: FormPathLeaves<T>
-    disabled: boolean
+    field: string
+    // field: FormPathLeaves<T>
+    disabled?: boolean
     tags: RawTag[]
   }>()
 
@@ -154,7 +155,7 @@
       <span class="block py-2 px-5 text-sm text-muted-foreground"> No results found </span>
     {/each}
   </Combobox.Content>
-  <Combobox.HiddenInput name="tagIds" />
+  <Combobox.HiddenInput name="tags" />
 </Combobox.Root>
 {#if selectedValues.length}
   <div class="flex flex-wrap gap-2 mb-2">

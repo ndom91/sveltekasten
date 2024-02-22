@@ -13,18 +13,18 @@
   import TagInput from "$lib/components/TagInput.svelte"
   import toast from "svelte-french-toast"
   import { useInterface } from "$state/ui.svelte"
-  import type { Tag } from "$zod"
 
   const ui = useInterface()
 
   const form = superForm($page.data.quickAddForm, {
+    dataType: "json",
     customValidity: true,
     validators: zodClient(formSchema),
     onUpdated: ({ form }) => {
-      if (form.message?.text) {
-        toast.success(form.message.text)
+      if (form.valid) {
+        toast.success("Bookmark Added")
+        ui.toggleMetadataSidebarEditMode()
       }
-      ui.toggleQuickAdd()
     },
     onError: ({ result }) => {
       if (result.type === "error") {
@@ -37,10 +37,6 @@
   const categoryProxy = fieldProxy(form, "categoryId", {})
 
   $inspect($message)
-
-  const tagValues = $derived(
-    ($page.data.tags as Tag[]).map((tag) => ({ value: tag.id, label: tag.name })),
-  )
 </script>
 
 <form method="POST" action="/bookmarks?/quickAdd" use:enhance class="flex flex-col gap-2">
@@ -108,7 +104,7 @@
   <div class="flex flex-col gap-2 align-start">
     <Label for="tags">Tags</Label>
     <!-- @ts-ignore -->
-    <TagInput {form} tags={tagValues} field="tagIds" />
+    <TagInput {form} tags={$page.data.tags} field="tags" />
   </div>
 
   <div class="flex flex-col gap-2 align-start">
@@ -138,8 +134,9 @@
     {/if}
     Submit
   </Button>
-  {#if $message}<span class="text-xs">{$message}</span>{/if}
   {#if dev}
-    <SuperDebug data={$formData} />
+    <div class="flex flex-col pt-4">
+      <SuperDebug data={{ $formData, $errors }} collapsible={true} theme="vscode" />
+    </div>
   {/if}
 </form>

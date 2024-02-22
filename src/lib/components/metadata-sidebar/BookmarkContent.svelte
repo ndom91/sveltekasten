@@ -1,14 +1,14 @@
 <script lang="ts">
   import { page } from "$app/stores"
   import { dev } from "$app/environment"
-  import { zodClient } from "sveltekit-superforms/adapters"
+  import { zod } from "sveltekit-superforms/adapters"
   import SuperDebug, { defaults, superForm, fieldProxy } from "sveltekit-superforms"
   import { format } from "@formkit/tempo"
   import toast from "svelte-french-toast"
   import type { Tag } from "$zod"
 
   import { cn } from "$lib/utils/style"
-  import { handleActionResults } from "$lib/utils/form-action"
+  import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
   import { useInterface } from "$state/ui.svelte"
   import { formSchema as metadataSchema } from "$schemas/metadata-sidebar"
 
@@ -31,29 +31,23 @@
     category: ui.metadataSidebarData.bookmark?.category,
     tags: ui.metadataSidebarData.bookmark?.tags,
   }
-  const superformInstance = superForm(
-    defaults(defaultData, zodClient($page.data.metadataForm)).data,
-    {
-      resetForm: false,
-      dataType: "json",
-      validators: zodClient(metadataSchema),
-      onUpdated: ({ form }) => {
-        if (form.message?.text) {
-          toast.success(form.message.text)
-        }
-      },
-      onError: ({ result }) => {
-        if (result.type === "error") {
-          toast.error(result.error.message)
-        }
-      },
-      onUpdated: ({ form }) => {
-        if (form.valid) {
-          ui.toggleMetadataSidebarEditMode()
-        }
-      },
+  const superformInstance = superForm(defaults(defaultData, zod(metadataSchema)), {
+    resetForm: false,
+    dataType: "json",
+    validators: zod(metadataSchema),
+    onUpdated: ({ form }) => {
+      if (form.valid) {
+        toast.success("Bookmark Updated")
+        ui.toggleMetadataSidebarEditMode()
+      }
     },
-  )
+    onError: ({ result }) => {
+      if (result.type === "error") {
+        toast.error(result.error.message)
+      }
+    },
+  })
+  $inspect("superformInstance", superformInstance)
   const { form, message, errors, constraints, enhance, submitting, delayed } = superformInstance
 
   $inspect("form", $form)
@@ -273,7 +267,16 @@
       </div>
       {#if isEditMode}
         <div class="w-full">
-          <Button type="submit" class="w-full" variant="default">Save</Button>
+          <Button
+            type="submit"
+            disabled={$submitting || $delayed}
+            class="w-full transition-shadow duration-200 focus:ring-2 focus:ring-offset-2 focus:outline-none ring-offset-background focus:ring-foreground focus:ring-offset-background"
+          >
+            {#if $submitting || $delayed}
+              <LoadingIndicator class="mr-2" />
+            {/if}
+            Save
+          </Button>
         </div>
       {/if}
       {#if dev}
