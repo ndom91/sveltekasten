@@ -1,6 +1,8 @@
 import type { Bookmark, Tag, Category } from "$zod"
 import "@auth/sveltekit"
 import type { JsonValueType } from "$zod"
+import { Prisma } from "@prisma/client"
+import type { Tag } from "$zod"
 
 declare module "@auth/sveltekit/jwt" {
   interface JWT {
@@ -22,6 +24,7 @@ declare global {
   type LoadBookmark = Prisma.BookmarkGetPayload<{
     include: { category: true; tags: { include: { tag: true } } }
   }>
+  type LoadBookmarkFlatTags = Omit<LoadBookmark, "tags"> & { tags: Tag[] }
   type LoadFeedEntry = Prisma.FeedEntryGetPayload<{
     include: { feed: true; feedMedia: true }
   }>
