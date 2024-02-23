@@ -58,8 +58,8 @@
 </svelte:head>
 
 <Navbar simple />
-<div class="flex overflow-y-scroll flex-col">
-  <main class="p-4 mx-auto w-full">
+<div class="flex overflow-y-scroll flex-col items-center">
+  <main class="p-4 mx-auto w-full max-w-screen-2xl">
     <div class="flex flex-col gap-2 justify-start align-start">
       <Table.Root {...$tableAttrs}>
         <Table.Header>

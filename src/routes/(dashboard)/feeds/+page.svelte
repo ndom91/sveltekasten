@@ -298,11 +298,11 @@
 <svelte:window on:keydown={handleKeyDown} />
 
 <Navbar />
-<div class="flex flex-col">
-  <main class="h-full">
+<div class="flex overflow-y-scroll flex-col items-center">
+  <main class="w-full max-w-screen-2xl h-full">
     <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start">
       {#if data.feedEntries?.count > 0}
-        <div bind:this={listWrapperEl} class="overflow-y-scroll h-full">
+        <div bind:this={listWrapperEl} class="h-full">
           {#await getActiveFeedItems()}
             {#each Array.from({ length: 10 }) as _}
               <div class="h-40 text-3xl">

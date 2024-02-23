@@ -1,5 +1,6 @@
 <script lang="ts">
   import toast from "svelte-french-toast"
+  import { format } from "@formkit/tempo"
   import { page } from "$app/stores"
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
   import { Button } from "$lib/components/ui/button"
@@ -12,6 +13,7 @@
   import { TTSLocation } from "$state/ui.svelte"
   import { bookmarkTypes, parseImportFile, importBookmarks, exportBookmarks } from "../utils"
   import { parseChromeBookmarks, parsePocketBookmarks } from "../import"
+  import * as Table from "$lib/components/ui/table"
 
   const capitalize = (word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
 
@@ -102,13 +104,9 @@
 
   $effect(() => {
     if (!importFile) return
-    console.log("importFile", importFile)
-    console.log("importFile[0]", importFile[0])
-    console.log("importFile.typeof[0]", typeof importFile[0])
     const fileReader = new FileReader()
     fileReader.readAsText(importFile[0])
     fileReader.onloadend = (e) => {
-      console.log("fileReader.onloadend.e", e)
       const htmlFile = e?.currentTarget?.result
       if (!htmlFile) return
 
@@ -136,9 +134,12 @@
 </script>
 
 <div class="flex flex-col gap-2 justify-start items-start h-full">
-  <Card.Root class="w-full">
-    <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
-      <Card.Title>API Token <i>TODO</i></Card.Title>
+  <Card.Root class="w-full shadow-none">
+    <Card.Header class="bg-neutral-100 dark:bg-neutral-900">
+      <Card.Title class="flex justify-between items-center w-full">
+        <span>API Token</span>
+        <Badge class="text-sm bg-amber-500 dark:bg-amber-300">Todo</Badge>
+      </Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
       <div class="flex gap-2 items-center">
@@ -151,12 +152,12 @@
         >
         you can use the following token:
         <div
-          class="flex justify-between items-center p-2 font-mono rounded-md bg-zinc-100 dark:bg-zinc-700"
+          class="flex justify-between items-center p-2 font-mono rounded-md bg-neutral-100 dark:bg-neutral-700"
         >
           {$page.data?.session?.user?.userId}
           <button
             use:clipboard={$page.data?.session?.user?.userId ?? ""}
-            class="p-1 h-8 bg-transparent rounded-md outline-none focus:ring-2 focus:outline-none focus:ring-zinc-300"
+            class="p-1 h-8 bg-transparent rounded-md outline-none focus:ring-2 focus:outline-none focus:ring-neutral-300"
           >
             <svg
               class="size-4"
@@ -179,8 +180,8 @@
       </div>
     </Card.Content>
   </Card.Root>
-  <Card.Root class="w-full">
-    <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
+  <Card.Root class="w-full shadow-none">
+    <Card.Header class="bg-neutral-100 dark:bg-neutral-900">
       <Card.Title class="flex justify-between items-center w-full">
         <span>AI Settings</span>
         <Badge class="text-sm">Experimental</Badge>
@@ -208,12 +209,12 @@
           really wanted to share them with you all already anyway!
         </p>
         <div class="flex flex-col gap-4 items-start">
-          <div class="flex gap-4 items-center">
-            <Checkbox id="summarization" bind:checked={summarizationEnabled} />
+          <div class="flex gap-4 items-start">
+            <Checkbox id="summarization" class="mt-1" bind:checked={summarizationEnabled} />
             <div>
               <label for="summarization" class="">
-                <div class="text-xl">Summarization</div>
-                <div class="text-neutral-400 dark:text-neutral-500">
+                <div class="text-lg">Summarization</div>
+                <div class="text-neutral-500">
                   Our summaries feature is using the <code>Xenova/distilbart-cnn-6-6</code> model and
                   takes about ~30s on average to summarize a medium length article. We recommend this
                   one for day-to-day use.
@@ -221,20 +222,20 @@
               </label>
             </div>
           </div>
-          <div class="flex gap-4 items-center">
-            <Checkbox id="tts" bind:checked={ttsEnabled} />
+          <div class="flex gap-4 items-start">
+            <Checkbox class="mt-1" id="tts" bind:checked={ttsEnabled} />
             <div>
-              <div class="flex flex-col gap-4 text-neutral-400 dark:text-neutral-500">
+              <div class="flex flex-col gap-4">
                 <label for="tts" class="flex flex-col gap-2">
-                  <div class="text-xl text-neutral-800 dark:text-neutral-50">Text to Speech</div>
-                  <p>
+                  <div class="text-lg dark:text-neutral-50">Text to Speech</div>
+                  <p class="text-neutral-500">
                     In the browser, our text-to-speech (TTS) feature is using the <code
                       >Xenova/speecht5_tts</code
                     > model and takes about ~10s on average to generate good quality voice audio for
                     each sentence of text. Therefore, this option is really only good for experimentation
                     at this point.
                   </p>
-                  <p>
+                  <p class="text-neutral-500">
                     However, we also support a "Server" mode which leverages the Edge browser LLM
                     APIs for text-to-speech generation. This not only performs significantly better,
                     but it also supports choosing one of a dozen voices. You can adjust the method
@@ -254,7 +255,9 @@
                       items={ttsSelectValues}
                       bind:selected={ttsLocation}
                     >
-                      <Select.Trigger class="w-full disabled:cursor-default enabled:bg-zinc-950">
+                      <Select.Trigger
+                        class="w-full disabled:cursor-default enabled:bg-neutral-200 enabled:dark:bg-neutral-950"
+                      >
                         <Select.Value placeholder="TTS Inference Location" />
                       </Select.Trigger>
                       <Select.Input />
@@ -281,7 +284,7 @@
                       bind:selected={ttsSpeaker}
                     >
                       <Select.Trigger
-                        class="w-full disabled:cursor-not-allowed enabled:bg-zinc-950"
+                        class="w-full disabled:cursor-not-allowed enabled:bg-neutral-200 enabled:dark:bg-neutral-950"
                       >
                         <Select.Value placeholder="Speaker" />
                       </Select.Trigger>
@@ -315,11 +318,10 @@
       </div>
     </Card.Content>
   </Card.Root>
-  <Card.Root class="w-full">
-    <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
+  <Card.Root class="w-full shadow-none">
+    <Card.Header class="bg-neutral-100 dark:bg-neutral-900">
       <Card.Title class="flex justify-between items-center w-full">
         <span>Import</span>
-        <Badge class="bg-amber-200">TODO</Badge>
       </Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
@@ -333,14 +335,45 @@
           accept="text/html"
           id="import-bookmarks"
           type="file"
-          class="flex py-2 px-3 w-full max-w-sm h-10 text-sm bg-transparent rounded-md border focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-input ring-offset-background file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-ring"
+          class="flex py-2 px-3 w-full max-w-sm h-10 text-sm bg-transparent rounded-md border hover:cursor-pointer focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-input ring-offset-background file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-ring"
           bind:files={importFile}
         />
       </div>
+      {#if bookmarksPreview.length > 1}
+        <div class="flex flex-col gap-4 mt-4 rounded-sm dark:bg-neutral-900">
+          <div class="flex gap-1 items-center p-4 rounded-t-sm bg-neutral-300 dark:bg-neutral-800">
+            <h3>Import Preview</h3>
+            <small>First 5 Bookmarks</small>
+          </div>
+          <div class="p-4 rounded-sm">
+            <Table.Root class="rounded-sm border dark:border-neutral-800">
+              <Table.Header>
+                <Table.Row class="hover:!bg-transparent">
+                  <Table.Head class="w-1/4 min-w-48">Title</Table.Head>
+                  <Table.Head>URL</Table.Head>
+                  <Table.Head class="text-right">Created At</Table.Head>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {#each bookmarksPreview.slice(0, 5) as bookmark (bookmark.url)}
+                  <Table.Row class=" hover:!bg-neutral-300/30 hover:dark:!bg-neutral-950/30">
+                    <Table.Cell class="font-medium">{bookmark.title}</Table.Cell>
+                    <Table.Cell>{bookmark.url}</Table.Cell>
+                    <Table.Cell class="text-right"
+                      >{format(bookmark.createdAt, "medium")}</Table.Cell
+                    >
+                  </Table.Row>
+                {/each}
+              </Table.Body>
+            </Table.Root>
+          </div>
+          <Button class="mx-auto mb-4 w-96" onclick={handleImport}>Looks good, Import!</Button>
+        </div>
+      {/if}
     </Card.Content>
   </Card.Root>
-  <Card.Root class="w-full">
-    <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
+  <Card.Root class="w-full shadow-none">
+    <Card.Header class="bg-neutral-100 dark:bg-neutral-900">
       <Card.Title class="flex justify-between items-center w-full">
         <span>Export</span>
       </Card.Title>
@@ -358,53 +391,6 @@
           {/if}
           Export Bookmark File
         </Button>
-      </div>
-    </Card.Content>
-  </Card.Root>
-  <Card.Root class="w-full">
-    <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
-      <Card.Title>About</Card.Title>
-    </Card.Header>
-    <Card.Content class="p-4">
-      <div class="flex flex-col gap-4 items-start">
-        <p>
-          This is an open-source project written mainly by <a
-            href="https://ndo.dev"
-            target="blank"
-            class="underline underline-offset-4">ndom91</a
-          >. More information can be found at the links below.
-        </p>
-        <ul class="list-disc list-inside">
-          <li>
-            Repository: <a
-              class="font-mono font-bold"
-              href="https://github.com/ndom91/briefkasten"
-              target="_blank">ndom91/briefkasten</a
-            >
-          </li>
-          <li>
-            Screenshot API: <a
-              class="font-mono font-bold"
-              href="https://github.com/ndom91/briefkasten-screenshot"
-              target="_blank">ndom91/briefkasten-screenshot</a
-            >
-          </li>
-          <li>
-            Chrome Extension: <a
-              class="font-mono font-bold"
-              href="https://github.com/ndom91/briefkasten-extension"
-              target="_blank">ndom91/briefkasten-extension</a
-            >
-          </li>
-          <li>
-            Missing Image Scraping Job: <a
-              class="font-mono font-bold"
-              href="https://github.com/ndom91/briefkasten-scrape"
-              target="_blank">ndom91/briefkasten-scrape</a
-            >
-          </li>
-          <li>License: MIT</li>
-        </ul>
       </div>
     </Card.Content>
   </Card.Root>

@@ -2,8 +2,8 @@ import toast from "svelte-french-toast"
 import { parseChromeBookmarks, parsePocketBookmarks } from "./import"
 
 export const bookmarkTypes = {
-  POCKET: "CHROME",
   CHROME: "CHROME",
+  POCKET: "POCKET",
 }
 
 /*
@@ -39,10 +39,9 @@ export const exportBookmarks = (bookmarks: LoadBookmarkFlatTags[]) => {
   el.click()
 }
 
-export const parseImportFile = (file: FileList) => {
-  console.log("parseImportFile", file)
+export const parseImportFile = (file: string) => {
   const domParser = new DOMParser()
-  const doc = domParser.parseFromString(file[0], "text/html")
+  const doc = domParser.parseFromString(file, "text/html")
   if (!doc) throw new Error("Could not parse file")
 
   if (doc?.querySelector("title")?.textContent?.includes("Pocket")) {

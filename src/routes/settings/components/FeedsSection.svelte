@@ -26,7 +26,7 @@
   <svelte:component this={DeleteDialog} {form} bind:open={isDeleteDialogOpen} feed={targetFeed} />
 {/await}
 <div class="flex flex-col gap-2 justify-start items-start">
-  <Card.Root class="w-full">
+  <Card.Root class="w-full shadow-none">
     <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
       <Card.Title>Manage Feeds</Card.Title>
     </Card.Header>
@@ -48,6 +48,7 @@
             <div class="w-24" role="cell">
               <Button
                 onclick={(e: MouseEvent) => handleToggleDeleteDialog(e, feed)}
+                class="bg-red-500 dark:bg-red-700"
                 variant="destructive"
               >
                 <svg
@@ -80,7 +81,7 @@
       </div>
     </Card.Content>
   </Card.Root>
-  <Card.Root class="w-full">
+  <Card.Root class="w-full shadow-none">
     <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
       <Card.Title>Add Feed</Card.Title>
     </Card.Header>
