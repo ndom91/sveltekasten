@@ -1,6 +1,7 @@
 <script lang="ts">
   import toast from "svelte-french-toast"
   import { page } from "$app/stores"
+  import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
   import { Button } from "$lib/components/ui/button"
   import { Input } from "$lib/components/ui/input"
   import { Checkbox } from "$lib/components/ui/checkbox"
@@ -10,11 +11,13 @@
   import { useInterface } from "$state/ui.svelte"
   import { Badge } from "$/lib/components/ui/badge"
   import { TTSLocation } from "$state/ui.svelte"
+  import { exportBookmarks } from "../utils"
 
-  const capitalize = (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+  const capitalize = (word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
 
   const ui = useInterface()
 
+  let exportLoading = $state(false)
   let ttsEnabled = $state($page.data.user?.settings?.ai?.tts?.enabled ?? true)
   let ttsLocation = $state({
     value: $page.data.user?.settings?.ai?.tts?.location.toUpperCase() ?? TTSLocation.SERVER,
@@ -27,7 +30,14 @@
   let summarizationEnabled = $state($page.data.user?.settings?.ai?.summarization?.enabled ?? true)
   let transcriptionEnabled = $state($page.data.user?.settings?.ai?.transcription?.enabled ?? true)
 
-  const updateUser = async (userSettings) => {
+  type UpdateUserSettingsArgs = {
+    ttsEnabled: boolean
+    ttsSpeaker: string
+    ttsLocation: string
+    summarizationEnabled: boolean
+    transcriptionEnabled: boolean
+  }
+  const updateUser = async (userSettings: UpdateUserSettingsArgs) => {
     const userUpdateResponse = await fetch("/api/v1/user", {
       method: "PUT",
       body: JSON.stringify({
@@ -83,6 +93,12 @@
     value: location,
     label: capitalize(location),
   }))
+
+  const handleBookmarkExport = () => {
+    exportLoading = true
+    exportBookmarks($page.data.bookmarks.data)
+    exportLoading = false
+  }
 </script>
 
 <div class="flex flex-col gap-2 justify-start items-start h-full">
@@ -288,7 +304,6 @@
     <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
       <Card.Title class="flex justify-between items-center w-full">
         <span>Export</span>
-        <Badge class="bg-amber-200">TODO</Badge>
       </Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
@@ -298,7 +313,12 @@
           format which you can use to import your saved items to any other bookmarks manager or
           browser.
         </p>
-        <Button>Save</Button>
+        <Button onclick={handleBookmarkExport} disabled={exportLoading}>
+          {#if exportLoading}
+            <LoadingIndicator class="mr-2" />
+          {/if}
+          Export Bookmark File
+        </Button>
       </div>
     </Card.Content>
   </Card.Root>

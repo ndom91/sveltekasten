@@ -87,6 +87,21 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
       orderBy: { createdAt: "desc" },
     })
 
+    const [bookmarkData, bookmarkCount] = await prisma.bookmark.findManyAndCount({
+      where: {
+        userId: session?.user?.userId,
+      },
+      include: {
+        category: true,
+        tags: { include: { tag: true } },
+      },
+      orderBy: { createdAt: "desc" },
+    })
+
+    const bookmarksFlatTags = bookmarkData.map((bookmark) => {
+      return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) }
+    })
+
     const user = await prisma.user.findUnique({
       select: {
         id: true,
@@ -109,8 +124,17 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
         data: feedData,
         count: feedCount,
       },
+      bookmarks: {
+        data: bookmarksFlatTags,
+        count: bookmarkCount,
+      },
     }
   } catch (error: any) {
-    return { feedEntries: [], count: 0, error: error.message ?? error }
+    console.error(error)
+    return {
+      bookmarks: { count: 0, data: [] },
+      feedEntries: { count: 0, data: [] },
+      error: error.message ?? error,
+    }
   }
 }
