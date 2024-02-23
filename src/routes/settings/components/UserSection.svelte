@@ -3,7 +3,6 @@
   import { page } from "$app/stores"
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
   import { Button } from "$lib/components/ui/button"
-  import { Input } from "$lib/components/ui/input"
   import { Checkbox } from "$lib/components/ui/checkbox"
   import * as Card from "$lib/components/ui/card"
   import * as Select from "$lib/components/ui/select"
@@ -11,7 +10,8 @@
   import { useInterface } from "$state/ui.svelte"
   import { Badge } from "$/lib/components/ui/badge"
   import { TTSLocation } from "$state/ui.svelte"
-  import { exportBookmarks } from "../utils"
+  import { bookmarkTypes, parseImportFile, importBookmarks, exportBookmarks } from "../utils"
+  import { parseChromeBookmarks, parsePocketBookmarks } from "../import"
 
   const capitalize = (word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
 
@@ -93,6 +93,40 @@
     value: location,
     label: capitalize(location),
   }))
+
+  let importFile = $state<TODO>(null)
+  let bookmarksPreview = $state<TODO>([])
+
+  $inspect("file", importFile)
+  $inspect("bookmarksPreview", bookmarksPreview)
+
+  $effect(() => {
+    if (!importFile) return
+    console.log("importFile", importFile)
+    console.log("importFile[0]", importFile[0])
+    console.log("importFile.typeof[0]", typeof importFile[0])
+    const fileReader = new FileReader()
+    fileReader.readAsText(importFile[0])
+    fileReader.onloadend = (e) => {
+      console.log("fileReader.onloadend.e", e)
+      const htmlFile = e?.currentTarget?.result
+      if (!htmlFile) return
+
+      const parsedFile = parseImportFile(htmlFile)
+      if (!parsedFile) return
+
+      if (parsedFile.type === bookmarkTypes.POCKET) {
+        bookmarksPreview = parsePocketBookmarks(parsedFile.doc)
+      } else if (parsedFile.type === bookmarkTypes.CHROME) {
+        // Default Chrome format
+        bookmarksPreview = parseChromeBookmarks(parsedFile.doc)
+      }
+    }
+  })
+
+  const handleImport = () => {
+    importBookmarks(importFile)
+  }
 
   const handleBookmarkExport = () => {
     exportLoading = true
@@ -291,12 +325,17 @@
     <Card.Content class="p-4">
       <div class="flex flex-col gap-4 items-start">
         <p>
-          Upload a file exported from another tool, or your browser. Click browse or drop a <code
-            >*.html</code
-          > file of bookmarks onto the area below. After the file has been uploaded and its name appears
-          in the upload widget, you can press Import to start the import process.
+          Upload a bookmarks HTML file exported from another tool, or your browser. After the file
+          has been uploaded and its name appears in the upload widget, you can press Import to start
+          the import process.
         </p>
-        <Input id="picture" type="file" />
+        <input
+          accept="text/html"
+          id="import-bookmarks"
+          type="file"
+          class="flex py-2 px-3 w-full max-w-sm h-10 text-sm bg-transparent rounded-md border focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-input ring-offset-background file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-ring"
+          bind:files={importFile}
+        />
       </div>
     </Card.Content>
   </Card.Root>

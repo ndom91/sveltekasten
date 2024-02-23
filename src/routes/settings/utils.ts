@@ -1,3 +1,11 @@
+import toast from "svelte-french-toast"
+import { parseChromeBookmarks, parsePocketBookmarks } from "./import"
+
+export const bookmarkTypes = {
+  POCKET: "CHROME",
+  CHROME: "CHROME",
+}
+
 /*
  * Based on format in Microsoft Bookmark File "Spec"
  * - https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa753582(v=vs.85)
@@ -29,4 +37,67 @@ export const exportBookmarks = (bookmarks: LoadBookmarkFlatTags[]) => {
   const bookmarksExport = new Blob([output], { type: "text/html" })
   el.href = window.URL.createObjectURL(bookmarksExport)
   el.click()
+}
+
+export const parseImportFile = (file: FileList) => {
+  console.log("parseImportFile", file)
+  const domParser = new DOMParser()
+  const doc = domParser.parseFromString(file[0], "text/html")
+  if (!doc) throw new Error("Could not parse file")
+
+  if (doc?.querySelector("title")?.textContent?.includes("Pocket")) {
+    return {
+      type: bookmarkTypes.POCKET,
+      doc,
+    }
+  }
+  return {
+    type: bookmarkTypes.CHROME,
+    doc,
+  }
+}
+
+export const importBookmarks = async (file: FileList) => {
+  let bookmarks = []
+  const parsedFile = parseImportFile(file)
+  if (parsedFile.type === bookmarkTypes.POCKET) {
+    bookmarks = parsePocketBookmarks(parsedFile.doc)
+  } else if (parsedFile.type === bookmarkTypes.CHROME) {
+    // Default Chrome format
+    bookmarks = parseChromeBookmarks(parsedFile.doc)
+  }
+
+  if (!bookmarks.length) {
+    toast.error(`No bookmarks successfully parsed. See console for any potential errors.`)
+    return
+  }
+
+  const bulkCreateRes = await fetch("/api/bookmarks/bulk", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(bookmarks),
+  })
+
+  if (!bulkCreateRes.ok) {
+    if ((await bulkCreateRes.json()).code === "P2002") {
+      toast.error(`Error saving imported bookmarks\nURL already exists`)
+      return
+    }
+    toast.error(`Error saving imported bookmarks`)
+    return
+  }
+
+  const bulkCreateData = await bulkCreateRes.json()
+
+  if (bulkCreateData.data.count === bookmarks.length) {
+    toast.success(`Successfully imported ${bookmarks.length} bookmarks`)
+  } else if (bulkCreateData.data.count) {
+    console.warn(bulkCreateData)
+    toast.error(`Successfully imported only ${bookmarks.length} bookmarks`)
+  } else {
+    console.error(bulkCreateData)
+    toast.error(`Error importing bookmarks`)
+  }
 }
