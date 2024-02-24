@@ -165,5 +165,5 @@
 </div>
 
 {#snippet emptyHelper()}
-  <EmptyState arrow={false} />
+  <EmptyState showArrow={false} />
 {/snippet}

@@ -14,8 +14,7 @@
   import { bookmarkTypes, parseImportFile, importBookmarks, exportBookmarks } from "../utils"
   import { parseChromeBookmarks, parsePocketBookmarks } from "../import"
   import * as Table from "$lib/components/ui/table"
-
-  const capitalize = (word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+  import { capitalize } from "$lib/utils"
 
   const ui = useInterface()
 
