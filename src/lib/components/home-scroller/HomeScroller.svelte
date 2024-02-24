@@ -87,7 +87,7 @@
       </a>
     {/if}
   </div>
-  <div class="flex overflow-x-auto">
+  <div class="flex overflow-x-scroll gap-4 py-2 px-4">
     {#each items as item (item.id)}
       {#if type === "bookmarks"}
         <BookmarkPreviewCard {item} />

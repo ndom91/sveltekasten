@@ -3,7 +3,7 @@
   const { item } = $props<{ item: LoadFeedEntry }>()
 </script>
 
-<div class="flex flex-col gap-2 p-4 m-4 rounded-md max-w-72 bg-neutral-200 dark:bg-neutral-800">
+<div class="flex flex-col gap-2 p-4 rounded-md max-w-72 bg-neutral-200 dark:bg-neutral-800">
   <img
     src={item.feedMedia?.[0]?.href ??
       `https://picsum.photos/seed/${encodeURIComponent(

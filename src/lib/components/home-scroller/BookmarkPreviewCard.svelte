@@ -3,13 +3,13 @@
   const { item } = $props<{ item: LoadBookmark }>()
 </script>
 
-<div class="flex flex-col gap-2 p-4 m-4 rounded-md max-w-72 bg-neutral-200 dark:bg-neutral-800">
+<div class="flex flex-col gap-2 p-4 rounded-md max-w-72 bg-neutral-200 dark:bg-neutral-800">
   <img
     src={item.image}
     alt={item.title}
     class="object-cover object-center mb-1 rounded-sm aspect-video"
   />
-  <div class="max-w-full">
+  <div class="flex flex-col gap-1 w-64">
     <div class="flex justify-between">
       <img
         src={`https://icons.duckduckgo.com/ip9/${new URL(item.url).hostname}.ico`}
