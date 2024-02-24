@@ -41,7 +41,7 @@
   </div>
   <div class="flex gap-4 justify-end items-center">
     {#if !simple}
-      {#if ui.textToSpeechAudioBlob && ui.aiFeaturesPreferences.tts}
+      {#if ui.textToSpeechAudioBlob && ui.aiFeaturesPreferences.tts.enabled}
         <AudioPlayer src={ui.textToSpeechAudioBlob} />
       {/if}
       <div

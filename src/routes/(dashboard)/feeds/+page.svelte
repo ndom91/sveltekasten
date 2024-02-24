@@ -32,7 +32,7 @@
 
   $effect(() => {
     if (
-      !ui.aiFeaturesPreferences.tts ||
+      !ui.aiFeaturesPreferences.tts.enabled ||
       ui.aiFeaturesPreferences.tts.location !== TTSLocation.BROWSER
     )
       return
@@ -88,7 +88,7 @@
   })
 
   const handleGenerateSpeech = async (text: string) => {
-    if (!ui.aiFeaturesPreferences.tts) return
+    if (!ui.aiFeaturesPreferences.tts.enabled) return
     if (ui.aiFeaturesPreferences.tts.location.toUpperCase() === TTSLocation.SERVER) {
       const ttsResponse = await fetch("/api/v1/tts", {
         method: "POST",
@@ -105,7 +105,7 @@
 
     if (
       !ttsWorker ||
-      !ui.aiFeaturesPreferences.tts ||
+      !ui.aiFeaturesPreferences.tts.enabled ||
       ui.aiFeaturesPreferences.tts.location !== TTSLocation.BROWSER
     )
       return
@@ -121,7 +121,7 @@
   let summaryWorker = $state<Worker>()
 
   $effect(() => {
-    if (!summaryWorker && ui.aiFeaturesPreferences.summarization) {
+    if (!summaryWorker && ui.aiFeaturesPreferences.summarization.enabled) {
       summaryWorker = new Worker(new URL(summaryWorkerUrl, import.meta.url), {
         type: "module",
       })
@@ -145,7 +145,7 @@
   })
 
   const handleSummarizeText = (text: string) => {
-    if (!summaryWorker || !ui.aiFeaturesPreferences.summarization) return
+    if (!summaryWorker || !ui.aiFeaturesPreferences.summarization.enabled) return
     console.time("summary.generate")
     disabledTtsButton = true
     ui.summarizationLoading = true
