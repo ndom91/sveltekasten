@@ -20,7 +20,7 @@
         class="rounded-full size-5"
       />
       <span class="dark:text-neutral-400">
-        {format(item.published, { date: "medium", time: "short" })}
+        {format(item.published!, { date: "medium", time: "short" })}
       </span>
     </div>
     <a href={item.link} target="_blank" class="line-clamp-2">

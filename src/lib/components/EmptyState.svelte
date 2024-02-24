@@ -1,10 +1,10 @@
 <script lang="ts">
   import EmptyIllustration from "$lib/assets/new.png"
   import Arrow from "$lib/assets/arrow.svg?raw"
-  const { arrow = true } = $props()
+  const { showArrow = true } = $props()
 </script>
 
-{#if arrow}
+{#if showArrow}
   <div class="hidden absolute top-28 right-28 lg:block text-zinc-700 dark:text-zinc-100">
     {@html Arrow}
   </div>
