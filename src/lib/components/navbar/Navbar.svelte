@@ -34,7 +34,7 @@
 
 <svelte:window on:keydown={handleKeyDown} />
 <nav
-  class="flex justify-between items-center p-4 mx-auto w-full border-b min-h-20 border-b-zinc-100 dark:border-b-zinc-900"
+  class="flex justify-between items-center p-4 mx-auto w-full border-b h-[73px] border-b-zinc-100 dark:border-b-zinc-900"
 >
   <div>
     <Breadcrumbs />
