@@ -10,12 +10,12 @@ export const load: PageServerLoad = async ({ locals, url }) => {
     const fromUrl = url.pathname + url.search
     redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
   }
-  // if (!session?.user?.userId) {
+  // if (!session?.user?.id) {
   //   return fail(401, { type: "error", error: "Unauthenticated" })
   // }
 
   const response = await prisma.category.findMany({
-    where: { userId: session?.user?.userId },
+    where: { userId: session?.user?.id },
   })
 
   return {
@@ -27,7 +27,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 export const actions: Actions = {
   createCategory: async ({ request, locals }) => {
     const session = await locals.auth()
-    if (!session?.user?.userId) {
+    if (!session?.user?.id) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
     const formData = Object.fromEntries(await request.formData())
@@ -40,7 +40,7 @@ export const actions: Actions = {
         data: {
           name,
           description,
-          userId: session.user.userId,
+          userId: session.user.id,
         },
       })
 

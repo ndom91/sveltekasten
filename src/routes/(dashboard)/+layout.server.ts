@@ -11,19 +11,19 @@ export const load: LayoutServerLoad = async ({ locals }) => {
   })
   try {
     const session = await locals.auth()
-    if (!session?.user?.userId) {
+    if (!session?.user?.id) {
       fail(401, { type: "error", error: "Unauthenticated" })
     }
     const [categories, tags, user] = await prisma.$transaction([
       prisma.category.findMany({
-        where: { userId: session?.user?.userId },
+        where: { userId: session?.user?.id },
       }),
       prisma.tag.findMany({
-        where: { userId: session?.user?.userId },
+        where: { userId: session?.user?.id },
       }),
       prisma.user.findUnique({
         select: { settings: true },
-        where: { id: session?.user?.userId },
+        where: { id: session?.user?.id },
       }),
     ])
     return {

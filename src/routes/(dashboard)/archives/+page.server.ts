@@ -9,7 +9,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
       const fromUrl = url.pathname + url.search
       redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
     }
-    // if (!session?.user?.userId) {
+    // if (!session?.user?.id) {
     //   return fail(401, { type: "error", error: "Unauthenticated" })
     // }
     const skip = Number(url.searchParams.get("skip") ?? "0")
@@ -22,7 +22,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
     const [bookmarkData, bookmarkCount] = await prisma.bookmark.findManyAndCount({
       take: limit + skip,
       skip: skip,
-      where: { userId: session?.user?.userId, archived: true },
+      where: { userId: session?.user?.id, archived: true },
       include: {
         category: true,
         tags: { include: { tag: true } },

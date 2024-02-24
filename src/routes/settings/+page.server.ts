@@ -7,7 +7,7 @@ import { WORKER_URL } from "$env/static/private"
 export const actions: Actions = {
   deleteFeed: async ({ request, locals }) => {
     const session = await locals.auth()
-    if (!session?.user?.userId) {
+    if (!session?.user?.id) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
     const data = await request.formData()
@@ -20,7 +20,7 @@ export const actions: Actions = {
     await prisma.feed.delete({
       where: {
         id: feedId,
-        userId: session.user.userId,
+        userId: session.user.id,
       },
     })
     return { type: "success", message: "Deleted Feed" }
@@ -30,7 +30,7 @@ export const actions: Actions = {
       return fail(500, { type: "error", error: "Worker URL Not Configured!" })
     }
     const session = await locals.auth()
-    if (!session?.user?.userId) {
+    if (!session?.user?.id) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
     const data = await request.formData()
@@ -47,7 +47,7 @@ export const actions: Actions = {
       },
       body: JSON.stringify({
         feedUrl,
-        userId: session.user.userId,
+        userId: session.user.id,
       }),
     })
 
@@ -62,12 +62,12 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
       const fromUrl = url.pathname + url.search
       redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
     }
-    if (!session?.user?.userId) {
+    if (!session?.user?.id) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
 
     const [feedData, feedCount] = await prisma.feed.findManyAndCount({
-      where: { userId: session?.user?.userId },
+      where: { userId: session?.user?.id },
       select: {
         id: true,
         name: true,
@@ -89,7 +89,7 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
 
     const [bookmarkData, bookmarkCount] = await prisma.bookmark.findManyAndCount({
       where: {
-        userId: session?.user?.userId,
+        userId: session?.user?.id,
       },
       include: {
         category: true,
@@ -113,7 +113,7 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
         createdAt: true,
       },
       where: {
-        id: session?.user?.userId,
+        id: session?.user?.id,
       },
     })
 

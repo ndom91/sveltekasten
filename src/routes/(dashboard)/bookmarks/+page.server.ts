@@ -44,7 +44,7 @@ const metascraperClient = metascraper([
 export const actions: Actions = {
   deleteBookmark: async ({ request, locals }) => {
     const session = await locals.auth()
-    if (!session?.user?.userId) {
+    if (!session?.user?.id) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
     const data = await request.formData()
@@ -57,7 +57,7 @@ export const actions: Actions = {
     await prisma.bookmark.delete({
       where: {
         id: bookmarkId,
-        userId: session.user.userId,
+        userId: session.user.id,
       },
     })
     return { type: "success", message: "Deleted Bookmark" }
@@ -69,7 +69,7 @@ export const actions: Actions = {
 
     try {
       const session = await locals.auth()
-      if (!session?.user?.userId) {
+      if (!session?.user?.id) {
         return fail(401, { type: "error", error: "Unauthenticated" })
       }
 
@@ -105,7 +105,7 @@ export const actions: Actions = {
         },
         where: {
           id: form.data.id,
-          userId: session.user.userId,
+          userId: session.user.id,
         },
       })
 
@@ -127,7 +127,7 @@ export const actions: Actions = {
 
     try {
       const session = await event.locals.auth()
-      if (!session?.user?.userId) {
+      if (!session?.user?.id) {
         return fail(401, { type: "error", error: "Unauthenticated" })
       }
       const { userId } = session.user
@@ -203,7 +203,7 @@ export const load: PageServerLoad = async (event) => {
     const limit = Number(event.url.searchParams.get("limit") ?? "10")
 
     const session = await event.locals.auth()
-    if (!session?.user?.userId) {
+    if (!session?.user?.id) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
 
@@ -211,7 +211,7 @@ export const load: PageServerLoad = async (event) => {
       take: limit + skip,
       skip: skip,
       where: {
-        userId: session?.user?.userId,
+        userId: session?.user?.id,
         archived: false,
       },
       include: {

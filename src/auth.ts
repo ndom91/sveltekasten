@@ -2,7 +2,7 @@ import prisma from "$lib/prisma"
 import { env } from "$env/dynamic/private"
 import { SvelteKitAuth } from "@auth/sveltekit"
 import { PrismaAdapter } from "@auth/prisma-adapter"
-import type { Provider } from "@auth/sveltekit/providers"
+import type { Provider, CommonProviderOptions } from "@auth/sveltekit/providers"
 
 const providers: Provider[] = []
 
@@ -53,30 +53,33 @@ if (env.AUTH_SMTP_HOST && env.AUTH_SMTP_USER && env.AUTH_SMTP_PASSWORD) {
 }
 
 export const providerMap = providers.map((provider) => {
+  // @ts-expect-error wtf
   return { id: provider.id, name: provider.name }
 })
 
 export const { signIn, signOut, handle } = SvelteKitAuth({
+  debug: true,
+  trustHost: true,
+  adapter: PrismaAdapter(prisma),
   providers,
   callbacks: {
+    jwt: async ({ token, user }) => {
+      if (user) {
+        token.userSettings = user.settings ?? {}
+      }
+      return token
+    },
     session: async ({ session, token }) => {
       if (token?.sub && session.user) {
-        session.user.userId = token.sub
+        session.user.id = token.sub
       }
+      session.user.settings = token.userSettings as Record<string, unknown>
       return session
-    },
-    jwt: async ({ token }) => {
-      token.idToken = ""
-      return token
     },
   },
   session: {
     strategy: "jwt",
   },
-  adapter: PrismaAdapter(prisma),
-  debug: true,
-  // secret: env.AUTH_SECRET,
-  trustHost: true,
   pages: {
     signIn: "/login",
   },

@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
   }
 
   try {
-    if (!session?.user?.userId) {
+    if (!session?.user?.id) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
 
@@ -19,7 +19,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
       take: 10,
       skip: 0,
       where: {
-        userId: session?.user?.userId,
+        userId: session?.user?.id,
         unread: true,
       },
       include: {
@@ -33,7 +33,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
       take: 10,
       skip: 0,
       where: {
-        userId: session?.user?.userId,
+        userId: session?.user?.id,
         archived: false,
       },
       include: {

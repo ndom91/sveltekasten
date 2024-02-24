@@ -4,9 +4,9 @@ import type { JsonValueType } from "$zod"
 import { Prisma } from "@prisma/client"
 import type { Tag } from "$zod"
 
-declare module "@auth/sveltekit/jwt" {
-  interface JWT {
-    idToken?: string
+declare module "@auth/sveltekit" {
+  interface User {
+    settings: Record<string, unknown>
   }
 }
 

@@ -11,12 +11,12 @@ export const load: PageServerLoad = async ({ url, locals }) => {
     const fromUrl = url.pathname + url.search
     redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
   }
-  if (!session?.user?.userId) {
+  if (!session?.user?.id) {
     return fail(401, { type: "error", error: "Unauthenticated" })
   }
 
   const response = await prisma.tag.findMany({
-    where: { userId: session.user.userId },
+    where: { userId: session.user.id },
   })
 
   return {
@@ -28,7 +28,7 @@ export const load: PageServerLoad = async ({ url, locals }) => {
 export const actions: Actions = {
   createTag: async ({ request, locals }) => {
     const session = await locals.auth()
-    if (!session?.user?.userId) {
+    if (!session?.user?.id) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
     const formData = await request.formData()
@@ -40,7 +40,7 @@ export const actions: Actions = {
       await prisma.tag.create({
         data: {
           name: parsedData.name,
-          userId: session.user.userId,
+          userId: session.user.id,
         },
       })
 

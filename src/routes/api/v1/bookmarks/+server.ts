@@ -7,7 +7,7 @@ import prisma from "$lib/prisma"
 export const GET: RequestHandler = async ({ url, locals }) => {
   try {
     const session = await locals.auth()
-    if (!session?.user?.userId) {
+    if (!session?.user?.id) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
     const skip = Number(url.searchParams.get("skip") ?? "0")
@@ -20,7 +20,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
     const data = await prisma.bookmark.findMany({
       take: limit,
       skip: skip,
-      where: { userId: session?.user?.userId },
+      where: { userId: session?.user?.id },
       include: {
         category: true,
         tags: { include: { tag: true } },
@@ -41,7 +41,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 export const PUT: RequestHandler = async ({ request, locals }) => {
   try {
     const session = await locals.auth()
-    if (!session?.user?.userId) {
+    if (!session?.user?.id) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
     const { id, update } = await request.json()
@@ -52,7 +52,7 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
       },
       where: {
         id,
-        userId: session?.user?.userId,
+        userId: session?.user?.id,
       },
       include: {
         category: true,

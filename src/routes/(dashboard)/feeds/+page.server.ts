@@ -11,16 +11,16 @@ export const load: PageServerLoad = async ({ locals, url }) => {
       redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
     }
     const skip = Number(url.searchParams.get("skip") ?? "0")
-    const limit = Number(url.searchParams.get("limit") ?? "10")
+    const limit = Number(url.searchParams.get("limit") ?? "20")
 
     if (limit > 100) {
       return fail(401, { type: "error", error: "Attempted to load too many items" })
     }
 
     const [feedEntryData, feedEntryCount] = await prisma.feedEntry.findManyAndCount({
-      take: limit + skip,
+      take: limit,
       skip: skip,
-      where: { userId: session?.user?.userId },
+      where: { userId: session?.user?.id },
       include: {
         feed: true,
         feedMedia: true,
@@ -29,7 +29,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
     })
 
     const [feedData, feedCount] = await prisma.feed.findManyAndCount({
-      where: { userId: session?.user?.userId },
+      where: { userId: session?.user?.id },
       select: {
         id: true,
         name: true,

@@ -6,7 +6,7 @@ import prisma from "$lib/prisma"
 export const PUT: RequestHandler = async ({ request, locals }) => {
   try {
     const session = await locals.auth()
-    if (!session?.user?.userId) {
+    if (!session?.user?.id) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
     const { data } = await request.json()
@@ -16,7 +16,7 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
         name: data.name,
       },
       where: {
-        userId: session.user.userId,
+        userId: session.user.id,
         id: data.id,
       },
     })
@@ -32,7 +32,7 @@ export const DELETE: RequestHandler = async ({ request, locals }) => {
   console.log("TAGS.DELETE.HANDLER")
   try {
     const session = await locals.auth()
-    if (!session?.user?.userId) {
+    if (!session?.user?.id) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
     const { data } = await request.json()
@@ -40,7 +40,7 @@ export const DELETE: RequestHandler = async ({ request, locals }) => {
 
     const prismaResult = await prisma.tag.delete({
       where: {
-        userId: session.user.userId,
+        userId: session.user.id,
         id: data.id,
       },
     })

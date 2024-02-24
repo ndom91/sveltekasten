@@ -7,7 +7,7 @@ import prisma from "$lib/prisma"
 export const POST: RequestHandler = async ({ request, locals }) => {
   try {
     const session = await locals.auth()
-    if (!session?.user?.userId) {
+    if (!session?.user?.id) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
     const { feedId } = await request.json()
@@ -18,7 +18,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
       },
       where: {
         feedId,
-        userId: session?.user?.userId,
+        userId: session?.user?.id,
       },
     })
 

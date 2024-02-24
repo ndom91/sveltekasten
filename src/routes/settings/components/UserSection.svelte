@@ -153,9 +153,9 @@
         <div
           class="flex justify-between items-center p-2 font-mono rounded-md bg-neutral-100 dark:bg-neutral-700"
         >
-          {$page.data?.session?.user?.userId}
+          {$page.data?.session?.user?.id}
           <button
-            use:clipboard={$page.data?.session?.user?.userId ?? ""}
+            use:clipboard={$page.data?.session?.user?.id ?? ""}
             class="p-1 h-8 bg-transparent rounded-md outline-none focus:ring-2 focus:outline-none focus:ring-neutral-300"
           >
             <svg

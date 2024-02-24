@@ -6,7 +6,7 @@ import prisma from "$lib/prisma"
 export const PUT: RequestHandler = async ({ request, locals }) => {
   try {
     const session = await locals.auth()
-    if (!session?.user?.userId) {
+    if (!session?.user?.id) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
     const { data } = await request.json()
@@ -16,7 +16,7 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
         settings: data.settings,
       },
       where: {
-        id: session.user.userId,
+        id: session.user.id,
       },
     })
 

@@ -6,7 +6,7 @@ import { createEdgeSpeech } from "$lib/server/generate-tts"
 export const POST: RequestHandler = async ({ request, locals }) => {
   try {
     const session = await locals.auth()
-    if (!session?.user?.userId) {
+    if (!session?.user?.id) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
 
