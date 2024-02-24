@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from "$app/stores"
   import { dev } from "$app/environment"
-  import { zod } from "sveltekit-superforms/adapters"
+  import { zodClient } from "sveltekit-superforms/adapters"
   import SuperDebug, { defaults, superForm, fieldProxy } from "sveltekit-superforms"
   import { format } from "@formkit/tempo"
   import toast from "svelte-french-toast"
@@ -31,10 +31,10 @@
     category: ui.metadataSidebarData.bookmark?.category,
     tags: ui.metadataSidebarData.bookmark?.tags,
   }
-  const superformInstance = superForm(defaults(defaultData, zod(metadataSchema)), {
+  const superformInstance = superForm(defaults(defaultData, zodClient(metadataSchema)), {
     resetForm: false,
     dataType: "json",
-    validators: zod(metadataSchema),
+    validators: zodClient(metadataSchema),
     onUpdated: ({ form }) => {
       if (form.valid) {
         toast.success("Bookmark Updated")

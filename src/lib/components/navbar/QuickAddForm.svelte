@@ -33,7 +33,6 @@
     },
   })
   const { form: formData, message, errors, constraints, enhance, submitting, delayed } = form
-  // @ts-expect-error
   const categoryProxy = fieldProxy(form, "categoryId", {})
 
   $inspect($message)

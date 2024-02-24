@@ -34,7 +34,7 @@ dependencies:
     version: 3.0.9
   formsnap:
     specifier: ^0.4.4
-    version: 0.4.4(svelte@5.0.0-next.64)(sveltekit-superforms@2.4.0)(zod@3.22.4)
+    version: 0.4.4(svelte@5.0.0-next.64)(sveltekit-superforms@2.6.1)(zod@3.22.4)
   metascraper:
     specifier: ^5.44.0
     version: 5.44.0
@@ -93,8 +93,8 @@ dependencies:
     specifier: ^0.3.17
     version: 0.3.17(svelte@5.0.0-next.64)
   sveltekit-superforms:
-    specifier: ^2.4.0
-    version: 2.4.0(@sveltejs/kit@2.5.0)(@types/json-schema@7.0.15)(esbuild-runner@2.2.2)(esbuild@0.19.11)(svelte@5.0.0-next.64)
+    specifier: ^2.6.1
+    version: 2.6.1(@sveltejs/kit@2.5.0)(@types/json-schema@7.0.15)(esbuild-runner@2.2.2)(esbuild@0.19.11)(svelte@5.0.0-next.64)
   tailwind-merge:
     specifier: ^2.2.1
     version: 2.2.1
@@ -2460,7 +2460,7 @@ packages:
       mime-types: 2.1.35
     dev: false
 
-  /formsnap@0.4.4(svelte@5.0.0-next.64)(sveltekit-superforms@2.4.0)(zod@3.22.4):
+  /formsnap@0.4.4(svelte@5.0.0-next.64)(sveltekit-superforms@2.6.1)(zod@3.22.4):
     resolution: {integrity: sha512-O+Cf4GneR4CLP48J0c5AJY6eowc+1N3DYZz9uIJ3Mk57AjdL5l8DQEA+HmRfse4UEPepizEPl+M4vFg8cON2BQ==}
     peerDependencies:
       svelte: ^4.0.0
@@ -2468,7 +2468,7 @@ packages:
       zod: ^3.22.2
     dependencies:
       svelte: 5.0.0-next.64
-      sveltekit-superforms: 2.4.0(@sveltejs/kit@2.5.0)(@types/json-schema@7.0.15)(esbuild-runner@2.2.2)(esbuild@0.19.11)(svelte@5.0.0-next.64)
+      sveltekit-superforms: 2.6.1(@sveltejs/kit@2.5.0)(@types/json-schema@7.0.15)(esbuild-runner@2.2.2)(esbuild@0.19.11)(svelte@5.0.0-next.64)
       zod: 3.22.4
     dev: false
 
@@ -4635,9 +4635,8 @@ packages:
       magic-string: 0.30.5
       zimmerframe: 1.1.2
 
-  /sveltekit-superforms@2.4.0(@sveltejs/kit@2.5.0)(@types/json-schema@7.0.15)(esbuild-runner@2.2.2)(esbuild@0.19.11)(svelte@5.0.0-next.64):
-    resolution: {integrity: sha512-hVX6nDN4LdGDf8asygI9c7W/M4o0hSv0HwsCMYlBIVwb/LnWUDa7Nt+fc0Ro7iKtOu52u71yGsDXv8kbjYpJbg==}
-    requiresBuild: true
+  /sveltekit-superforms@2.6.1(@sveltejs/kit@2.5.0)(@types/json-schema@7.0.15)(esbuild-runner@2.2.2)(esbuild@0.19.11)(svelte@5.0.0-next.64):
+    resolution: {integrity: sha512-ZJkW4Q+wDUYu+iX6XxLA9A1Sa2M5SqCGkum/Tz5xG5yAVFUumrrcxDetLApgiEAXzTme8v+Uh/eAwiYWFP4Buw==}
     peerDependencies:
       '@sveltejs/kit': 1.x || 2.x
       svelte: 3.x || 4.x || >=5.0.0-next.51
