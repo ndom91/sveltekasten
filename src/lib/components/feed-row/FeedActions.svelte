@@ -8,6 +8,9 @@
 
   const ui = useInterface()
 
+  const enableSummary = ui.aiFeaturesPreferences.summarization.enabled
+  const enableTTS = ui.aiFeaturesPreferences.tts.enabled
+
   const {
     isOptionsOpen,
     url,
@@ -41,20 +44,54 @@
       >
         <svg
           class="size-5 text-zinc-900 dark:text-zinc-100"
-          data-slot="icon"
-          fill="none"
-          stroke-width="1.5"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <path
+          viewBox="0 0 256 256"
+          ><rect width="256" height="256" fill="none" /><path
+            d="M128,88a32,32,0,0,1,32-32h64a8,8,0,0,1,8,8V192a8,8,0,0,1-8,8H160a32,32,0,0,0-32,32"
+            fill="none"
+            stroke="currentColor"
             stroke-linecap="round"
             stroke-linejoin="round"
-            d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"
-          ></path>
-        </svg>
+            stroke-width="16"
+          /><path
+            d="M24,192a8,8,0,0,0,8,8H96a32,32,0,0,1,32,32V88A32,32,0,0,0,96,56H32a8,8,0,0,0-8,8Z"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          /><line
+            x1="160"
+            y1="96"
+            x2="200"
+            y2="96"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          /><line
+            x1="160"
+            y1="128"
+            x2="200"
+            y2="128"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          /><line
+            x1="160"
+            y1="160"
+            x2="200"
+            y2="160"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          /></svg
+        >
       </Button>
     </Tooltip.Trigger>
     <Tooltip.Content side="top">
@@ -92,103 +129,163 @@
     </Tooltip.Trigger>
     <Tooltip.Content side="top">
       <p>
-        Mark as Read
+        Toggle Unread
         <KeyboardIndicator key="u" class="ml-2" />
       </p>
     </Tooltip.Content>
   </Tooltip.Root>
-  <Tooltip.Root>
-    <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
-      <Button
-        builders={[tooltipBuilder]}
-        variant="ghost"
-        size="icon"
-        on:click={handleStartTextSummarization}
-      >
-        {#if ui.summarizationLoading}
-          <LoadingIndicator class="dark:text-white" />
-        {:else}
-          <svg
-            class="size-5"
-            data-slot="icon"
-            fill="none"
-            stroke-width="1.5"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
-            ></path>
-          </svg>
-        {/if}
-      </Button>
-    </Tooltip.Trigger>
-    <Tooltip.Content side="top">
-      <p>Summarize Article</p>
-    </Tooltip.Content>
-  </Tooltip.Root>
-  <Tooltip.Root>
-    <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
-      <Button
-        builders={[tooltipBuilder]}
-        variant="ghost"
-        size="icon"
-        on:click={handleSetTextToSpeechContent}
-      >
-        {#if ui.textToSpeechLoading}
-          <LoadingIndicator class="dark:text-white" />
-        {:else}
-          <svg
-            class="size-5"
-            data-slot="icon"
-            fill="none"
-            stroke-width="1.5"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"
-            ></path>
-          </svg>
-        {/if}
-      </Button>
-    </Tooltip.Trigger>
-    <Tooltip.Content side="top">
-      <p>Read Aloud</p>
-    </Tooltip.Content>
-  </Tooltip.Root>
+  {#if enableSummary}
+    <Tooltip.Root>
+      <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
+        <Button
+          builders={[tooltipBuilder]}
+          variant="ghost"
+          size="icon"
+          on:click={handleStartTextSummarization}
+        >
+          {#if ui.summarizationLoading}
+            <LoadingIndicator class="dark:text-white" />
+          {:else}
+            <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"
+              ><rect width="256" height="256" fill="none" /><line
+                x1="112"
+                y1="112"
+                x2="176"
+                y2="112"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="16"
+              /><line
+                x1="112"
+                y1="144"
+                x2="176"
+                y2="144"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="16"
+              /><rect
+                x="40"
+                y="40"
+                width="176"
+                height="176"
+                rx="8"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="16"
+              /><line
+                x1="80"
+                y1="40"
+                x2="80"
+                y2="216"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="16"
+              /></svg
+            >
+          {/if}
+        </Button>
+      </Tooltip.Trigger>
+      <Tooltip.Content side="top">
+        <p>Summarize Article (AI)</p>
+      </Tooltip.Content>
+    </Tooltip.Root>
+  {/if}
+  {#if enableTTS}
+    <Tooltip.Root>
+      <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
+        <Button
+          builders={[tooltipBuilder]}
+          variant="ghost"
+          size="icon"
+          on:click={handleSetTextToSpeechContent}
+        >
+          {#if ui.textToSpeechLoading}
+            <LoadingIndicator class="dark:text-white" />
+          {:else}
+            <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"
+              ><rect width="256" height="256" fill="none" /><path
+                d="M80,168H32a8,8,0,0,1-8-8V96a8,8,0,0,1,8-8H80l72-56V224Z"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="16"
+              /><line
+                x1="192"
+                y1="104"
+                x2="192"
+                y2="152"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="16"
+              /><line
+                x1="224"
+                y1="88"
+                x2="224"
+                y2="168"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="16"
+              /></svg
+            >
+          {/if}
+        </Button>
+      </Tooltip.Trigger>
+      <Tooltip.Content side="top">
+        <p>Listen to Article (AI)</p>
+      </Tooltip.Content>
+    </Tooltip.Root>
+  {/if}
   <Tooltip.Root>
     <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
       <Button builders={[tooltipBuilder]} variant="ghost" size="icon" href={url} target="_blank">
         <svg
           class="size-5 text-zinc-900 dark:text-zinc-100"
-          data-slot="icon"
-          fill="none"
-          stroke-width="1.5"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <path
+          viewBox="0 0 256 256"
+          ><rect width="256" height="256" fill="none" /><polyline
+            points="216 104 215.99 40.01 152 40"
+            fill="none"
+            stroke="currentColor"
             stroke-linecap="round"
             stroke-linejoin="round"
-            d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15m0-3-3-3m0 0-3 3m3-3V15"
-          ></path>
-        </svg>
+            stroke-width="16"
+          /><line
+            x1="136"
+            y1="120"
+            x2="216"
+            y2="40"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          /><path
+            d="M184,136v72a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V80a8,8,0,0,1,8-8h72"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          /></svg
+        >
       </Button>
     </Tooltip.Trigger>
     <Tooltip.Content side="top">
       <p>
-        Open Link
+        Open
         <KeyboardIndicator key="o" class="ml-2" />
       </p>
     </Tooltip.Content>
