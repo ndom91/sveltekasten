@@ -59,8 +59,8 @@
 
 <Navbar simple />
 <div class="flex overflow-y-scroll flex-col items-center">
-  <main class="p-4 mx-auto w-full max-w-screen-2xl">
-    <div class="flex flex-col gap-2 justify-start align-start">
+  <main class="p-4 mx-auto w-full max-w-screen-2xl h-full">
+    <div class="flex flex-col gap-2 justify-start align-start max-h-[calc(100vh_-_80px)]">
       <Table.Root {...$tableAttrs}>
         <Table.Header>
           {#each $headerRows as headerRow}

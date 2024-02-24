@@ -137,7 +137,7 @@
   <Card.Root class="w-full shadow-none">
     <Card.Header class="bg-neutral-100 dark:bg-neutral-900">
       <Card.Title class="flex justify-between items-center w-full">
-        <span>API Token</span>
+        <span class="font-normal">API Token</span>
         <Badge class="text-sm bg-amber-500 dark:bg-amber-300">Todo</Badge>
       </Card.Title>
     </Card.Header>
@@ -183,7 +183,7 @@
   <Card.Root class="w-full shadow-none">
     <Card.Header class="bg-neutral-100 dark:bg-neutral-900">
       <Card.Title class="flex justify-between items-center w-full">
-        <span>AI Settings</span>
+        <span class="font-normal">AI Settings</span>
         <Badge class="text-sm">Experimental</Badge>
       </Card.Title>
     </Card.Header>
@@ -321,7 +321,7 @@
   <Card.Root class="w-full shadow-none">
     <Card.Header class="bg-neutral-100 dark:bg-neutral-900">
       <Card.Title class="flex justify-between items-center w-full">
-        <span>Import</span>
+        <span class="font-normal">Import</span>
       </Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
@@ -340,10 +340,9 @@
         />
       </div>
       {#if bookmarksPreview.length > 1}
-        <div class="flex flex-col gap-4 mt-4 rounded-sm dark:bg-neutral-900">
-          <div class="flex gap-1 items-center p-4 rounded-t-sm bg-neutral-300 dark:bg-neutral-800">
-            <h3>Import Preview</h3>
-            <small>First 5 Bookmarks</small>
+        <div class="flex flex-col gap-4 mt-4 rounded-sm bg-neutral-50 dark:bg-neutral-900">
+          <div class="flex gap-1 items-center p-4 rounded-t-sm bg-neutral-100 dark:bg-neutral-800">
+            <h3>Import First 5 Bookmarks</h3>
           </div>
           <div class="p-4 rounded-sm">
             <Table.Root class="rounded-sm border dark:border-neutral-800">
