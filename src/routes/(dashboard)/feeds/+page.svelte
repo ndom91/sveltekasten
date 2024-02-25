@@ -3,17 +3,24 @@
   import { Navbar } from "$lib/components/navbar"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { FeedRow } from "$lib/components/feed-row"
-  import { Skeleton } from "$lib/components/ui/skeleton"
 
   import { useInterface, TTSLocation } from "$state/ui.svelte"
-  import { infiniteScroll } from "$lib/components/infinite-scroll"
+  import { InfiniteLoader } from "$lib/components/infinite-scroll"
   import { invalidateAll } from "$app/navigation"
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
   import ttsWorkerUrl from "$lib/transformers/tts-worker?url"
   import summaryWorkerUrl from "$lib/transformers/translate-worker?url"
 
+  const limitLoadCount = 20
+
   const ui = useInterface()
   const { data } = $props()
+
+  // Log error from page server loading
+  if (data.error) {
+    console.error(data.error)
+  }
+
   // Set current user preferences to store
   ui.aiFeaturesPreferences = data.user?.settings?.ai
 
@@ -163,75 +170,26 @@
     prevVisibility = $visibility
   })
 
-  // Log error from page server loading
-  if (data.error) {
-    console.error(data.error)
-  }
-
-  // Infinite scrolling
-  let elementRef = $state<HTMLElement>()
-  let listWrapperEl = $state<HTMLElement>()
-  let observer: IntersectionObserver | null = $state(null)
-
-  $effect(() => {
-    if (elementRef) {
-      observer = infiniteScroll({
-        fetch: () => loadMore(pageNumber + 1),
-        element: elementRef,
-      })
-      return () => observer?.disconnect()
-    }
-  })
-
-  // Load more items on infinite scroll
-  const loadMore = async (p: number) => {
-    pageNumber = p
-    const loadCount = 20
-    const limit = loadCount
-    const skip = loadCount * (pageNumber - 1)
-
-    if (
-      // Skip if all items already loaded
-      allItems.length >= totalItemCount ||
-      // Skip if list is less than window to avoid loop
-      (listWrapperEl && listWrapperEl.scrollHeight < window.innerHeight)
-    )
-      return
-
-    const res = await fetch(`/api/v1/feeds?skip=${skip}&limit=${limit}`)
-    const { data: additionalResults } = await res.json()
-    allItems.push(...additionalResults)
-  }
-
-  // Handle search input
-  let getActiveFeedItems = $derived(async () => {
-    if (!ui.searchQuery)
-      return allItems
-        .filter((item: LoadFeedEntry) => {
-          if (ui.showUnreadOnly) {
-            return !!item.unread
-          } else {
-            return item
-          }
-        })
-        .filter((item: LoadFeedEntry) => {
-          const feed = data.feeds?.data?.find((feed) => feed.id === item.feed?.id)
-          return feed?.visible
-        })
-
-    const res = await fetch("/api/v1/search", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+  const fetchSearchResults = async ({
+    limit = limitLoadCount,
+    skip = 0,
+  }: {
+    limit?: number
+    skip?: number
+  }) => {
+    try {
+      const body = {
         type: "feedEntry",
+        skip,
+        limit,
         include: {
           feed: true,
           feedMedia: true,
         },
         orderBy: { published: "desc" },
-        where: {
+      }
+      if (ui.searchQuery) {
+        body.where = {
           OR: [
             {
               title: {
@@ -246,13 +204,99 @@
               },
             },
           ],
+        }
+      }
+      const res = await fetch("/api/v1/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      }),
-    })
-    const { data: searchResults, count } = await res.json()
-    totalItemCount = count
-    return searchResults
-  })
+        body: JSON.stringify(body),
+      })
+      if (!res.ok) {
+        throw new Error("Error fetching more items")
+      }
+      const { data: searchResults, count } = await res.json()
+      return [searchResults, count]
+    } catch (error) {
+      console.error(error.message ?? error)
+      toast.error(error.message ?? error)
+    }
+  }
+
+  // Infinite scrolling
+  let elementRef = $state<HTMLElement>()
+  let listWrapperEl = $state<HTMLElement>()
+  let observer: IntersectionObserver | null = $state(null)
+
+  // $effect(() => {
+  //   if (elementRef) {
+  //     observer = infiniteScroll({
+  //       fetch: () => loadMore(pageNumber + 1),
+  //       element: elementRef,
+  //     })
+  //     return () => observer?.disconnect()
+  //   }
+  // })
+
+  // Load more items on infinite scroll
+  const loadMore = async (stateChanger: TODO, p: number) => {
+    try {
+      console.log("loadMore.stateChanger", stateChanger)
+      pageNumber = p
+      const limit = limitLoadCount
+      const skip = limitLoadCount * (pageNumber - 1)
+
+      // if (
+      //   // Skip if all items already loaded
+      //   allItems.length >= totalItemCount ||
+      //   // Skip if list is less than window to avoid loop
+      //   // TODO: Improve this loop check to allow loading on long screens
+      //   (listWrapperEl && listWrapperEl.scrollHeight < window.innerHeight)
+      // ) {
+      //   return
+      // }
+
+      console.log("loading more...", { limit, skip, pageNumber })
+      const [searchResults, count] = await fetchSearchResults({ limit, skip })
+
+      allItems.push(...searchResults)
+
+      if (allItems.length >= count) {
+        await stateChanger.complete()
+      } else {
+        await stateChanger.loaded()
+      }
+    } catch (e) {
+      console.error(e)
+      stateChanger.error()
+    }
+  }
+
+  // Handle search input
+  // let getActiveFeedItems = $derived.by(async () => {
+  // $effect(() => {
+  //   if (!ui.searchQuery) {
+  //     return allItems
+  //       .filter((item: LoadFeedEntry) => {
+  //         if (ui.showUnreadOnly) {
+  //           return !!item.unread
+  //         } else {
+  //           return item
+  //         }
+  //       })
+  //       .filter((item: LoadFeedEntry) => {
+  //         const feed = data.feeds?.data?.find((feed) => feed.id === item.feed?.id)
+  //         return feed?.visible
+  //       })
+  //   }
+  //
+  //   const skip = limitLoadCount * (pageNumber - 1)
+  //   console.log("getActiveFeedItems", { pageNumber, limitLoadCount, skip })
+  //   const [searchResults, count] = await fetchSearchResults({ limit: limitLoadCount, skip })
+  //   totalItemCount = count
+  //   allItems=searchResults
+  // })
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.target instanceof HTMLInputElement) return
@@ -288,6 +332,7 @@
       window.open(targetLink, "_target")
     }
   }
+  $inspect("allItems", allItems.length)
 </script>
 
 <svelte:head>
@@ -303,31 +348,38 @@
     <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start">
       {#if data.feedEntries?.count > 0}
         <div bind:this={listWrapperEl} class="h-full">
-          {#await getActiveFeedItems()}
-            {#each Array.from({ length: 10 }) as _}
-              <div class="h-40 text-3xl">
-                <div class="flex gap-4 items-start p-4 mx-4 w-full opacity-10">
-                  <Skeleton class="w-52 h-28 rounded-md" />
-                  <div class="flex flex-col gap-4 items-start w-full">
-                    <Skeleton class="w-3/4 h-4 min-w-[300px]" />
-                    <Skeleton class="w-4/5 h-10 min-w-[400px]" />
-                    <Skeleton class="w-96 h-4 min-w-[100px]" />
-                  </div>
-                </div>
-              </div>
-            {/each}
-          {:then feedEntries}
-            {#each feedEntries as feedEntry}
+          <!-- {#await getActiveFeedItems} -->
+          <!--   {#each Array.from({ length: 15 }) as _} -->
+          <!--     <div class="h-40 text-3xl"> -->
+          <!--       <div class="flex gap-4 items-start p-4 mx-4 w-full opacity-10"> -->
+          <!--         <Skeleton class="w-52 h-28 rounded-md" /> -->
+          <!--         <div class="flex flex-col gap-4 items-start w-full"> -->
+          <!--           <Skeleton class="w-3/4 h-4 min-w-[300px]" /> -->
+          <!--           <Skeleton class="w-4/5 h-10 min-w-[400px]" /> -->
+          <!--           <Skeleton class="w-96 h-4 min-w-[100px]" /> -->
+          <!--         </div> -->
+          <!--       </div> -->
+          <!--     </div> -->
+          <!--   {/each} -->
+          <!-- {:then feedEntries} -->
+          <InfiniteLoader triggerLoad={(stateChanger) => loadMore(stateChanger, pageNumber + 1)}>
+            {#each allItems as feedEntry}
               <FeedRow {feedEntry} {handleSummarizeText} {handleGenerateSpeech} />
-            {:else}
-              <div class="my-8 w-full text-3xl text-center">No entries found</div>
             {/each}
-            <div bind:this={elementRef} class="w-full h-48" />
-          {:catch error}
-            <div class="my-4 w-full text-3xl text-center">
-              {error}
-            </div>
-          {/await}
+          </InfiniteLoader>
+          <!-- <div bind:this={elementRef} class="w-full h-48" /> -->
+          <!-- {:catch error} -->
+          <!--   <div -->
+          <!--     class="flex flex-col gap-4 items-center my-12 mx-auto max-w-screen-sm text-2xl font-light text-red-400 dark:text-red-500" -->
+          <!--   > -->
+          <!--     Error fetching results -->
+          <!--     <div -->
+          <!--       class="p-8 max-w-screen-sm font-mono text-lg font-light rounded-md text-pretty bg-neutral-100 dark:bg-neutral-900" -->
+          <!--     > -->
+          <!--       {error} -->
+          <!--     </div> -->
+          <!--   </div> -->
+          <!-- {/await} -->
         </div>
       {:else}
         <EmptyState />
