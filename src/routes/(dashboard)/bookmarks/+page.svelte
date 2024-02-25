@@ -1,51 +1,29 @@
-<script context="module" lang="ts">
-  export type BookmarkLoadData = {
-    bookmarks: LoadBookmarkFlatTags[]
-    count: number
-    session: {
-      user: {
-        settings: {
-          ai: {
-            tts: {
-              enabled: boolean
-              location: keyof typeof TTSLocation
-              speaker: string
-            }
-            summarization: {
-              enabled: boolean
-            }
-            transcription: {
-              enabled: boolean
-            }
-          }
-        }
-      }
-    }
-    error?: Error
-  }
-</script>
-
 <script lang="ts">
   import toast from "svelte-french-toast"
   import { Navbar } from "$lib/components/navbar"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
-  import { useInterface, TTSLocation } from "$state/ui.svelte"
+  import { useInterface } from "$state/ui.svelte"
   import { BookmarkRow } from "$lib/components/bookmark-row"
   import { InfiniteLoader, stateChanger } from "$lib/components/infinite-scroll"
-  // import { Logger, loggerLevels } from "$lib/utils/logger"
+  import { Logger, loggerLevels } from "$lib/utils/logger"
   import { untrack } from "svelte"
 
   const ui = useInterface()
   const { data } = $props()
+
   let pageNumber = $state(1)
   let allItems = $state<LoadBookmarkFlatTags[]>(data.bookmarks!)
-  // const logger = new Logger({ level: loggerLevels.DEBUG })
+  const logger = new Logger({ level: loggerLevels.DEBUG })
+
+  $effect(() => {
+    allItems = data.bookmarks!
+  })
 
   const limitLoadCount = 20
 
   if (data.error) {
-    console.error(data.error)
+    logger.error(String(data.error))
   }
 
   const fetchSearchResults = async ({
@@ -112,7 +90,7 @@
       } else {
         console.error(error)
       }
-      toast.error(error)
+      toast.error(String(error))
     }
   }
 

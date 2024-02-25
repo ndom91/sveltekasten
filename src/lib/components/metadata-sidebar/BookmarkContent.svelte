@@ -2,10 +2,11 @@
   import { page } from "$app/stores"
   import { dev } from "$app/environment"
   import { zodClient } from "sveltekit-superforms/adapters"
-  import SuperDebug, { defaults, superForm, fieldProxy } from "sveltekit-superforms"
+  import SuperDebug, { defaults, superForm } from "sveltekit-superforms"
   import { format } from "@formkit/tempo"
   import toast from "svelte-french-toast"
   import type { Tag } from "$zod"
+  import { invalidateAll } from "$app/navigation"
 
   import { cn } from "$lib/utils/style"
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
@@ -39,6 +40,7 @@
       if (form.valid) {
         toast.success("Bookmark Updated")
         ui.toggleMetadataSidebarEditMode()
+        invalidateAll()
       }
     },
     onError: ({ result }) => {
@@ -47,14 +49,7 @@
       }
     },
   })
-  $inspect("superformInstance", superformInstance)
-  const { form, message, errors, constraints, enhance, submitting, delayed } = superformInstance
-
-  $inspect("form", $form)
-
-  const tagValues = $derived(
-    $page.data.tags.map((tag: Tag) => ({ value: tag.id, label: tag.name })),
-  )
+  const { form, errors, constraints, enhance, submitting, delayed } = superformInstance
 </script>
 
 <form
@@ -197,7 +192,9 @@
             label: $form.category?.name,
           }}
           onSelectedChange={(e) =>
-            ($form.category = ui.metadataSidebarData.categories.find((cat) => cat.id === e.value))}
+            ($form.category = ui.metadataSidebarData.categories?.find(
+              (cat) => cat.id === e?.value,
+            ))}
         >
           <Select.Trigger class="w-full disabled:cursor-default enabled:bg-zinc-950">
             <Select.Value placeholder="Category" />
@@ -220,13 +217,6 @@
           field="tags"
           disabled={!isEditMode}
         />
-        <!-- <TagInput -->
-        <!--   tags={$page.data?.tags.map((tag: Tag) => ({ value: tag.id, label: tag.name }))} -->
-        <!--   disabled={!isEditMode} -->
-        <!--   setFormTags={(v) => (ui.metadataSidebarData.bookmark.tags = v)} -->
-        <!--   selected={ui.metadataSidebarData.bookmark?.tags?.map((tag: TagsOnBookmarks) => tag.tagId) ?? []} -->
-        <!--   class="bg-transparent" -->
-        <!-- /> -->
       </div>
       {#if ui.metadataSidebarData.bookmark.image}
         <div

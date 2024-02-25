@@ -1,8 +1,7 @@
-import type { Bookmark, Tag, Category } from "$zod"
 import "@auth/sveltekit"
-import type { JsonValueType } from "$zod"
 import { Prisma } from "@prisma/client"
-import type { Tag } from "$zod"
+import type { BookmarkFlatTags } from "$lib/types"
+import type { Tag, Bookmark, Tag, Category, JsonValueType } from "$zod"
 
 declare module "@auth/sveltekit" {
   interface User {
@@ -21,10 +20,12 @@ type Provider = {
 declare global {
   type TODO = any
 
+  type bk = Prisma.BookmarkGetPayload<{}>
+
   type LoadBookmark = Prisma.BookmarkGetPayload<{
     include: { category: true; tags: { include: { tag: true } } }
   }>
-  type LoadBookmarkFlatTags = LoadBookmark & { tags: Tag[] }
+  type LoadBookmarkFlatTags = BookmarkFlatTags
   type LoadFeedEntry = Prisma.FeedEntryGetPayload<{
     include: { feed: true; feedMedia: true }
   }>

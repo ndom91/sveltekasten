@@ -1,6 +1,7 @@
 import type { RequestHandler } from "./$types"
 import { json, fail } from "@sveltejs/kit"
 import prisma from "$lib/prisma"
+import type { Tag } from "$zod"
 
 type RequestBody = {
   where: Record<string, unknown>
@@ -11,7 +12,8 @@ type RequestBody = {
   skip: number
 }
 
-export const POST: RequestHandler = async ({ request, locals, url }) => {
+// @ts-expect-error
+export const POST: RequestHandler = async ({ request, locals }) => {
   try {
     const session = await locals.auth()
     if (!session?.user?.id) {
@@ -19,9 +21,6 @@ export const POST: RequestHandler = async ({ request, locals, url }) => {
     }
 
     let returnData
-    // const skip = Number(url.searchParams.get("skip") ?? "0")
-    // const limit = Number(url.searchParams.get("limit") ?? "10")
-    console.log("v1/search POST handler")
     const {
       include,
       orderBy,
@@ -33,25 +32,6 @@ export const POST: RequestHandler = async ({ request, locals, url }) => {
     if (!type) {
       return fail(401, { type: "error", error: "Missing 'type' parameter" })
     }
-
-    console.log("loading more..", { skip, limit })
-    console.log(
-      "findManyAndCount.args",
-      JSON.stringify(
-        {
-          take: limit,
-          skip: skip,
-          where: {
-            ...where,
-            userId: session?.user?.id,
-          },
-          include,
-          orderBy,
-        },
-        null,
-        2,
-      ),
-    )
 
     const [data, count] = await prisma[type].findManyAndCount({
       take: limit,
@@ -66,13 +46,13 @@ export const POST: RequestHandler = async ({ request, locals, url }) => {
 
     if (type === "bookmark") {
       returnData = data.map((bookmark) => {
+        // @ts-expect-error dynamic model in query above breaks infered type
         return { ...bookmark, tags: bookmark.tags?.map((tag) => tag.tag) }
-      }) // satisfies LoadBookmark[]
+      }) as LoadBookmarkFlatTags[]
     } else {
       returnData = data
     }
 
-    console.log("findManyAndCount.length", data.length)
     return json({ data: returnData, count })
   } catch (error) {
     if (error instanceof Error) {

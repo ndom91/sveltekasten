@@ -167,21 +167,21 @@ export const actions: Actions = {
           },
           tags: tags
             ? {
-              create: tags.map((tag) => ({
-                tag: {
-                  connect: {
-                    id: tag.id,
+                create: tags.map((tag) => ({
+                  tag: {
+                    connect: {
+                      id: tag.id,
+                    },
                   },
-                },
-              })),
-            }
+                })),
+              }
             : {},
           category: categoryId
             ? {
-              connect: {
-                id: categoryId,
-              },
-            }
+                connect: {
+                  id: categoryId,
+                },
+              }
             : {},
         },
       })
@@ -234,7 +234,7 @@ export const load: PageServerLoad = async (event) => {
 
     const bookmarks = data.map((bookmark) => {
       return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) }
-    })
+    }) as LoadBookmarkFlatTags[]
 
     return {
       bookmarks,
@@ -248,8 +248,6 @@ export const load: PageServerLoad = async (event) => {
       console.error(error)
     }
     return {
-      bookmarks: [],
-      count: 1,
       error,
     }
   }

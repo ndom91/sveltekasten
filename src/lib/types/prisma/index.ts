@@ -58,6 +58,8 @@ export const TransactionIsolationLevelSchema = z.enum(['ReadUncommitted','ReadCo
 
 export const BookmarkScalarFieldEnumSchema = z.enum(['id','title','url','image','imageBlur','desc','categoryId','metadata','archived','userId','createdAt','updatedAt']);
 
+export const RelationLoadStrategySchema = z.enum(['query','join']);
+
 export const TagsOnBookmarksScalarFieldEnumSchema = z.enum(['bookmarkId','tagId']);
 
 export const TagScalarFieldEnumSchema = z.enum(['id','name','userId','createdAt','updatedAt']);
@@ -6699,6 +6701,7 @@ export const BookmarkFindFirstArgsSchema: z.ZodType<Prisma.BookmarkFindFirstArgs
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ BookmarkScalarFieldEnumSchema,BookmarkScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const BookmarkFindFirstOrThrowArgsSchema: z.ZodType<Prisma.BookmarkFindFirstOrThrowArgs> = z.object({
@@ -6710,6 +6713,7 @@ export const BookmarkFindFirstOrThrowArgsSchema: z.ZodType<Prisma.BookmarkFindFi
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ BookmarkScalarFieldEnumSchema,BookmarkScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const BookmarkFindManyArgsSchema: z.ZodType<Prisma.BookmarkFindManyArgs> = z.object({
@@ -6721,6 +6725,7 @@ export const BookmarkFindManyArgsSchema: z.ZodType<Prisma.BookmarkFindManyArgs> 
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ BookmarkScalarFieldEnumSchema,BookmarkScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const BookmarkAggregateArgsSchema: z.ZodType<Prisma.BookmarkAggregateArgs> = z.object({
@@ -6744,12 +6749,14 @@ export const BookmarkFindUniqueArgsSchema: z.ZodType<Prisma.BookmarkFindUniqueAr
   select: BookmarkSelectSchema.optional(),
   include: BookmarkIncludeSchema.optional(),
   where: BookmarkWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const BookmarkFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.BookmarkFindUniqueOrThrowArgs> = z.object({
   select: BookmarkSelectSchema.optional(),
   include: BookmarkIncludeSchema.optional(),
   where: BookmarkWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const TagsOnBookmarksFindFirstArgsSchema: z.ZodType<Prisma.TagsOnBookmarksFindFirstArgs> = z.object({
@@ -6761,6 +6768,7 @@ export const TagsOnBookmarksFindFirstArgsSchema: z.ZodType<Prisma.TagsOnBookmark
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ TagsOnBookmarksScalarFieldEnumSchema,TagsOnBookmarksScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const TagsOnBookmarksFindFirstOrThrowArgsSchema: z.ZodType<Prisma.TagsOnBookmarksFindFirstOrThrowArgs> = z.object({
@@ -6772,6 +6780,7 @@ export const TagsOnBookmarksFindFirstOrThrowArgsSchema: z.ZodType<Prisma.TagsOnB
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ TagsOnBookmarksScalarFieldEnumSchema,TagsOnBookmarksScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const TagsOnBookmarksFindManyArgsSchema: z.ZodType<Prisma.TagsOnBookmarksFindManyArgs> = z.object({
@@ -6783,6 +6792,7 @@ export const TagsOnBookmarksFindManyArgsSchema: z.ZodType<Prisma.TagsOnBookmarks
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ TagsOnBookmarksScalarFieldEnumSchema,TagsOnBookmarksScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const TagsOnBookmarksAggregateArgsSchema: z.ZodType<Prisma.TagsOnBookmarksAggregateArgs> = z.object({
@@ -6806,12 +6816,14 @@ export const TagsOnBookmarksFindUniqueArgsSchema: z.ZodType<Prisma.TagsOnBookmar
   select: TagsOnBookmarksSelectSchema.optional(),
   include: TagsOnBookmarksIncludeSchema.optional(),
   where: TagsOnBookmarksWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const TagsOnBookmarksFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.TagsOnBookmarksFindUniqueOrThrowArgs> = z.object({
   select: TagsOnBookmarksSelectSchema.optional(),
   include: TagsOnBookmarksIncludeSchema.optional(),
   where: TagsOnBookmarksWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const TagFindFirstArgsSchema: z.ZodType<Prisma.TagFindFirstArgs> = z.object({
@@ -6823,6 +6835,7 @@ export const TagFindFirstArgsSchema: z.ZodType<Prisma.TagFindFirstArgs> = z.obje
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ TagScalarFieldEnumSchema,TagScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const TagFindFirstOrThrowArgsSchema: z.ZodType<Prisma.TagFindFirstOrThrowArgs> = z.object({
@@ -6834,6 +6847,7 @@ export const TagFindFirstOrThrowArgsSchema: z.ZodType<Prisma.TagFindFirstOrThrow
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ TagScalarFieldEnumSchema,TagScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const TagFindManyArgsSchema: z.ZodType<Prisma.TagFindManyArgs> = z.object({
@@ -6845,6 +6859,7 @@ export const TagFindManyArgsSchema: z.ZodType<Prisma.TagFindManyArgs> = z.object
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ TagScalarFieldEnumSchema,TagScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const TagAggregateArgsSchema: z.ZodType<Prisma.TagAggregateArgs> = z.object({
@@ -6868,12 +6883,14 @@ export const TagFindUniqueArgsSchema: z.ZodType<Prisma.TagFindUniqueArgs> = z.ob
   select: TagSelectSchema.optional(),
   include: TagIncludeSchema.optional(),
   where: TagWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const TagFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.TagFindUniqueOrThrowArgs> = z.object({
   select: TagSelectSchema.optional(),
   include: TagIncludeSchema.optional(),
   where: TagWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const CategoryFindFirstArgsSchema: z.ZodType<Prisma.CategoryFindFirstArgs> = z.object({
@@ -6885,6 +6902,7 @@ export const CategoryFindFirstArgsSchema: z.ZodType<Prisma.CategoryFindFirstArgs
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ CategoryScalarFieldEnumSchema,CategoryScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const CategoryFindFirstOrThrowArgsSchema: z.ZodType<Prisma.CategoryFindFirstOrThrowArgs> = z.object({
@@ -6896,6 +6914,7 @@ export const CategoryFindFirstOrThrowArgsSchema: z.ZodType<Prisma.CategoryFindFi
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ CategoryScalarFieldEnumSchema,CategoryScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const CategoryFindManyArgsSchema: z.ZodType<Prisma.CategoryFindManyArgs> = z.object({
@@ -6907,6 +6926,7 @@ export const CategoryFindManyArgsSchema: z.ZodType<Prisma.CategoryFindManyArgs> 
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ CategoryScalarFieldEnumSchema,CategoryScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const CategoryAggregateArgsSchema: z.ZodType<Prisma.CategoryAggregateArgs> = z.object({
@@ -6930,12 +6950,14 @@ export const CategoryFindUniqueArgsSchema: z.ZodType<Prisma.CategoryFindUniqueAr
   select: CategorySelectSchema.optional(),
   include: CategoryIncludeSchema.optional(),
   where: CategoryWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const CategoryFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.CategoryFindUniqueOrThrowArgs> = z.object({
   select: CategorySelectSchema.optional(),
   include: CategoryIncludeSchema.optional(),
   where: CategoryWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const AccountFindFirstArgsSchema: z.ZodType<Prisma.AccountFindFirstArgs> = z.object({
@@ -6947,6 +6969,7 @@ export const AccountFindFirstArgsSchema: z.ZodType<Prisma.AccountFindFirstArgs> 
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ AccountScalarFieldEnumSchema,AccountScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const AccountFindFirstOrThrowArgsSchema: z.ZodType<Prisma.AccountFindFirstOrThrowArgs> = z.object({
@@ -6958,6 +6981,7 @@ export const AccountFindFirstOrThrowArgsSchema: z.ZodType<Prisma.AccountFindFirs
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ AccountScalarFieldEnumSchema,AccountScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const AccountFindManyArgsSchema: z.ZodType<Prisma.AccountFindManyArgs> = z.object({
@@ -6969,6 +6993,7 @@ export const AccountFindManyArgsSchema: z.ZodType<Prisma.AccountFindManyArgs> = 
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ AccountScalarFieldEnumSchema,AccountScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const AccountAggregateArgsSchema: z.ZodType<Prisma.AccountAggregateArgs> = z.object({
@@ -6992,12 +7017,14 @@ export const AccountFindUniqueArgsSchema: z.ZodType<Prisma.AccountFindUniqueArgs
   select: AccountSelectSchema.optional(),
   include: AccountIncludeSchema.optional(),
   where: AccountWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const AccountFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.AccountFindUniqueOrThrowArgs> = z.object({
   select: AccountSelectSchema.optional(),
   include: AccountIncludeSchema.optional(),
   where: AccountWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const SessionFindFirstArgsSchema: z.ZodType<Prisma.SessionFindFirstArgs> = z.object({
@@ -7009,6 +7036,7 @@ export const SessionFindFirstArgsSchema: z.ZodType<Prisma.SessionFindFirstArgs> 
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ SessionScalarFieldEnumSchema,SessionScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const SessionFindFirstOrThrowArgsSchema: z.ZodType<Prisma.SessionFindFirstOrThrowArgs> = z.object({
@@ -7020,6 +7048,7 @@ export const SessionFindFirstOrThrowArgsSchema: z.ZodType<Prisma.SessionFindFirs
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ SessionScalarFieldEnumSchema,SessionScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const SessionFindManyArgsSchema: z.ZodType<Prisma.SessionFindManyArgs> = z.object({
@@ -7031,6 +7060,7 @@ export const SessionFindManyArgsSchema: z.ZodType<Prisma.SessionFindManyArgs> = 
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ SessionScalarFieldEnumSchema,SessionScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const SessionAggregateArgsSchema: z.ZodType<Prisma.SessionAggregateArgs> = z.object({
@@ -7054,12 +7084,14 @@ export const SessionFindUniqueArgsSchema: z.ZodType<Prisma.SessionFindUniqueArgs
   select: SessionSelectSchema.optional(),
   include: SessionIncludeSchema.optional(),
   where: SessionWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const SessionFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.SessionFindUniqueOrThrowArgs> = z.object({
   select: SessionSelectSchema.optional(),
   include: SessionIncludeSchema.optional(),
   where: SessionWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const UserFindFirstArgsSchema: z.ZodType<Prisma.UserFindFirstArgs> = z.object({
@@ -7071,6 +7103,7 @@ export const UserFindFirstArgsSchema: z.ZodType<Prisma.UserFindFirstArgs> = z.ob
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ UserScalarFieldEnumSchema,UserScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const UserFindFirstOrThrowArgsSchema: z.ZodType<Prisma.UserFindFirstOrThrowArgs> = z.object({
@@ -7082,6 +7115,7 @@ export const UserFindFirstOrThrowArgsSchema: z.ZodType<Prisma.UserFindFirstOrThr
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ UserScalarFieldEnumSchema,UserScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const UserFindManyArgsSchema: z.ZodType<Prisma.UserFindManyArgs> = z.object({
@@ -7093,6 +7127,7 @@ export const UserFindManyArgsSchema: z.ZodType<Prisma.UserFindManyArgs> = z.obje
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ UserScalarFieldEnumSchema,UserScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const UserAggregateArgsSchema: z.ZodType<Prisma.UserAggregateArgs> = z.object({
@@ -7116,12 +7151,14 @@ export const UserFindUniqueArgsSchema: z.ZodType<Prisma.UserFindUniqueArgs> = z.
   select: UserSelectSchema.optional(),
   include: UserIncludeSchema.optional(),
   where: UserWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const UserFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.UserFindUniqueOrThrowArgs> = z.object({
   select: UserSelectSchema.optional(),
   include: UserIncludeSchema.optional(),
   where: UserWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const VerificationTokenFindFirstArgsSchema: z.ZodType<Prisma.VerificationTokenFindFirstArgs> = z.object({
@@ -7132,6 +7169,7 @@ export const VerificationTokenFindFirstArgsSchema: z.ZodType<Prisma.Verification
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ VerificationTokenScalarFieldEnumSchema,VerificationTokenScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const VerificationTokenFindFirstOrThrowArgsSchema: z.ZodType<Prisma.VerificationTokenFindFirstOrThrowArgs> = z.object({
@@ -7142,6 +7180,7 @@ export const VerificationTokenFindFirstOrThrowArgsSchema: z.ZodType<Prisma.Verif
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ VerificationTokenScalarFieldEnumSchema,VerificationTokenScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const VerificationTokenFindManyArgsSchema: z.ZodType<Prisma.VerificationTokenFindManyArgs> = z.object({
@@ -7152,6 +7191,7 @@ export const VerificationTokenFindManyArgsSchema: z.ZodType<Prisma.VerificationT
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ VerificationTokenScalarFieldEnumSchema,VerificationTokenScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const VerificationTokenAggregateArgsSchema: z.ZodType<Prisma.VerificationTokenAggregateArgs> = z.object({
@@ -7174,11 +7214,13 @@ export const VerificationTokenGroupByArgsSchema: z.ZodType<Prisma.VerificationTo
 export const VerificationTokenFindUniqueArgsSchema: z.ZodType<Prisma.VerificationTokenFindUniqueArgs> = z.object({
   select: VerificationTokenSelectSchema.optional(),
   where: VerificationTokenWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const VerificationTokenFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.VerificationTokenFindUniqueOrThrowArgs> = z.object({
   select: VerificationTokenSelectSchema.optional(),
   where: VerificationTokenWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedFindFirstArgsSchema: z.ZodType<Prisma.FeedFindFirstArgs> = z.object({
@@ -7190,6 +7232,7 @@ export const FeedFindFirstArgsSchema: z.ZodType<Prisma.FeedFindFirstArgs> = z.ob
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ FeedScalarFieldEnumSchema,FeedScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedFindFirstOrThrowArgsSchema: z.ZodType<Prisma.FeedFindFirstOrThrowArgs> = z.object({
@@ -7201,6 +7244,7 @@ export const FeedFindFirstOrThrowArgsSchema: z.ZodType<Prisma.FeedFindFirstOrThr
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ FeedScalarFieldEnumSchema,FeedScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedFindManyArgsSchema: z.ZodType<Prisma.FeedFindManyArgs> = z.object({
@@ -7212,6 +7256,7 @@ export const FeedFindManyArgsSchema: z.ZodType<Prisma.FeedFindManyArgs> = z.obje
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ FeedScalarFieldEnumSchema,FeedScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedAggregateArgsSchema: z.ZodType<Prisma.FeedAggregateArgs> = z.object({
@@ -7235,12 +7280,14 @@ export const FeedFindUniqueArgsSchema: z.ZodType<Prisma.FeedFindUniqueArgs> = z.
   select: FeedSelectSchema.optional(),
   include: FeedIncludeSchema.optional(),
   where: FeedWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.FeedFindUniqueOrThrowArgs> = z.object({
   select: FeedSelectSchema.optional(),
   include: FeedIncludeSchema.optional(),
   where: FeedWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedEntryFindFirstArgsSchema: z.ZodType<Prisma.FeedEntryFindFirstArgs> = z.object({
@@ -7252,6 +7299,7 @@ export const FeedEntryFindFirstArgsSchema: z.ZodType<Prisma.FeedEntryFindFirstAr
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ FeedEntryScalarFieldEnumSchema,FeedEntryScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedEntryFindFirstOrThrowArgsSchema: z.ZodType<Prisma.FeedEntryFindFirstOrThrowArgs> = z.object({
@@ -7263,6 +7311,7 @@ export const FeedEntryFindFirstOrThrowArgsSchema: z.ZodType<Prisma.FeedEntryFind
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ FeedEntryScalarFieldEnumSchema,FeedEntryScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedEntryFindManyArgsSchema: z.ZodType<Prisma.FeedEntryFindManyArgs> = z.object({
@@ -7274,6 +7323,7 @@ export const FeedEntryFindManyArgsSchema: z.ZodType<Prisma.FeedEntryFindManyArgs
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ FeedEntryScalarFieldEnumSchema,FeedEntryScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedEntryAggregateArgsSchema: z.ZodType<Prisma.FeedEntryAggregateArgs> = z.object({
@@ -7297,12 +7347,14 @@ export const FeedEntryFindUniqueArgsSchema: z.ZodType<Prisma.FeedEntryFindUnique
   select: FeedEntrySelectSchema.optional(),
   include: FeedEntryIncludeSchema.optional(),
   where: FeedEntryWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedEntryFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.FeedEntryFindUniqueOrThrowArgs> = z.object({
   select: FeedEntrySelectSchema.optional(),
   include: FeedEntryIncludeSchema.optional(),
   where: FeedEntryWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedEntryMediaFindFirstArgsSchema: z.ZodType<Prisma.FeedEntryMediaFindFirstArgs> = z.object({
@@ -7314,6 +7366,7 @@ export const FeedEntryMediaFindFirstArgsSchema: z.ZodType<Prisma.FeedEntryMediaF
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ FeedEntryMediaScalarFieldEnumSchema,FeedEntryMediaScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedEntryMediaFindFirstOrThrowArgsSchema: z.ZodType<Prisma.FeedEntryMediaFindFirstOrThrowArgs> = z.object({
@@ -7325,6 +7378,7 @@ export const FeedEntryMediaFindFirstOrThrowArgsSchema: z.ZodType<Prisma.FeedEntr
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ FeedEntryMediaScalarFieldEnumSchema,FeedEntryMediaScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedEntryMediaFindManyArgsSchema: z.ZodType<Prisma.FeedEntryMediaFindManyArgs> = z.object({
@@ -7336,6 +7390,7 @@ export const FeedEntryMediaFindManyArgsSchema: z.ZodType<Prisma.FeedEntryMediaFi
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.union([ FeedEntryMediaScalarFieldEnumSchema,FeedEntryMediaScalarFieldEnumSchema.array() ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedEntryMediaAggregateArgsSchema: z.ZodType<Prisma.FeedEntryMediaAggregateArgs> = z.object({
@@ -7359,18 +7414,21 @@ export const FeedEntryMediaFindUniqueArgsSchema: z.ZodType<Prisma.FeedEntryMedia
   select: FeedEntryMediaSelectSchema.optional(),
   include: FeedEntryMediaIncludeSchema.optional(),
   where: FeedEntryMediaWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedEntryMediaFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.FeedEntryMediaFindUniqueOrThrowArgs> = z.object({
   select: FeedEntryMediaSelectSchema.optional(),
   include: FeedEntryMediaIncludeSchema.optional(),
   where: FeedEntryMediaWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const BookmarkCreateArgsSchema: z.ZodType<Prisma.BookmarkCreateArgs> = z.object({
   select: BookmarkSelectSchema.optional(),
   include: BookmarkIncludeSchema.optional(),
   data: z.union([ BookmarkCreateInputSchema,BookmarkUncheckedCreateInputSchema ]),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const BookmarkUpsertArgsSchema: z.ZodType<Prisma.BookmarkUpsertArgs> = z.object({
@@ -7379,6 +7437,7 @@ export const BookmarkUpsertArgsSchema: z.ZodType<Prisma.BookmarkUpsertArgs> = z.
   where: BookmarkWhereUniqueInputSchema,
   create: z.union([ BookmarkCreateInputSchema,BookmarkUncheckedCreateInputSchema ]),
   update: z.union([ BookmarkUpdateInputSchema,BookmarkUncheckedUpdateInputSchema ]),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const BookmarkCreateManyArgsSchema: z.ZodType<Prisma.BookmarkCreateManyArgs> = z.object({
@@ -7390,6 +7449,7 @@ export const BookmarkDeleteArgsSchema: z.ZodType<Prisma.BookmarkDeleteArgs> = z.
   select: BookmarkSelectSchema.optional(),
   include: BookmarkIncludeSchema.optional(),
   where: BookmarkWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const BookmarkUpdateArgsSchema: z.ZodType<Prisma.BookmarkUpdateArgs> = z.object({
@@ -7397,6 +7457,7 @@ export const BookmarkUpdateArgsSchema: z.ZodType<Prisma.BookmarkUpdateArgs> = z.
   include: BookmarkIncludeSchema.optional(),
   data: z.union([ BookmarkUpdateInputSchema,BookmarkUncheckedUpdateInputSchema ]),
   where: BookmarkWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const BookmarkUpdateManyArgsSchema: z.ZodType<Prisma.BookmarkUpdateManyArgs> = z.object({
@@ -7412,6 +7473,7 @@ export const TagsOnBookmarksCreateArgsSchema: z.ZodType<Prisma.TagsOnBookmarksCr
   select: TagsOnBookmarksSelectSchema.optional(),
   include: TagsOnBookmarksIncludeSchema.optional(),
   data: z.union([ TagsOnBookmarksCreateInputSchema,TagsOnBookmarksUncheckedCreateInputSchema ]),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const TagsOnBookmarksUpsertArgsSchema: z.ZodType<Prisma.TagsOnBookmarksUpsertArgs> = z.object({
@@ -7420,6 +7482,7 @@ export const TagsOnBookmarksUpsertArgsSchema: z.ZodType<Prisma.TagsOnBookmarksUp
   where: TagsOnBookmarksWhereUniqueInputSchema,
   create: z.union([ TagsOnBookmarksCreateInputSchema,TagsOnBookmarksUncheckedCreateInputSchema ]),
   update: z.union([ TagsOnBookmarksUpdateInputSchema,TagsOnBookmarksUncheckedUpdateInputSchema ]),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const TagsOnBookmarksCreateManyArgsSchema: z.ZodType<Prisma.TagsOnBookmarksCreateManyArgs> = z.object({
@@ -7431,6 +7494,7 @@ export const TagsOnBookmarksDeleteArgsSchema: z.ZodType<Prisma.TagsOnBookmarksDe
   select: TagsOnBookmarksSelectSchema.optional(),
   include: TagsOnBookmarksIncludeSchema.optional(),
   where: TagsOnBookmarksWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const TagsOnBookmarksUpdateArgsSchema: z.ZodType<Prisma.TagsOnBookmarksUpdateArgs> = z.object({
@@ -7438,6 +7502,7 @@ export const TagsOnBookmarksUpdateArgsSchema: z.ZodType<Prisma.TagsOnBookmarksUp
   include: TagsOnBookmarksIncludeSchema.optional(),
   data: z.union([ TagsOnBookmarksUpdateInputSchema,TagsOnBookmarksUncheckedUpdateInputSchema ]),
   where: TagsOnBookmarksWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const TagsOnBookmarksUpdateManyArgsSchema: z.ZodType<Prisma.TagsOnBookmarksUpdateManyArgs> = z.object({
@@ -7453,6 +7518,7 @@ export const TagCreateArgsSchema: z.ZodType<Prisma.TagCreateArgs> = z.object({
   select: TagSelectSchema.optional(),
   include: TagIncludeSchema.optional(),
   data: z.union([ TagCreateInputSchema,TagUncheckedCreateInputSchema ]),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const TagUpsertArgsSchema: z.ZodType<Prisma.TagUpsertArgs> = z.object({
@@ -7461,6 +7527,7 @@ export const TagUpsertArgsSchema: z.ZodType<Prisma.TagUpsertArgs> = z.object({
   where: TagWhereUniqueInputSchema,
   create: z.union([ TagCreateInputSchema,TagUncheckedCreateInputSchema ]),
   update: z.union([ TagUpdateInputSchema,TagUncheckedUpdateInputSchema ]),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const TagCreateManyArgsSchema: z.ZodType<Prisma.TagCreateManyArgs> = z.object({
@@ -7472,6 +7539,7 @@ export const TagDeleteArgsSchema: z.ZodType<Prisma.TagDeleteArgs> = z.object({
   select: TagSelectSchema.optional(),
   include: TagIncludeSchema.optional(),
   where: TagWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const TagUpdateArgsSchema: z.ZodType<Prisma.TagUpdateArgs> = z.object({
@@ -7479,6 +7547,7 @@ export const TagUpdateArgsSchema: z.ZodType<Prisma.TagUpdateArgs> = z.object({
   include: TagIncludeSchema.optional(),
   data: z.union([ TagUpdateInputSchema,TagUncheckedUpdateInputSchema ]),
   where: TagWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const TagUpdateManyArgsSchema: z.ZodType<Prisma.TagUpdateManyArgs> = z.object({
@@ -7494,6 +7563,7 @@ export const CategoryCreateArgsSchema: z.ZodType<Prisma.CategoryCreateArgs> = z.
   select: CategorySelectSchema.optional(),
   include: CategoryIncludeSchema.optional(),
   data: z.union([ CategoryCreateInputSchema,CategoryUncheckedCreateInputSchema ]),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const CategoryUpsertArgsSchema: z.ZodType<Prisma.CategoryUpsertArgs> = z.object({
@@ -7502,6 +7572,7 @@ export const CategoryUpsertArgsSchema: z.ZodType<Prisma.CategoryUpsertArgs> = z.
   where: CategoryWhereUniqueInputSchema,
   create: z.union([ CategoryCreateInputSchema,CategoryUncheckedCreateInputSchema ]),
   update: z.union([ CategoryUpdateInputSchema,CategoryUncheckedUpdateInputSchema ]),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const CategoryCreateManyArgsSchema: z.ZodType<Prisma.CategoryCreateManyArgs> = z.object({
@@ -7513,6 +7584,7 @@ export const CategoryDeleteArgsSchema: z.ZodType<Prisma.CategoryDeleteArgs> = z.
   select: CategorySelectSchema.optional(),
   include: CategoryIncludeSchema.optional(),
   where: CategoryWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const CategoryUpdateArgsSchema: z.ZodType<Prisma.CategoryUpdateArgs> = z.object({
@@ -7520,6 +7592,7 @@ export const CategoryUpdateArgsSchema: z.ZodType<Prisma.CategoryUpdateArgs> = z.
   include: CategoryIncludeSchema.optional(),
   data: z.union([ CategoryUpdateInputSchema,CategoryUncheckedUpdateInputSchema ]),
   where: CategoryWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const CategoryUpdateManyArgsSchema: z.ZodType<Prisma.CategoryUpdateManyArgs> = z.object({
@@ -7535,6 +7608,7 @@ export const AccountCreateArgsSchema: z.ZodType<Prisma.AccountCreateArgs> = z.ob
   select: AccountSelectSchema.optional(),
   include: AccountIncludeSchema.optional(),
   data: z.union([ AccountCreateInputSchema,AccountUncheckedCreateInputSchema ]),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const AccountUpsertArgsSchema: z.ZodType<Prisma.AccountUpsertArgs> = z.object({
@@ -7543,6 +7617,7 @@ export const AccountUpsertArgsSchema: z.ZodType<Prisma.AccountUpsertArgs> = z.ob
   where: AccountWhereUniqueInputSchema,
   create: z.union([ AccountCreateInputSchema,AccountUncheckedCreateInputSchema ]),
   update: z.union([ AccountUpdateInputSchema,AccountUncheckedUpdateInputSchema ]),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const AccountCreateManyArgsSchema: z.ZodType<Prisma.AccountCreateManyArgs> = z.object({
@@ -7554,6 +7629,7 @@ export const AccountDeleteArgsSchema: z.ZodType<Prisma.AccountDeleteArgs> = z.ob
   select: AccountSelectSchema.optional(),
   include: AccountIncludeSchema.optional(),
   where: AccountWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const AccountUpdateArgsSchema: z.ZodType<Prisma.AccountUpdateArgs> = z.object({
@@ -7561,6 +7637,7 @@ export const AccountUpdateArgsSchema: z.ZodType<Prisma.AccountUpdateArgs> = z.ob
   include: AccountIncludeSchema.optional(),
   data: z.union([ AccountUpdateInputSchema,AccountUncheckedUpdateInputSchema ]),
   where: AccountWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const AccountUpdateManyArgsSchema: z.ZodType<Prisma.AccountUpdateManyArgs> = z.object({
@@ -7576,6 +7653,7 @@ export const SessionCreateArgsSchema: z.ZodType<Prisma.SessionCreateArgs> = z.ob
   select: SessionSelectSchema.optional(),
   include: SessionIncludeSchema.optional(),
   data: z.union([ SessionCreateInputSchema,SessionUncheckedCreateInputSchema ]),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const SessionUpsertArgsSchema: z.ZodType<Prisma.SessionUpsertArgs> = z.object({
@@ -7584,6 +7662,7 @@ export const SessionUpsertArgsSchema: z.ZodType<Prisma.SessionUpsertArgs> = z.ob
   where: SessionWhereUniqueInputSchema,
   create: z.union([ SessionCreateInputSchema,SessionUncheckedCreateInputSchema ]),
   update: z.union([ SessionUpdateInputSchema,SessionUncheckedUpdateInputSchema ]),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const SessionCreateManyArgsSchema: z.ZodType<Prisma.SessionCreateManyArgs> = z.object({
@@ -7595,6 +7674,7 @@ export const SessionDeleteArgsSchema: z.ZodType<Prisma.SessionDeleteArgs> = z.ob
   select: SessionSelectSchema.optional(),
   include: SessionIncludeSchema.optional(),
   where: SessionWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const SessionUpdateArgsSchema: z.ZodType<Prisma.SessionUpdateArgs> = z.object({
@@ -7602,6 +7682,7 @@ export const SessionUpdateArgsSchema: z.ZodType<Prisma.SessionUpdateArgs> = z.ob
   include: SessionIncludeSchema.optional(),
   data: z.union([ SessionUpdateInputSchema,SessionUncheckedUpdateInputSchema ]),
   where: SessionWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const SessionUpdateManyArgsSchema: z.ZodType<Prisma.SessionUpdateManyArgs> = z.object({
@@ -7617,6 +7698,7 @@ export const UserCreateArgsSchema: z.ZodType<Prisma.UserCreateArgs> = z.object({
   select: UserSelectSchema.optional(),
   include: UserIncludeSchema.optional(),
   data: z.union([ UserCreateInputSchema,UserUncheckedCreateInputSchema ]).optional(),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const UserUpsertArgsSchema: z.ZodType<Prisma.UserUpsertArgs> = z.object({
@@ -7625,6 +7707,7 @@ export const UserUpsertArgsSchema: z.ZodType<Prisma.UserUpsertArgs> = z.object({
   where: UserWhereUniqueInputSchema,
   create: z.union([ UserCreateInputSchema,UserUncheckedCreateInputSchema ]),
   update: z.union([ UserUpdateInputSchema,UserUncheckedUpdateInputSchema ]),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const UserCreateManyArgsSchema: z.ZodType<Prisma.UserCreateManyArgs> = z.object({
@@ -7636,6 +7719,7 @@ export const UserDeleteArgsSchema: z.ZodType<Prisma.UserDeleteArgs> = z.object({
   select: UserSelectSchema.optional(),
   include: UserIncludeSchema.optional(),
   where: UserWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const UserUpdateArgsSchema: z.ZodType<Prisma.UserUpdateArgs> = z.object({
@@ -7643,6 +7727,7 @@ export const UserUpdateArgsSchema: z.ZodType<Prisma.UserUpdateArgs> = z.object({
   include: UserIncludeSchema.optional(),
   data: z.union([ UserUpdateInputSchema,UserUncheckedUpdateInputSchema ]),
   where: UserWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const UserUpdateManyArgsSchema: z.ZodType<Prisma.UserUpdateManyArgs> = z.object({
@@ -7657,6 +7742,7 @@ export const UserDeleteManyArgsSchema: z.ZodType<Prisma.UserDeleteManyArgs> = z.
 export const VerificationTokenCreateArgsSchema: z.ZodType<Prisma.VerificationTokenCreateArgs> = z.object({
   select: VerificationTokenSelectSchema.optional(),
   data: z.union([ VerificationTokenCreateInputSchema,VerificationTokenUncheckedCreateInputSchema ]),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const VerificationTokenUpsertArgsSchema: z.ZodType<Prisma.VerificationTokenUpsertArgs> = z.object({
@@ -7664,6 +7750,7 @@ export const VerificationTokenUpsertArgsSchema: z.ZodType<Prisma.VerificationTok
   where: VerificationTokenWhereUniqueInputSchema,
   create: z.union([ VerificationTokenCreateInputSchema,VerificationTokenUncheckedCreateInputSchema ]),
   update: z.union([ VerificationTokenUpdateInputSchema,VerificationTokenUncheckedUpdateInputSchema ]),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const VerificationTokenCreateManyArgsSchema: z.ZodType<Prisma.VerificationTokenCreateManyArgs> = z.object({
@@ -7674,12 +7761,14 @@ export const VerificationTokenCreateManyArgsSchema: z.ZodType<Prisma.Verificatio
 export const VerificationTokenDeleteArgsSchema: z.ZodType<Prisma.VerificationTokenDeleteArgs> = z.object({
   select: VerificationTokenSelectSchema.optional(),
   where: VerificationTokenWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const VerificationTokenUpdateArgsSchema: z.ZodType<Prisma.VerificationTokenUpdateArgs> = z.object({
   select: VerificationTokenSelectSchema.optional(),
   data: z.union([ VerificationTokenUpdateInputSchema,VerificationTokenUncheckedUpdateInputSchema ]),
   where: VerificationTokenWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const VerificationTokenUpdateManyArgsSchema: z.ZodType<Prisma.VerificationTokenUpdateManyArgs> = z.object({
@@ -7695,6 +7784,7 @@ export const FeedCreateArgsSchema: z.ZodType<Prisma.FeedCreateArgs> = z.object({
   select: FeedSelectSchema.optional(),
   include: FeedIncludeSchema.optional(),
   data: z.union([ FeedCreateInputSchema,FeedUncheckedCreateInputSchema ]),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedUpsertArgsSchema: z.ZodType<Prisma.FeedUpsertArgs> = z.object({
@@ -7703,6 +7793,7 @@ export const FeedUpsertArgsSchema: z.ZodType<Prisma.FeedUpsertArgs> = z.object({
   where: FeedWhereUniqueInputSchema,
   create: z.union([ FeedCreateInputSchema,FeedUncheckedCreateInputSchema ]),
   update: z.union([ FeedUpdateInputSchema,FeedUncheckedUpdateInputSchema ]),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedCreateManyArgsSchema: z.ZodType<Prisma.FeedCreateManyArgs> = z.object({
@@ -7714,6 +7805,7 @@ export const FeedDeleteArgsSchema: z.ZodType<Prisma.FeedDeleteArgs> = z.object({
   select: FeedSelectSchema.optional(),
   include: FeedIncludeSchema.optional(),
   where: FeedWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedUpdateArgsSchema: z.ZodType<Prisma.FeedUpdateArgs> = z.object({
@@ -7721,6 +7813,7 @@ export const FeedUpdateArgsSchema: z.ZodType<Prisma.FeedUpdateArgs> = z.object({
   include: FeedIncludeSchema.optional(),
   data: z.union([ FeedUpdateInputSchema,FeedUncheckedUpdateInputSchema ]),
   where: FeedWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedUpdateManyArgsSchema: z.ZodType<Prisma.FeedUpdateManyArgs> = z.object({
@@ -7736,6 +7829,7 @@ export const FeedEntryCreateArgsSchema: z.ZodType<Prisma.FeedEntryCreateArgs> = 
   select: FeedEntrySelectSchema.optional(),
   include: FeedEntryIncludeSchema.optional(),
   data: z.union([ FeedEntryCreateInputSchema,FeedEntryUncheckedCreateInputSchema ]),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedEntryUpsertArgsSchema: z.ZodType<Prisma.FeedEntryUpsertArgs> = z.object({
@@ -7744,6 +7838,7 @@ export const FeedEntryUpsertArgsSchema: z.ZodType<Prisma.FeedEntryUpsertArgs> = 
   where: FeedEntryWhereUniqueInputSchema,
   create: z.union([ FeedEntryCreateInputSchema,FeedEntryUncheckedCreateInputSchema ]),
   update: z.union([ FeedEntryUpdateInputSchema,FeedEntryUncheckedUpdateInputSchema ]),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedEntryCreateManyArgsSchema: z.ZodType<Prisma.FeedEntryCreateManyArgs> = z.object({
@@ -7755,6 +7850,7 @@ export const FeedEntryDeleteArgsSchema: z.ZodType<Prisma.FeedEntryDeleteArgs> = 
   select: FeedEntrySelectSchema.optional(),
   include: FeedEntryIncludeSchema.optional(),
   where: FeedEntryWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedEntryUpdateArgsSchema: z.ZodType<Prisma.FeedEntryUpdateArgs> = z.object({
@@ -7762,6 +7858,7 @@ export const FeedEntryUpdateArgsSchema: z.ZodType<Prisma.FeedEntryUpdateArgs> = 
   include: FeedEntryIncludeSchema.optional(),
   data: z.union([ FeedEntryUpdateInputSchema,FeedEntryUncheckedUpdateInputSchema ]),
   where: FeedEntryWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedEntryUpdateManyArgsSchema: z.ZodType<Prisma.FeedEntryUpdateManyArgs> = z.object({
@@ -7777,6 +7874,7 @@ export const FeedEntryMediaCreateArgsSchema: z.ZodType<Prisma.FeedEntryMediaCrea
   select: FeedEntryMediaSelectSchema.optional(),
   include: FeedEntryMediaIncludeSchema.optional(),
   data: z.union([ FeedEntryMediaCreateInputSchema,FeedEntryMediaUncheckedCreateInputSchema ]),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedEntryMediaUpsertArgsSchema: z.ZodType<Prisma.FeedEntryMediaUpsertArgs> = z.object({
@@ -7785,6 +7883,7 @@ export const FeedEntryMediaUpsertArgsSchema: z.ZodType<Prisma.FeedEntryMediaUpse
   where: FeedEntryMediaWhereUniqueInputSchema,
   create: z.union([ FeedEntryMediaCreateInputSchema,FeedEntryMediaUncheckedCreateInputSchema ]),
   update: z.union([ FeedEntryMediaUpdateInputSchema,FeedEntryMediaUncheckedUpdateInputSchema ]),
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedEntryMediaCreateManyArgsSchema: z.ZodType<Prisma.FeedEntryMediaCreateManyArgs> = z.object({
@@ -7796,6 +7895,7 @@ export const FeedEntryMediaDeleteArgsSchema: z.ZodType<Prisma.FeedEntryMediaDele
   select: FeedEntryMediaSelectSchema.optional(),
   include: FeedEntryMediaIncludeSchema.optional(),
   where: FeedEntryMediaWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedEntryMediaUpdateArgsSchema: z.ZodType<Prisma.FeedEntryMediaUpdateArgs> = z.object({
@@ -7803,6 +7903,7 @@ export const FeedEntryMediaUpdateArgsSchema: z.ZodType<Prisma.FeedEntryMediaUpda
   include: FeedEntryMediaIncludeSchema.optional(),
   data: z.union([ FeedEntryMediaUpdateInputSchema,FeedEntryMediaUncheckedUpdateInputSchema ]),
   where: FeedEntryMediaWhereUniqueInputSchema,
+  relationLoadStrategy: RelationLoadStrategySchema.optional(),
 }).strict() ;
 
 export const FeedEntryMediaUpdateManyArgsSchema: z.ZodType<Prisma.FeedEntryMediaUpdateManyArgs> = z.object({

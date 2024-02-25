@@ -34,14 +34,12 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
 
 // @ts-expect-error
 export const DELETE: RequestHandler = async ({ request, locals }) => {
-  console.log("TAGS.DELETE.HANDLER")
   try {
     const session = await locals.auth()
     if (!session?.user?.id) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
     const { data } = await request.json()
-    console.log("requestJson", data)
 
     const prismaResult = await prisma.tag.delete({
       where: {
@@ -49,7 +47,6 @@ export const DELETE: RequestHandler = async ({ request, locals }) => {
         id: data.id,
       },
     })
-    console.log("prismaResult", prismaResult)
 
     return new Response(JSON.stringify(prismaResult))
   } catch (error) {
