@@ -1,9 +1,36 @@
 <script context="module" lang="ts">
-  export type StateChanger = {
+  type StateChanger = {
     loaded: () => void
     complete: () => void
     reset: () => void
     error: () => void
+  }
+
+  const STATUS = {
+    READY: "READY",
+    LOADING: "LOADING",
+    COMPLETE: "COMPLETE",
+    ERROR: "ERROR",
+  } as const
+
+  let isFirstLoad = $state(true)
+  let status = $state<keyof typeof STATUS>(STATUS.READY)
+
+  export const stateChanger = {
+    loaded: () => {
+      isFirstLoad = false
+      status = STATUS.READY
+    },
+    complete: () => {
+      status = STATUS.COMPLETE
+    },
+    reset: () => {
+      status = STATUS.READY
+      isFirstLoad = true
+    },
+    error: () => {
+      status = STATUS.ERROR
+    },
   }
 </script>
 
@@ -37,13 +64,6 @@
     }
   }
 
-  const STATUS = {
-    READY: "READY",
-    LOADING: "LOADING",
-    COMPLETE: "COMPLETE",
-    ERROR: "ERROR",
-  } as const
-
   const stateChanger = {
     loaded: () => {
       isFirstLoad = false
@@ -63,10 +83,8 @@
 
   const loopTracker = new LoopTracker()
 
-  const { triggerLoad } = $props<{ triggerLoad: (stateChanger: StateChanger) => Promise<void> }>()
+  const { triggerLoad } = $props<{ triggerLoad: () => Promise<void> }>()
 
-  let isFirstLoad = $state(true)
-  let status = $state<keyof typeof STATUS>(STATUS.READY)
   let intersectionTarget = $state<HTMLElement>()
   let observer = $state<IntersectionObserver>()
 
@@ -84,7 +102,7 @@
     status = STATUS.LOADING
 
     if (!loopTracker.coolingOff) {
-      await triggerLoad(stateChanger)
+      await triggerLoad()
     }
     loopTracker.track()
 
@@ -122,19 +140,21 @@
   <slot />
 
   {#if showSpinner}
-    <LoadingIndicator size="xl" />
+    <div class="pt-16 w-full text-lg text-center">
+      <LoadingIndicator size="xl" />
+    </div>
   {/if}
 
   {#if showNoResults}
-    <div class="mt-16 w-full text-lg text-center">No results</div>
+    <div class="pt-16 w-full text-lg text-center">No results</div>
   {/if}
 
   {#if showNoMore}
-    <div class="mt-16 w-full text-lg text-center">No more data</div>
+    <div class="pt-16 w-full text-lg text-center">No more data</div>
   {/if}
 
   {#if showError}
-    <div class="flex flex-col gap-4 items-center mt-16 w-full">
+    <div class="flex flex-col gap-4 items-center pt-16 w-full">
       Oops, something went wrong
       <button class={buttonVariants({ variant: "default" })} on:click={attemptLoad}> Retry </button>
     </div>

@@ -34,9 +34,10 @@
   import { Navbar } from "$lib/components/navbar"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { FeedRow } from "$lib/components/feed-row"
+  import { untrack } from "svelte"
 
   import { useInterface, TTSLocation } from "$state/ui.svelte"
-  import { InfiniteLoader, type StateChanger } from "$lib/components/infinite-scroll"
+  import { InfiniteLoader, stateChanger } from "$lib/components/infinite-scroll"
   import { invalidateAll } from "$app/navigation"
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
   import ttsWorkerUrl from "$lib/transformers/tts-worker?url"
@@ -261,13 +262,12 @@
   }
 
   // Load more items on infinite scroll
-  const loadMore = async (stateChanger: StateChanger) => {
+  const loadMore = async () => {
     try {
       pageNumber += 1
       const limit = limitLoadCount
       const skip = limitLoadCount * (pageNumber - 1)
 
-      console.log("loadMore", { limit, skip, pageNumber })
       const searchResults = await fetchSearchResults({ limit, skip })
       if (!searchResults?.data) return
 
@@ -276,9 +276,9 @@
       }
 
       if (allItems.length >= searchResults.count) {
-        await stateChanger.complete()
+        stateChanger.complete()
       } else {
-        await stateChanger.loaded()
+        stateChanger.loaded()
       }
     } catch (e) {
       console.error(e)
@@ -286,48 +286,18 @@
     }
   }
 
-  // Handle search input
-  $effect(() => {
-    // Handle updates to ui.searchQuery and call fetchSearchResults on change
+  // Handle search input changes
+  // Reset and execute first search for new query
+  $effect.pre(() => {
     if (ui.searchQuery) {
-      ;(async () => {
-        pageNumber += 1
-
-        const skip = limitLoadCount * (pageNumber - 1)
-        const searchResults = await fetchSearchResults({ limit: limitLoadCount, skip })
-        if (!searchResults?.data) return
-
-        console.log("updating search results", { pageNumber, limitLoadCount, skip })
-        totalItemCount = searchResults.count
-        allItems = searchResults.data
-      })()
+      untrack(() => {
+        stateChanger.reset()
+        pageNumber = 0
+        allItems = []
+        loadMore()
+      })
     }
   })
-
-  // Handle search input
-  // let getActiveFeedItems = $derived.by(async () => {
-  // $effect(() => {
-  //   if (!ui.searchQuery) {
-  //     return allItems
-  //       .filter((item: LoadFeedEntry) => {
-  //         if (ui.showUnreadOnly) {
-  //           return !!item.unread
-  //         } else {
-  //           return item
-  //         }
-  //       })
-  //       .filter((item: LoadFeedEntry) => {
-  //         const feed = data.feeds?.data?.find((feed) => feed.id === item.feed?.id)
-  //         return feed?.visible
-  //       })
-  //   }
-  //
-  //   const skip = limitLoadCount * (pageNumber - 1)
-  //   console.log("getActiveFeedItems", { pageNumber, limitLoadCount, skip })
-  //   const [searchResults, count] = await fetchSearchResults({ limit: limitLoadCount, skip })
-  //   totalItemCount = count
-  //   allItems=searchResults
-  // })
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.target instanceof HTMLInputElement) return
@@ -379,9 +349,7 @@
     <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start">
       {#if data.feedEntries?.count > 0}
         <div class="h-full">
-          <InfiniteLoader
-            triggerLoad={async (stateChanger: StateChanger) => await loadMore(stateChanger)}
-          >
+          <InfiniteLoader triggerLoad={async () => await loadMore()}>
             {#each allItems as feedEntry}
               <FeedRow {feedEntry} {handleSummarizeText} {handleGenerateSpeech} />
             {/each}

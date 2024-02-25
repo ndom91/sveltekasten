@@ -1,1 +1,3 @@
-export { default as InfiniteLoader } from "./InfiniteLoader.svelte"
+import InfiniteLoader, { stateChanger } from "./InfiniteLoader.svelte"
+
+export { InfiniteLoader, stateChanger }
