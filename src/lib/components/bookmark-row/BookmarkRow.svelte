@@ -58,8 +58,9 @@
   {/await}
   <UnLazyimage
     thumbhash={bookmark.imageBlur ?? ""}
-    srcSet={`${bookmark.image} 300w`}
-    alt="Bookmark Screenshot"
+    autoSizes
+    srcSet={`${bookmark.image} 240w`}
+    alt={`${new URL(bookmark.url).hostname} Screenshot`}
     class="object-cover object-center w-72 h-36 rounded-md border transition border-neutral-100 dark:border-neutral-800"
   />
   <div class="flex flex-col gap-2">
