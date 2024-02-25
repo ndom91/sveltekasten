@@ -56,7 +56,7 @@
     // Hack to quickly get text content from HTML String
     let tmp = document.createElement("div")
     tmp.innerHTML = feedEntry.content!
-    handleGenerateSpeech(tmp.textContent)
+    handleGenerateSpeech(tmp.textContent!)
   }
 
   const handleStartTextSummarization = () => {

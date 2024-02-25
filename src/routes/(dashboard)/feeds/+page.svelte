@@ -1,3 +1,34 @@
+<script context="module" lang="ts">
+  export type FeedLoadData = {
+    feedEntries: {
+      data: LoadFeedEntry[]
+      count: number
+    }
+    feeds: {
+      data: Feed & { visible: boolean }[]
+      count: number
+    }
+    user: {
+      settings: {
+        ai: {
+          tts: {
+            enabled: boolean
+            location: keyof typeof TTSLocation
+            speaker: string
+          }
+          summarization: {
+            enabled: boolean
+          }
+          transcription: {
+            enabled: boolean
+          }
+        }
+      }
+    }
+    error?: Error
+  }
+</script>
+
 <script lang="ts">
   import toast from "svelte-french-toast"
   import { Navbar } from "$lib/components/navbar"
@@ -5,16 +36,17 @@
   import { FeedRow } from "$lib/components/feed-row"
 
   import { useInterface, TTSLocation } from "$state/ui.svelte"
-  import { InfiniteLoader } from "$lib/components/infinite-scroll"
+  import { InfiniteLoader, type StateChanger } from "$lib/components/infinite-scroll"
   import { invalidateAll } from "$app/navigation"
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
   import ttsWorkerUrl from "$lib/transformers/tts-worker?url"
   import summaryWorkerUrl from "$lib/transformers/translate-worker?url"
+  import type { Feed } from "$zod"
 
   const limitLoadCount = 20
 
   const ui = useInterface()
-  const { data } = $props()
+  const { data } = $props<{ data: FeedLoadData }>()
 
   // Log error from page server loading
   if (data.error) {
@@ -187,6 +219,7 @@
           feedMedia: true,
         },
         orderBy: { published: "desc" },
+        where: {},
       }
       if (ui.searchQuery) {
         body.where = {
@@ -216,53 +249,33 @@
       if (!res.ok) {
         throw new Error("Error fetching more items")
       }
-      const { data: searchResults, count } = await res.json()
-      return [searchResults, count]
-    } catch (error) {
+      const { data, count } = await res.json()
+      return {
+        data,
+        count,
+      }
+    } catch (error: any) {
       console.error(error.message ?? error)
       toast.error(error.message ?? error)
     }
   }
 
-  // Infinite scrolling
-  let elementRef = $state<HTMLElement>()
-  let listWrapperEl = $state<HTMLElement>()
-  let observer: IntersectionObserver | null = $state(null)
-
-  // $effect(() => {
-  //   if (elementRef) {
-  //     observer = infiniteScroll({
-  //       fetch: () => loadMore(pageNumber + 1),
-  //       element: elementRef,
-  //     })
-  //     return () => observer?.disconnect()
-  //   }
-  // })
-
   // Load more items on infinite scroll
-  const loadMore = async (stateChanger: TODO, p: number) => {
+  const loadMore = async (stateChanger: StateChanger, p: number) => {
     try {
-      console.log("loadMore.stateChanger", stateChanger)
       pageNumber = p
       const limit = limitLoadCount
       const skip = limitLoadCount * (pageNumber - 1)
 
-      // if (
-      //   // Skip if all items already loaded
-      //   allItems.length >= totalItemCount ||
-      //   // Skip if list is less than window to avoid loop
-      //   // TODO: Improve this loop check to allow loading on long screens
-      //   (listWrapperEl && listWrapperEl.scrollHeight < window.innerHeight)
-      // ) {
-      //   return
-      // }
-
       console.log("loading more...", { limit, skip, pageNumber })
-      const [searchResults, count] = await fetchSearchResults({ limit, skip })
+      const searchResults = await fetchSearchResults({ limit, skip })
+      if (!searchResults?.data) return
 
-      allItems.push(...searchResults)
+      if (searchResults.data.length) {
+        allItems.push(...(searchResults.data as any[]))
+      }
 
-      if (allItems.length >= count) {
+      if (allItems.length >= searchResults.count) {
         await stateChanger.complete()
       } else {
         await stateChanger.loaded()
@@ -347,39 +360,14 @@
   <main class="w-full max-w-screen-2xl h-full">
     <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start">
       {#if data.feedEntries?.count > 0}
-        <div bind:this={listWrapperEl} class="h-full">
-          <!-- {#await getActiveFeedItems} -->
-          <!--   {#each Array.from({ length: 15 }) as _} -->
-          <!--     <div class="h-40 text-3xl"> -->
-          <!--       <div class="flex gap-4 items-start p-4 mx-4 w-full opacity-10"> -->
-          <!--         <Skeleton class="w-52 h-28 rounded-md" /> -->
-          <!--         <div class="flex flex-col gap-4 items-start w-full"> -->
-          <!--           <Skeleton class="w-3/4 h-4 min-w-[300px]" /> -->
-          <!--           <Skeleton class="w-4/5 h-10 min-w-[400px]" /> -->
-          <!--           <Skeleton class="w-96 h-4 min-w-[100px]" /> -->
-          <!--         </div> -->
-          <!--       </div> -->
-          <!--     </div> -->
-          <!--   {/each} -->
-          <!-- {:then feedEntries} -->
-          <InfiniteLoader triggerLoad={(stateChanger) => loadMore(stateChanger, pageNumber + 1)}>
+        <div class="h-full">
+          <InfiniteLoader
+            triggerLoad={(stateChanger: StateChanger) => loadMore(stateChanger, pageNumber + 1)}
+          >
             {#each allItems as feedEntry}
               <FeedRow {feedEntry} {handleSummarizeText} {handleGenerateSpeech} />
             {/each}
           </InfiniteLoader>
-          <!-- <div bind:this={elementRef} class="w-full h-48" /> -->
-          <!-- {:catch error} -->
-          <!--   <div -->
-          <!--     class="flex flex-col gap-4 items-center my-12 mx-auto max-w-screen-sm text-2xl font-light text-red-400 dark:text-red-500" -->
-          <!--   > -->
-          <!--     Error fetching results -->
-          <!--     <div -->
-          <!--       class="p-8 max-w-screen-sm font-mono text-lg font-light rounded-md text-pretty bg-neutral-100 dark:bg-neutral-900" -->
-          <!--     > -->
-          <!--       {error} -->
-          <!--     </div> -->
-          <!--   </div> -->
-          <!-- {/await} -->
         </div>
       {:else}
         <EmptyState />

@@ -60,15 +60,21 @@ export const load: PageServerLoad = async ({ locals, url }) => {
           return {
             ...feed,
             visible: true,
-          } as unknown as Feed & { visible: boolean }
-        }),
+          }
+        }) as unknown as (Feed & { visible: boolean })[],
         count: feedCount,
       },
     }
   } catch (error: any) {
     return {
-      feedEntries: [],
-      count: 0,
+      feedEntries: {
+        data: {},
+        count: 0,
+      },
+      feeds: {
+        data: {},
+        count: 0,
+      },
       error: error.message ?? error,
     }
   }

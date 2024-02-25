@@ -1,3 +1,12 @@
+<script context="module" lang="ts">
+  export type StateChanger = {
+    loaded: () => void
+    complete: () => void
+    reset: () => void
+    error: () => void
+  }
+</script>
+
 <script lang="ts">
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
   import { buttonVariants } from "$lib/components/ui/button"
@@ -36,38 +45,20 @@
   } as const
 
   const stateChanger = {
-    loaded: async () => {
+    loaded: () => {
       isFirstLoad = false
-
       status = STATUS.READY
     },
-
-    complete: async () => {
+    complete: () => {
       status = STATUS.COMPLETE
     },
-
     reset: () => {
       status = STATUS.READY
       isFirstLoad = true
-
-      // wait for list to be empty and the empty action may trigger a scroll event
-      // setTimeout(() => {
-      //   throttler.reset()
-      //   scrollHandler()
-      // }, 1)
     },
-
     error: () => {
       status = STATUS.ERROR
-      // throttler.reset()
     },
-  }
-
-  type StateChanger = {
-    loaded: () => Promise<void>
-    complete: () => Promise<void>
-    reset: () => void
-    error: () => void
   }
 
   const loopTracker = new LoopTracker()
