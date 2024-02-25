@@ -4,7 +4,7 @@
   import { Badge } from "$lib/components/ui/badge"
   import { useInterface } from "$state/ui.svelte"
   import { invalidateAll } from "$app/navigation"
-  import { UnLazyimage } from "@unlazy/svelte"
+  import { Image } from "$lib/components/image"
 
   const ui = useInterface()
 
@@ -41,8 +41,6 @@
     })
     invalidateAll()
   }
-
-  $inspect("bookmark", bookmark)
 </script>
 
 <div
@@ -56,12 +54,12 @@
   {#await import("./DeleteDialog.svelte") then { default: DeleteDialog }}
     <svelte:component this={DeleteDialog} bind:open={isDeleteDialogOpen} bookmarkId={bookmark.id} />
   {/await}
-  <UnLazyimage
+  <Image
     thumbhash={bookmark.imageBlur ?? ""}
     autoSizes
-    srcSet={`${bookmark.image} 240w`}
+    src={bookmark.image}
     alt={`${new URL(bookmark.url).hostname} Screenshot`}
-    class="object-cover object-center w-72 h-36 rounded-md border transition border-neutral-100 dark:border-neutral-800"
+    class="w-60 h-36 rounded-md border transition border-neutral-100 dark:border-neutral-800"
   />
   <div class="flex flex-col gap-2">
     <span class="text-xl font-bold line-clamp-1 text-clip">
