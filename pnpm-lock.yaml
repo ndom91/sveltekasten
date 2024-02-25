@@ -151,9 +151,6 @@ devDependencies:
   '@typescript-eslint/parser':
     specifier: 7.0.2
     version: 7.0.2(eslint@8.57.0)(typescript@5.3.3)
-  '@unlazy/svelte':
-    specifier: ^0.11.1
-    version: 0.11.1(svelte@5.0.0-next.64)
   autoprefixer:
     specifier: ^10.4.17
     version: 10.4.17(postcss@8.4.35)
@@ -1360,19 +1357,6 @@ packages:
 
   /@ungap/structured-clone@1.2.0:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
-    dev: true
-
-  /@unlazy/core@0.11.1:
-    resolution: {integrity: sha512-dpEQKIZNHbUV/WE4W5j3A/ffgJw+1PHuaNNIN79QEJpiBgi0Im2LhoU5gsLsneFcEqQQ230YE61sJrteXf7DjQ==}
-    dev: true
-
-  /@unlazy/svelte@0.11.1(svelte@5.0.0-next.64):
-    resolution: {integrity: sha512-zQ4UOhKijk34baBk1pfbLeY/gmmSbFQVL7iNq/fz5PpFM41GEJoQ8CRU+Bo8pUx2MDc69lCepT8RE33Q6BvVGg==}
-    peerDependencies:
-      svelte: ^3 || ^4
-    dependencies:
-      svelte: 5.0.0-next.64
-      unlazy: 0.11.1
     dev: true
 
   /@vercel/nft@0.26.2:
@@ -4973,12 +4957,6 @@ packages:
     resolution: {integrity: sha512-CJ1QgKmNg3CwvAv/kOFmtnEN05f0D/cn9QntgNOQlQF9dgvVTHj3t+8JPdjqawCHk7V/KA+fbUqzZ9XWhcqPUg==}
     engines: {node: '>= 4.0.0'}
     dev: false
-
-  /unlazy@0.11.1:
-    resolution: {integrity: sha512-X4EiJUXpqehX0ERViCllo4sSzYY1THvB/GaPmFcdm8ioTAx68xcFMCCiATERbI1Hy8slCkTtnIK0/WRNVHl7mA==}
-    dependencies:
-      '@unlazy/core': 0.11.1
-    dev: true
 
   /update-browserslist-db@1.0.13(browserslist@4.22.2):
     resolution: {integrity: sha512-xebP81SNcPuNpPP3uzeW1NYXxI3rxyJzF3pD6sH4jE7o/IX+WtSpwnVU+qIsDPyk0d3hmFQ7mjqc6AtV604hbg==}

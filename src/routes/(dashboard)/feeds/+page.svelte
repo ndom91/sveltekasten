@@ -341,7 +341,6 @@
       window.open(targetLink, "_target")
     }
   }
-  $inspect("allItems", allItems.length)
 </script>
 
 <svelte:head>

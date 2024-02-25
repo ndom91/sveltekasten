@@ -70,9 +70,6 @@
   let showNoResults = $derived(status === STATUS.COMPLETE && isFirstLoad)
   let showNoMore = $derived(status === STATUS.COMPLETE && !isFirstLoad)
 
-  $inspect("status", status)
-  $inspect("isFirstLoad", isFirstLoad)
-
   async function attemptLoad() {
     if (status === STATUS.COMPLETE) {
       return
@@ -111,8 +108,6 @@
     }
     return () => observer?.disconnect()
   })
-
-  $inspect("status", status)
 </script>
 
 <div class="h-full">

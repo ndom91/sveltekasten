@@ -5,8 +5,6 @@
   import { page } from "$app/stores"
   import { SignIn } from "@auth/sveltekit/components"
 
-  $inspect($page.data.providers)
-
   const providerButtonStyles = (provider: string): string => {
     switch (provider) {
       case "github":
