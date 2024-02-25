@@ -3,11 +3,11 @@
   import { format } from "@formkit/tempo"
   import { Badge } from "$lib/components/ui/badge"
   import type { FeedEntry, FeedEntryMedia } from "$zod"
-  import dompurify from "dompurify"
+  import dompurify from "isomorphic-dompurify"
+
   import { tweened } from "svelte/motion"
   import { quintOut } from "svelte/easing"
   import { useInterface } from "$state/ui.svelte"
-  import { tick } from "svelte"
 
   const ui = useInterface()
 

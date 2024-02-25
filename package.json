@@ -57,6 +57,7 @@
     "cmdk-sv": "^0.0.13",
     "dompurify": "^3.0.9",
     "formsnap": "^0.5.0",
+    "isomorphic-dompurify": "^2.4.0",
     "metascraper": "^5.44.0",
     "metascraper-author": "^5.44.0",
     "metascraper-clearbit": "^5.44.0",
