@@ -27,8 +27,11 @@
     }
   }
 
-  const handleKeyUp = (event: KeyboardEvent) => {
-    ui.searchQuery = (event.target as HTMLInputElement).value
+  const handleKeyUp = async (event: KeyboardEvent) => {
+    const query: string = await new Promise((resolve) => {
+      resolve((event.target as HTMLInputElement).value)
+    })
+    ui.searchQuery = query
   }
 </script>
 

@@ -1,13 +1,29 @@
 <script lang="ts">
   import { cn } from "$lib/utils/style"
 
-  let className: string = ""
-  export { className as class }
+  const Sizes = {
+    sm: "sm",
+    base: "base",
+    lg: "lg",
+    xl: "xl",
+  } as const
+
+  const sizeClasses = {
+    sm: "size-3",
+    base: "size-4",
+    lg: "size-5",
+    xl: "size-6",
+  }
+
+  const { class: className, size = Sizes.base } = $props<{
+    class?: string
+    size?: keyof typeof Sizes
+  }>()
 </script>
 
 <div class={cn("min-h-2 grid place-items-center rounded-lg", className)}>
   <svg
-    class="w-4 h-4 animate-spin"
+    class={cn("animate-spin", sizeClasses[size])}
     viewBox="0 0 64 64"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

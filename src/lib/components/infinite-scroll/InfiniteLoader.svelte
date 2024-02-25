@@ -84,8 +84,6 @@
     status = STATUS.LOADING
 
     if (!loopTracker.coolingOff) {
-      console.log("typeof triggerLoad", typeof triggerLoad)
-      console.log("triggerLoad", triggerLoad)
       await triggerLoad(stateChanger)
     }
     loopTracker.track()
@@ -116,25 +114,27 @@
     }
     return () => observer?.disconnect()
   })
+
+  $inspect("status", status)
 </script>
 
 <div class="h-full">
   <slot />
 
   {#if showSpinner}
-    <LoadingIndicator />
+    <LoadingIndicator size="xl" />
   {/if}
 
   {#if showNoResults}
-    <div>No results</div>
+    <div class="mt-16 w-full text-lg text-center">No results</div>
   {/if}
 
   {#if showNoMore}
-    <div>No more data</div>
+    <div class="mt-16 w-full text-lg text-center">No more data</div>
   {/if}
 
   {#if showError}
-    <div class="flex flex-col gap-4 items-center">
+    <div class="flex flex-col gap-4 items-center mt-16 w-full">
       Oops, something went wrong
       <button class={buttonVariants({ variant: "default" })} on:click={attemptLoad}> Retry </button>
     </div>

@@ -261,13 +261,13 @@
   }
 
   // Load more items on infinite scroll
-  const loadMore = async (stateChanger: StateChanger, p: number) => {
+  const loadMore = async (stateChanger: StateChanger) => {
     try {
-      pageNumber = p
+      pageNumber += 1
       const limit = limitLoadCount
       const skip = limitLoadCount * (pageNumber - 1)
 
-      console.log("loading more...", { limit, skip, pageNumber })
+      console.log("loadMore", { limit, skip, pageNumber })
       const searchResults = await fetchSearchResults({ limit, skip })
       if (!searchResults?.data) return
 
@@ -285,6 +285,24 @@
       stateChanger.error()
     }
   }
+
+  // Handle search input
+  $effect(() => {
+    // Handle updates to ui.searchQuery and call fetchSearchResults on change
+    if (ui.searchQuery) {
+      ;(async () => {
+        pageNumber += 1
+
+        const skip = limitLoadCount * (pageNumber - 1)
+        const searchResults = await fetchSearchResults({ limit: limitLoadCount, skip })
+        if (!searchResults?.data) return
+
+        console.log("updating search results", { pageNumber, limitLoadCount, skip })
+        totalItemCount = searchResults.count
+        allItems = searchResults.data
+      })()
+    }
+  })
 
   // Handle search input
   // let getActiveFeedItems = $derived.by(async () => {
@@ -362,7 +380,7 @@
       {#if data.feedEntries?.count > 0}
         <div class="h-full">
           <InfiniteLoader
-            triggerLoad={(stateChanger: StateChanger) => loadMore(stateChanger, pageNumber + 1)}
+            triggerLoad={async (stateChanger: StateChanger) => await loadMore(stateChanger)}
           >
             {#each allItems as feedEntry}
               <FeedRow {feedEntry} {handleSummarizeText} {handleGenerateSpeech} />
