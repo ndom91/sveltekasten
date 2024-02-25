@@ -32,11 +32,16 @@ export const load: LayoutServerLoad = async ({ locals }) => {
       categories,
       user,
     }
-  } catch (error: any) {
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message)
+    } else {
+      console.error(error)
+    }
     return {
       categories: [],
       tags: [],
-      error: error.message ?? error,
+      error,
       quickAddForm,
     }
   }

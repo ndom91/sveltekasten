@@ -129,12 +129,16 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
         count: bookmarkCount,
       },
     }
-  } catch (error: any) {
-    console.error(error)
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message)
+    } else {
+      console.error(error)
+    }
     return {
       bookmarks: { count: 0, data: [] },
       feedEntries: { count: 0, data: [] },
-      error: error.message ?? error,
+      error,
     }
   }
 }

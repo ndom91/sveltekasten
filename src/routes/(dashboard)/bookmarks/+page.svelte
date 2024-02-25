@@ -106,9 +106,13 @@
         data,
         count,
       }
-    } catch (error: any) {
-      console.error(error.message ?? error)
-      toast.error(error.message ?? error)
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message)
+      } else {
+        console.error(error)
+      }
+      toast.error(error)
     }
   }
 
@@ -131,8 +135,12 @@
       } else {
         stateChanger.loaded()
       }
-    } catch (e) {
-      console.error(e)
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message)
+      } else {
+        console.error(error)
+      }
       stateChanger.error()
     }
   }

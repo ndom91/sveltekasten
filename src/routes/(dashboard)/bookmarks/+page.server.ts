@@ -112,7 +112,11 @@ export const actions: Actions = {
         text: "Bookmark Updated",
       })
     } catch (error) {
-      console.error(error)
+      if (error instanceof Error) {
+        console.error(error.message)
+      } else {
+        console.error(error)
+      }
       return { form, type: "error", error }
     }
   },
@@ -141,7 +145,11 @@ export const actions: Actions = {
       try {
         b64Thumbhash = await getThumbhashNode(imageUrl)
       } catch (error) {
-        console.error("Failed to get thumbhash", error)
+        if (error instanceof Error) {
+          console.error("Failed to get thumbhash", error.message)
+        } else {
+          console.error("Failed to get thumbhash", error)
+        }
       }
 
       const bookmark = await prisma.bookmark.create({
@@ -183,7 +191,11 @@ export const actions: Actions = {
         text: "Bookmark Added!",
       })
     } catch (error) {
-      console.error(error)
+      if (error instanceof Error) {
+        console.error(error.message)
+      } else {
+        console.error(error)
+      }
       fail(500, { type: "error", message: "Failed to add bookmark" })
     }
   },
@@ -229,12 +241,16 @@ export const load: PageServerLoad = async (event) => {
       count,
       session,
     }
-  } catch (error: any) {
-    console.error(error)
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message)
+    } else {
+      console.error(error)
+    }
     return {
       bookmarks: [],
       count: 1,
-      error: error.message ?? error,
+      error,
     }
   }
 }

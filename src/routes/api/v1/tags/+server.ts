@@ -22,8 +22,13 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
     })
 
     return json({ data: prismaResult })
-  } catch (error: any) {
-    return fail(401, { data: [], error: error.message ?? error })
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message)
+    } else {
+      console.error(error)
+    }
+    return fail(401, { data: [], error })
   }
 }
 
@@ -47,7 +52,12 @@ export const DELETE: RequestHandler = async ({ request, locals }) => {
     console.log("prismaResult", prismaResult)
 
     return new Response(JSON.stringify(prismaResult))
-  } catch (error: any) {
-    return fail(401, { data: [], error: error.message ?? error })
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message)
+    } else {
+      console.error(error)
+    }
+    return fail(401, { data: [], error })
   }
 }

@@ -65,7 +65,12 @@ export const load: PageServerLoad = async ({ locals, url }) => {
         count: feedCount,
       },
     }
-  } catch (error: any) {
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message)
+    } else {
+      console.error(error)
+    }
     return {
       feedEntries: {
         data: {},
@@ -75,7 +80,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
         data: {},
         count: 0,
       },
-      error: error.message ?? error,
+      error,
     }
   }
 }

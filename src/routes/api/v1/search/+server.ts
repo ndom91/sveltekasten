@@ -74,8 +74,12 @@ export const POST: RequestHandler = async ({ request, locals, url }) => {
 
     console.log("findManyAndCount.length", data.length)
     return json({ data: returnData, count })
-  } catch (error: any) {
-    console.error("Search Error", error)
-    return fail(401, { data: [], error: error.message ?? error })
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message)
+    } else {
+      console.error(error)
+    }
+    return fail(401, { data: [], error })
   }
 }

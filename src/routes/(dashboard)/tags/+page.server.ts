@@ -45,18 +45,19 @@ export const actions: Actions = {
       })
 
       return { message: "Tag Created", type: "success", form: dataEntries }
-    } catch (err: ZodError | any) {
-      if (err instanceof Prisma.PrismaClientKnownRequestError) {
-        if (err.code === "P2002") {
-          console.log("There is a unique constraint violation, tag could not be created")
-        }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message)
+      } else if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
+        console.error("There is a unique constraint violation, tag could not be created")
+      } else {
+        console.error(error)
       }
-      const { fieldErrors: errors } = err.flatten()
 
       return fail(500, {
         message: "Error",
         type: "error",
-        errors,
+        error,
         data: dataEntries,
       })
     }
