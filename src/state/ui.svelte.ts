@@ -22,7 +22,7 @@ type AIFeaturesPreferences = {
 }
 
 type MetadataSidebarData = {
-  bookmark?: LoadBookmark
+  bookmark?: LoadBookmarkFlatTags
   categories?: Category[]
   tags?: Tag[]
 }

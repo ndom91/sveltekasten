@@ -24,7 +24,7 @@ declare global {
   type LoadBookmark = Prisma.BookmarkGetPayload<{
     include: { category: true; tags: { include: { tag: true } } }
   }>
-  type LoadBookmarkFlatTags = Omit<LoadBookmark, "tags"> & { tags: Tag[] }
+  type LoadBookmarkFlatTags = Omit<LoadBookmark, "tags"> // & { tags: Tag[] }
   type LoadFeedEntry = Prisma.FeedEntryGetPayload<{
     include: { feed: true; feedMedia: true }
   }>

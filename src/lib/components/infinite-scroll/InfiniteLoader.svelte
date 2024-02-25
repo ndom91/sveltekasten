@@ -1,11 +1,4 @@
 <script context="module" lang="ts">
-  type StateChanger = {
-    loaded: () => void
-    complete: () => void
-    reset: () => void
-    error: () => void
-  }
-
   const STATUS = {
     READY: "READY",
     LOADING: "LOADING",
@@ -22,6 +15,7 @@
       status = STATUS.READY
     },
     complete: () => {
+      isFirstLoad = false
       status = STATUS.COMPLETE
     },
     reset: () => {
@@ -64,23 +58,6 @@
     }
   }
 
-  const stateChanger = {
-    loaded: () => {
-      isFirstLoad = false
-      status = STATUS.READY
-    },
-    complete: () => {
-      status = STATUS.COMPLETE
-    },
-    reset: () => {
-      status = STATUS.READY
-      isFirstLoad = true
-    },
-    error: () => {
-      status = STATUS.ERROR
-    },
-  }
-
   const loopTracker = new LoopTracker()
 
   const { triggerLoad } = $props<{ triggerLoad: () => Promise<void> }>()
@@ -94,6 +71,7 @@
   let showNoMore = $derived(status === STATUS.COMPLETE && !isFirstLoad)
 
   $inspect("status", status)
+  $inspect("isFirstLoad", isFirstLoad)
 
   async function attemptLoad() {
     if (status === STATUS.COMPLETE) {
@@ -108,6 +86,7 @@
 
     if (status === STATUS.LOADING) {
       status = STATUS.READY
+      isFirstLoad = false
     }
   }
 
@@ -160,5 +139,5 @@
     </div>
   {/if}
 
-  <div class="h-48" bind:this={intersectionTarget} />
+  <div class="h-20" bind:this={intersectionTarget} />
 </div>

@@ -58,7 +58,6 @@
   ui.aiFeaturesPreferences = data.user?.settings?.ai
 
   let pageNumber = $state(1)
-  let totalItemCount = $state<number>(data.feedEntries?.count)
   let allItems = $state<LoadFeedEntry[]>(data.feedEntries?.data)
 
   // Reload feed when coming back to tab

@@ -7,9 +7,8 @@
   import { UnLazyimage } from "@unlazy/svelte"
 
   const ui = useInterface()
-  let card = $state<HTMLElement>()
 
-  const { bookmark } = $props<{ bookmark: LoadBookmark }>()
+  const { bookmark } = $props<{ bookmark: LoadBookmarkFlatTags }>()
 
   let isDeleteDialogOpen = $state(false)
   let isOptionsOpen = $state(false)
@@ -48,7 +47,6 @@
 
 <div
   tabindex={0}
-  bind:this={card}
   data-id={bookmark.id}
   role="row"
   class="grid relative gap-4 p-4 mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none grid-cols-[15rem_1fr] dark:focus:bg-zinc-900 focus:border-zinc-500 focus:bg-zinc-100"

@@ -1,73 +1,74 @@
+<script context="module" lang="ts">
+  export type BookmarkLoadData = {
+    bookmarks: LoadBookmarkFlatTags[]
+    count: number
+    session: {
+      user: {
+        settings: {
+          ai: {
+            tts: {
+              enabled: boolean
+              location: keyof typeof TTSLocation
+              speaker: string
+            }
+            summarization: {
+              enabled: boolean
+            }
+            transcription: {
+              enabled: boolean
+            }
+          }
+        }
+      }
+    }
+    error?: Error
+  }
+</script>
+
 <script lang="ts">
   import toast from "svelte-french-toast"
   import { Navbar } from "$lib/components/navbar"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
-  import { useInterface } from "$state/ui.svelte"
+  import { useInterface, TTSLocation } from "$state/ui.svelte"
   import { BookmarkRow } from "$lib/components/bookmark-row"
-  import { infiniteScroll } from "$lib/components/infinite-scroll"
-  import { Logger, loggerLevels } from "$lib/utils/logger"
+  import { InfiniteLoader, stateChanger } from "$lib/components/infinite-scroll"
+  // import { Logger, loggerLevels } from "$lib/utils/logger"
+  import { untrack } from "svelte"
 
   const ui = useInterface()
   const { data } = $props()
   let pageNumber = $state(1)
-  let totalItemCount = $state<number>(data.count ?? 1)
-  let allItems = $state<LoadBookmark[]>(data.bookmarks!)
-  const logger = new Logger({ level: loggerLevels.DEBUG })
+  let allItems = $state<LoadBookmarkFlatTags[]>(data.bookmarks!)
+  // const logger = new Logger({ level: loggerLevels.DEBUG })
 
-  $effect(() => {
-    allItems = data.bookmarks ?? []
-  })
+  const limitLoadCount = 20
 
   if (data.error) {
     console.error(data.error)
   }
 
-  // Setup infinite scrolling
-  let elementRef = $state<HTMLElement>()
-  let observer: IntersectionObserver | null = $state(null)
-
-  $effect(() => {
-    if (elementRef) {
-      observer = infiniteScroll({
-        fetch: () => loadMore(pageNumber + 1),
-        element: elementRef,
-      })
-      return () => observer?.disconnect()
-    }
-  })
-
-  // TODO: Scroll / highlight previous story again
-  // See: https://svelte-5-preview.vercel.app/docs/old-vs-new#autoscroll
-  // Load more items on infinite scroll
-  const loadMore = async (p: number) => {
-    pageNumber = p
-    const limit = 10
-    const skip = 10 * (pageNumber - 1)
-
-    // Skip if all items already loaded
-    if (allItems.length >= totalItemCount) return
-
-    const res = await fetch(`/api/v1/bookmarks?skip=${skip}&limit=${limit}`)
-    const { data: additionalResults } = await res.json()
-    allItems.push(...additionalResults)
-  }
-
-  let activeBookmarks: () => Promise<LoadBookmarkResult[]> = $derived(async () => {
-    if (!ui.searchQuery) return allItems
-    const res = await fetch("/api/v1/search", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+  const fetchSearchResults = async ({
+    limit = limitLoadCount,
+    skip = 0,
+  }: {
+    limit?: number
+    skip?: number
+  }) => {
+    try {
+      const body = {
         type: "bookmark",
+        skip,
+        limit,
         orderBy: { createdAt: "desc" },
         include: {
           category: true,
           tags: { include: { tag: true } },
         },
-        where: {
+        where: {},
+      }
+      if (ui.searchQuery) {
+        body.where = {
           OR: [
             {
               title: {
@@ -88,13 +89,67 @@
               },
             },
           ],
+        }
+      }
+      const res = await fetch("/api/v1/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      }),
-    })
-    const { data, count } = await res.json()
-    totalItemCount = count
-    return data
+        body: JSON.stringify(body),
+      })
+      if (!res.ok) {
+        throw new Error("Error fetching more items")
+      }
+      const { data, count } = await res.json()
+      return {
+        data,
+        count,
+      }
+    } catch (error: any) {
+      console.error(error.message ?? error)
+      toast.error(error.message ?? error)
+    }
+  }
+
+  // Load more items on infinite scroll
+  const loadMore = async () => {
+    try {
+      pageNumber += 1
+      const limit = limitLoadCount
+      const skip = limitLoadCount * (pageNumber - 1)
+
+      const searchResults = await fetchSearchResults({ limit, skip })
+      if (!searchResults?.data) return
+
+      if (searchResults.data.length) {
+        allItems.push(...(searchResults.data as any[]))
+      }
+
+      if (allItems.length >= searchResults.count) {
+        stateChanger.complete()
+      } else {
+        stateChanger.loaded()
+      }
+    } catch (e) {
+      console.error(e)
+      stateChanger.error()
+    }
+  }
+
+  // Handle search input changes
+  // Reset and execute first search for new query
+  $effect.pre(() => {
+    if (ui.searchQuery) {
+      untrack(() => {
+        stateChanger.reset()
+        pageNumber = 0
+        allItems = []
+        loadMore()
+      })
+    }
   })
+
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.repeat || e.target instanceof HTMLInputElement) return
     if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "j" || e.key === "k") {
@@ -144,20 +199,11 @@
     <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2">
       {#if data.bookmarks}
         <div class="h-full">
-          {#await activeBookmarks()}
-            <div class="my-8 w-full text-3xl text-center">Loading...</div>
-          {:then bookmarks}
-            {#each bookmarks as _, i}
-              <BookmarkRow bind:bookmark={bookmarks[i]} />
-            {:else}
-              {@render emptyHelper()}
+          <InfiniteLoader triggerLoad={async () => await loadMore()}>
+            {#each allItems as _, i}
+              <BookmarkRow bind:bookmark={allItems[i]} />
             {/each}
-            <div bind:this={elementRef} class="w-full h-24" />
-          {:catch error}
-            <div class="my-4 w-full text-3xl text-center">
-              {error}
-            </div>
-          {/await}
+          </InfiniteLoader>
         </div>
       {:else}
         {@render emptyHelper()}
