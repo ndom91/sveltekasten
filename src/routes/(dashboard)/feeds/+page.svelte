@@ -8,23 +8,6 @@
       data: Feed & { visible: boolean }[]
       count: number
     }
-    user: {
-      settings: {
-        ai: {
-          tts: {
-            enabled: boolean
-            location: keyof typeof TTSLocation
-            speaker: string
-          }
-          summarization: {
-            enabled: boolean
-          }
-          transcription: {
-            enabled: boolean
-          }
-        }
-      }
-    }
     error?: Error
   }
 </script>
@@ -55,7 +38,7 @@
   }
 
   // Set current user preferences to store
-  ui.aiFeaturesPreferences = data.user?.settings?.ai
+  ui.aiFeaturesPreferences = data.session.user.settings.ai
 
   let pageNumber = $state(1)
   let allItems = $state<LoadFeedEntry[]>(data.feedEntries?.data)
