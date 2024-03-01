@@ -17,7 +17,7 @@
   "devDependencies": {
     "@sveltejs/adapter-auto": "3.1.1",
     "@sveltejs/adapter-vercel": "^5.1.0",
-    "@sveltejs/kit": "2.5.1",
+    "@sveltejs/kit": "2.5.2",
     "@sveltejs/package": "2.2.7",
     "@sveltejs/vite-plugin-svelte": "^3.0.2",
     "@tailwindcss/forms": "^0.5.7",
@@ -36,7 +36,7 @@
     "prettier": "3.2.5",
     "prettier-plugin-svelte": "3.2.1",
     "prisma": "5.10.2",
-    "svelte": "5.0.0-next.64",
+    "svelte": "5.0.0-next.69",
     "svelte-check": "3.6.4",
     "svelte-headless-table": "^0.18.2",
     "tailwindcss": "^3.4.1",
