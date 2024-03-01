@@ -14,7 +14,7 @@ const logger: Handle = async ({ event, resolve }) => {
   const response = await resolve(event)
 
   console.log(
-    `${response.status} ${event.request.method} ${event.url.pathname} (${Date.now() - start_time}ms)`,
+    `${response.status} ${event.request.method} from ${event.getClientAddress()} ${event.url.pathname} (${Date.now() - start_time}ms)`,
   )
 
   return response
