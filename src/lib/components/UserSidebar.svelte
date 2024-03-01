@@ -98,7 +98,11 @@
             variant="ghost"
             builders={[tooltipBuilder]}
             data-sveltekit-preload-data="hover"
-            class="flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300"
+            class={cn(
+              "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
+              $page.url.pathname === "/bookmarks" &&
+                "ring-2 ring-neutral-300 dark:ring-neutral-800",
+            )}
             href="/bookmarks"
           >
             <svg
@@ -137,7 +141,10 @@
             variant="ghost"
             builders={[tooltipBuilder]}
             data-sveltekit-preload-data="hover"
-            class="flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300"
+            class={cn(
+              "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
+              $page.url.pathname === "/feeds" && "ring-2 ring-neutral-300 dark:ring-neutral-800",
+            )}
             href="/feeds"
           >
             <svg
@@ -177,7 +184,10 @@
             variant="ghost"
             builders={[tooltipBuilder]}
             data-sveltekit-preload-data="hover"
-            class="flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300"
+            class={cn(
+              "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
+              $page.url.pathname === "/archives" && "ring-2 ring-neutral-300 dark:ring-neutral-800",
+            )}
             href="/archives"
           >
             <svg
@@ -216,7 +226,11 @@
             variant="ghost"
             builders={[tooltipBuilder]}
             data-sveltekit-preload-data="hover"
-            class="flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300"
+            class={cn(
+              "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
+              $page.url.pathname === "/categories" &&
+                "ring-2 ring-neutral-300 dark:ring-neutral-800",
+            )}
             href="/categories"
           >
             <svg
@@ -255,7 +269,10 @@
           <Button
             variant="ghost"
             builders={[tooltipBuilder]}
-            class="flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300"
+            class={cn(
+              "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
+              $page.url.pathname === "/tags" && "ring-2 ring-neutral-300 dark:ring-neutral-800",
+            )}
             data-sveltekit-preload-data="hover"
             href="/tags"
           >
