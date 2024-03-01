@@ -108,6 +108,14 @@
   }
 }
 
+@font-face {
+  font-family: "ManRope";
+  src: url("/fonts/manrope-variable.woff2") format("woff2-variations");
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 75% 125%;
+}
+
 @layer base {
   * {
     @apply border-border;

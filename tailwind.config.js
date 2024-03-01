@@ -32,6 +32,72 @@ const config = {
         "0px 0px 326px rgba(0, 0, 0, 0.18)",
       ],
     },
+    // fontSize: {
+    //   xs: [
+    //     "0.875rem",
+    //     {
+    //       lineHeight: "1rem",
+    //       // letterSpacing: '-0.01em',
+    //       // fontWeight: '500',
+    //     },
+    //   ],
+    //   sm: [
+    //     "1rem",
+    //     {
+    //       lineHeight: "1.25rem",
+    //       // letterSpacing: '-0.02em',
+    //       // fontWeight: '700',
+    //     },
+    //   ],
+    //   base: [
+    //     "1.125rem",
+    //     {
+    //       lineHeight: "1.5rem",
+    //       // letterSpacing: '-0.02em',
+    //       // fontWeight: '700',
+    //     },
+    //   ],
+    //   lg: [
+    //     "1.25rem",
+    //     {
+    //       lineHeight: "1.75rem",
+    //       // letterSpacing: '-0.02em',
+    //       // fontWeight: '700',
+    //     },
+    //   ],
+    //   xl: [
+    //     "1.5rem",
+    //     {
+    //       lineHeight: "1.75rem",
+    //       // letterSpacing: '-0.02em',
+    //       // fontWeight: '700',
+    //     },
+    //   ],
+    //   "2xl": [
+    //     "1.875rem",
+    //     {
+    //       lineHeight: "2rem",
+    //       // letterSpacing: '-0.02em',
+    //       // fontWeight: '700',
+    //     },
+    //   ],
+    //   "3xl": [
+    //     "2.25rem",
+    //     {
+    //       lineHeight: "2.25rem",
+    //       // letterSpacing: '-0.02em',
+    //       // fontWeight: '700',
+    //     },
+    //   ],
+    //   "4xl": [
+    //     "3rem",
+    //     {
+    //       lineHeight: "2.5rem",
+    //       // letterSpacing: '-0.02em',
+    //       // fontWeight: '700',
+    //     },
+    //   ],
+    // },
     extend: {
       transitionProperty: {
         width: "width",
@@ -78,7 +144,7 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: [...fontFamily.sans],
+        sans: ["ManRope", ...fontFamily.sans],
       },
     },
   },
