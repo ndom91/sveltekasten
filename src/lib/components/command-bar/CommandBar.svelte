@@ -28,7 +28,7 @@
   }
 </script>
 
-<svelte:window on:keydown={handleKeyDown} />
+<svelte:window onkeydown={handleKeyDown} />
 <Command.Dialog bind:open={isCommandOpen} label="Command Menu2" loop>
   <Command.Input type="command-input" placeholder="Type a command or search..." />
   <Command.List>

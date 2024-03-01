@@ -19,7 +19,7 @@
   const feedPage = $derived($page.url.pathname === "/feeds")
 </script>
 
-<svelte:window on:keydown={handleKeyDown} />
+<svelte:window onkeydown={handleKeyDown} />
 <aside
   class={cn(
     "space-between relative flex h-screen flex-grow flex-col border-l bg-zinc-50 transition-width dark:border-l-zinc-800 dark:bg-zinc-900",

@@ -35,7 +35,7 @@
   }
 </script>
 
-<svelte:window on:keydown={handleKeyDown} />
+<svelte:window onkeydown={handleKeyDown} />
 <nav
   class="flex justify-between items-center p-4 mx-auto w-full border-b h-[73px] border-b-zinc-100 dark:border-b-zinc-900"
 >

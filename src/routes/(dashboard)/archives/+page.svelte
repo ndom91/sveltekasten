@@ -134,7 +134,7 @@
   <meta name="description" content="RSS Feeds, Bookmarks and more!" />
 </svelte:head>
 
-<svelte:window on:keydown={handleKeyDown} />
+<svelte:window onkeydown={handleKeyDown} />
 
 <Navbar />
 <div class="flex flex-col items-center">
@@ -159,6 +159,22 @@
         </div>
       {:else}
         {@render emptyHelper()}
+            {/each}
+            <div bind:this={elementRef} class="w-full h-24" />
+          {:catch error}
+            <div class="my-4 w-full text-3xl text-center">
+              {error}
+            </div>
+          {/await}
+        </div>
+      {:else}
+        {@render emptyHelper()}
+      {/if}
+    </div>
+  </main>
+</div>
+
+{#snippet emptyHelper()}
       {/if}
     </div>
   </main>
