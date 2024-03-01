@@ -16,19 +16,9 @@
       ui.toggleUserSidebar()
     }
   }
-
-  const activePage = $derived.by(() => {
-    const path = $page.url.pathname
-    if (path === "/") return "home"
-    if (path === "/bookmarks") return "bookmarks"
-    if (path === "/feeds") return "feeds"
-    if (path === "/categories") return "categories"
-    if (path === "/tags") return "tags"
-    if (path === "/archives") return "archives"
-  })
 </script>
 
-<svelte:window on:keydown={handleKeyDown} />
+<svelte:window onkeydown={handleKeyDown} />
 <aside
   class={cn(
     "space-between relative flex h-screen flex-grow flex-col border-r bg-neutral-50 transition-width border-r-neutral-200 dark:border-r-neutral-900 dark:bg-neutral-900",
@@ -66,8 +56,8 @@
             builders={[tooltipBuilder]}
             data-sveltekit-preload-data="hover"
             class={cn(
-              "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:ring-offset-0 dark:focus:ring-neutral-800",
-              activePage === "home" ? "ring-2 ring-neutral-300 dark:ring-neutral-800" : "",
+              "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
+              $page.url.pathname === "/" && "ring-2 ring-neutral-300 dark:ring-neutral-800",
             )}
             href="/"
           >
@@ -108,10 +98,7 @@
             variant="ghost"
             builders={[tooltipBuilder]}
             data-sveltekit-preload-data="hover"
-            class={cn(
-              "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:ring-offset-0 dark:focus:ring-neutral-800",
-              activePage === "bookmarks" ? "ring-2 ring-neutral-300 dark:ring-neutral-800" : "",
-            )}
+            class="flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300"
             href="/bookmarks"
           >
             <svg
@@ -150,10 +137,7 @@
             variant="ghost"
             builders={[tooltipBuilder]}
             data-sveltekit-preload-data="hover"
-            class={cn(
-              "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:ring-offset-0 dark:focus:ring-neutral-800",
-              activePage === "feeds" ? "ring-2 ring-neutral-300 dark:ring-neutral-800" : "",
-            )}
+            class="flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300"
             href="/feeds"
           >
             <svg
@@ -193,10 +177,7 @@
             variant="ghost"
             builders={[tooltipBuilder]}
             data-sveltekit-preload-data="hover"
-            class={cn(
-              "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:ring-offset-0 dark:focus:ring-neutral-800",
-              activePage === "archives" ? "ring-2 ring-neutral-300 dark:ring-neutral-800" : "",
-            )}
+            class="flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300"
             href="/archives"
           >
             <svg
@@ -235,10 +216,7 @@
             variant="ghost"
             builders={[tooltipBuilder]}
             data-sveltekit-preload-data="hover"
-            class={cn(
-              "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:ring-offset-0 dark:focus:ring-neutral-800",
-              activePage === "categories" ? "ring-2 ring-neutral-300 dark:ring-neutral-800" : "",
-            )}
+            class="flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300"
             href="/categories"
           >
             <svg
@@ -277,10 +255,7 @@
           <Button
             variant="ghost"
             builders={[tooltipBuilder]}
-            class={cn(
-              "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:ring-offset-0 dark:focus:ring-neutral-800",
-              activePage === "tags" ? "ring-2 ring-neutral-300 dark:ring-neutral-800" : "",
-            )}
+            class="flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300"
             data-sveltekit-preload-data="hover"
             href="/tags"
           >
@@ -340,3 +315,9 @@
     </div>
   </div>
 </aside>
+
+<style>
+  .active {
+    @apply ring-2 ring-neutral-300 dark:ring-neutral-800;
+  }
+</style>

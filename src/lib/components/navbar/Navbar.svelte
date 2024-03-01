@@ -27,7 +27,7 @@
     }
   }
 
-  const handleKeyUp = async (event: KeyboardEvent) => {
+  const handleSearchInput = async (event: KeyboardEvent) => {
     const query: string = await new Promise((resolve) => {
       resolve((event.target as HTMLInputElement).value)
     })
@@ -56,7 +56,7 @@
           name="search"
           bind:this={searchInputEl}
           value={ui.searchQuery}
-          onkeyup={pDebounce(handleKeyUp, 500)}
+          onkeyup={pDebounce(handleSearchInput, 500)}
           spellcheck="false"
           aria-label="Search"
           class={"flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 pl-10 pr-10 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}
@@ -82,10 +82,11 @@
       <Popover.Root bind:open={ui.quickAddOpen}>
         <Tooltip.Root>
           <Popover.Trigger tabindex={-1} />
-          <Tooltip.Trigger asChild>
+          <Tooltip.Trigger asChild let:builder={tooltipBuilder}>
             <div
               class="rounded-full transition duration-300 focus-within:rounded-full focus-within:ring-2 focus-within:outline-none dark:focus-within:ring-zinc-800 focus-within:ring-zinc-300"
             >
+              <!-- TODO: Fix quick-add button tooltip; Re-add builder to btn -->
               <Button
                 onclick={() => ui.toggleQuickAdd()}
                 variant="outline"
@@ -112,7 +113,7 @@
               </Button>
             </div>
           </Tooltip.Trigger>
-          <Tooltip.Content>
+          <Tooltip.Content transition={flyAndScale}>
             <p class="flex justify-center items-center">
               Quick add Bookmark <KeyboardIndicator key="Alt N" class="ml-2 text-xs" />
             </p>
@@ -130,7 +131,6 @@
       <div
         class="rounded-full transition duration-300 focus-within:rounded-full focus-within:ring-2 focus-within:outline-none dark:focus-within:ring-zinc-800 focus-within:ring-zinc-300"
       >
-        <!-- TODO: Fix quick-add button tooltip -->
         <Tooltip.Root>
           <Tooltip.Trigger asChild let:builder={tooltipBuilder}>
             <Button
