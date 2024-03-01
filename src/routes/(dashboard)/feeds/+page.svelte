@@ -255,6 +255,12 @@
       const limit = limitLoadCount
       const skip = limitLoadCount * (pageNumber - 1)
 
+      // If there are less results than the first page, we are done
+      if (allItems.length < skip) {
+        stateChanger.complete()
+        return
+      }
+
       const searchResults = await fetchSearchResults({ limit, skip })
       if (!searchResults?.data) return
 

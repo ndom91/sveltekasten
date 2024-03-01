@@ -166,21 +166,21 @@ export const actions: Actions = {
           },
           tags: tags
             ? {
-                create: tags.map((tag: Tag) => ({
-                  tag: {
-                    connect: {
-                      id: tag.id,
-                    },
+              create: tags.map((tag: Tag) => ({
+                tag: {
+                  connect: {
+                    id: tag.id,
                   },
-                })),
-              }
+                },
+              })),
+            }
             : {},
           category: categoryId
             ? {
-                connect: {
-                  id: categoryId,
-                },
-              }
+              connect: {
+                id: categoryId,
+              },
+            }
             : {},
         },
       })
@@ -210,7 +210,7 @@ export const load: PageServerLoad = async (event) => {
 
   try {
     const skip = Number(event.url.searchParams.get("skip") ?? "0")
-    const limit = Number(event.url.searchParams.get("limit") ?? "10")
+    const limit = Number(event.url.searchParams.get("limit") ?? "20")
 
     const session = await event.locals.auth()
     if (!session?.user?.id) {
