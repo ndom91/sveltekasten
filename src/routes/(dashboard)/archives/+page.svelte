@@ -4,67 +4,47 @@
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { useInterface } from "$state/ui.svelte"
   import { BookmarkRow } from "$lib/components/bookmark-row"
-  import { infiniteScroll } from "$lib/components/infinite-scroll"
+  import { InfiniteLoader, stateChanger } from "$lib/components/infinite-scroll"
 
   const ui = useInterface()
   const { data } = $props()
+
   let pageNumber = $state(1)
-  let totalItemCount = $state<number>(data.bookmarks.count ?? 1)
-  let allItems = $state(data.bookmarks.data ?? [])
+  let allItems = $state<LoadBookmarkFlatTags[]>(data.bookmarks!)
 
   $effect(() => {
-    allItems = data.bookmarks.data ?? []
+    allItems = data.bookmarks!
   })
+
+  const limitLoadCount = 20
 
   if (data.error) {
-    console.error(data.error)
+    logger.error(String(data.error))
   }
 
-  // Setup infinite scrolling
-  let elementRef = $state<HTMLElement>()
-  let observer: IntersectionObserver | null = $state(null)
-
-  $effect(() => {
-    if (elementRef) {
-      observer = infiniteScroll({
-        fetch: () => loadMore(pageNumber + 1),
-        element: elementRef,
-      })
-      return () => observer?.disconnect()
-    }
-  })
-
-  // Load more items on infinite scroll
-  const loadMore = async (p: number) => {
-    pageNumber = p
-    const limit = 10
-    const skip = 10 * (pageNumber - 1)
-
-    // Skip if all items already loaded
-    if (allItems.length >= totalItemCount) return
-
-    const res = await fetch(`/api/v1/bookmarks?skip=${skip}&limit=${limit}`)
-    const { data } = await res.json()
-    if (data) {
-      allItems.push(...data)
-    }
-  }
-
-  let activeBookmarks: () => Promise<(typeof allItems)[]> = $derived(async () => {
-    if (!ui.searchQuery) return allItems
-    const res = await fetch("/api/v1/search", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+  const fetchSearchResults = async ({
+    limit = limitLoadCount,
+    skip = 0,
+  }: {
+    limit?: number
+    skip?: number
+  }) => {
+    try {
+      const body = {
         type: "bookmark",
+        skip,
+        limit,
         orderBy: { createdAt: "desc" },
         include: {
           category: true,
           tags: { include: { tag: true } },
         },
         where: {
+          archived: true,
+        },
+      }
+      if (ui.searchQuery) {
+        body.where = {
           archived: true,
           OR: [
             {
@@ -86,13 +66,68 @@
               },
             },
           ],
+        }
+      }
+      const res = await fetch("/api/v1/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      }),
-    })
-    const { data: searchResults, count } = await res.json()
-    totalItemCount = count
-    return searchResults
-  })
+        body: JSON.stringify(body),
+      })
+      if (!res.ok) {
+        throw new Error("Error fetching more items")
+      }
+      const { data, count } = await res.json()
+      return {
+        data,
+        count,
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message)
+      } else {
+        console.error(error)
+      }
+      toast.error(String(error))
+    }
+  }
+
+  // Load more items on infinite scroll
+  const loadMore = async () => {
+    try {
+      pageNumber += 1
+      const limit = limitLoadCount
+      const skip = limitLoadCount * (pageNumber - 1)
+
+      // If there are less results than the first page, we are done
+      if (allItems.length < skip) {
+        stateChanger.complete()
+        return
+      }
+
+      const searchResults = await fetchSearchResults({ limit, skip })
+      if (!searchResults?.data) return
+
+      if (searchResults.data.length) {
+        allItems.push(...(searchResults.data as any[]))
+      }
+
+      if (allItems.length >= searchResults.count) {
+        stateChanger.complete()
+      } else {
+        stateChanger.loaded()
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message)
+      } else {
+        console.error(error)
+      }
+      stateChanger.error()
+    }
+  }
+
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.repeat || e.target instanceof HTMLInputElement) return
     if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "j" || e.key === "k") {
@@ -137,49 +172,23 @@
 <svelte:window onkeydown={handleKeyDown} />
 
 <Navbar />
-<div class="flex flex-col items-center">
+<div class="flex overflow-y-scroll justify-center">
   <main class="w-full max-w-screen-2xl h-full">
     <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2">
-      {#if data.bookmarks.data}
-        <div class="overflow-y-scroll h-full">
-          {#await activeBookmarks()}
-            <div class="my-8 w-full text-3xl text-center">Loading...</div>
-          {:then bookmarks}
-            {#each bookmarks as bookmark}
+      {#if allItems}
+        <div class="h-full">
+          <InfiniteLoader triggerLoad={async () => await loadMore()}>
+            {#each allItems as bookmark}
               <BookmarkRow {bookmark} />
-            {:else}
-              {@render emptyHelper()}
             {/each}
-            <div bind:this={elementRef} class="w-full h-24" />
-          {:catch error}
-            <div class="my-4 w-full text-3xl text-center">
-              {error}
-            </div>
-          {/await}
+          </InfiniteLoader>
         </div>
       {:else}
-        {@render emptyHelper()}
-            {/each}
-            <div bind:this={elementRef} class="w-full h-24" />
-          {:catch error}
-            <div class="my-4 w-full text-3xl text-center">
-              {error}
-            </div>
-          {/await}
+        <EmptyState showArrow={false} />
+        <div class="my-4 w-full text-2xl font-light text-center">
+          Try archiving a <a class="underline underline-offset-4" href="/bookmarks">bookmark</a>
         </div>
-      {:else}
-        {@render emptyHelper()}
       {/if}
     </div>
   </main>
 </div>
-
-{#snippet emptyHelper()}
-      {/if}
-    </div>
-  </main>
-</div>
-
-{#snippet emptyHelper()}
-  <EmptyState showArrow={false} />
-{/snippet}
