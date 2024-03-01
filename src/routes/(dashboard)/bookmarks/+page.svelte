@@ -1,5 +1,7 @@
 <script lang="ts">
   import toast from "svelte-french-toast"
+  // import { toast } from "svelte-sonner"
+
   import { Navbar } from "$lib/components/navbar"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
