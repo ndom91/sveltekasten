@@ -177,7 +177,7 @@
   <meta name="description" content="RSS Feeds, Bookmarks and more!" />
 </svelte:head>
 
-<svelte:window on:keydown={handleKeyDown} />
+<svelte:window onkeydown={handleKeyDown} />
 
 <Navbar />
 <div class="flex overflow-y-scroll justify-center">

@@ -3,7 +3,6 @@
     label: string
     value: string
   }
-  type T = Record<string, unknown>
 </script>
 
 <script lang="ts" generics="T extends Record<string, unknown>">
@@ -20,8 +19,7 @@
     field,
   } = $props<{
     form: SuperForm<T>
-    field: string
-    // field: FormPathLeaves<T>
+    field: FormPathLeaves<T>
     disabled?: boolean
     tags: RawTag[]
   }>()
@@ -40,30 +38,17 @@
       : tagValues,
   )
 
-  // function handleTagRemove(event: MouseEvent, value: string) {
-  //   event.preventDefault()
-  //   event.stopPropagation()
-  //   selectedValues.splice(selectedValues.indexOf(value), 1)
-  // }
-
   let { value, errors } = formFieldProxy(form, field)
-  $inspect("tags.value", $value)
-
-  // $effect(() => {
-  //   console.log("running effect")
-  //   $value = selectedValues?.map((v) => v.value).join(",")
-  // })
 </script>
 
 <Combobox.Root
   multiple
+  {disabled}
+  bind:inputValue
   items={filteredTags}
   selected={selectedValues}
-  bind:inputValue
-  {disabled}
   onSelectedChange={(selectedTags) => {
-    // $value = []
-    console.log("selected change", selectedTags)
+    // TODO: Cleanup hacky combobox tag input changeHandler
     if (selectedTags) {
       $value =
         selectedTags

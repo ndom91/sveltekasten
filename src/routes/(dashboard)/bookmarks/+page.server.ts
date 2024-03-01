@@ -6,8 +6,8 @@ import { formSchema as metadataSchema } from "$schemas/metadata-sidebar"
 import { superValidate, message } from "sveltekit-superforms"
 import { zod } from "sveltekit-superforms/adapters"
 import { getThumbhashNode } from "$lib/utils/thumbhash"
-import type { Actions } from "./$types"
-import type { PageServerLoad } from "./$types"
+import type { Actions, PageServerLoad } from "./$types"
+import type { Tag } from "$zod"
 
 import metascraper from "metascraper"
 import metascraperDescription from "metascraper-description"
@@ -85,7 +85,7 @@ export const actions: Actions = {
           categoryId: form.data.category.id,
           tags: {
             deleteMany: {},
-            connectOrCreate: form.data.tags.map((tag) => ({
+            connectOrCreate: form.data.tags.map((tag: Tag) => ({
               where: {
                 bookmarkId_tagId: {
                   tagId: tag.id,
@@ -133,7 +133,6 @@ export const actions: Actions = {
       if (!session?.user?.id) {
         return fail(401, { type: "error", error: "Unauthenticated" })
       }
-      const { userId } = session.user
       const { title, url, description, categoryId, tags } = form.data
 
       const bookmarkUrlResponse = await fetch(url)
@@ -162,12 +161,12 @@ export const actions: Actions = {
           metadata,
           user: {
             connect: {
-              id: userId,
+              id: session.user?.id,
             },
           },
           tags: tags
             ? {
-                create: tags.map((tag) => ({
+                create: tags.map((tag: Tag) => ({
                   tag: {
                     connect: {
                       id: tag.id,
