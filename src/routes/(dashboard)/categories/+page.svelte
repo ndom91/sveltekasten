@@ -139,7 +139,7 @@
                       </Table.Cell>
                     {:else if cell.id === "id"}
                       <Table.Cell class="w-72" {...attrs}>
-                        <div class="text-neutral-300 dark:text-neutral-600">
+                        <div class="text-neutral-400 dark:text-neutral-600">
                           <Render of={cell.render()} />
                         </div>
                       </Table.Cell>

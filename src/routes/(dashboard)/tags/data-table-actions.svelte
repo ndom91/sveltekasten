@@ -16,7 +16,7 @@
     <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
       <Button onclick={handleEdit} builders={[tooltipBuilder]} variant="ghost" size="icon">
         <svg
-          class="size-5 text-neutral-300 dark:text-neutral-500"
+          class="size-5 text-neutral-600 dark:text-neutral-500"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 256 256"
           ><rect width="256" height="256" fill="none" /><path
@@ -50,7 +50,7 @@
         <input type="hidden" name="id" value={id} />
         <Button type="submit" builders={[tooltipBuilder]} variant="ghost" size="icon">
           <svg
-            class="text-red-400 size-5 dark:text-red-400/50"
+            class="text-red-600 size-5 dark:text-red-400/50"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 256 256"
             ><rect width="256" height="256" fill="none" /><line
