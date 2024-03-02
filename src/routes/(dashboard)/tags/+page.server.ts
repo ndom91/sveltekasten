@@ -62,4 +62,39 @@ export const actions: Actions = {
       })
     }
   },
+  deleteTag: async ({ request, locals }) => {
+    try {
+      const session = await locals.auth()
+      if (!session?.user?.id) {
+        return fail(401, { type: "error", error: "Unauthenticated" })
+      }
+      const formData = await request.formData()
+
+      const tagId = formData.get("id")
+      if (!tagId) {
+        return fail(401, { type: "error", error: "Requires tag ID" })
+      }
+
+      await prisma.tag.delete({
+        where: {
+          id: String(tagId),
+          userId: session.user.id,
+        },
+      })
+
+      return { message: "Tag Deleted", type: "success" }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message)
+      } else {
+        console.error(error)
+      }
+
+      return fail(500, {
+        message: "Error",
+        type: "error",
+        error,
+      })
+    }
+  },
 }

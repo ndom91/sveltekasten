@@ -13,7 +13,13 @@
   import DataTableActions from "./data-table-actions.svelte"
 
   let { data } = $props()
-  const table = createTable(writable(data.tags), {
+  const tagStore = writable(data.tags)
+
+  $effect(() => {
+    tagStore.set(data.tags)
+  })
+
+  const table = createTable(tagStore, {
     sort: addSortBy("name", "asc"),
   })
   const columns = table.createColumns([
@@ -111,19 +117,27 @@
               <Table.Row {...rowAttrs} class="hover:dark:bg-neutral-900/20">
                 {#each row.cells as cell (cell.id)}
                   <Subscribe attrs={cell.attrs()} let:attrs>
-                    <Table.Cell {...attrs}>
-                      {#if cell.id === ""}
+                    {#if cell.id === ""}
+                      <Table.Cell class="w-4" {...attrs}>
                         <div class="text-right">
                           <Render of={cell.render()} />
                         </div>
-                      {:else if cell.id === "id"}
-                        <div class="text-neutral-300 dark:text-neutral-700">
+                      </Table.Cell>
+                    {:else if cell.id === "name"}
+                      <Table.Cell class="w-full" {...attrs}>
+                        <Render of={cell.render()} />
+                      </Table.Cell>
+                    {:else if cell.id === "id"}
+                      <Table.Cell class="w-72" {...attrs}>
+                        <div class="text-neutral-300 dark:text-neutral-600">
                           <Render of={cell.render()} />
                         </div>
-                      {:else}
+                      </Table.Cell>
+                    {:else}
+                      <Table.Cell class="" {...attrs}>
                         <Render of={cell.render()} />
-                      {/if}
-                    </Table.Cell>
+                      </Table.Cell>
+                    {/if}
                   </Subscribe>
                 {/each}
               </Table.Row>
@@ -154,17 +168,16 @@
               d="M12 10.5v6m3-3H9m4.06-7.19-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z"
             ></path>
           </svg>
-          <span> Create New </span>
         </div>
         <Input
-          class="w-48"
+          class="w-80"
           placeholder="Tag Name"
           id="name"
           name="name"
           type="text"
           data-1p-ignore
         />
-        <Button variant="secondary" type="submit" class="w-24">Create</Button>
+        <Button variant="secondary" type="submit" class="w-24">Save</Button>
       </form>
     </div>
   </main>
