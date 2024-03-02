@@ -3,6 +3,8 @@
     title: string
     url: string
     createdAt: string
+    userId?: string
+    tags?: Record<string, string>
   }
 </script>
 
@@ -105,12 +107,8 @@
   }))
 
   // Import Bookmarks
-
   let importFile = $state<FileList>(null)
   let parsedBookmarks = $state<ParsedBookmark[]>([])
-
-  $inspect("file", importFile)
-  $inspect("bookmarksPreview", parsedBookmarks)
 
   $effect(() => {
     if (!importFile) return

@@ -64,12 +64,34 @@ export const importBookmarks = async (bookmarks: ParsedBookmark[], userId: strin
     },
     body: JSON.stringify(
       bookmarks.map((importedBookmarks) => {
-        return {
+        const bookmark = {
           title: importedBookmarks.title,
           url: importedBookmarks.url,
           createdAt: importedBookmarks.createdAt,
           userId,
         }
+        if (importedBookmarks.tags.length) {
+          bookmark.tags = importedBookmarks.tags.map((tag: string) => ({
+            create: {
+              tag: {
+                connectOrCreate: {
+                  where: {
+                    name_userId: {
+                      name: tag,
+                      userId,
+                    },
+                  },
+                  data: {
+                    name: tag,
+                    userId,
+                  },
+                },
+              },
+            },
+            skipDuplicates: true,
+          }))
+        }
+        return bookmark
       }),
     ),
   })

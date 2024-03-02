@@ -1,10 +1,13 @@
 export const parseChromeBookmarks = (doc: Document) => {
-  const dataElements = doc.querySelectorAll("dl dt") as NodeList
+  const dataElements = doc.querySelectorAll("dl dt") as NodeListOf<HTMLElement | HTMLDListElement>
   return Array.from(dataElements)
     .map((element) => {
-      if (element.tagName === "DT" && element.firstElementChild.attributes.href) {
+      // @ts-expect-error No DOM interface for DT, MDN says its a `HTMLElement`s
+      if (element.tagName === "DT" && element.firstElementChild?.attributes.href) {
         const title = element.textContent?.replaceAll("\n", "").trim().substring(0, 190)
+        // @ts-expect-error No DOM interface for DT, MDN says its a `HTMLElement`s
         const url = element.firstElementChild?.attributes?.href?.value?.trim()
+        // @ts-expect-error No DOM interface for DT, MDN say its a `HTMLElement`s
         const date = element.firstElementChild?.attributes?.add_date?.value?.trim()
 
         return {
