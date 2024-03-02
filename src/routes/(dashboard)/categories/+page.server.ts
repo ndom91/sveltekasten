@@ -10,9 +10,9 @@ export const load: PageServerLoad = async ({ locals, url }) => {
     const fromUrl = url.pathname + url.search
     redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
   }
-  // if (!session?.user?.id) {
-  //   return fail(401, { type: "error", error: "Unauthenticated" })
-  // }
+  if (!session?.user?.id) {
+    return fail(401, { type: "error", error: "Unauthenticated" })
+  }
 
   const response = await prisma.category.findMany({
     where: { userId: session?.user?.id },
@@ -60,6 +60,41 @@ export const actions: Actions = {
         type: "error",
         error,
         data: { name, description },
+      })
+    }
+  },
+  deleteCategory: async ({ request, locals }) => {
+    try {
+      const session = await locals.auth()
+      if (!session?.user?.id) {
+        return fail(401, { type: "error", error: "Unauthenticated" })
+      }
+      const formData = await request.formData()
+
+      const categoryId = formData.get("id")
+      if (!categoryId) {
+        return fail(401, { type: "error", error: "Requires category ID" })
+      }
+
+      await prisma.category.delete({
+        where: {
+          id: String(categoryId),
+          userId: session.user.id,
+        },
+      })
+
+      return { message: "Category Deleted", type: "success" }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message)
+      } else {
+        console.error(error)
+      }
+
+      return fail(500, {
+        message: "Error",
+        type: "error",
+        error,
       })
     }
   },
