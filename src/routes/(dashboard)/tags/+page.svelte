@@ -16,7 +16,9 @@
   const tagStore = writable(data.tags)
 
   $effect(() => {
-    tagStore.set(data.tags)
+    if (data.tags) {
+      tagStore.set(data.tags)
+    }
   })
 
   const table = createTable(tagStore, {
