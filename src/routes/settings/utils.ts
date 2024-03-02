@@ -1,5 +1,5 @@
 import toast from "svelte-french-toast"
-import { parseChromeBookmarks, parsePocketBookmarks } from "./import"
+import { type ParsedBookmark } from "./components/UserSection.svelte"
 
 export const bookmarkTypes = {
   CHROME: "CHROME",
@@ -56,27 +56,22 @@ export const parseImportFile = (file: string) => {
   }
 }
 
-export const importBookmarks = async (file: FileList) => {
-  let bookmarks = []
-  const parsedFile = parseImportFile(file)
-  if (parsedFile.type === bookmarkTypes.POCKET) {
-    bookmarks = parsePocketBookmarks(parsedFile.doc)
-  } else if (parsedFile.type === bookmarkTypes.CHROME) {
-    // Default Chrome format
-    bookmarks = parseChromeBookmarks(parsedFile.doc)
-  }
-
-  if (!bookmarks.length) {
-    toast.error(`No bookmarks successfully parsed. See console for any potential errors.`)
-    return
-  }
-
-  const bulkCreateRes = await fetch("/api/bookmarks/bulk", {
+export const importBookmarks = async (bookmarks: ParsedBookmark[], userId: string) => {
+  const bulkCreateRes = await fetch("/api/v1/bookmarks", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(bookmarks),
+    body: JSON.stringify(
+      bookmarks.map((importedBookmarks) => {
+        return {
+          title: importedBookmarks.title,
+          url: importedBookmarks.url,
+          createdAt: importedBookmarks.createdAt,
+          userId,
+        }
+      }),
+    ),
   })
 
   if (!bulkCreateRes.ok) {

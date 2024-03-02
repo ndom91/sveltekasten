@@ -1,5 +1,7 @@
 import type { RequestHandler } from "./$types"
 import { json, fail } from "@sveltejs/kit"
+import { BookmarkUncheckedCreateInputSchema } from "$zod"
+import z from "zod"
 import prisma from "$lib/prisma"
 
 // Get more Bookmarks
@@ -66,6 +68,33 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
     })
 
     return json({ data })
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message)
+    } else {
+      console.error(error)
+    }
+    return fail(401, { data: [], error })
+  }
+}
+
+// Create Bookmark(s)
+// @ts-expect-error
+export const POST: RequestHandler = async ({ request, locals }) => {
+  try {
+    const session = await locals.auth()
+    if (!session?.user?.id) {
+      return fail(401, { type: "error", error: "Unauthenticated" })
+    }
+    const inputData = await request.json()
+    const data = z.array(BookmarkUncheckedCreateInputSchema).parse(inputData)
+
+    const upsertResponse = await prisma.bookmark.createMany({
+      data,
+      skipDuplicates: true,
+    })
+
+    return json({ data: upsertResponse })
   } catch (error) {
     if (error instanceof Error) {
       console.error(error.message)

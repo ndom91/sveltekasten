@@ -1,3 +1,11 @@
+<script context="module" lang="ts">
+  export type ParsedBookmark = {
+    title: string
+    url: string
+    createdAt: string
+  }
+</script>
+
 <script lang="ts">
   import toast from "svelte-french-toast"
   import { format } from "@formkit/tempo"
@@ -8,7 +16,7 @@
   import * as Card from "$lib/components/ui/card"
   import * as Select from "$lib/components/ui/select"
   import { clipboard } from "$lib/utils/clipboard"
-  import { useInterface } from "$state/ui.svelte"
+  // import { useInterface } from "$state/ui.svelte"
   import { Badge } from "$/lib/components/ui/badge"
   import { TTSLocation } from "$state/ui.svelte"
   import { bookmarkTypes, parseImportFile, importBookmarks, exportBookmarks } from "../utils"
@@ -16,9 +24,10 @@
   import * as Table from "$lib/components/ui/table"
   import { capitalize } from "$lib/utils"
 
-  const ui = useInterface()
+  // const ui = useInterface()
 
   let exportLoading = $state(false)
+  let importLoading = $state(false)
   let ttsEnabled = $state($page.data.user?.settings?.ai?.tts?.enabled ?? true)
   let ttsLocation = $state({
     value: $page.data.user?.settings?.ai?.tts?.location.toUpperCase() ?? TTSLocation.SERVER,
@@ -95,11 +104,13 @@
     label: capitalize(location),
   }))
 
-  let importFile = $state<TODO>(null)
-  let bookmarksPreview = $state<TODO>([])
+  // Import Bookmarks
+
+  let importFile = $state<FileList>(null)
+  let parsedBookmarks = $state<ParsedBookmark[]>([])
 
   $inspect("file", importFile)
-  $inspect("bookmarksPreview", bookmarksPreview)
+  $inspect("bookmarksPreview", parsedBookmarks)
 
   $effect(() => {
     if (!importFile) return
@@ -113,16 +124,29 @@
       if (!parsedFile) return
 
       if (parsedFile.type === bookmarkTypes.POCKET) {
-        bookmarksPreview = parsePocketBookmarks(parsedFile.doc)
+        parsedBookmarks = parsePocketBookmarks(parsedFile.doc)
       } else if (parsedFile.type === bookmarkTypes.CHROME) {
         // Default Chrome format
-        bookmarksPreview = parseChromeBookmarks(parsedFile.doc)
+        parsedBookmarks = parseChromeBookmarks(parsedFile.doc)
       }
     }
   })
 
-  const handleImport = () => {
-    importBookmarks(importFile)
+  const handleImport = async () => {
+    importLoading = true
+    try {
+      if (!parsedBookmarks.length) {
+        toast.error(`No bookmarks successfully parsed. See console for any potential errors.`)
+        return
+      }
+      await importBookmarks(parsedBookmarks, $page.data?.session?.user?.id)
+      parsedBookmarks = []
+    } catch (error) {
+      console.error(error)
+      toast.error(`Import failed ${error}`)
+    } finally {
+      importLoading = false
+    }
   }
 
   const handleBookmarkExport = () => {
@@ -338,10 +362,13 @@
           bind:files={importFile}
         />
       </div>
-      {#if bookmarksPreview.length > 1}
+      {#if parsedBookmarks.length > 1}
         <div class="flex flex-col gap-4 mt-4 rounded-sm bg-neutral-50 dark:bg-neutral-900">
-          <div class="flex gap-1 items-center p-4 rounded-t-sm bg-neutral-100 dark:bg-neutral-800">
-            <h3>Import First 5 Bookmarks</h3>
+          <div
+            class="flex gap-1 justify-between items-center p-4 rounded-t-sm bg-neutral-100 dark:bg-neutral-800"
+          >
+            <h3>Preview</h3>
+            <div>{parsedBookmarks.length} bookmarks detected</div>
           </div>
           <div class="p-4 rounded-sm">
             <Table.Root class="rounded-sm border dark:border-neutral-800">
@@ -353,19 +380,21 @@
                 </Table.Row>
               </Table.Header>
               <Table.Body>
-                {#each bookmarksPreview.slice(0, 5) as bookmark (bookmark.url)}
+                {#each parsedBookmarks.slice(0, 5) as bookmark (bookmark.url)}
                   <Table.Row class=" hover:!bg-neutral-300/30 hover:dark:!bg-neutral-950/30">
                     <Table.Cell class="font-medium">{bookmark.title}</Table.Cell>
                     <Table.Cell>{bookmark.url}</Table.Cell>
-                    <Table.Cell class="text-right"
-                      >{format(bookmark.createdAt, "medium")}</Table.Cell
-                    >
+                    <Table.Cell class="text-right">
+                      {format(bookmark.createdAt, "medium")}
+                    </Table.Cell>
                   </Table.Row>
                 {/each}
               </Table.Body>
             </Table.Root>
           </div>
-          <Button class="mx-auto mb-4 w-96" onclick={handleImport}>Looks good, Import!</Button>
+          <Button disabled={importLoading} class="mx-auto mb-4 w-96" onclick={handleImport}>
+            Looks good, Import all {parsedBookmarks.length}!
+          </Button>
         </div>
       {/if}
     </Card.Content>
