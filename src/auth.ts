@@ -2,7 +2,7 @@ import prisma from "$lib/prisma"
 import { env } from "$env/dynamic/private"
 import { SvelteKitAuth } from "@auth/sveltekit"
 import { PrismaAdapter } from "@auth/prisma-adapter"
-import type { Provider, CommonProviderOptions } from "@auth/sveltekit/providers"
+import type { Provider } from "@auth/sveltekit/providers"
 
 const providers: Provider[] = []
 
