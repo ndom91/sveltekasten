@@ -56,9 +56,9 @@
   method="POST"
   action="?/saveMetadata"
   use:enhance
-  class="flex gap-4 justify-start items-center w-full h-full"
+  class="flex gap-4 justify-start items-center h-full"
 >
-  <div class="flex overflow-y-scroll flex-col gap-4 p-6 w-full h-full">
+  <div class="flex overflow-y-scroll flex-col gap-4 p-6 pr-4 w-full h-full">
     <div class="flex justify-between items-center">
       <h2>Metadata</h2>
       <Tooltip.Root>

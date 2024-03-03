@@ -19,10 +19,11 @@
 </script>
 
 <svelte:window onkeydown={handleKeyDown} />
+
 <aside
   class={cn(
-    "space-between relative flex h-screen flex-grow flex-col border-r bg-neutral-50 transition-width border-r-neutral-200 dark:border-r-neutral-900 dark:bg-neutral-900",
-    ui.userSidebarOpen ? "w-[300px]" : "w-20",
+    "space-between flex h-full justify-between flex-col border-r bg-neutral-50 transition border-r-neutral-200 dark:border-r-neutral-900 dark:bg-neutral-900",
+    ui.userSidebarOpen ? "flex-grow" : "flex-grow-0",
   )}
 >
   <div class="p-4">
@@ -312,7 +313,7 @@
   </div>
   <div
     class={cn(
-      "absolute bottom-0 mb-4 flex w-full flex-col justify-center",
+      "flex w-full flex-col justify-center",
       ui.userSidebarOpen ? "items-start p-4" : "items-center p-4",
     )}
   >

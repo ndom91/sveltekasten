@@ -7,9 +7,12 @@
 
   const ui = useInterface()
 
+  const DISABLED_PATHS = ["/categories", "/tags"]
+
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.repeat || event.target instanceof HTMLInputElement) return
     if (event.code === "BracketRight") {
+      if (DISABLED_PATHS.includes($page.url.pathname)) return
       event.preventDefault()
       ui.toggleMetadataSidebar()
     }
@@ -22,8 +25,8 @@
 <svelte:window onkeydown={handleKeyDown} />
 <aside
   class={cn(
-    "space-between relative flex h-screen flex-grow flex-col border-l bg-zinc-50 transition-width dark:border-l-zinc-800 dark:bg-zinc-900",
-    ui.metadataSidebarOpen ? "display-block w-[clamp(10vw,_25rem,_35vw)]" : "display-none w-0",
+    "space-between relative flex h-screen flex-shrink-0 flex-col border-l bg-zinc-50 transition-width dark:border-l-zinc-800 dark:bg-zinc-900",
+    ui.metadataSidebarOpen ? "basis-72" : "w-0",
   )}
 >
   {#if ui.metadataSidebarOpen}
