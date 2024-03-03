@@ -24,33 +24,31 @@
 </svelte:head>
 
 <Navbar simple />
-<div class="flex overflow-y-scroll flex-col">
-  <main
-    class="h-full align-start flex max-h-[calc(100vh_-_80px)] max-w-[calc(100vw_-_80px)] flex-col justify-start gap-6"
-  >
-    <div class="flex justify-start px-4 pt-4 w-full">
-      <h2 class="text-xl font-thin">Latest Items</h2>
-    </div>
-    {#if data.bookmarks}
-      <HomeScroller
-        items={data.bookmarks.data}
-        count={data.bookmarks.count}
-        type={ScrollerTypes.BOOKMARKS}
-      />
-    {:else}
-      {@render emptyHelper()}
-    {/if}
-    {#if data.feedEntries}
-      <HomeScroller
-        items={data.feedEntries.data}
-        count={data.feedEntries.count}
-        type={ScrollerTypes.FEEDS}
-      />
-    {:else}
-      {@render emptyHelper()}
-    {/if}
-  </main>
-</div>
+<main
+  class="h-full overflow-y-scroll align-start flex max-h-[calc(100vh_-_80px)] max-w-[calc(100vw_-_72px)] flex-col justify-start gap-6"
+>
+  <div class="flex justify-start px-4 pt-4 w-full">
+    <h2 class="text-xl font-thin">Latest Items</h2>
+  </div>
+  {#if data.bookmarks}
+    <HomeScroller
+      items={data.bookmarks.data}
+      count={data.bookmarks.count}
+      type={ScrollerTypes.BOOKMARKS}
+    />
+  {:else}
+    {@render emptyHelper()}
+  {/if}
+  {#if data.feedEntries}
+    <HomeScroller
+      items={data.feedEntries.data}
+      count={data.feedEntries.count}
+      type={ScrollerTypes.FEEDS}
+    />
+  {:else}
+    {@render emptyHelper()}
+  {/if}
+</main>
 
 {#snippet emptyHelper()}
   <img src={EmptyIllustration} alt="Empty" class="w-full max-w-xl grayscale dark:invert" />

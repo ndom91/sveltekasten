@@ -340,23 +340,21 @@
 <svelte:window onkeydown={handleKeyDown} />
 
 <Navbar />
-<div class="flex overflow-y-scroll flex-col items-center">
-  <main class="w-full max-w-screen-2xl h-full">
-    <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start">
-      {#if data.feedEntries?.count > 0}
-        <div class="h-full">
-          <InfiniteLoader triggerLoad={async () => await loadMore()}>
-            {#each allItems as feedEntry}
-              <FeedRow {feedEntry} {handleSummarizeText} {handleGenerateSpeech} />
-            {/each}
-          </InfiniteLoader>
-        </div>
-      {:else}
-        <EmptyState />
-        <p class="mx-auto w-1/2 text-center text-muted-foreground">
-          Get started by adding a feed in <a class="underline" href="/settings">settings</a>
-        </p>
-      {/if}
+<main
+  class="align-start overflow-y-scroll flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2"
+>
+  {#if data.feedEntries?.count > 0}
+    <div class="h-full">
+      <InfiniteLoader triggerLoad={async () => await loadMore()}>
+        {#each allItems as feedEntry}
+          <FeedRow {feedEntry} {handleSummarizeText} {handleGenerateSpeech} />
+        {/each}
+      </InfiniteLoader>
     </div>
-  </main>
-</div>
+  {:else}
+    <EmptyState />
+    <p class="mx-auto w-1/2 text-center text-muted-foreground">
+      Get started by adding a feed in <a class="underline" href="/settings">settings</a>
+    </p>
+  {/if}
+</main>

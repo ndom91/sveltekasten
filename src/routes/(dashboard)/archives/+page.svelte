@@ -172,23 +172,21 @@
 <svelte:window onkeydown={handleKeyDown} />
 
 <Navbar />
-<div class="flex overflow-y-scroll justify-center">
-  <main class="w-full max-w-screen-2xl h-full">
-    <div class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2">
-      {#if allItems}
-        <div class="h-full">
-          <InfiniteLoader triggerLoad={async () => await loadMore()}>
-            {#each allItems as bookmark}
-              <BookmarkRow {bookmark} />
-            {/each}
-          </InfiniteLoader>
-        </div>
-      {:else}
-        <EmptyState showArrow={false} />
-        <div class="my-4 w-full text-2xl font-light text-center">
-          Try archiving a <a class="underline underline-offset-4" href="/bookmarks">bookmark</a>
-        </div>
-      {/if}
+<main
+  class="align-start overflow-y-scroll flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2"
+>
+  {#if allItems}
+    <div class="h-full">
+      <InfiniteLoader triggerLoad={async () => await loadMore()}>
+        {#each allItems as bookmark}
+          <BookmarkRow {bookmark} />
+        {/each}
+      </InfiniteLoader>
     </div>
-  </main>
-</div>
+  {:else}
+    <EmptyState showArrow={false} />
+    <div class="my-4 w-full text-2xl font-light text-center">
+      Try archiving a <a class="underline underline-offset-4" href="/bookmarks">bookmark</a>
+    </div>
+  {/if}
+</main>
