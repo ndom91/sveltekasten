@@ -28,28 +28,20 @@
 >
   <div class="p-4">
     <Button
-      class={cn("flex mx-auto w-full", ui.userSidebarOpen ? "justify-start" : "justify-center")}
+      class={cn("flex justify-center w-full")}
       size="icon"
       variant="ghost"
       on:click={ui.toggleUserSidebar}
     >
-      <Logo class="!size-8" />
+      <Logo class="!size-10" />
       {#if ui.userSidebarOpen}
-        <span class="mx-auto text-xl font-light">Briefkasten</span>
+        <span class="mx-auto ml-4 text-xl font-light">Briefkasten</span>
       {/if}
     </Button>
     <div
-      class={cn(
-        "mx-auto my-4 w-2/3 rounded-full border-b-2 border-neutral-200 dark:border-neutral-800",
-        ui.userSidebarOpen ? "mx-0 w-full" : "",
-      )}
+      class="my-4 mx-auto w-full rounded-full border-b-2 border-neutral-200 dark:border-neutral-800"
     />
-    <nav
-      class={cn(
-        "mt-6 flex flex-col gap-2",
-        ui.userSidebarOpen ? "items-start pl-2" : "items-center",
-      )}
-    >
+    <nav class={cn("mt-6 flex flex-col gap-2 items-start")}>
       <Tooltip.Root>
         <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
           <Button
@@ -313,15 +305,12 @@
   </div>
   <div
     class={cn(
-      "flex w-full flex-col justify-center",
-      ui.userSidebarOpen ? "items-start p-4" : "items-center p-4",
+      "flex w-full flex-col justify-center p-4",
+      ui.userSidebarOpen ? "items-start" : "items-center",
     )}
   >
     <div
-      class={cn(
-        "mx-auto my-4 w-2/3 rounded-full border-b-2 border-neutral-200 dark:border-neutral-800",
-        ui.userSidebarOpen ? "mx-0 w-full" : "",
-      )}
+      class="my-4 mx-auto w-full rounded-full border-b-2 border-neutral-200 dark:border-neutral-800"
     />
     <div class="flex">
       <AvatarMenu />
