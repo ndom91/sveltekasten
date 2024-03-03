@@ -22,13 +22,13 @@
 
 <aside
   class={cn(
-    "space-between flex h-full justify-between flex-col border-r bg-neutral-50 transition-all duration-500 border-r-neutral-200 dark:border-r-neutral-900  dark:bg-neutral-900 basis-[250px]",
+    "space-between flex h-full justify-between flex-col border-r bg-neutral-50 transition-all duration-500 border-r-neutral-200 dark:border-r-neutral-900  dark:bg-neutral-900 basis-[200px]",
     ui.userSidebarOpen ? "flex-shrink-0" : "flex-grow-0 basis-[72px]",
   )}
 >
   <div class="p-4">
     <Button
-      class={cn("flex justify-start w-full")}
+      class="flex justify-start w-full"
       size="icon"
       variant="ghost"
       on:click={ui.toggleUserSidebar}
@@ -41,7 +41,7 @@
     <div
       class="my-4 mx-auto w-full rounded-full border-b-2 border-neutral-200 dark:border-neutral-800"
     />
-    <nav class={cn("mt-6 flex flex-col gap-2 items-start")}>
+    <nav class="flex flex-col gap-2 items-start mt-6">
       <Tooltip.Root>
         <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
           <Button
@@ -71,9 +71,14 @@
                 d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
               ></path>
             </svg>
-            {#if ui.userSidebarOpen}
-              <span class="ml-4 text-lg font-normal">Home</span>
-            {/if}
+            <span
+              class={cn(
+                "ml-4 text-lg font-normal transition-all duration-500 w-auto delay-150",
+                ui.userSidebarOpen ? "block" : "hidden",
+              )}
+            >
+              Home</span
+            >
           </Button>
         </Tooltip.Trigger>
         <Tooltip.Content
@@ -114,9 +119,14 @@
                 d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
               ></path>
             </svg>
-            {#if ui.userSidebarOpen}
-              <span class="ml-4 text-lg font-normal">Bookmarks</span>
-            {/if}
+            <span
+              class={cn(
+                "ml-4 text-lg font-normal transition-all duration-500 delay-150",
+                ui.userSidebarOpen ? "block opacity-100" : "opacity-0 hidden",
+              )}
+            >
+              Bookmarks</span
+            >
           </Button>
         </Tooltip.Trigger>
         <Tooltip.Content
@@ -157,9 +167,14 @@
                 d="M12.75 19.5v-.75a7.5 7.5 0 0 0-7.5-7.5H4.5m0-6.75h.75c7.87 0 14.25 6.38 14.25 14.25v.75M6 18.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
               ></path>
             </svg>
-            {#if ui.userSidebarOpen}
-              <span class="ml-4 text-lg font-normal">Feeds</span>
-            {/if}
+            <span
+              class={cn(
+                "ml-4 text-lg font-normal transition-all duration-500 delay-150",
+                ui.userSidebarOpen ? "block opacity-100" : "opacity-0 hidden",
+              )}
+            >
+              Feeds</span
+            >
           </Button>
         </Tooltip.Trigger>
         <Tooltip.Content
@@ -199,9 +214,14 @@
                 d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"
               ></path>
             </svg>
-            {#if ui.userSidebarOpen}
-              <span class="ml-4 text-lg font-normal">Archive</span>
-            {/if}
+            <span
+              class={cn(
+                "ml-4 text-lg font-normal transition-all duration-500 delay-150",
+                ui.userSidebarOpen ? "block opacity-100" : "opacity-0 hidden",
+              )}
+            >
+              Archive</span
+            >
           </Button>
         </Tooltip.Trigger>
         <Tooltip.Content
@@ -243,9 +263,14 @@
                 d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122"
               ></path>
             </svg>
-            {#if ui.userSidebarOpen}
-              <span class="ml-4 text-lg font-normal">Categories</span>
-            {/if}
+            <span
+              class={cn(
+                "ml-4 text-lg font-normal transition-all duration-500 delay-150",
+                ui.userSidebarOpen ? "block opacity-100" : "opacity-0 hidden",
+              )}
+            >
+              Categories</span
+            >
           </Button>
         </Tooltip.Trigger>
         <Tooltip.Content
@@ -287,9 +312,14 @@
               ></path>
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z"></path>
             </svg>
-            {#if ui.userSidebarOpen}
-              <span class="ml-4 text-lg font-normal">Tags</span>
-            {/if}
+            <span
+              class={cn(
+                "ml-4 text-lg font-normal transition-all duration-500 delay-150",
+                ui.userSidebarOpen ? "block opacity-100" : "opacity-0 hidden",
+              )}
+            >
+              Tags
+            </span>
           </Button>
         </Tooltip.Trigger>
         <Tooltip.Content
@@ -303,7 +333,7 @@
       </Tooltip.Root>
     </nav>
   </div>
-  <div class={cn("flex w-full flex-col items-start justify-center p-4")}>
+  <div class="flex flex-col justify-center items-start p-4 w-full">
     <div
       class="my-4 mx-auto w-full rounded-full border-b-2 border-neutral-200 dark:border-neutral-800"
     />
@@ -317,9 +347,3 @@
     </div>
   </div>
 </aside>
-
-<style>
-  .active {
-    @apply ring-2 ring-neutral-300 dark:ring-neutral-800;
-  }
-</style>
