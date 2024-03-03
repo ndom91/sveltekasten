@@ -22,13 +22,13 @@
 
 <aside
   class={cn(
-    "space-between flex h-full justify-between flex-col border-r bg-neutral-50 transition border-r-neutral-200 dark:border-r-neutral-900 dark:bg-neutral-900",
-    ui.userSidebarOpen ? "flex-grow" : "flex-grow-0",
+    "space-between flex h-full justify-between flex-col border-r bg-neutral-50 transition-all duration-500 border-r-neutral-200 dark:border-r-neutral-900  dark:bg-neutral-900 basis-[250px]",
+    ui.userSidebarOpen ? "flex-shrink-0" : "flex-grow-0 basis-[72px]",
   )}
 >
   <div class="p-4">
     <Button
-      class={cn("flex justify-center w-full")}
+      class={cn("flex justify-start w-full")}
       size="icon"
       variant="ghost"
       on:click={ui.toggleUserSidebar}
@@ -303,12 +303,7 @@
       </Tooltip.Root>
     </nav>
   </div>
-  <div
-    class={cn(
-      "flex w-full flex-col justify-center p-4",
-      ui.userSidebarOpen ? "items-start" : "items-center",
-    )}
-  >
+  <div class={cn("flex w-full flex-col items-start justify-center p-4")}>
     <div
       class="my-4 mx-auto w-full rounded-full border-b-2 border-neutral-200 dark:border-neutral-800"
     />
