@@ -1,13 +1,12 @@
 import type { RequestHandler } from "./$types"
-import { json, fail } from "@sveltejs/kit"
+import { json } from "@sveltejs/kit"
 import prisma from "$lib/prisma"
 
-// @ts-expect-error
 export const PUT: RequestHandler = async ({ request, locals }) => {
   try {
     const session = await locals.auth()
     if (!session?.user?.id) {
-      return fail(401, { type: "error", error: "Unauthenticated" })
+      return new Response(null, { status: 401, statusText: "Unauthorized" })
     }
     const { data } = await request.json()
 
@@ -28,16 +27,15 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
     } else {
       console.error(error)
     }
-    return fail(401, { data: [], error })
+    return new Response(String(error), { status: 401 })
   }
 }
 
-// @ts-expect-error
 export const DELETE: RequestHandler = async ({ request, locals }) => {
   try {
     const session = await locals.auth()
     if (!session?.user?.id) {
-      return fail(401, { type: "error", error: "Unauthenticated" })
+      return new Response(null, { status: 401, statusText: "Unauthorized" })
     }
     const { data } = await request.json()
 
@@ -55,6 +53,6 @@ export const DELETE: RequestHandler = async ({ request, locals }) => {
     } else {
       console.error(error)
     }
-    return fail(401, { data: [], error })
+    return new Response(String(error), { status: 401 })
   }
 }

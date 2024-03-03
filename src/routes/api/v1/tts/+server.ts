@@ -1,13 +1,11 @@
-import { fail } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
 import { createEdgeSpeech } from "$lib/server/generate-tts"
 
-// @ts-expect-error
 export const POST: RequestHandler = async ({ request, locals }) => {
   try {
     const session = await locals.auth()
     if (!session?.user?.id) {
-      return fail(401, { type: "error", error: "Unauthenticated" })
+      return new Response(null, { status: 401, statusText: "Unauthorized" })
     }
 
     const { text, speaker } = await request.json()
@@ -28,6 +26,6 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     } else {
       console.error(error)
     }
-    return fail(401, { data: [], error })
+    return new Response(String(error), { status: 401 })
   }
 }

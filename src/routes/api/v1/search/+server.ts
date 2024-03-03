@@ -1,7 +1,6 @@
 import type { RequestHandler } from "./$types"
-import { json, fail } from "@sveltejs/kit"
+import { json } from "@sveltejs/kit"
 import prisma from "$lib/prisma"
-import type { Tag } from "$zod"
 
 type RequestBody = {
   where: Record<string, unknown>
@@ -12,12 +11,11 @@ type RequestBody = {
   skip: number
 }
 
-// @ts-expect-error
 export const POST: RequestHandler = async ({ request, locals }) => {
   try {
     const session = await locals.auth()
     if (!session?.user?.id) {
-      return fail(401, { type: "error", error: "Unauthenticated" })
+      return new Response(null, { status: 401, statusText: "Unauthorized" })
     }
 
     let returnData
@@ -30,7 +28,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
       skip = 0,
     } = (await request.json()) as RequestBody
     if (!type) {
-      return fail(401, { type: "error", error: "Missing 'type' parameter" })
+      return new Response(null, { status: 401, statusText: "Missing 'type' parameter" })
     }
 
     const [data, count] = await prisma[type].findManyAndCount({
@@ -60,6 +58,6 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     } else {
       console.error(error)
     }
-    return fail(401, { data: [], error })
+    return new Response(String(error), { status: 401 })
   }
 }

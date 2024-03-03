@@ -1,20 +1,19 @@
 import type { RequestHandler } from "./$types"
-import { json, fail } from "@sveltejs/kit"
+import { json } from "@sveltejs/kit"
 import prisma from "$lib/prisma"
 
 // Get FeedEntries
-// @ts-expect-error
 export const GET: RequestHandler = async ({ url, locals }) => {
   try {
     const session = await locals.auth()
     if (!session?.user?.id) {
-      return fail(401, { type: "error", error: "Unauthenticated" })
+      return new Response(null, { status: 401, statusText: "Unauthorized" })
     }
     const skip = Number(url.searchParams.get("skip") ?? "0")
     const limit = Number(url.searchParams.get("limit") ?? "10")
 
     if (limit > 100) {
-      return fail(401, { type: "error", error: "Attempted to load too many items" })
+      return new Response(null, { status: 401, statusText: "Attempted to load too many items" })
     }
 
     const data = await prisma.feedEntry.findMany({
@@ -37,17 +36,16 @@ export const GET: RequestHandler = async ({ url, locals }) => {
     } else {
       console.error(error)
     }
-    return fail(401, { data: [], error })
+    return new Response(String(error), { status: 401 })
   }
 }
 
 // Update FeedEntry
-// @ts-expect-error
 export const PUT: RequestHandler = async ({ request, locals }) => {
   try {
     const session = await locals.auth()
     if (!session?.user?.id) {
-      return fail(401, { type: "error", error: "Unauthenticated" })
+      return new Response(null, { status: 401, statusText: "Unauthorized" })
     }
     const { feedEntry } = await request.json()
 
@@ -72,6 +70,6 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
     } else {
       console.error(error)
     }
-    return fail(401, { data: [], error })
+    return new Response(String(error), { status: 401 })
   }
 }
