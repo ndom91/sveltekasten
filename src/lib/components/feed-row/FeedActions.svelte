@@ -30,7 +30,7 @@
 
 <div
   class={cn(
-    "absolute right-4 top-10 flex rounded-xl bg-zinc-200 bg-opacity-90 p-2 text-white transition-opacity delay-200 duration-300 ease-in-out dark:bg-zinc-700 dark:bg-opacity-100",
+    "absolute right-4 top-10 flex rounded-xl bg-zinc-200 bg-opacity-90 p-2 text-white transition-opacity delay-200 duration-300 ease-in-out dark:bg-zinc-800 dark:bg-opacity-100",
     isOptionsOpen ? "opacity-100" : "opacity-0",
   )}
 >
