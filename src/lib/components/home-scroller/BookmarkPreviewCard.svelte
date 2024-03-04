@@ -21,7 +21,7 @@
       </span>
     </div>
     <a href={item.url} target="_blank" class="">
-      <span class="">{item.title}</span>
+      <span title={item.title}>{item.title}</span>
       <span class="line-clamp-2">{item.desc}</span>
     </a>
   </div>

@@ -75,7 +75,7 @@
         {format(item.published!, { date: "medium", time: "short" })}
       </span>
     </div>
-    <a href={item.link} target="_blank" class="line-clamp-2">
+    <a href={item.link} target="_blank" class="line-clamp-2" title={item.title}>
       {item.title}
     </a>
   </div>
