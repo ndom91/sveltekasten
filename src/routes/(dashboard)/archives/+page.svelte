@@ -4,13 +4,14 @@
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { useInterface } from "$state/ui.svelte"
   import { BookmarkRow } from "$lib/components/bookmark-row"
-  import { InfiniteLoader, stateChanger } from "$lib/components/infinite-scroll"
+  import { InfiniteLoader, stateChanger } from "svelte-infinite"
 
   const ui = useInterface()
   const { data } = $props()
 
   let pageNumber = $state(1)
   let allItems = $state<LoadBookmarkFlatTags[]>(data.bookmarks!)
+  let rootElement = $state<HTMLElement>()
 
   $effect(() => {
     allItems = data.bookmarks!
@@ -177,7 +178,7 @@
 >
   {#if allItems}
     <div class="h-full">
-      <InfiniteLoader triggerLoad={async () => await loadMore()}>
+      <InfiniteLoader triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
         {#each allItems as bookmark}
           <BookmarkRow {bookmark} />
         {/each}

@@ -7,7 +7,7 @@
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
   import { useInterface } from "$state/ui.svelte"
   import { BookmarkRow } from "$lib/components/bookmark-row"
-  import { InfiniteLoader, stateChanger } from "$lib/components/infinite-scroll"
+  import { InfiniteLoader, stateChanger } from "svelte-infinite"
   import { Logger, loggerLevels } from "$lib/utils/logger"
   import { untrack } from "svelte"
 
@@ -16,6 +16,8 @@
 
   let pageNumber = $state(1)
   let allItems = $state<LoadBookmarkFlatTags[]>(data.bookmarks!)
+  let rootElement = $state<HTMLElement>()
+
   const logger = new Logger({ level: loggerLevels.DEBUG })
 
   $effect(() => {
@@ -190,10 +192,11 @@
 <Navbar />
 <main
   class="align-start overflow-y-scroll flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2"
+  bind:this={rootElement}
 >
   {#if data.bookmarks}
     <div class="h-full">
-      <InfiniteLoader triggerLoad={async () => await loadMore()}>
+      <InfiniteLoader triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
         {#each allItems as _, i}
           <BookmarkRow bind:bookmark={allItems[i]} />
         {/each}
