@@ -8,7 +8,7 @@
   const providerButtonStyles = (provider: string): string => {
     switch (provider) {
       case "github":
-        return "bg-slate-700 hover:bg-slate-800 text-white"
+        return "bg-zinc-700 hover:bg-zinc-800 text-white"
       case "google":
         return "bg-white hover:bg-gray-100 focus:ring-blue-700 text-gray-800 border border-gray-200 hover:border-gray-100"
       case "azure-ad":
@@ -26,15 +26,15 @@
 <div class="flex overflow-hidden relative w-full h-full">
   <svelte:component
     this={LoginPattern}
-    class="object-cover fixed top-0 right-0 min-w-full min-h-full z-[5]"
+    class="object-cover fixed top-0 right-0 min-w-full min-h-full bg-white z-[5]"
   />
   <div
     aria-label="Slate cover background"
-    class="absolute left-0 top-0 z-10 flex h-[275%] w-[150%] translate-x-[-70%] translate-y-[-28%] rotate-[22deg] items-center bg-slate-900 md:translate-y-[-15%] md:rotate-[11deg]"
+    class="absolute left-0 top-0 z-10 flex h-[275%] w-[150%] translate-x-[-70%] translate-y-[-28%] rotate-[22deg] items-center bg-zinc-900 md:translate-y-[-15%] md:rotate-[11deg]"
   />
   <div class="h-dvh z-20 flex w-full items-center justify-center md:ml-[15%] md:w-[22rem]">
     <div class="flex flex-col justify-center items-center w-80 text-xl">
-      <h2 class="flex items-center mb-4 space-x-2 text-3xl font-light text-slate-600">
+      <h2 class="flex items-center mb-4 space-x-2 text-3xl font-light text-zinc-600">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -42,7 +42,7 @@
           stroke-linecap="round"
           stroke-linejoin="round"
           stroke-width="2"
-          class="p-2 text-white rounded-full size-12 bg-slate-800"
+          class="p-2 text-white rounded-full size-12 bg-zinc-800"
           viewBox="0 0 24 24"
         >
           <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
@@ -54,7 +54,7 @@
           {#if $page.data.providers.includes({ id: "email", name: "Email" })}
             <form>
               <input
-                class="block flex-1 p-3 w-full font-normal rounded-md border border-gray-200 transition sm:text-sm placeholder:font-light placeholder:text-slate-400 focus:border-slate-500 focus:ring-slate-500"
+                class="block flex-1 p-3 w-full font-normal rounded-md border border-gray-200 transition sm:text-sm placeholder:font-light placeholder:text-zinc-400 focus:border-zinc-500 focus:ring-zinc-500"
                 type="email"
                 autoComplete="username"
                 placeholder="user@company.com"
@@ -67,7 +67,7 @@
                     ? `/${decodeURIComponent($page.data.redirectTo).slice(1)}`
                     : `/`,
                 }}
-                className="flex justify-center items-center px-4 mt-2 space-x-2 w-full h-12 text-base font-light text-white rounded transition focus:ring-2 focus:ring-offset-2 focus:outline-none bg-slate-800 hover:bg-slate-900 focus:ring-slate-800"
+                className="flex justify-center items-center px-4 mt-2 space-x-2 w-full h-12 text-base font-light text-white rounded transition focus:ring-2 focus:ring-offset-2 focus:outline-none bg-zinc-800 hover:bg-zinc-900 focus:ring-zinc-800"
               >
                 Continue
               </SignIn>
@@ -93,7 +93,7 @@
               <div
                 slot="submitButton"
                 class={twJoin(
-                  "mt-2 flex h-12 w-full items-center space-x-2 rounded px-4 text-base font-light transition focus:outline-none focus:ring-2 focus:ring-slate-800 focus:ring-offset-2 group",
+                  "mt-2 flex h-12 w-full items-center space-x-2 rounded px-4 text-base font-light transition focus:outline-none focus:ring-2 focus:ring-zinc-800 focus:ring-offset-2 group",
                   providerButtonStyles(provider.id),
                 )}
               >
