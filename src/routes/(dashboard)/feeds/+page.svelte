@@ -20,7 +20,7 @@
   import { untrack } from "svelte"
 
   import { useInterface, TTSLocation } from "$state/ui.svelte"
-  import { InfiniteLoader, stateChanger } from "$lib/components/infinite-scroll"
+  import { InfiniteLoader, stateChanger } from "svelte-infinite"
   import { invalidateAll } from "$app/navigation"
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
   import ttsWorkerUrl from "$lib/transformers/tts-worker?url"
@@ -42,6 +42,7 @@
 
   let pageNumber = $state(1)
   let allItems = $state<LoadFeedEntry[]>(data.feedEntries?.data)
+  let rootElement = $state<HTMLElement>()
 
   // Reload feed when coming back to tab
   const visibility = documentVisibilityStore()
@@ -342,10 +343,11 @@
 <Navbar />
 <main
   class="align-start overflow-y-scroll flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2"
+  bind:this={rootElement}
 >
   {#if data.feedEntries?.count > 0}
     <div class="h-full">
-      <InfiniteLoader triggerLoad={async () => await loadMore()}>
+      <InfiniteLoader triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
         {#each allItems as feedEntry}
           <FeedRow {feedEntry} {handleSummarizeText} {handleGenerateSpeech} />
         {/each}

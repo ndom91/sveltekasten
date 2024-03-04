@@ -92,6 +92,9 @@ dependencies:
   svelte-french-toast:
     specifier: ^1.2.0
     version: 1.2.0(svelte@5.0.0-next.69)
+  svelte-infinite:
+    specifier: ^0.1.2
+    version: 0.1.2(svelte@5.0.0-next.69)
   svelte-sonner:
     specifier: ^0.3.19
     version: 0.3.19(svelte@5.0.0-next.69)
@@ -4528,6 +4531,14 @@ packages:
       svelte: ^3.19.0 || ^4.0.0
     dependencies:
       svelte: 5.0.0-next.69
+
+  /svelte-infinite@0.1.2(svelte@5.0.0-next.69):
+    resolution: {integrity: sha512-XbjAy8idHWVaaDymM7rX0J9SiB9w5IYIepzROG/kvJo1zu7G4rB2i9W1z4PV/YQm5ihcntyO1x0JuL2e47x8Dw==}
+    peerDependencies:
+      svelte: ^5.0.0
+    dependencies:
+      svelte: 5.0.0-next.69
+    dev: false
 
   /svelte-keyed@2.0.0(svelte@5.0.0-next.69):
     resolution: {integrity: sha512-7TeEn+QbJC2OJrHiuM0T8vMBkms3DNpTE+Ir+NtnVBnBMA78aL4f1ft9t0Hn/pBbD/TnIXi4YfjFRAgtN+DZ5g==}
