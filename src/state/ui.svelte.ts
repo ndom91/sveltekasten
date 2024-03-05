@@ -87,7 +87,7 @@ export function useInterface() {
       showUnreadOnly = query
     },
 
-    // AI
+    // LLM TTS
     get textToSpeechContent() {
       return textToSpeechContent
     },
@@ -106,6 +106,7 @@ export function useInterface() {
     set textToSpeechLoading(query) {
       textToSpeechLoading = query
     },
+    // LLM Settings
     get aiFeaturesPreferences() {
       return aiFeaturesPreferences
     },
@@ -113,7 +114,7 @@ export function useInterface() {
       aiFeaturesPreferences = query
     },
 
-    // Bart Summarization
+    // LLM Summarization
     get summarizationLoading() {
       return summarizationLoading
     },

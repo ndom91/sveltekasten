@@ -40,7 +40,7 @@
         builders={[tooltipBuilder]}
         variant="ghost"
         size="icon"
-        onclick={handleToggleCardOpen}
+        on:click={handleToggleCardOpen}
       >
         <svg
           class="size-5 text-zinc-900 dark:text-zinc-100"
@@ -210,7 +210,10 @@
           {#if ui.textToSpeechLoading}
             <LoadingIndicator class="dark:text-white" />
           {:else}
-            <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"
+            <svg
+              class="size-5 text-zinc-900 dark:text-zinc-100"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 256 256"
               ><rect width="256" height="256" fill="none" /><path
                 d="M80,168H32a8,8,0,0,1-8-8V96a8,8,0,0,1,8-8H80l72-56V224Z"
                 fill="none"

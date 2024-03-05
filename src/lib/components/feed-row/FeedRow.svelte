@@ -1,12 +1,14 @@
 <script lang="ts">
+  import { page } from "$app/stores"
   import { cn } from "$lib/utils/style"
   import { format } from "@formkit/tempo"
   import { Badge } from "$lib/components/ui/badge"
   import type { FeedEntry, FeedEntryMedia } from "$zod"
   import dompurify from "isomorphic-dompurify"
+  import FeedActions from "./FeedActions.svelte"
 
   import { tweened } from "svelte/motion"
-  import { quintOut } from "svelte/easing"
+  import { quartInOut } from "svelte/easing"
   import { useInterface } from "$state/ui.svelte"
 
   const ui = useInterface()
@@ -45,7 +47,7 @@
 
   const handleToggleCardOpen = () => {
     cardOpen = !cardOpen
-    // Only toggle and make network request if necessary
+
     if (feedEntry.unread === true) {
       handleMarkAsUnread(false)
     }
@@ -77,14 +79,9 @@
     })
   }
 
-  // const size = spring(0)
-  // size.stiffness = 0.3
-  // size.damping = 0.4
-  // size.precision = 0.005
   const size = tweened(0, {
-    duration: 700,
-    delay: 200,
-    easing: quintOut,
+    duration: 400,
+    easing: quartInOut,
   })
 
   $effect(() => {
@@ -93,6 +90,16 @@
     } else {
       size.set(0)
     }
+  })
+
+  const isFeedVisible = $derived(
+    !!$page.data.feeds.data.find((feed) => feed.id === feedEntry.feed.id).visible,
+  )
+  const hideUnread = $derived.by(() => {
+    if (ui.showUnreadOnly) {
+      return !feedEntry.unread
+    }
+    return false
   })
 </script>
 
@@ -103,7 +110,11 @@
   role="row"
   bind:this={card}
   tabindex="0"
-  class="grid relative gap-4 p-4 mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none grid-cols-[10rem_1fr] dark:focus:bg-zinc-900 focus:border-zinc-500 focus:bg-zinc-100"
+  class={cn(
+    "grid relative gap-4 p-4 mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none grid-cols-[10rem_1fr] dark:focus:bg-zinc-900 focus:border-zinc-500 focus:bg-zinc-100",
+    !isFeedVisible && "hidden",
+    hideUnread && "hidden",
+  )}
   on:mouseleave={closeButtonGroup}
   on:mouseenter={openButtonGroup}
 >
@@ -138,7 +149,7 @@
           alt="URL Favicon"
           class="rounded-full size-4"
         />
-        <a target="_blank" href={feedEntry.link} class="line-clamp-1 text-clip">
+        <a target="_blank" href={feedEntry.link} class="line-clamp-1 text-clip text-zinc-500">
           {feedEntry.link}
         </a>
       {/if}
@@ -156,15 +167,12 @@
       {/if}
     </span>
   </div>
-  {#await import("./FeedActions.svelte") then { default: Actions }}
-    <svelte:component
-      this={Actions}
-      url={feedEntry.link ?? ""}
-      {isOptionsOpen}
-      {handleToggleCardOpen}
-      {handleMarkAsUnread}
-      {handleSetTextToSpeechContent}
-      {handleStartTextSummarization}
-    />
-  {/await}
+  <FeedActions
+    url={feedEntry.link ?? ""}
+    {isOptionsOpen}
+    {handleToggleCardOpen}
+    {handleMarkAsUnread}
+    {handleSetTextToSpeechContent}
+    {handleStartTextSummarization}
+  />
 </div>
