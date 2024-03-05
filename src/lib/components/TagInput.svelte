@@ -19,7 +19,7 @@
     field,
   } = $props<{
     form: SuperForm<T>
-    field: FormPathLeaves<T>
+    field: FormPathLeaves<T, string>
     disabled?: boolean
     tags: RawTag[]
   }>()

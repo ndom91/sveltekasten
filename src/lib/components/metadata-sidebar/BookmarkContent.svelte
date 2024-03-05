@@ -5,7 +5,6 @@
   import SuperDebug, { defaults, superForm } from "sveltekit-superforms"
   import { format } from "@formkit/tempo"
   import toast from "svelte-french-toast"
-  import type { Tag } from "$zod"
   import { invalidateAll } from "$app/navigation"
 
   import { cn } from "$lib/utils/style"
@@ -24,13 +23,13 @@
   const isEditMode = $derived(ui.metadataSidebarEditMode === true)
 
   const defaultData = {
-    id: ui.metadataSidebarData.bookmark?.id,
-    url: ui.metadataSidebarData.bookmark?.url,
-    title: ui.metadataSidebarData.bookmark?.title,
-    description: ui.metadataSidebarData.bookmark?.desc,
-    image: ui.metadataSidebarData.bookmark?.image,
-    category: ui.metadataSidebarData.bookmark?.category,
-    tags: ui.metadataSidebarData.bookmark?.tags,
+    id: ui.metadataSidebarData.bookmark?.id!,
+    url: ui.metadataSidebarData.bookmark?.url!,
+    title: ui.metadataSidebarData.bookmark?.title!,
+    description: ui.metadataSidebarData.bookmark?.desc!,
+    image: ui.metadataSidebarData.bookmark?.image!,
+    category: ui.metadataSidebarData.bookmark?.category!,
+    tags: ui.metadataSidebarData.bookmark?.tags!,
   }
   const superformInstance = superForm(defaults(defaultData, zodClient(metadataSchema)), {
     resetForm: false,
@@ -96,29 +95,31 @@
     {#if !ui.metadataSidebarData.bookmark}
       <div class="inline mt-2 leading-relaxed">
         <div class="font-bold">No bookmark selected.</div>
-        <span class="">Please select a bookmark to view in detail or edit by clicking the</span>
-        <span
-          title="Edit button"
-          class="inline-block p-1 mx-1 rounded-sm baseline size-6 dark:bg-neutral-800"
-        >
-          <svg
-            class="size-4 text-zinc-900 dark:text-zinc-200"
-            data-slot="icon"
-            fill="none"
-            stroke-width="1.5"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
+        <span class="leading-loose">
+          Please select a bookmark to view in detail and edit by clicking the
+          <span
+            title="Edit"
+            class="inline-block p-1 mx-1 align-text-bottom rounded-sm size-6 bg-neutral-200 dark:bg-neutral-800"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
-            ></path>
-          </svg>
+            <svg
+              class="size-4 text-zinc-900 dark:text-zinc-200"
+              data-slot="icon"
+              fill="none"
+              stroke-width="1.5"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
+              ></path>
+            </svg>
+          </span>
+          button in the actions overlay when hovering over a bookmark.
         </span>
-        <span>button in the actions overlay when hovering over a bookmark.</span>
       </div>
     {:else}
       <div class="flex flex-col gap-2 items-start">
@@ -194,7 +195,7 @@
           onSelectedChange={(e) =>
             ($form.category = ui.metadataSidebarData.categories?.find(
               (cat) => cat.id === e?.value,
-            ))}
+            )!)}
         >
           <Select.Trigger class="w-full disabled:cursor-default enabled:bg-zinc-950">
             <Select.Value placeholder="Category" />
@@ -227,7 +228,7 @@
           <img
             src={ui.metadataSidebarData.bookmark.image}
             alt="Bookmark Screenshot"
-            class="object-cover w-full rounded-md"
+            class="object-cover w-full max-w-sm rounded-md border-2 border-neutral-100 dark:border-neutral-800"
           />
         </div>
       {/if}

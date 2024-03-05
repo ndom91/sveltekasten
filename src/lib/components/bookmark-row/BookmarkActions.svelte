@@ -84,7 +84,7 @@
     <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
       <Button builders={[tooltipBuilder]} variant="ghost" size="icon" on:click={handleArchive}>
         <svg
-          class="size-5"
+          class="size-5 text-zinc-900 dark:text-zinc-100"
           data-slot="icon"
           fill="none"
           stroke-width="1.5"

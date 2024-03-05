@@ -23,7 +23,7 @@ type AIFeaturesPreferences = {
 
 type MetadataSidebarData = {
   bookmark?: LoadBookmarkFlatTags
-  categories?: Category[]
+  categories?: (Category & { description: string | undefined })[]
   tags?: Tag[]
 }
 

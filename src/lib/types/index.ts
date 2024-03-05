@@ -1,4 +1,4 @@
-import z from "zod"
+import { z } from "zod"
 
 export const ScrollerTypes = {
   BOOKMARKS: "BOOKMARKS",
@@ -7,13 +7,13 @@ export const ScrollerTypes = {
 
 const bookmarkFlatTagsSchema = z.object({
   id: z.string(),
-  title: z.string().nullish(),
+  title: z.string().optional(),
   url: z.string(),
-  image: z.string().nullish(),
-  imageBlur: z.string().nullish(),
-  desc: z.string().nullish(),
-  categoryId: z.string().nullish(),
-  metadata: z.object({}),
+  image: z.string().optional(),
+  imageBlur: z.string().optional(),
+  desc: z.string().optional(),
+  categoryId: z.string().optional(),
+  metadata: z.record(z.string(), z.string()),
   archived: z.boolean(),
   userId: z.string(),
   createdAt: z.date(),
@@ -23,12 +23,12 @@ const bookmarkFlatTagsSchema = z.object({
     .object({
       id: z.string(),
       name: z.string(),
-      description: z.string().nullish(),
+      description: z.string().optional(),
       userId: z.string(),
       createdAt: z.date(),
       updatedAt: z.date(),
     })
-    .nullish(),
+    .optional(),
 
   tags: z.array(
     z.object({

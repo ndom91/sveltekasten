@@ -5,6 +5,7 @@
   import { useInterface } from "$state/ui.svelte"
   import { invalidateAll } from "$app/navigation"
   import { Image } from "$lib/components/image"
+  import BookmarkActions from "./BookmarkActions.svelte"
 
   const ui = useInterface()
 
@@ -56,8 +57,7 @@
   {/await}
   <Image
     thumbhash={bookmark.imageBlur ?? ""}
-    autoSizes
-    src={bookmark.image}
+    src={bookmark.image ?? `https://source.unsplash.com/random/240x144?sig=${bookmark.url}`}
     alt={`${new URL(bookmark.url).hostname} Screenshot`}
     class="w-60 h-36 rounded-md border transition border-neutral-100 dark:border-neutral-800"
   />
@@ -70,9 +70,9 @@
       {#if bookmark.metadata?.logo}
         <img src={bookmark.metadata?.logo} alt="URL Favicon" class="rounded-full size-4" />
       {/if}
-      <span>
+      <a target="_blank" href={bookmark.url} class="line-clamp-1 text-clip text-zinc-500">
         {bookmark.url}
-      </span>
+      </a>
     </div>
     <span class="flex flex-wrap gap-2">
       <Badge variant="default">
@@ -94,14 +94,11 @@
       {/if}
     </span>
   </div>
-  {#await import("./BookmarkActions.svelte") then { default: Actions }}
-    <svelte:component
-      this={Actions}
-      {handleMetadataSidebarOpen}
-      {handleDeleteDialogOpen}
-      {isOptionsOpen}
-      {handleArchive}
-      url={bookmark.url ?? ""}
-    />
-  {/await}
+  <BookmarkActions
+    url={bookmark.url ?? ""}
+    {handleMetadataSidebarOpen}
+    {handleDeleteDialogOpen}
+    {isOptionsOpen}
+    {handleArchive}
+  />
 </div>

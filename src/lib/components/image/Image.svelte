@@ -2,24 +2,32 @@
   import { cn } from "$lib/utils/style"
   import * as Thumbhash from "thumbhash"
 
-  const base64ToBinary = (base64: string) =>
-    new Uint8Array(
+  const base64ToBinary = (base64: string) => {
+    return new Uint8Array(
       atob(base64)
         .split("")
         .map((x) => x.charCodeAt(0)),
     )
+  }
 
   const {
     class: className,
     src,
     thumbhash,
     ...rest
-  } = $props<{ class?: string; src: string; thumbhash?: string }>()
+  } = $props<{
+    src: string
+    class?: string
+    thumbhash?: string
+  }>()
 
   let loaded = $state(false)
-  const placeholderURL = $derived(
-    thumbhash ? Thumbhash.thumbHashToDataURL(base64ToBinary(thumbhash)) : "",
-  )
+
+  const placeholderURL = $derived.by(() => {
+    if (!thumbhash) return ""
+
+    return Thumbhash.thumbHashToDataURL(base64ToBinary(thumbhash))
+  })
 
   const onload = (_el: HTMLImageElement) => {
     loaded = true
