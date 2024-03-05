@@ -1,17 +1,3 @@
-<script context="module" lang="ts">
-  export type FeedLoadData = {
-    feedEntries: {
-      data: LoadFeedEntry[]
-      count: number
-    }
-    feeds: {
-      data: Feed & { visible: boolean }[]
-      count: number
-    }
-    error?: Error
-  }
-</script>
-
 <script lang="ts">
   import toast from "svelte-french-toast"
   import { Navbar } from "$lib/components/navbar"
@@ -26,11 +12,12 @@
   import ttsWorkerUrl from "$lib/transformers/tts-worker?url"
   import summaryWorkerUrl from "$lib/transformers/translate-worker?url"
   import type { Feed } from "$zod"
+  import type { Session } from "@auth/sveltekit"
 
   const limitLoadCount = 20
 
   const ui = useInterface()
-  const { data } = $props<{ data: FeedLoadData }>()
+  const { data } = $props()
 
   // Log error from page server loading
   if (data.error) {
@@ -38,7 +25,7 @@
   }
 
   // Set current user preferences to store
-  ui.aiFeaturesPreferences = data.session.user.settings.ai
+  ui.aiFeaturesPreferences = data.session?.user?.settings.ai!
 
   let pageNumber = $state(1)
   let allItems = $state<LoadFeedEntry[]>(data.feedEntries?.data)

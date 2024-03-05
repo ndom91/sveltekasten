@@ -40,7 +40,7 @@
         builders={[tooltipBuilder]}
         variant="ghost"
         size="icon"
-        on:click={handleToggleCardOpen}
+        onclick={handleToggleCardOpen}
       >
         <svg
           class="size-5 text-zinc-900 dark:text-zinc-100"

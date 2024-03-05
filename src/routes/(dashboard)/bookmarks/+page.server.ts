@@ -5,7 +5,7 @@ import { formSchema as quickAddSchema } from "$schemas/quick-add"
 import { formSchema as metadataSchema } from "$schemas/metadata-sidebar"
 import { superValidate, message } from "sveltekit-superforms"
 import { zod } from "sveltekit-superforms/adapters"
-import { getThumbhashNode } from "$lib/utils/thumbhash"
+import { getThumbhash } from "$server/lib/thumbhash"
 import type { Actions, PageServerLoad } from "./$types"
 import type { Tag } from "$zod"
 
@@ -142,7 +142,7 @@ export const actions: Actions = {
       // Continue bookmark saving when sharp or anything chokes on an image
       let b64Thumbhash = ""
       try {
-        b64Thumbhash = await getThumbhashNode(imageUrl)
+        b64Thumbhash = await getThumbhash(imageUrl)
       } catch (error) {
         if (error instanceof Error) {
           console.error("Failed to get thumbhash", error.message)
@@ -166,21 +166,21 @@ export const actions: Actions = {
           },
           tags: tags
             ? {
-              create: tags.map((tag: Tag) => ({
-                tag: {
-                  connect: {
-                    id: tag.id,
+                create: tags.map((tag: Tag) => ({
+                  tag: {
+                    connect: {
+                      id: tag.id,
+                    },
                   },
-                },
-              })),
-            }
+                })),
+              }
             : {},
           category: categoryId
             ? {
-              connect: {
-                id: categoryId,
-              },
-            }
+                connect: {
+                  id: categoryId,
+                },
+              }
             : {},
         },
       })

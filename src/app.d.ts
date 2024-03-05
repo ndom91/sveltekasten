@@ -5,7 +5,9 @@ import type { Tag, Bookmark, Tag, Category, JsonValueType } from "$zod"
 
 declare module "@auth/sveltekit" {
   interface User {
-    settings: Record<string, unknown>
+    settings: {
+      ai: Record<string, unknown>
+    }
   }
 }
 
