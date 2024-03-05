@@ -28,9 +28,9 @@
 >
   <div class="p-4">
     <Button
-      class="flex justify-start w-full"
+      class="flex justify-start w-full hover:no-underline"
       size="icon"
-      variant="ghost"
+      variant="link"
       on:click={ui.toggleUserSidebar}
     >
       <Logo class="!size-10" />
