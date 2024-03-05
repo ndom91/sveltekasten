@@ -17,7 +17,7 @@ const config = {
       $schemas: "src/lib/schemas",
       $server: "src/server",
       $lib: "src/lib",
-      $zod: "src/lib/types/prisma",
+      $zod: "src/lib/types/zod-prisma",
       $state: "src/state",
     },
   },
