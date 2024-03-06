@@ -6,7 +6,7 @@
 
   const { item } = $props<{ item: LoadFeedEntry }>()
 
-  const handleMarkAsRead = async (feedEntryId: string) => {
+  const handleMarkAsRead = async () => {
     const feedEntry = {
       ...item,
       unread: false,
@@ -32,7 +32,7 @@
         builders={[tooltipBuilder]}
         variant="ghost"
         size="icon"
-        on:click={() => handleMarkAsRead()}
+        on:click={handleMarkAsRead}
       >
         <svg
           class="size-5 text-zinc-900 dark:text-zinc-100"

@@ -21,7 +21,11 @@
       {type === ScrollerTypes.FEEDS ? `Unread Feed Items (${count})` : capitalize(type)}
     </h2>
     {#if items.length}
-      <a class="flex gap-2 items-center" data-sveltekit-preload-data="hover" href={`/${type}`}>
+      <a
+        class="flex gap-2 items-center"
+        data-sveltekit-preload-data="hover"
+        href={`/${type.toLowerCase()}`}
+      >
         <svg
           class="size-5 text-neutral-700 dark:text-neutral-400"
           xmlns="http://www.w3.org/2000/svg"
