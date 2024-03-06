@@ -3,7 +3,9 @@
   const { item } = $props<{ item: LoadBookmark }>()
 </script>
 
-<div class="flex flex-col gap-2 p-4 rounded-md max-w-72 bg-neutral-200 dark:bg-neutral-800">
+<div
+  class="flex flex-col gap-2 p-4 rounded-md snap-start max-w-72 bg-neutral-200 dark:bg-neutral-800"
+>
   <img
     src={item.image}
     alt={item.title}
@@ -21,7 +23,7 @@
       </span>
     </div>
     <a href={item.url} target="_blank" class="">
-      <span title={item.title}>{item.title}</span>
+      <span class="line-clamp-1" title={item.title}>{item.title}</span>
       <span class="line-clamp-2">{item.desc}</span>
     </a>
   </div>

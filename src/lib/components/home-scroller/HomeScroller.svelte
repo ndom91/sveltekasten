@@ -91,7 +91,9 @@
       </a>
     {/if}
   </div>
-  <div class="flex overflow-x-scroll gap-4 py-4 px-4">
+  <div
+    class="flex overflow-x-scroll gap-4 py-4 px-4 scroll-px-4 scroll-smooth snap-x snap-mandatory"
+  >
     {#each items as item (item.id)}
       {#if type === ScrollerTypes.BOOKMARKS}
         <BookmarkPreviewCard item={item as LoadBookmark} />

@@ -23,7 +23,7 @@
 </script>
 
 <div
-  class="flex relative flex-col gap-2 p-4 rounded-md group max-w-72 bg-neutral-200 dark:bg-neutral-800"
+  class="flex relative flex-col gap-2 p-4 rounded-md snap-start group max-w-72 bg-neutral-200 dark:bg-neutral-800"
 >
   <Tooltip.Root>
     <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
