@@ -5,6 +5,7 @@
   import { handleActionResults } from "$lib/utils/form-action"
   import * as Card from "$lib/components/ui/card"
   import { buttonVariants } from "$lib/components/ui/button"
+  import DeleteDialog from "./DeleteDialog.svelte"
   import type { Feed } from "$zod"
 
   let isDeleteDialogOpen = $state(false)
@@ -13,18 +14,12 @@
   const handleToggleDeleteDialog = (e: MouseEvent, feed: Feed) => {
     e.preventDefault()
     e.stopPropagation()
-    console.log("toggling")
     isDeleteDialogOpen = !isDeleteDialogOpen
     targetFeed = feed
   }
-
-  const form = $page.form
-  // $inspect($page)
 </script>
 
-{#await import("./DeleteDialog.svelte") then { default: DeleteDialog }}
-  <svelte:component this={DeleteDialog} {form} bind:open={isDeleteDialogOpen} feed={targetFeed} />
-{/await}
+<DeleteDialog form={$page.form} bind:open={isDeleteDialogOpen} feed={targetFeed} />
 <div class="flex flex-col gap-2 justify-start items-start">
   <Card.Root class="w-full shadow-none">
     <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
