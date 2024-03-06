@@ -32,10 +32,8 @@
       }
     },
   })
-  const { form: formData, message, errors, constraints, enhance, submitting, delayed } = form
+  const { form: formData, errors, constraints, enhance, submitting, delayed } = form
   const categoryProxy = fieldProxy(form, "categoryId", {})
-
-  $inspect($message)
 </script>
 
 <form method="POST" action="/bookmarks?/quickAdd" use:enhance class="flex flex-col gap-2">
@@ -58,9 +56,10 @@
   </div>
 
   <div class="flex flex-col gap-2 align-start">
-    <Label class="flex justify-between items-end" for="url"
-      >URL<small class="text-neutral-400 dark:text-neutral-600">required</small></Label
-    >
+    <Label class="flex justify-between items-end" for="url">
+      URL
+      <small class="text-neutral-400 dark:text-neutral-600">required</small>
+    </Label>
     <input
       type="text"
       name="url"
