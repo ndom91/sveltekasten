@@ -3,7 +3,7 @@
   import { cn } from "$lib/utils/style"
   import { format } from "@formkit/tempo"
   import { Badge } from "$lib/components/ui/badge"
-  import type { FeedEntry, FeedEntryMedia } from "$zod"
+  import type { Feed, FeedEntry, FeedEntryMedia } from "$zod"
   import dompurify from "isomorphic-dompurify"
   import FeedActions from "./FeedActions.svelte"
 
@@ -16,6 +16,7 @@
   let { feedEntry, handleGenerateSpeech, handleSummarizeText } = $props<{
     feedEntry: FeedEntry & {
       feedMedia: FeedEntryMedia[]
+      feed: Feed
     }
     handleGenerateSpeech: (text: string) => void
     handleSummarizeText: (text: string) => void
@@ -93,7 +94,7 @@
   })
 
   const isFeedVisible = $derived(
-    !!$page.data.feeds.data.find((feed) => feed.id === feedEntry.feed.id).visible,
+    !!$page.data.feeds.data.find((feed: Feed) => feed.id === feedEntry.feed.id).visible,
   )
   const hideUnread = $derived.by(() => {
     if (ui.showUnreadOnly) {
