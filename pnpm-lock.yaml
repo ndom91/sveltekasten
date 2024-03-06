@@ -96,8 +96,8 @@ dependencies:
     specifier: ^1.2.0
     version: 1.2.0(svelte@5.0.0-next.70)
   svelte-infinite:
-    specifier: ^0.1.5
-    version: 0.1.5(svelte@5.0.0-next.70)
+    specifier: ^0.1.6
+    version: 0.1.6(svelte@5.0.0-next.70)
   svelte-sonner:
     specifier: ^0.3.19
     version: 0.3.19(svelte@5.0.0-next.70)
@@ -4761,8 +4761,8 @@ packages:
     dependencies:
       svelte: 5.0.0-next.70
 
-  /svelte-infinite@0.1.5(svelte@5.0.0-next.70):
-    resolution: {integrity: sha512-PCt4PM3l706VC6sUcrqhykC77ojSxzQUiVZIRJ6n/FIzZHajrkRNDG97oBvL9wo2VuoTgsy139Rzb0K+JlnsBg==}
+  /svelte-infinite@0.1.6(svelte@5.0.0-next.70):
+    resolution: {integrity: sha512-O1WXmgSPnPBnJZRR5/OaeyPE/BvFnn+xl1dxQ5cWd2XYhUOoxgtWYKHuPM4Xrn7oWHC92rlQ/3vFxptv6JBaAA==}
     peerDependencies:
       svelte: ^5.0.0
     dependencies:

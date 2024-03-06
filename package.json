@@ -76,7 +76,7 @@
     "p-debounce": "^4.0.0",
     "sharp": "^0.33.2",
     "svelte-french-toast": "^1.2.0",
-    "svelte-infinite": "^0.1.5",
+    "svelte-infinite": "^0.1.6",
     "svelte-sonner": "^0.3.19",
     "sveltekit-superforms": "^2.6.2",
     "tailwind-merge": "^2.2.1",

@@ -6,7 +6,7 @@
   import { untrack } from "svelte"
 
   import { useInterface, TTSLocation } from "$state/ui.svelte"
-  import { InfiniteLoader, stateChanger } from "svelte-infinite"
+  import { InfiniteLoader, loaderState } from "svelte-infinite"
   import { invalidateAll } from "$app/navigation"
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
   import ttsWorkerUrl from "$lib/transformers/tts-worker?url"
@@ -245,7 +245,7 @@
 
       // If there are less results than the first page, we are done
       if (allItems.length < limitLoadCount) {
-        stateChanger.complete()
+        loaderState.complete()
         return
       }
 
@@ -260,9 +260,9 @@
       }
 
       if (allItems.length >= searchResults.count) {
-        stateChanger.complete()
+        loaderState.complete()
       } else {
-        stateChanger.loaded()
+        loaderState.loaded()
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -270,7 +270,7 @@
       } else {
         console.error(error)
       }
-      stateChanger.error()
+      loaderState.error()
       pageNumber -= 1
     }
   }
@@ -280,7 +280,7 @@
   $effect.pre(() => {
     if (ui.searchQuery) {
       untrack(() => {
-        stateChanger.reset()
+        loaderState.reset()
         pageNumber = 0
         allItems = []
         loadMore()

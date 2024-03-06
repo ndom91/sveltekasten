@@ -7,7 +7,7 @@
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
   import { useInterface } from "$state/ui.svelte"
   import { BookmarkRow } from "$lib/components/bookmark-row"
-  import { InfiniteLoader, stateChanger } from "svelte-infinite"
+  import { InfiniteLoader, loaderState } from "svelte-infinite"
   import { Logger, loggerLevels } from "$lib/utils/logger"
   import { untrack } from "svelte"
 
@@ -107,7 +107,7 @@
 
       // If there are less results than the first page, we are done
       if (allItems.length < skip) {
-        stateChanger.complete()
+        loaderState.complete()
         return
       }
 
@@ -119,9 +119,9 @@
       }
 
       if (allItems.length >= searchResults.count) {
-        stateChanger.complete()
+        loaderState.complete()
       } else {
-        stateChanger.loaded()
+        loaderState.loaded()
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -129,7 +129,7 @@
       } else {
         console.error(error)
       }
-      stateChanger.error()
+      loaderState.error()
     }
   }
 
@@ -138,7 +138,7 @@
   $effect.pre(() => {
     if (ui.searchQuery) {
       untrack(() => {
-        stateChanger.reset()
+        loaderState.reset()
         pageNumber = 0
         allItems = []
         loadMore()

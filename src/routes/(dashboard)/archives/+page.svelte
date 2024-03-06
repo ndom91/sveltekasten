@@ -4,7 +4,7 @@
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { useInterface } from "$state/ui.svelte"
   import { BookmarkRow } from "$lib/components/bookmark-row"
-  import { InfiniteLoader, stateChanger } from "svelte-infinite"
+  import { InfiniteLoader, loaderState } from "svelte-infinite"
 
   const ui = useInterface()
   const { data } = $props()
@@ -103,7 +103,7 @@
 
       // If there are less results than the first page, we are done
       if (allItems.length < skip) {
-        stateChanger.complete()
+        loaderState.complete()
         return
       }
 
@@ -115,9 +115,9 @@
       }
 
       if (allItems.length >= searchResults.count) {
-        stateChanger.complete()
+        loaderState.complete()
       } else {
-        stateChanger.loaded()
+        loaderState.loaded()
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -125,7 +125,7 @@
       } else {
         console.error(error)
       }
-      stateChanger.error()
+      loaderState.error()
     }
   }
 
