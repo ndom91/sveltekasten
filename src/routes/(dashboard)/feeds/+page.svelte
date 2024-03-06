@@ -11,8 +11,6 @@
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
   import ttsWorkerUrl from "$lib/transformers/tts-worker?url"
   import summaryWorkerUrl from "$lib/transformers/translate-worker?url"
-  import type { Feed } from "$zod"
-  import type { Session } from "@auth/sveltekit"
 
   const limitLoadCount = 20
 

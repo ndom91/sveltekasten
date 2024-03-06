@@ -247,6 +247,7 @@ export const load: PageServerLoad = async (event) => {
       console.error(error)
     }
     return {
+      session,
       error,
     }
   }

@@ -4,12 +4,13 @@ import type { PageServerLoad } from "./$types"
 import type { Feed } from "$zod"
 
 export const load: PageServerLoad = async ({ locals, url }) => {
+  const session = await locals.auth()
+  if (!session && url.pathname !== "/login") {
+    const fromUrl = url.pathname + url.search
+    redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
+  }
+
   try {
-    const session = await locals.auth()
-    if (!session && url.pathname !== "/login") {
-      const fromUrl = url.pathname + url.search
-      redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
-    }
     const skip = Number(url.searchParams.get("skip") ?? "0")
     const limit = Number(url.searchParams.get("limit") ?? "20")
 
@@ -53,7 +54,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
       session,
       feedEntries: {
         data: feedEntryData,
-        count: feedEntryCount,
+        count: feedEntryCount ?? 0,
       },
       feeds: {
         data: feedData.map((feed) => {
@@ -62,7 +63,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
             visible: true,
           }
         }) as unknown as (Feed & { visible: boolean })[],
-        count: feedCount,
+        count: feedCount ?? 0,
       },
     }
   } catch (error) {
@@ -81,6 +82,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
         count: 0,
       },
       error,
+      session,
     }
   }
 }

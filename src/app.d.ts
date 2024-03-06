@@ -2,11 +2,12 @@ import "@auth/sveltekit"
 import { Prisma } from "@prisma/client"
 import type { BookmarkFlatTags } from "$lib/types"
 import type { Tag, Bookmark, Tag, Category, JsonValueType } from "$zod"
+import type { AIFeaturesPreferences } from "./state/ui.svelte"
 
 declare module "@auth/sveltekit" {
   interface User {
     settings: {
-      ai: Record<string, unknown>
+      ai: AIFeaturesPreferences
     }
   }
 }
