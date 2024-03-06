@@ -96,8 +96,8 @@ dependencies:
     specifier: ^1.2.0
     version: 1.2.0(svelte@5.0.0-next.70)
   svelte-infinite:
-    specifier: ^0.1.6
-    version: 0.1.6(svelte@5.0.0-next.70)
+    specifier: ^0.3.0
+    version: 0.3.0(svelte@5.0.0-next.70)
   svelte-sonner:
     specifier: ^0.3.19
     version: 0.3.19(svelte@5.0.0-next.70)
@@ -205,6 +205,9 @@ devDependencies:
   typescript:
     specifier: 5.3.3
     version: 5.3.3
+  typescript-svelte-plugin:
+    specifier: ^0.3.37
+    version: 0.3.37(svelte@5.0.0-next.70)(typescript@5.3.3)
   vite:
     specifier: 5.1.4
     version: 5.1.4
@@ -4761,8 +4764,8 @@ packages:
     dependencies:
       svelte: 5.0.0-next.70
 
-  /svelte-infinite@0.1.6(svelte@5.0.0-next.70):
-    resolution: {integrity: sha512-O1WXmgSPnPBnJZRR5/OaeyPE/BvFnn+xl1dxQ5cWd2XYhUOoxgtWYKHuPM4Xrn7oWHC92rlQ/3vFxptv6JBaAA==}
+  /svelte-infinite@0.3.0(svelte@5.0.0-next.70):
+    resolution: {integrity: sha512-Vk23mdxHfjX5oYiRnyv2aaLpqgXv5deHIt16DDLZXPtm6oQXXYChJEhROokCTg2eSqQDqWfDvXKAqmOxh1naaA==}
     peerDependencies:
       svelte: ^5.0.0
     dependencies:
@@ -5169,6 +5172,16 @@ packages:
     requiresBuild: true
     dev: false
     optional: true
+
+  /typescript-svelte-plugin@0.3.37(svelte@5.0.0-next.70)(typescript@5.3.3):
+    resolution: {integrity: sha512-eg+uod/Ao6PEQ606DpexbbKF9Rzm3w8W53DyVFaNnR1CTmQQ4LbKwjcVqFhwFnGeXqrvB+0UK3atTaE+HyK0uA==}
+    dependencies:
+      '@jridgewell/sourcemap-codec': 1.4.15
+      svelte2tsx: 0.7.0(svelte@5.0.0-next.70)(typescript@5.3.3)
+    transitivePeerDependencies:
+      - svelte
+      - typescript
+    dev: true
 
   /typescript@5.3.3:
     resolution: {integrity: sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==}
