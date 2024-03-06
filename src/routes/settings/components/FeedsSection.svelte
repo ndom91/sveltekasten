@@ -19,7 +19,7 @@
   }
 </script>
 
-<DeleteDialog form={$page.form} bind:open={isDeleteDialogOpen} feed={targetFeed} />
+<DeleteDialog form={$page.form} bind:open={isDeleteDialogOpen} feed={targetFeed!} />
 <div class="flex flex-col gap-2 justify-start items-start">
   <Card.Root class="w-full shadow-none">
     <Card.Header class="bg-zinc-100 dark:bg-zinc-900">

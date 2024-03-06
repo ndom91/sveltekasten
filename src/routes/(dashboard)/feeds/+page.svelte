@@ -334,14 +334,12 @@
   class="align-start overflow-y-scroll flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2"
   bind:this={rootElement}
 >
-  {#if data.feedEntries?.count > 0}
-    <div class="h-full">
-      <InfiniteLoader triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
-        {#each allItems as feedEntry}
-          <FeedRow {feedEntry} {handleSummarizeText} {handleGenerateSpeech} />
-        {/each}
-      </InfiniteLoader>
-    </div>
+  {#if data.feedEntries?.count}
+    <InfiniteLoader triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
+      {#each allItems as feedEntry (feedEntry.id)}
+        <FeedRow {feedEntry} {handleSummarizeText} {handleGenerateSpeech} />
+      {/each}
+    </InfiniteLoader>
   {:else}
     <EmptyState />
     <p class="mx-auto w-1/2 text-center text-muted-foreground">
