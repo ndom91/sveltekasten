@@ -15,13 +15,13 @@
   const { data } = $props()
 
   let pageNumber = $state(1)
-  let allItems = $state<LoadBookmarkFlatTags[]>(data.bookmarks!)
+  let allItems = $state<LoadBookmarkFlatTags[]>(data.bookmarks.data!)
   let rootElement = $state<HTMLElement>()
 
   const logger = new Logger({ level: loggerLevels.DEBUG })
 
   $effect(() => {
-    allItems = data.bookmarks!
+    allItems = data.bookmarks.data!
   })
 
   const limitLoadCount = 20
@@ -194,14 +194,12 @@
   class="align-start overflow-y-scroll flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2"
   bind:this={rootElement}
 >
-  {#if data.bookmarks}
-    <div class="h-full">
-      <InfiniteLoader triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
-        {#each allItems as _, i}
-          <BookmarkRow bind:bookmark={allItems[i]} />
-        {/each}
-      </InfiniteLoader>
-    </div>
+  {#if data.bookmarks?.count}
+    <InfiniteLoader triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
+      {#each allItems as item, i (item.id)}
+        <BookmarkRow bind:bookmark={allItems[i]} />
+      {/each}
+    </InfiniteLoader>
   {:else}
     <EmptyState />
     <p class="mx-auto w-1/2 text-center text-muted-foreground">

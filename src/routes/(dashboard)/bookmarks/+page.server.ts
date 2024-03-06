@@ -5,40 +5,9 @@ import { formSchema as quickAddSchema } from "$schemas/quick-add"
 import { formSchema as metadataSchema } from "$schemas/metadata-sidebar"
 import { superValidate, message } from "sveltekit-superforms"
 import { zod } from "sveltekit-superforms/adapters"
-import { getThumbhash } from "$server/lib/thumbhash"
+import { fetchBookmarkMetadata } from "$server/lib/fetchBookmarkMetadata"
 import type { Actions, PageServerLoad } from "./$types"
 import type { Tag } from "$zod"
-
-import metascraper from "metascraper"
-import metascraperDescription from "metascraper-description"
-import metascraperTitle from "metascraper-title"
-import metascraperClearbit from "metascraper-clearbit"
-import metascraperImage from "metascraper-image"
-import metascraperLogo from "metascraper-logo"
-import metascraperLogoFavicon from "metascraper-logo-favicon"
-import metascraperLang from "metascraper-lang"
-import metascraperPublisher from "metascraper-publisher"
-import metascraperAuthor from "metascraper-author"
-import metascraperFeed from "metascraper-feed"
-import metascraperDate from "metascraper-date"
-import metascraperUrl from "metascraper-url"
-import metascraperReadability from "metascraper-readability"
-
-const metascraperClient = metascraper([
-  metascraperDescription(),
-  metascraperTitle(),
-  metascraperClearbit(),
-  metascraperLogo(),
-  metascraperImage(),
-  metascraperLogoFavicon(),
-  metascraperLang(),
-  metascraperPublisher(),
-  metascraperAuthor(),
-  metascraperFeed(),
-  metascraperReadability(),
-  metascraperDate(),
-  metascraperUrl(),
-])
 
 export const actions: Actions = {
   deleteBookmark: async ({ request, locals }) => {
@@ -135,30 +104,16 @@ export const actions: Actions = {
       }
       const { title, url, description, categoryId, tags } = form.data
 
-      const bookmarkUrlResponse = await fetch(url)
-      const metadata = await metascraperClient({ html: await bookmarkUrlResponse.text(), url: url })
-      const imageUrl = metadata.image ? metadata.image : (metadata.logo as string)
-
-      // Continue bookmark saving when sharp or anything chokes on an image
-      let b64Thumbhash = ""
-      try {
-        b64Thumbhash = await getThumbhash(imageUrl)
-      } catch (error) {
-        if (error instanceof Error) {
-          console.error("Failed to get thumbhash", error.message)
-        } else {
-          console.error("Failed to get thumbhash", error)
-        }
-      }
+      const bookmarkMetadata = await fetchBookmarkMetadata(url)
 
       const bookmark = await prisma.bookmark.create({
         data: {
           url,
           title: title,
-          image: imageUrl,
-          imageBlur: b64Thumbhash,
-          desc: description ? description : metadata.description,
-          metadata,
+          image: bookmarkMetadata.imageUrl,
+          imageBlur: bookmarkMetadata.imageBlur,
+          desc: description ? description : bookmarkMetadata.metadata.description,
+          metadata: bookmarkMetadata.metadata,
           user: {
             connect: {
               id: session.user?.id,
@@ -166,21 +121,21 @@ export const actions: Actions = {
           },
           tags: tags
             ? {
-                create: tags.map((tag: Tag) => ({
-                  tag: {
-                    connect: {
-                      id: tag.id,
-                    },
+              create: tags.map((tag: Tag) => ({
+                tag: {
+                  connect: {
+                    id: tag.id,
                   },
-                })),
-              }
+                },
+              })),
+            }
             : {},
           category: categoryId
             ? {
-                connect: {
-                  id: categoryId,
-                },
-              }
+              connect: {
+                id: categoryId,
+              },
+            }
             : {},
         },
       })
@@ -201,6 +156,7 @@ export const actions: Actions = {
 }
 
 export const load: PageServerLoad = async (event) => {
+  event.depends("app:bookmarks")
   const session = await event.locals?.auth()
 
   if (!session && event.url.pathname !== "/login") {
@@ -236,8 +192,10 @@ export const load: PageServerLoad = async (event) => {
     }) as LoadBookmarkFlatTags[]
 
     return {
-      bookmarks,
-      count,
+      bookmarks: {
+        data: bookmarks,
+        count,
+      },
       session,
     }
   } catch (error) {

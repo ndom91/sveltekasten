@@ -1,8 +1,9 @@
-import type { RequestHandler } from "./$types"
-import { json } from "@sveltejs/kit"
-import { BookmarkUncheckedCreateInputSchema } from "$zod"
 import z from "zod"
 import prisma from "$lib/prisma"
+import { json } from "@sveltejs/kit"
+import { BookmarkUncheckedCreateInputSchema } from "$zod"
+import { fetchBookmarkMetadata } from "$server/lib/fetchBookmarkMetadata"
+import type { RequestHandler } from "./$types"
 
 // Get more Bookmarks
 export const GET: RequestHandler = async ({ url, locals }) => {
@@ -86,12 +87,29 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     const inputData = await request.json()
     const data = z.array(BookmarkUncheckedCreateInputSchema).parse(inputData)
 
+    // for await (const bookmark of data) {
+    const bookmarkData = await Promise.all(
+      data.map(async (bookmark) => {
+        const { imageUrl, imageBlur, metadata } = await fetchBookmarkMetadata(bookmark.url)
+        return {
+          ...bookmark,
+          image: imageUrl,
+          imageBlur,
+          desc: metadata.description,
+          title: metadata.description,
+          metadata,
+        }
+      }),
+    )
+
+    console.log("bookmarkData", bookmarkData)
+
     const upsertResponse = await prisma.bookmark.createMany({
-      data,
+      data: bookmarkData,
       skipDuplicates: true,
     })
 
-    return json({ data: upsertResponse })
+    return json({ data: upsertResponse, bookmarkData })
   } catch (error) {
     if (error instanceof Error) {
       console.error(error.message)
