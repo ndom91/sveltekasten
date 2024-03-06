@@ -86,6 +86,9 @@
   const handleDragEnter = (e: DragEvent) => {
     e.preventDefault()
     e.stopPropagation()
+    console.log("DragEnter", e)
+    // TODO: Ensure dragging stuff from the page doesn't trigger drag-n-drop overlay
+    if (e.relatedTarget) return
     isDragOver = true
   }
 
