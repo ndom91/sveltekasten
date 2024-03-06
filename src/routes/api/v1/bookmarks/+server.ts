@@ -102,8 +102,6 @@ export const POST: RequestHandler = async ({ request, locals }) => {
       }),
     )
 
-    console.log("bookmarkData", bookmarkData)
-
     const upsertResponse = await prisma.bookmark.createMany({
       data: bookmarkData,
       skipDuplicates: true,
