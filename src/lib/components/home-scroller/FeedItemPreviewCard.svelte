@@ -28,7 +28,7 @@
   <Tooltip.Root>
     <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
       <Button
-        class="absolute top-4 right-4 p-2 rounded-full opacity-0 transition duration-200 ease-in-out group-hover:opacity-100 bg-neutral-50 dark:bg-neutral-900"
+        class="absolute top-4 right-4 p-2 rounded-full border opacity-0 transition duration-200 ease-in-out group-hover:opacity-100 bg-neutral-50 border-neutral-100 dark:bg-neutral-900 dark:border-neutral-800"
         builders={[tooltipBuilder]}
         variant="ghost"
         size="icon"
