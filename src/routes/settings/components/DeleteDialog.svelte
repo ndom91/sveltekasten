@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { ActionData } from "./$types"
   import { enhance } from "$app/forms"
   import { handleActionResults } from "$lib/utils/form-action"
   import { buttonVariants } from "$lib/components/ui/button"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
   import type { Feed } from "$zod"
+  import type { ActionData } from "./$types"
 
   let { form, open, feed } = $props<{
     open: boolean
@@ -12,10 +12,7 @@
     form?: ActionData
   }>()
 
-  $inspect(form)
-
   $effect(() => {
-    console.log("form effect")
     if (form?.type === "success") {
       console.log("form.type === 'success', closing")
       open = false
