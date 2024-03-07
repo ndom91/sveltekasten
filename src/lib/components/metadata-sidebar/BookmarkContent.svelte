@@ -53,7 +53,7 @@
 
 <form
   method="POST"
-  action="?/saveMetadata"
+  action="/bookmarks?/saveMetadata"
   use:enhance
   class="flex gap-4 justify-start items-center h-full"
 >

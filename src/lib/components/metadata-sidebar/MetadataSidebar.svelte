@@ -18,7 +18,9 @@
     }
   }
 
-  const bookmarkPage = $derived($page.url.pathname === "/bookmarks")
+  const bookmarkPage = $derived(
+    $page.url.pathname === "/bookmarks" || $page.url.pathname === "/archives",
+  )
   const feedPage = $derived($page.url.pathname === "/feeds")
 </script>
 

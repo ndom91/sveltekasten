@@ -1,6 +1,29 @@
 import prisma from "$lib/prisma"
 import { fail, redirect } from "@sveltejs/kit"
-import type { PageServerLoad } from "./$types"
+import type { Actions, PageServerLoad } from "./$types"
+
+export const actions: Actions = {
+  deleteBookmark: async ({ request, locals }) => {
+    const session = await locals.auth()
+    if (!session?.user?.id) {
+      return fail(401, { type: "error", error: "Unauthenticated" })
+    }
+    const data = await request.formData()
+    const bookmarkId = data.get("bookmarkId")?.toString() || ""
+
+    if (!bookmarkId) {
+      return fail(400)
+    }
+
+    await prisma.bookmark.delete({
+      where: {
+        id: bookmarkId,
+        userId: session.user.id,
+      },
+    })
+    return { type: "success", message: "Deleted Bookmark" }
+  },
+}
 
 export const load: PageServerLoad = async (event) => {
   const session = await event.locals?.auth()
