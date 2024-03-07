@@ -9,7 +9,6 @@
   import { writable } from "svelte/store"
   import { createTable, Render, Subscribe, createRender } from "svelte-headless-table"
   import { addSortBy } from "svelte-headless-table/plugins"
-
   import DataTableActions from "./data-table-actions.svelte"
 
   let { data } = $props()
@@ -22,7 +21,7 @@
   })
 
   const table = createTable(categoryStore, {
-    sort: addSortBy("name", "asc"),
+    sort: addSortBy(),
   })
   const columns = table.createColumns([
     table.column({
@@ -128,24 +127,23 @@
             {#each row.cells as cell (cell.id)}
               <Subscribe attrs={cell.attrs()} let:attrs>
                 {#if cell.id === "action"}
-                  <Table.Cell class="w-4" {...attrs}>
-                    <div class="text-right">
-                      <Render of={cell.render()} />
-                    </div>
+                  <Table.Cell class="text-right max-w-32" {...attrs}>
+                    <Render of={cell.render()} />
                   </Table.Cell>
                 {:else if cell.id === "name"}
-                  <Table.Cell class="w-1/3" {...attrs}>
+                  <Table.Cell class="max-w-sm" {...attrs}>
                     <Render of={cell.render()} />
                   </Table.Cell>
                 {:else if cell.id === "description"}
-                  <Table.Cell class="w-2/3" {...attrs}>
+                  <Table.Cell class="max-w-md" {...attrs}>
                     <Render of={cell.render()} />
                   </Table.Cell>
                 {:else if cell.id === "id"}
-                  <Table.Cell class="hidden w-72 lg:block" {...attrs}>
-                    <div class="text-neutral-400 dark:text-neutral-600">
-                      <Render of={cell.render()} />
-                    </div>
+                  <Table.Cell
+                    class="hidden lg:block max-w-60 text-neutral-400 truncate dark:text-neutral-600"
+                    {...attrs}
+                  >
+                    <Render of={cell.render()} />
                   </Table.Cell>
                 {:else}
                   <Table.Cell class="" {...attrs}>

@@ -9,7 +9,6 @@
   import { writable } from "svelte/store"
   import { createTable, Render, Subscribe, createRender } from "svelte-headless-table"
   import { addSortBy } from "svelte-headless-table/plugins"
-
   import DataTableActions from "./data-table-actions.svelte"
 
   let { data } = $props()
@@ -22,7 +21,7 @@
   })
 
   const table = createTable(tagStore, {
-    sort: addSortBy("name", "asc"),
+    sort: addSortBy(),
   })
   const columns = table.createColumns([
     table.column({
@@ -120,20 +119,19 @@
             {#each row.cells as cell (cell.id)}
               <Subscribe attrs={cell.attrs()} let:attrs>
                 {#if cell.id === ""}
-                  <Table.Cell class="w-4" {...attrs}>
-                    <div class="text-right">
-                      <Render of={cell.render()} />
-                    </div>
+                  <Table.Cell class="text-right max-w-32" {...attrs}>
+                    <Render of={cell.render()} />
                   </Table.Cell>
                 {:else if cell.id === "name"}
                   <Table.Cell class="w-full" {...attrs}>
                     <Render of={cell.render()} />
                   </Table.Cell>
                 {:else if cell.id === "id"}
-                  <Table.Cell class="w-72" {...attrs}>
-                    <div class="text-neutral-400 dark:text-neutral-600">
-                      <Render of={cell.render()} />
-                    </div>
+                  <Table.Cell
+                    class="max-w-60 text-neutral-400 truncate dark:text-neutral-600"
+                    {...attrs}
+                  >
+                    <Render of={cell.render()} />
                   </Table.Cell>
                 {:else}
                   <Table.Cell class="" {...attrs}>
