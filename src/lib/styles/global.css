@@ -182,3 +182,7 @@ p {
   font-size: 14px !important;
   min-width: 16px !important;
 }
+
+::view-transition {
+  pointer-events: none;
+}

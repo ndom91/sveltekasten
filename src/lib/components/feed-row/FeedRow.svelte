@@ -6,9 +6,6 @@
   import type { Feed, FeedEntry, FeedEntryMedia } from "$zod"
   import dompurify from "isomorphic-dompurify"
   import FeedActions from "./FeedActions.svelte"
-
-  import { tweened } from "svelte/motion"
-  import { quartInOut } from "svelte/easing"
   import { useInterface } from "$state/ui.svelte"
 
   const ui = useInterface()
@@ -25,6 +22,7 @@
   let isOptionsOpen = $state(false)
   let card = $state<HTMLElement>()
   let cardOpen = $state(false)
+  let feedBodyElement = $state<HTMLElement>()
 
   const openButtonGroup = () => {
     isOptionsOpen = true
@@ -80,16 +78,17 @@
     })
   }
 
-  const size = tweened(0, {
-    duration: 400,
-    easing: quartInOut,
-  })
-
   $effect(() => {
+    // Hack to get effect to run on cardOpen change
+    cardOpen = cardOpen
     if (cardOpen) {
-      size.set(100)
+      document.startViewTransition(() => {
+        feedBodyElement.style.display = "block"
+      })
     } else {
-      size.set(0)
+      document.startViewTransition(() => {
+        feedBodyElement.style.display = "none"
+      })
     }
   })
 
@@ -135,11 +134,8 @@
       {feedEntry.title}
     </span>
     <div
-      style="transform: scaleY({$size === 0 ? '0' : `${$size}%`})"
-      class={cn(
-        "prose max-w-screen-lg origin-top prose-img:!w-full dark:prose-blockquote:text-zinc-200 prose-img:!h-auto prose-img:max-w-screen-md prose-img:object-contain prose-video:aspect-video prose-video:max-w-screen-sm dark:text-zinc-100 dark:prose-headings:text-zinc-100 dark:prose-a:text-zinc-200 dark:prose-strong:text-zinc-100",
-        cardOpen ? "h-full" : "h-0 pointer-events-none opacity-0",
-      )}
+      bind:this={feedBodyElement}
+      class="prose max-w-screen-lg origin-top prose-img:!w-full dark:prose-blockquote:text-zinc-200 prose-img:!h-auto prose-img:max-w-screen-md prose-img:object-contain prose-video:aspect-video prose-video:max-w-screen-sm dark:text-zinc-100 dark:prose-headings:text-zinc-100 dark:prose-a:text-zinc-200 dark:prose-strong:text-zinc-100 feedRow hidden"
     >
       {@html dompurify.sanitize(feedEntry.content ?? "")}
     </div>
@@ -177,3 +173,11 @@
     {handleStartTextSummarization}
   />
 </div>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    .feedRow {
+      view-transition-name: feedRow;
+    }
+  }
+</style>
