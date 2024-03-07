@@ -78,7 +78,7 @@
 
   $effect(() => {
     // Hack to get effect to run on cardOpen change
-    cardOpen = cardOpen
+    cardOpen
     if (cardOpen) {
       document.startViewTransition(() => {
         feedBodyElement.style.display = "block"
