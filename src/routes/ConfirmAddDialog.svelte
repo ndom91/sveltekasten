@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores"
+  import { ofetch } from "ofetch"
   import toast from "svelte-french-toast"
   import { invalidate } from "$app/navigation"
   import { buttonVariants } from "$lib/components/ui/button"
@@ -12,23 +13,20 @@
 
   const handleConfirm = async (): Promise<void> => {
     try {
-      const addResponse = await fetch("/api/v1/bookmarks", {
+      await ofetch("/api/v1/bookmarks", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify([
+        body: [
           {
             url,
             userId: $page.data.session?.user?.id,
           },
-        ]),
+        ],
       })
-      if (addResponse.ok) {
-        toast.success(`Added "${url}"`)
-        invalidate("app:bookmarks")
-      }
-      return
+      toast.success(`Added "${url}"`)
+      invalidate("app:bookmarks")
     } catch (error) {
       console.error(error)
       toast.error(String(error))

@@ -1,4 +1,5 @@
 import toast from "svelte-french-toast"
+import { ofetch } from "ofetch"
 import { type ParsedBookmark } from "./components/UserSection.svelte"
 
 export const bookmarkTypes = {
@@ -57,14 +58,11 @@ export const parseImportFile = (file: string) => {
 }
 
 export const importBookmarks = async (bookmarks: ParsedBookmark[], userId: string) => {
-  const bulkCreateRes = await fetch("/api/v1/bookmarks", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(
-      bookmarks.map((importedBookmarks) => {
-        const bookmark = {
+  try {
+    const bulkCreateData = await ofetch("/api/v1/bookmarks", {
+      method: "POST",
+      body: bookmarks.map((importedBookmarks) => {
+        const bookmark: ParsedBookmark = {
           title: importedBookmarks.title,
           url: importedBookmarks.url,
           createdAt: importedBookmarks.createdAt,
@@ -93,27 +91,22 @@ export const importBookmarks = async (bookmarks: ParsedBookmark[], userId: strin
         }
         return bookmark
       }),
-    ),
-  })
+    })
 
-  if (!bulkCreateRes.ok) {
-    if ((await bulkCreateRes.json()).code === "P2002") {
+    if (bulkCreateData.count === bookmarks.length) {
+      toast.success(`Successfully imported ${bookmarks.length} bookmarks`)
+    } else if (bulkCreateData.count) {
+      console.warn(bulkCreateData)
+      toast.error(`Successfully imported only ${bookmarks.length} bookmarks`)
+    } else {
+      console.error(bulkCreateData)
+      toast.error(`Error importing bookmarks`)
+    }
+  } catch (error: any) {
+    if (error.data.code === "P2002") {
       toast.error(`Error saving imported bookmarks\nURL already exists`)
       return
     }
     toast.error(`Error saving imported bookmarks`)
-    return
-  }
-
-  const bulkCreateData = await bulkCreateRes.json()
-
-  if (bulkCreateData.data.count === bookmarks.length) {
-    toast.success(`Successfully imported ${bookmarks.length} bookmarks`)
-  } else if (bulkCreateData.data.count) {
-    console.warn(bulkCreateData)
-    toast.error(`Successfully imported only ${bookmarks.length} bookmarks`)
-  } else {
-    console.error(bulkCreateData)
-    toast.error(`Error importing bookmarks`)
   }
 }

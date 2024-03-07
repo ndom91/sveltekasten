@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores"
+  import { ofetch } from "ofetch"
   import { cn } from "$lib/utils/style"
   import { format } from "@formkit/tempo"
   import { Badge } from "$lib/components/ui/badge"
@@ -69,12 +70,9 @@
       ...feedEntry,
       unread: target ?? !feedEntry.unread,
     }
-    await fetch(`/api/v1/feeds`, {
+    await ofetch(`/api/v1/feeds`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ feedEntry }),
+      body: { feedEntry },
     })
   }
 

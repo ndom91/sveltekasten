@@ -1,5 +1,6 @@
 <script lang="ts">
   import toast from "svelte-french-toast"
+  import { ofetch } from "ofetch"
   import { Navbar } from "$lib/components/navbar"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { FeedRow } from "$lib/components/feed-row"
@@ -98,14 +99,13 @@
   const handleGenerateSpeech = async (text: string) => {
     if (!ui.aiFeaturesPreferences.tts.enabled) return
     if (ui.aiFeaturesPreferences.tts.location.toUpperCase() === TTSLocation.SERVER) {
-      const ttsResponse = await fetch("/api/v1/tts", {
+      const blobData = await ofetch("/api/v1/tts", {
         method: "POST",
-        body: JSON.stringify({
+        body: {
           speaker: ui.aiFeaturesPreferences.tts.speaker,
           text,
-        }),
+        },
       })
-      const blobData = await ttsResponse.blob()
       const blobUrl = URL.createObjectURL(blobData)
       ui.textToSpeechAudioBlob = blobUrl
       return
@@ -208,17 +208,10 @@
           ],
         }
       }
-      const res = await fetch("/api/v1/search", {
+      const { data, count } = await ofetch("/api/v1/search", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
+        body,
       })
-      if (!res.ok) {
-        throw new Error("Error fetching more items")
-      }
-      const { data, count } = await res.json()
       return {
         data,
         count,

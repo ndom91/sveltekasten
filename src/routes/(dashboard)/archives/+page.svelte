@@ -1,5 +1,6 @@
 <script lang="ts">
   import toast from "svelte-french-toast"
+  import { ofetch } from "ofetch"
   import { Navbar } from "$lib/components/navbar"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { useInterface } from "$state/ui.svelte"
@@ -20,7 +21,7 @@
   const limitLoadCount = 20
 
   if (data.error) {
-    logger.error(String(data.error))
+    console.error(String(data.error))
   }
 
   const fetchSearchResults = async ({
@@ -46,7 +47,9 @@
       }
       if (ui.searchQuery) {
         body.where = {
-          archived: true,
+          AND: {
+            archived: true,
+          },
           OR: [
             {
               title: {
@@ -69,17 +72,10 @@
           ],
         }
       }
-      const res = await fetch("/api/v1/search", {
+      const { data, count } = await ofetch("/api/v1/search", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
+        body,
       })
-      if (!res.ok) {
-        throw new Error("Error fetching more items")
-      }
-      const { data, count } = await res.json()
       return {
         data,
         count,

@@ -9,6 +9,7 @@
 </script>
 
 <script lang="ts">
+  import { ofetch } from "ofetch"
   import toast from "svelte-french-toast"
   import { format } from "@formkit/tempo"
   import { page } from "$app/stores"
@@ -50,9 +51,9 @@
     transcriptionEnabled: boolean
   }
   const updateUser = async (userSettings: UpdateUserSettingsArgs) => {
-    const userUpdateResponse = await fetch("/api/v1/user", {
+    const userUpdateResponse = await ofetch("/api/v1/user", {
       method: "PUT",
-      body: JSON.stringify({
+      body: {
         data: {
           settings: {
             ai: {
@@ -70,12 +71,10 @@
             },
           },
         },
-      }),
+      },
     })
-    if (userUpdateResponse.ok) {
-      // TODO: Reenable when not running onMount
-      // toast.success("Settings updated")
-    }
+    // TODO: Reenable when not running onMount
+    // toast.success("Settings updated")
   }
 
   const speakers = [

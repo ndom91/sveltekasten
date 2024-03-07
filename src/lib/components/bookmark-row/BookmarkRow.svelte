@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores"
+  import { ofetch } from "ofetch"
   import { format } from "@formkit/tempo"
   import { Badge } from "$lib/components/ui/badge"
   import { useInterface } from "$state/ui.svelte"
@@ -33,12 +34,9 @@
     isOptionsOpen = false
   }
   const handleArchive = async () => {
-    await fetch(`/api/v1/bookmarks`, {
+    await ofetch(`/api/v1/bookmarks`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: bookmark.id, update: { archived: true } }),
+      body: { id: bookmark.id, update: { archived: true } },
     })
     invalidateAll()
   }

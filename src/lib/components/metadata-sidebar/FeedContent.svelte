@@ -1,24 +1,23 @@
 <script lang="ts">
   import { page } from "$app/stores"
-  import type { PageServerLoad } from "./$types"
+  import { ofetch } from "ofetch"
   import { Badge } from "$lib/components/ui/badge"
   import { Button } from "$lib/components/ui/button"
   import { Checkbox } from "$lib/components/ui/checkbox"
-  import type { Feed, FeedEntry } from "$zod"
   import { useInterface } from "$state/ui.svelte"
+  import type { PageServerLoad } from "./$types"
+  import type { Feed } from "$zod"
+
   const ui = useInterface()
 
   const { data: feeds } = $page.data.feeds as PageServerLoad.feeds.data
 
   const handleMarkAllRead = async (feed: Feed) => {
-    await fetch("/api/v1/feeds/mark-all-read", {
+    await ofetch("/api/v1/feeds/mark-all-read", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+      body: {
         feedId: feed.id,
-      }),
+      },
     })
   }
 </script>

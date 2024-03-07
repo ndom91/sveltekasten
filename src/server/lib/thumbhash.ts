@@ -1,11 +1,11 @@
 import sharp from "sharp"
+import { ofetch } from "ofetch"
 import * as Thumbhash from "thumbhash"
 
 const binaryToBase64 = (binary: Uint8Array) => btoa(String.fromCharCode(...binary))
 
 export const getThumbhash = async (imgUrl: string) => {
-  const imageData = await fetch(imgUrl)
-  const imageBuffer = await imageData.arrayBuffer()
+  const imageBuffer = await ofetch(imgUrl, { responseType: "arrayBuffer" })
   const image = sharp(imageBuffer).resize(100, 100, { fit: "inside" })
   const { data, info } = await image.ensureAlpha().raw().toBuffer({ resolveWithObject: true })
 
