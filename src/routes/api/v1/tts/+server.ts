@@ -1,5 +1,6 @@
-import type { RequestHandler } from "./$types"
+import { text } from "@sveltejs/kit"
 import { createEdgeSpeech } from "$lib/server/generate-tts"
+import type { RequestHandler } from "./$types"
 
 export const POST: RequestHandler = async ({ request, locals }) => {
   try {
@@ -28,4 +29,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     }
     return new Response(String(error), { status: 401 })
   }
+}
+
+export const fallback: RequestHandler = async ({ request }) => {
+  return text(`Invalid method ${request.method}`)
 }
