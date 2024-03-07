@@ -4,7 +4,7 @@
   import { Navbar } from "$lib/components/navbar"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { FeedRow } from "$lib/components/feed-row"
-  import { untrack } from "svelte"
+  import { untrack, onDestroy } from "svelte"
 
   import { useInterface, TTSLocation } from "$state/ui.svelte"
   import { InfiniteLoader, loaderState } from "svelte-infinite"
@@ -105,6 +105,7 @@
           speaker: ui.aiFeaturesPreferences.tts.speaker,
           text,
         },
+        responseType: "blob",
       })
       const blobUrl = URL.createObjectURL(blobData)
       ui.textToSpeechAudioBlob = blobUrl
@@ -267,7 +268,7 @@
   }
 
   // Handle search input changes
-  // Reset and execute first search for new query
+  // Reset fields and load first results from api
   $effect.pre(() => {
     if (ui.searchQuery) {
       untrack(() => {
@@ -313,6 +314,13 @@
       window.open(targetLink, "_target")
     }
   }
+
+  // Set audio blob back to initial value to hide player
+  onDestroy(() => {
+    if (ui.textToSpeechAudioBlob) {
+      ui.textToSpeechAudioBlob = ""
+    }
+  })
 </script>
 
 <svelte:head>
