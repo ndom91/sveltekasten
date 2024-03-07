@@ -172,7 +172,7 @@
 <main
   class="align-start overflow-y-scroll flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2"
 >
-  {#if allItems}
+  {#if allItems.length}
     <div class="h-full">
       <InfiniteLoader triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
         {#each allItems as bookmark}
