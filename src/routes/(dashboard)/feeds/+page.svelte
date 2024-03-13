@@ -13,8 +13,6 @@
   import ttsWorkerUrl from "$lib/transformers/tts-worker?url"
   import summaryWorkerUrl from "$lib/transformers/translate-worker?url"
 
-  const limitLoadCount = 20
-
   const ui = useInterface()
   const { data } = $props()
 
@@ -23,12 +21,18 @@
     console.error(data.error)
   }
 
+  // Reset feed items on load invalidation
+  $effect(() => {
+    allItems = data.feedEntries?.data
+  })
+
   // Set current user preferences to store
   ui.aiFeaturesPreferences = data.session?.user?.settings.ai!
 
   let pageNumber = $state(1)
   let allItems = $state<LoadFeedEntry[]>(data.feedEntries?.data)
   let rootElement = $state<HTMLElement>()
+  const limitLoadCount = 20
 
   // Reload feed when coming back to tab
   const visibility = documentVisibilityStore()
@@ -220,11 +224,10 @@
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message)
-        toast.error(error.message)
       } else {
         console.error(error)
-        toast.error(error as string)
       }
+      toast.error(String(error))
     }
   }
 
@@ -236,7 +239,7 @@
       const skip = limitLoadCount * (pageNumber - 1)
 
       // If there are less results than the first page, we are done
-      if (allItems.length < limitLoadCount) {
+      if (allItems.length < skip) {
         loaderState.complete()
         return
       }
@@ -269,17 +272,17 @@
 
   // Handle search input changes
   // Reset fields and load first results from api
-  $effect.pre(() => {
-    if (ui.searchQuery) {
-      untrack(() => {
-        loaderState.reset()
-        pageNumber = 0
-        allItems = []
-        loadMore()
-      })
-    }
+  $effect.pre((data) => {
+    ui.searchQuery
+    untrack(() => {
+      loaderState.reset()
+      pageNumber = 0
+      allItems = []
+      loadMore()
+    })
   })
 
+  // Handle keyboard navigation of items
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.target instanceof HTMLInputElement) return
     if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "j" || e.key === "k") {
@@ -315,10 +318,13 @@
     }
   }
 
-  // Set audio blob back to initial value to hide player
+  // Reset state on unmount
   onDestroy(() => {
     if (ui.textToSpeechAudioBlob) {
       ui.textToSpeechAudioBlob = ""
+    }
+    if (ui.searchQuery) {
+      ui.searchQuery = ""
     }
   })
 </script>

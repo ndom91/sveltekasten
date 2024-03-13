@@ -10,7 +10,7 @@
   import { BookmarkRow } from "$lib/components/bookmark-row"
   import { InfiniteLoader, loaderState } from "svelte-infinite"
   import { Logger, loggerLevels } from "$lib/utils/logger"
-  import { untrack } from "svelte"
+  import { untrack, onDestroy } from "svelte"
 
   const ui = useInterface()
   const { data } = $props()
@@ -19,13 +19,12 @@
   let allItems = $state<LoadBookmarkFlatTags[]>(data.bookmarks.data!)
   let rootElement = $state<HTMLElement>()
 
+  const limitLoadCount = 20
   const logger = new Logger({ level: loggerLevels.DEBUG })
 
   $effect(() => {
     allItems = data.bookmarks.data!
   })
-
-  const limitLoadCount = 20
 
   if (data.error) {
     logger.error(String(data.error))
@@ -106,7 +105,10 @@
       }
 
       const searchResults = await fetchSearchResults({ limit, skip })
-      if (!searchResults?.data) return
+      if (!searchResults?.data) {
+        pageNumber -= 1
+        return
+      }
 
       if (searchResults.data.length) {
         allItems.push(...(searchResults.data as any[]))
@@ -124,22 +126,23 @@
         console.error(error)
       }
       loaderState.error()
+      pageNumber -= 1
     }
   }
 
   // Handle search input changes
   // Reset and execute first search for new query
   $effect.pre(() => {
-    if (ui.searchQuery) {
-      untrack(() => {
-        loaderState.reset()
-        pageNumber = 0
-        allItems = []
-        loadMore()
-      })
-    }
+    ui.searchQuery
+    untrack(() => {
+      loaderState.reset()
+      pageNumber = 0
+      allItems = []
+      loadMore()
+    })
   })
 
+  // Handle keyboard navigation of items
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.repeat || e.target instanceof HTMLInputElement) return
     if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "j" || e.key === "k") {
@@ -174,6 +177,13 @@
       window.open(targetLink, "_target")
     }
   }
+
+  // Reset state on unmount
+  onDestroy(() => {
+    if (ui.searchQuery) {
+      ui.searchQuery = ""
+    }
+  })
 </script>
 
 <svelte:head>

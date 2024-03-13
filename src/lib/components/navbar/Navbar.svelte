@@ -7,6 +7,7 @@
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
   import { Breadcrumbs } from "$lib/components/navbar"
   import { useInterface } from "$state/ui.svelte"
+  import { invalidate } from "$app/navigation"
   import { flyAndScale } from "$lib/utils/style"
   import pDebounce from "p-debounce"
   import { AudioPlayer } from "$lib/components/audio-player"
@@ -27,10 +28,13 @@
     }
   }
 
-  const handleSearchInput = async (event: KeyboardEvent) => {
-    const query: string = await new Promise((resolve) => {
-      resolve((event.target as HTMLInputElement).value)
-    })
+  const handleSearchInput = (event: KeyboardEvent) => {
+    const query = (event.target as HTMLInputElement).value
+    // Reset when deleting query
+    if (ui.searchQuery !== "" && query === "") {
+      invalidate("app:feeds")
+      invalidate("app:bookmarks")
+    }
     ui.searchQuery = query
   }
 </script>

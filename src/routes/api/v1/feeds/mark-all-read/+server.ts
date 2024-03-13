@@ -1,6 +1,6 @@
-import type { RequestHandler } from "./$types"
-import { json } from "@sveltejs/kit"
 import prisma from "$lib/prisma"
+import { text, json } from "@sveltejs/kit"
+import type { RequestHandler } from "./$types"
 
 // Mark all FeedEntries as read
 export const POST: RequestHandler = async ({ request, locals }) => {
@@ -30,4 +30,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     }
     return new Response(String(error), { status: 401 })
   }
+}
+
+export const fallback: RequestHandler = async ({ request }) => {
+  return text(`Invalid method ${request.method}`)
 }

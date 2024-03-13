@@ -1,22 +1,81 @@
 <script lang="ts">
   import { page } from "$app/stores"
   import { Button } from "$lib/components/ui/button"
+  import * as Table from "$lib/components/ui/table"
   import { enhance } from "$app/forms"
   import { handleActionResults } from "$lib/utils/form-action"
   import * as Card from "$lib/components/ui/card"
   import { buttonVariants } from "$lib/components/ui/button"
   import DeleteDialog from "./DeleteDialog.svelte"
+  import { format } from "@formkit/tempo"
+  import { writable } from "svelte/store"
+  import { createTable, Render, Subscribe, createRender } from "svelte-headless-table"
+  import { addSortBy } from "svelte-headless-table/plugins"
+  import DataTableActions from "./feed-data-table-actions.svelte"
   import type { Feed } from "$zod"
 
   let isDeleteDialogOpen = $state(false)
   let targetFeed = $state<Feed>()
 
-  const handleToggleDeleteDialog = (e: MouseEvent, feed: Feed) => {
-    e.preventDefault()
-    e.stopPropagation()
+  const handleToggleDeleteDialog = (feedId: string) => {
+    targetFeed = $page.data.feeds?.data.find((feed: Feed) => feed.id === feedId)
     isDeleteDialogOpen = !isDeleteDialogOpen
-    targetFeed = feed
   }
+
+  const feedsStore = writable($page.data.feeds?.data)
+
+  $effect(() => {
+    if ($page.data?.feeds?.data) {
+      feedsStore.set($page.data.feeds.data)
+    }
+  })
+
+  const table = createTable(feedsStore, {
+    sort: addSortBy(),
+  })
+
+  const columns = table.createColumns([
+    table.column({
+      accessor: "id",
+      header: "ID",
+      plugins: {
+        sort: {
+          disable: true,
+        },
+      },
+    }),
+    table.column({
+      accessor: "name",
+      header: "Name",
+    }),
+    table.column({
+      accessor: ({ _count }) => _count.feedEntries,
+      id: "count",
+      header: "Entries",
+    }),
+    table.column({
+      accessor: "lastFetched",
+      header: "Last Fetched",
+      cell: ({ value }) => format(value, { date: "medium", time: "medium" }),
+    }),
+    table.column({
+      accessor: "createdAt",
+      header: "Created",
+      cell: ({ value }) => format(value, "medium"),
+    }),
+    table.column({
+      id: "actions",
+      accessor: "actions",
+      header: "",
+      plugins: {
+        sort: {
+          disable: true,
+        },
+      },
+    }),
+  ])
+
+  const { headerRows, pageRows, tableAttrs, tableBodyAttrs } = table.createViewModel(columns)
 </script>
 
 <DeleteDialog form={$page.form} bind:open={isDeleteDialogOpen} feed={targetFeed!} />
@@ -26,54 +85,95 @@
       <Card.Title>Manage Feeds</Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
-      <div class="flex flex-col gap-2 items-start" role="table">
-        <div class="flex justify-start items-center w-full" role="rowheader">
-          <div class="w-72">ID</div>
-          <div class="flex-grow">URL</div>
-          <div class="w-24">Actions</div>
-        </div>
-        {#each $page.data?.feeds?.data as feed}
-          <div class="flex justify-start items-center w-full" role="row">
-            <div class="w-64 font-mono" role="cell">
-              {feed.id}
-            </div>
-            <div class="flex-grow font-mono truncate" role="cell">
-              {feed.url}
-            </div>
-            <div class="w-24" role="cell">
-              <Button
-                onclick={(e: MouseEvent) => handleToggleDeleteDialog(e, feed)}
-                class="bg-red-500 dark:bg-red-700"
-                variant="destructive"
-              >
-                <svg
-                  class="mr-2 size-4"
-                  data-slot="icon"
-                  fill="none"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                  ></path>
-                </svg>
-                Delete
-              </Button>
-            </div>
-          </div>
-        {:else}
-          <div class="flex justify-start items-center w-full" role="row">
-            <div class="my-8 w-full text-center" role="cell">
-              No feeds added yet, please use the form below to add your first!
-            </div>
-          </div>
-        {/each}
-      </div>
+      <Table.Root {...$tableAttrs}>
+        <Table.Header>
+          {#each $headerRows as headerRow}
+            <Subscribe rowAttrs={headerRow.attrs()}>
+              <Table.Row class="hover:!bg-transparent">
+                {#each headerRow.cells as cell (cell.id)}
+                  <Subscribe attrs={cell.attrs()} let:attrs let:props props={cell.props()}>
+                    <Table.Head {...attrs}>
+                      {#if ["name", "createdAt", "count"].includes(cell.id)}
+                        <Button class="text-left" variant="ghost" on:click={props.sort.toggle}>
+                          <Render of={cell.render()} />
+                          <svg
+                            class="ml-2 fill-neutral-800 size-4 dark:fill-white"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 256 256"
+                            ><rect width="256" height="256" fill="none" /><polyline
+                              points="80 176 128 224 176 176"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="16"
+                            /><polyline
+                              points="80 80 128 32 176 80"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="16"
+                            /></svg
+                          >
+                        </Button>
+                      {:else}
+                        <div class="text-left">
+                          <Render of={cell.render()} />
+                        </div>
+                      {/if}
+                    </Table.Head>
+                  </Subscribe>
+                {/each}
+              </Table.Row>
+            </Subscribe>
+          {/each}
+        </Table.Header>
+        <Table.Body {...$tableBodyAttrs}>
+          {#each $pageRows as row (row.id)}
+            <Subscribe rowAttrs={row.attrs()} let:rowAttrs>
+              <Table.Row {...rowAttrs} class="hover:dark:bg-neutral-900/20">
+                {#each row.cells as cell (cell.id)}
+                  <Subscribe attrs={cell.attrs()} let:attrs>
+                    {#if cell.id === ""}
+                      <Table.Cell class="text-right max-w-20" {...attrs}>
+                        <Render of={cell.render()} />
+                      </Table.Cell>
+                    {:else if cell.id === "count"}
+                      <Table.Cell class="text-center max-w-4" {...attrs}>
+                        <Render of={cell.render()} />
+                      </Table.Cell>
+                    {:else if cell.id === "name"}
+                      <Table.Cell class="max-w-48 truncate" {...attrs}>
+                        <Render of={cell.render()} />
+                      </Table.Cell>
+                    {:else if cell.id === "actions"}
+                      <Table.Cell class="max-w-48 truncate" {...attrs}>
+                        <DataTableActions
+                          id={row.original.id}
+                          toggleDeleteDialog={handleToggleDeleteDialog}
+                        />
+                      </Table.Cell>
+                    {:else if cell.id === "id"}
+                      <Table.Cell
+                        title={cell.value}
+                        class="max-w-24 text-neutral-400 truncate dark:text-neutral-600"
+                        {...attrs}
+                      >
+                        <Render of={cell.render()} />
+                      </Table.Cell>
+                    {:else}
+                      <Table.Cell class="" {...attrs}>
+                        <Render of={cell.render()} />
+                      </Table.Cell>
+                    {/if}
+                  </Subscribe>
+                {/each}
+              </Table.Row>
+            </Subscribe>
+          {/each}
+        </Table.Body>
+      </Table.Root>
     </Card.Content>
   </Card.Root>
   <Card.Root class="w-full shadow-none">

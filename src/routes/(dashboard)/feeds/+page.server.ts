@@ -3,7 +3,8 @@ import { fail, redirect } from "@sveltejs/kit"
 import type { PageServerLoad } from "./$types"
 import type { Feed } from "$zod"
 
-export const load: PageServerLoad = async ({ locals, url }) => {
+export const load: PageServerLoad = async ({ locals, url, depends }) => {
+  depends("app:feeds")
   const session = await locals.auth()
   if (!session && url.pathname !== "/login") {
     const fromUrl = url.pathname + url.search
