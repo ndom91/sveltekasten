@@ -16,10 +16,12 @@
   "types": "./index.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "main": "./dist/index.js"
     },
     "./types": {
-      "import": "./dist/types/zod-prisma/index.js"
+      "import": "./dist/types/zod-prisma/index.js",
+      "main": "./dist/types/zod-prisma/index.js"
     }
   },
   "devDependencies": {
