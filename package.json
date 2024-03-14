@@ -51,6 +51,7 @@
     "@auth/sveltekit": "^0.14.0",
     "@formkit/tempo": "^0.0.15",
     "@prisma/client": "5.11.0",
+    "@sveltejs/adapter-cloudflare": "^4.2.0",
     "@xenova/transformers": "^2.16.0",
     "bits-ui": "^0.19.7",
     "clsx": "^2.1.0",
