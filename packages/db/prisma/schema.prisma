@@ -11,6 +11,7 @@ generator client {
 generator zod {
   provider = "zod-prisma-types"
   output   = "../types/zod-prisma"
+  useTypeAssertions = true
   // prismaClientPath = "./../../node_modules/.pnpm/@prisma+client@5.11.0_prisma@5.11.0/node_modules/@prisma/client"
 }
 
