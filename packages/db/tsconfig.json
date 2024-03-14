@@ -1,17 +1,29 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": ".",
-    "moduleResolution": "node",
+    "esModuleInterop": true,
     "skipLibCheck": true,
-    "lib": [
-      "esnext"
-    ],
+    "target": "ESNext",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
+    "isolatedModules": true,
+
     "strict": true,
     "strictNullChecks": true,
-    "target": "ESNext",
-    "module": "ESNext"
+    "noUncheckedIndexedAccess": true,
+
+    "outDir": "dist",
+    "rootDir": ".",
+
+    "moduleResolution": "NodeNext",
+    "module": "NodeNext",
+    "skipLibCheck": true,
+    "declaration": true,
+    "composite": true,
+    "declarationMap": true,
+
+    "lib": ["es2022", "dom", "dom.iterable"],
   },
   "exclude": ["*.js", "*.d.ts"],
-  "include": ["index.ts"]
+  "include": ["index.ts", "types/zod-prisma/index.ts"]
 }

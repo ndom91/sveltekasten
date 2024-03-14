@@ -4,7 +4,7 @@
   "description": "Briefkasten Prisma Module",
   "author": "ndom91 <yo@ndo.dev> (https://ndo.dev/)",
   "license": "MIT",
-  "main": "index.ts",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "db:push": "pnpm exec prisma db push",
@@ -17,11 +17,11 @@
   "exports": {
     ".": {
       "import": "./dist/index.js",
-      "main": "./dist/index.js"
+      "types": "./dist/index.d.ts"
     },
     "./types": {
       "import": "./dist/types/zod-prisma/index.js",
-      "main": "./dist/types/zod-prisma/index.js"
+      "types": "./dist/types/zod-prisma/index.d.ts"
     }
   },
   "devDependencies": {
