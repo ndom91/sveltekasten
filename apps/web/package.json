@@ -1,0 +1,124 @@
+{
+  "name": "sveltekasten-web",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "vite dev --port 3000",
+    "build": "rm -rf build && vite build",
+    "start": "node build",
+    "preview": "vite preview",
+    "format": "prettier --write",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@sveltejs/adapter-auto": "3.1.1",
+    "@sveltejs/adapter-node": "^5.0.1",
+    "@sveltejs/kit": "2.5.4",
+    "@sveltejs/package": "2.3.0",
+    "@sveltejs/vite-plugin-svelte": "^3.0.2",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.10",
+    "@types/dompurify": "^3.0.5",
+    "@types/ws": "^8.5.10",
+    "autoprefixer": "^10.4.18",
+    "eslint-plugin-svelte": "2.35.1",
+    "open-props": "^1.6.21",
+    "postcss": "^8.4.35",
+    "postcss-nesting": "^12.1.0",
+    "prettier-plugin-svelte": "3.2.2",
+    "svelte": "5.0.0-next.72",
+    "svelte-check": "3.6.7",
+    "svelte-headless-table": "^0.18.2",
+    "tailwindcss": "^3.4.1",
+    "typescript-svelte-plugin": "^0.3.37"
+  },
+  "dependencies": {
+    "@auth/prisma-adapter": "^1.5.0",
+    "@auth/sveltekit": "^0.14.0",
+    "@briefkasten/db": "workspace:*",
+    "@formkit/tempo": "^0.0.15",
+    "@xenova/transformers": "^2.16.0",
+    "bits-ui": "^0.19.7",
+    "clsx": "^2.1.0",
+    "cmdk-sv": "^0.0.15",
+    "dompurify": "^3.0.9",
+    "formsnap": "^0.5.1",
+    "isomorphic-dompurify": "^2.4.0",
+    "metascraper": "^5.45.2",
+    "metascraper-author": "^5.45.0",
+    "metascraper-clearbit": "^5.45.0",
+    "metascraper-date": "^5.45.0",
+    "metascraper-description": "^5.45.0",
+    "metascraper-feed": "^5.45.0",
+    "metascraper-image": "^5.45.0",
+    "metascraper-lang": "^5.45.0",
+    "metascraper-logo": "^5.45.0",
+    "metascraper-logo-favicon": "^5.45.2",
+    "metascraper-publisher": "^5.45.0",
+    "metascraper-readability": "^5.45.0",
+    "metascraper-title": "^5.45.0",
+    "metascraper-url": "^5.45.0",
+    "mode-watcher": "^0.3.0",
+    "nodemailer": "^6.9.12",
+    "ofetch": "^1.3.3",
+    "p-debounce": "^4.0.0",
+    "sharp": "^0.33.2",
+    "svelte-french-toast": "^1.2.0",
+    "svelte-infinite": "^0.3.0",
+    "svelte-sonner": "^0.3.19",
+    "sveltekit-superforms": "^2.9.0",
+    "tailwind-merge": "^2.2.1",
+    "tailwind-variants": "^0.2.0",
+    "thumbhash": "^0.1.1",
+    "ws": "^8.16.0",
+    "zod": "^3.21.1"
+  },
+  "eslintConfig": {
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended",
+      "prettier"
+    ],
+    "parserOptions": {
+      "sourceType": "module",
+      "ecmaVersion": "latest",
+      "extraFileExtensions": [
+        ".svelte"
+      ]
+    },
+    "overrides": [
+      {
+        "files": [
+          "*.svelte"
+        ],
+        "parser": "svelte-eslint-parser",
+        "parserOptions": {
+          "parser": "@typescript-eslint/parser"
+        }
+      }
+    ]
+  },
+  "prettier": {
+    "semi": false,
+    "printWidth": 100,
+    "singleQuote": false,
+    "plugins": [
+      "prettier-plugin-svelte"
+    ],
+    "overrides": [
+      {
+        "files": "*.svelte",
+        "options": {
+          "parser": "svelte"
+        }
+      }
+    ]
+  }
+}

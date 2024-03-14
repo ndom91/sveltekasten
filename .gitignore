@@ -9,6 +9,9 @@ package
 .vercel
 local.db*
 
+dist/
+build/
+
 *.mp3
 
 vite.config.js.timestamp-*

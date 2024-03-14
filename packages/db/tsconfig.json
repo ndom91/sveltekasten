@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "rootDir": ".",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "lib": [
+      "esnext"
+    ],
+    "strict": true,
+    "strictNullChecks": true,
+    "target": "ESNext",
+    "module": "ESNext"
+  },
+  "exclude": ["*.js", "*.d.ts"],
+  "include": ["index.ts"]
+}
