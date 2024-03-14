@@ -6,11 +6,15 @@
   import type { Feed } from "@briefkasten/db/types"
   import type { ActionData } from "./$types"
 
-  let { form, open, feed } = $props<{
+  let {
+    form,
+    open,
+    feed,
+  }: {
     open: boolean
     feed: Feed
     form?: ActionData
-  }>()
+  } = $props()
 
   $effect(() => {
     if (form?.type === "success") {

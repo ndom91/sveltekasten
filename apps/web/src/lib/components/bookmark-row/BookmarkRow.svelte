@@ -10,7 +10,7 @@
 
   const ui = useInterface()
 
-  const { bookmark } = $props<{ bookmark: LoadBookmarkFlatTags }>()
+  const { bookmark }: { bookmark: LoadBookmarkFlatTags } = $props()
 
   let isDeleteDialogOpen = $state(false)
   let isOptionsOpen = $state(false)

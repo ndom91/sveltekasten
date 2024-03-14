@@ -15,11 +15,11 @@
     src,
     thumbhash,
     ...rest
-  } = $props<{
+  }: {
     src: string
     class?: string
     thumbhash?: string
-  }>()
+  } = $props()
 
   let loaded = $state(false)
 

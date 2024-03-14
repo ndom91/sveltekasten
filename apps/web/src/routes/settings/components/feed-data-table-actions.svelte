@@ -2,10 +2,13 @@
   import { Button } from "$lib/components/ui/button"
   import * as Tooltip from "$lib/components/ui/tooltip"
 
-  const { id, toggleDeleteDialog } = $props<{
+  const {
+    id,
+    toggleDeleteDialog,
+  }: {
     id: string
     toggleDeleteDialog: (id: string) => void
-  }>()
+  } = $props()
 
   const handleEdit = async () => {
     console.log("Edit", id)

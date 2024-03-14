@@ -15,7 +15,7 @@
     }
   }
 
-  const { data } = $props<{ data: HomeLoadResults }>()
+  const { data }: { data: HomeLoadResults } = $props()
 </script>
 
 <svelte:head>

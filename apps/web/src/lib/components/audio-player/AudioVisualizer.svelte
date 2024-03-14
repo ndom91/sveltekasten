@@ -1,9 +1,7 @@
 <script lang="ts">
-  const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max)
-  const getRandomValue = (max: number) => Math.floor(Math.random() * max).toFixed(0)
   const initBars = Array.from({ length: 10 }, () => Math.random() * 0.8 + 0.2)
 
-  const { paused } = $props<{ paused: boolean }>()
+  const { paused }: { paused: boolean } = $props()
   const bars = $state(initBars)
 
   let interval: number

@@ -1,8 +1,8 @@
 <script lang="ts">
+  import { page } from "$app/stores"
   import LoginPattern from "$lib/assets/LoginPattern.svelte"
   import ProviderIcons from "./ProviderIcons.svelte"
   import { twJoin } from "tailwind-merge"
-  import { page } from "$app/stores"
   import { SignIn } from "@auth/sveltekit/components"
 
   const providerButtonStyles = (provider: string): string => {
@@ -88,7 +88,7 @@
                   ? `/${decodeURIComponent($page.data.redirectTo).slice(1)}`
                   : `/`,
               }}
-              className="w-full"
+              className="w-full *:w-full"
             >
               <div
                 slot="submitButton"

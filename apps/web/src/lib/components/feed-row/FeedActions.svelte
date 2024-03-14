@@ -18,14 +18,14 @@
     handleMarkAsUnread,
     handleSetTextToSpeechContent,
     handleStartTextSummarization,
-  } = $props<{
+  }: {
     isOptionsOpen: boolean
     url: string
     handleToggleCardOpen: () => void
     handleMarkAsUnread: (target?: boolean) => void
     handleSetTextToSpeechContent: () => void
     handleStartTextSummarization: () => void
-  }>()
+  } = $props()
 </script>
 
 <div

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { format } from "@formkit/tempo"
-  const { item } = $props<{ item: LoadBookmark }>()
+  const { item }: { item: LoadBookmark } = $props()
 </script>
 
 <div

@@ -4,21 +4,25 @@
   import { cn } from "$lib/utils/style"
   import { format } from "@formkit/tempo"
   import { Badge } from "$lib/components/ui/badge"
-  import type { Feed, FeedEntry, FeedEntryMedia } from "@briefkasten/db/types"
   import dompurify from "isomorphic-dompurify"
   import FeedActions from "./FeedActions.svelte"
   import { useInterface } from "$state/ui.svelte"
+  import type { Feed, FeedEntry, FeedEntryMedia } from "@briefkasten/db/types"
 
   const ui = useInterface()
 
-  let { feedEntry, handleGenerateSpeech, handleSummarizeText } = $props<{
+  let {
+    feedEntry,
+    handleGenerateSpeech,
+    handleSummarizeText,
+  }: {
     feedEntry: FeedEntry & {
       feedMedia: FeedEntryMedia[]
       feed: Feed
     }
     handleGenerateSpeech: (text: string) => void
     handleSummarizeText: (text: string) => void
-  }>()
+  } = $props()
 
   let isOptionsOpen = $state(false)
   let card = $state<HTMLElement>()

@@ -5,7 +5,7 @@
   import { format } from "@formkit/tempo"
   import { invalidateAll } from "$app/navigation"
 
-  const { item } = $props<{ item: LoadFeedEntry }>()
+  const { item }: { item: LoadFeedEntry } = $props()
 
   const handleMarkAsRead = async () => {
     const feedEntry = {

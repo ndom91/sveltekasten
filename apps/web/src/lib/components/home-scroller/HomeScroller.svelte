@@ -10,7 +10,7 @@
     count: number
   }
 
-  const { type, items, count } = $props<ScrollerProps>()
+  const { type, items, count }: ScrollerProps = $props()
 </script>
 
 <section

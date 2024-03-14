@@ -58,7 +58,7 @@ export const providerMap = providers.map((provider) => {
 })
 
 export const { signIn, signOut, handle } = SvelteKitAuth({
-  debug: true,
+  debug: false,
   trustHost: true,
   adapter: PrismaAdapter(prisma),
   providers,

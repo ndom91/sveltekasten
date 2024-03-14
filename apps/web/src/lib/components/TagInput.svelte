@@ -17,12 +17,12 @@
     tags = [],
     disabled = false,
     field,
-  } = $props<{
+  }: {
     form: SuperForm<T>
     field: FormPathLeaves<T, string>
     disabled?: boolean
     tags: RawTag[]
-  }>()
+  } = $props()
 
   let inputValue = $state("")
   const { form: formInstance } = form

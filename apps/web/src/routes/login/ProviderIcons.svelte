@@ -1,5 +1,5 @@
 <script lang="ts">
-  const { provider } = $props<{ provider: string }>()
+  const { provider }: { provider: string } = $props()
 </script>
 
 <div class="">

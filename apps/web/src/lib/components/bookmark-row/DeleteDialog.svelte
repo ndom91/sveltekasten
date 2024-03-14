@@ -1,16 +1,19 @@
 <script lang="ts">
   import { page } from "$app/stores"
-  import type { ActionData } from "./$types"
   import { enhance } from "$app/forms"
   import { handleActionResults } from "$lib/utils/form-action"
   import { buttonVariants } from "$lib/components/ui/button"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
+  import type { ActionData } from "./$types"
 
-  let { open, bookmarkId } = $props<{
+  let {
+    open,
+    bookmarkId,
+  }: {
     form?: ActionData
     open: boolean
     bookmarkId: string
-  }>()
+  } = $props()
 
   $effect(() => {
     if ($page.form?.type === "success") {

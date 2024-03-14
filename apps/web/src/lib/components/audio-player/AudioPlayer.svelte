@@ -1,7 +1,7 @@
 <script lang="ts">
   import AudioVisualizer from "./AudioVisualizer.svelte"
 
-  let { src } = $props<{ src: string }>()
+  let { src }: { src: string } = $props()
 
   let autoplay = $state(true)
   let volume = $state(100)

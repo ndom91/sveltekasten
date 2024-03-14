@@ -4,7 +4,7 @@
   import * as Tooltip from "$lib/components/ui/tooltip"
   import { handleActionResults } from "$lib/utils/form-action"
 
-  const { id } = $props<{ id: string }>()
+  const { id }: { id: string } = $props()
 
   const handleEdit = async () => {
     console.log("Edit", id)

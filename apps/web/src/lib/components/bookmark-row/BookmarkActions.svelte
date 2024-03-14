@@ -12,8 +12,13 @@
     handleArchive: () => void
   }
 
-  const { isOptionsOpen, url, handleMetadataSidebarOpen, handleDeleteDialogOpen, handleArchive } =
-    $props<Props>()
+  const {
+    isOptionsOpen,
+    url,
+    handleMetadataSidebarOpen,
+    handleDeleteDialogOpen,
+    handleArchive,
+  }: Props = $props()
 </script>
 
 <div

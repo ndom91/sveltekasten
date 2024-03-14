@@ -6,10 +6,13 @@
   import { buttonVariants } from "$lib/components/ui/button"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
 
-  let { open, url } = $props<{
+  let {
+    open,
+    url,
+  }: {
     open: boolean
     url: string
-  }>()
+  } = $props()
 
   const handleConfirm = async (): Promise<void> => {
     try {
