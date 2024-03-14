@@ -2,7 +2,7 @@
   "name": "sveltekasten-backend",
   "version": "0.0.1",
   "license": "MIT",
-  "main": "build/index.js",
+  "type": "module",
   "author": "ndom91 <yo@ndo.dev>",
   "scripts": {
     "build": "rm -rf dist && node esbuild.mjs",
