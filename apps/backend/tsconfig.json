@@ -7,17 +7,23 @@
     "dist"
   ],
   "compilerOptions": {
-    "sourceMap": false,
     "outDir": "dist",
     "strict": true,
     "strictNullChecks": true,
+    "noUncheckedIndexedAccess": true,
+
     "lib": [
-      "esnext"
+      "es2022"
     ],
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
+    "target": "es2022",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "esModuleInterop": true,
+    
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
+    "isolatedModules": true,
+
     "baseUrl": ".",
     "paths": {
       "@types": [

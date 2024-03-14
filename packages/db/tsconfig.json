@@ -17,13 +17,18 @@
 
     "moduleResolution": "NodeNext",
     "module": "NodeNext",
-    "skipLibCheck": true,
     "declaration": true,
     "composite": true,
+    "sourceMap": true,
     "declarationMap": true,
 
     "lib": ["es2022", "dom", "dom.iterable"],
   },
-  "exclude": ["*.js", "*.d.ts"],
+  "exclude": [
+    "*.js", 
+    "*.d.ts",
+    "node_modules",
+    "dist"
+  ],
   "include": ["index.ts", "types/zod-prisma/index.ts"]
 }
