@@ -21,7 +21,7 @@ export const handleActionResults = (
         toast.error(`Error: ${result.error.message}`, { icon: "🚫" })
         dev && console.log(result)
       } else {
-        toast.error("Something went wrong. Check the console", { icon: "🚫" })
+        toast.error("Something went wrong. Please try again.", { icon: "🚫" })
         dev && console.log(result)
       }
       await invalidateAll()

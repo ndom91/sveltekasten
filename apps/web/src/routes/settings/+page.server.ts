@@ -29,29 +29,41 @@ export const actions: Actions = {
     if (!WORKER_URL) {
       return fail(500, { type: "error", error: "Worker URL Not Configured!" })
     }
-    const session = await locals.auth()
-    if (!session?.user?.id) {
-      return fail(401, { type: "error", error: "Unauthenticated" })
+    try {
+      const session = await locals.auth()
+      if (!session?.user?.id) {
+        return fail(401, { type: "error", error: "Unauthenticated" })
+      }
+      const data = await request.formData()
+      const feedUrl = String(data.get("feedUrl"))
+
+      if (!feedUrl) {
+        return fail(400, { type: "error", message: "Feed URL Required" })
+      }
+
+      const feedRes = await fetch(`${WORKER_URL}/v1/feed`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          feedUrl,
+          userId: session.user.id,
+        }),
+      })
+      if (!feedRes.ok) {
+        return fail(500, { type: "error", error: "Failed to add feed" })
+      }
+
+      return { type: "success", message: "Added Feed" }
+    } catch (error) {
+      console.error(String(error))
+
+      return {
+        type: "error",
+        error,
+      }
     }
-    const data = await request.formData()
-    const feedUrl = String(data.get("feedUrl"))
-
-    if (!feedUrl) {
-      return fail(400, { type: "error", message: "Feed URL Required" })
-    }
-
-    await fetch(`${WORKER_URL}/v1/feed`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        feedUrl,
-        userId: session.user.id,
-      }),
-    })
-
-    return { type: "success", message: "Added Feed" }
   },
 }
 
@@ -130,11 +142,8 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
       },
     }
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message)
-    } else {
-      console.error(error)
-    }
+    console.error(String(error))
+
     return {
       bookmarks: { count: 0, data: [] },
       feedEntries: { count: 0, data: [] },

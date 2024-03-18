@@ -13,10 +13,8 @@ const logger: Handle = async ({ event, resolve }) => {
   // Wait on response, run other hooks and load
   const response = await resolve(event)
 
-  const clientAddress = event.getClientAddress() ?? "unknown"
-
   console.log(
-    `${response.status} ${event.request.method} from ${clientAddress} ${event.url.pathname} (${Date.now() - start_time}ms)`,
+    `${response.status} ${event.request.method} ${event.url.pathname} (${Date.now() - start_time}ms)`,
   )
 
   return response

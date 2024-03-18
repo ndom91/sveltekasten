@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "vite dev --port 3000",
+    "dev": "bun run vite dev --port 3000",
     "build": "rm -rf build && vite build",
     "start": "node build",
     "preview": "vite preview",
