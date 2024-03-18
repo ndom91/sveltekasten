@@ -1,6 +1,9 @@
 import { Cron } from "croner"
 import { prisma } from "../plugins/db.js"
 import { updateFeed } from "../lib/update-feed.js"
+import { getLogger } from "../plugins/logger.js"
+
+const logger = getLogger({ prefix: "cron" })
 
 // Run every 10 min
 export const updateJob = Cron(
@@ -14,7 +17,7 @@ export const updateJob = Cron(
   async (cron: Cron) => {
     // TODO: Think of some way to dedupe feed updates across multiple
     //       users effectively.
-    console.log("[CRON]", "Refreshing feeds")
+    logger.info("Refreshing feeds")
     try {
       const oneHourAgo = new Date()
       oneHourAgo.setHours(oneHourAgo.getHours() - 1)
@@ -26,19 +29,15 @@ export const updateJob = Cron(
         },
       })
       if (!feeds.length) {
-        console.log("[CRON]", "No feeds to refresh")
-        console.log("[CRON]", `Next run: ${cron.nextRun()}`)
+        logger.info("No feeds to refresh")
+        logger.info(`Next run: ${cron.nextRun()}`)
         return
       }
-      console.log(
-        "[CRON]",
-        `Found ${feeds.length} feeds to refresh`,
-        feeds.map((f) => f.url),
-      )
+      logger.info(`Found ${feeds.length} feeds to refresh ${feeds.map((f) => f.url)}`)
 
       await Promise.all(
         feeds.map(async (feed) => {
-          console.log("[CRON]", "Updating feed", feed.url)
+          logger.info(`Updating feed - ${feed.url}`)
           await updateFeed(feed)
 
           // After successfully updating all new FeedEntry items, bump feed.lastFetched
@@ -50,12 +49,12 @@ export const updateJob = Cron(
               lastFetched: new Date().toISOString(),
             },
           })
-          console.log("[CRON]", "Feed updated")
-          console.log("[CRON]", `Next run: ${cron.nextRun()}`)
+          logger.info(`Feed updated`)
+          logger.info(`Next run: ${cron.nextRun()}`)
         }),
       )
     } catch (error) {
-      console.error("[CRON]", error)
+      logger.error(error)
     }
   },
 )

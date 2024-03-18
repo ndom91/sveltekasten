@@ -13,13 +13,6 @@ export interface DefaultJWT extends Record<string, unknown> {
 
 interface JWT extends Record<string, unknown>, DefaultJWT { }
 
-interface JWTEncodeParams<Payload = JWT> {
-  maxAge?: number
-  salt: string
-  secret: string
-  token?: Payload
-}
-
 interface JWTDecodeParams {
   salt: string
   secret: string
