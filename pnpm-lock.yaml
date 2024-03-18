@@ -41,6 +41,9 @@ importers:
       '@hono/node-server':
         specifier: ^1.8.2
         version: 1.8.2
+      '@hono/zod-validator':
+        specifier: ^0.2.0
+        version: 0.2.0(hono@4.1.1)(zod@3.22.4)
       '@panva/hkdf':
         specifier: ^1.1.1
         version: 1.1.1
@@ -60,7 +63,7 @@ importers:
         specifier: ^3.13.0
         version: 3.13.0
       zod:
-        specifier: ^3.21.1
+        specifier: ^3.22.4
         version: 3.22.4
     devDependencies:
       '@types/node':
@@ -75,9 +78,6 @@ importers:
       eslint-plugin-prettier:
         specifier: ^5.1.3
         version: 5.1.3(eslint-config-prettier@9.1.0)(eslint@8.57.0)(prettier@3.2.5)
-      prettier:
-        specifier: 3.2.5
-        version: 3.2.5
       tiny-glob:
         specifier: ^0.2.9
         version: 0.2.9
@@ -975,6 +975,16 @@ packages:
   /@hono/node-server@1.8.2:
     resolution: {integrity: sha512-h8l2TBLCPHZBUrrkosZ6L5CpBLj6zdESyF4B+zngiCDF7aZFQJ0alVbLx7jn8PCVi9EyoFf8a4hOZFi1tD95EA==}
     engines: {node: '>=18.14.1'}
+    dev: false
+
+  /@hono/zod-validator@0.2.0(hono@4.1.1)(zod@3.22.4):
+    resolution: {integrity: sha512-PC7akbA/DCFY406BL3+ogjYb+7Fgfs/6XPvyURBYMczo0M7kYsTUMnF8hA9mez1RORNCWPqXuFGfKrkoUVPvrQ==}
+    peerDependencies:
+      hono: '>=3.9.0'
+      zod: ^3.19.1
+    dependencies:
+      hono: 4.1.1
+      zod: 3.22.4
     dev: false
 
   /@huggingface/jinja@0.2.1:

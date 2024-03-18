@@ -5,20 +5,22 @@
   "type": "module",
   "author": "ndom91 <yo@ndo.dev>",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev-node": "tsx watch src/index.ts",
+    "dev": "bun --bun --hot run src/index.ts",
     "build": "rm -rf dist && node esbuild.mjs",
     "start": "node build"
   },
   "dependencies": {
     "@briefkasten/db": "workspace:*",
     "@hono/node-server": "^1.8.2",
+    "@hono/zod-validator": "^0.2.0",
     "@panva/hkdf": "^1.1.1",
     "croner": "^8.0.0",
     "fastq": "^1.16.0",
     "hono": "^4.1.1",
     "jose": "^5.2.0",
     "rss-parser": "^3.13.0",
-    "zod": "^3.21.1"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",

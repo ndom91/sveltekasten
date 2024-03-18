@@ -1,27 +1,8 @@
-import type { FastifySchema } from "fastify"
+import { z } from "zod"
+import { zValidator } from "@hono/zod-validator"
 
-const feedBodySchema = {
-  type: "object",
-  required: ["userId", "feedUrl"],
-  properties: {
-    userId: { type: "string" },
-    feedUrl: { type: "string" },
-  },
-} as const
+const schema = z.object({
+  feedUrl: z.string().url(),
+})
 
-const postFeedSchema: FastifySchema = {
-  tags: ["Feed"],
-  description: "Add a new feed to the queue",
-  body: feedBodySchema,
-  response: {
-    201: {
-      type: "string",
-      description: "Feed submitted",
-    },
-    500: {
-      type: "string",
-    },
-  },
-}
-
-export { postFeedSchema }
+export const feedBodySchema = zValidator("json", schema)

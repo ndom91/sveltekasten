@@ -1,6 +1,6 @@
 import { Cron } from "croner"
-import { prisma } from "@plugin/db"
-import { updateFeed } from "@lib/update-feed"
+import { prisma } from "../plugins/db.js"
+import { updateFeed } from "../lib/update-feed.js"
 
 // Run every 10 min
 export const updateJob = Cron(

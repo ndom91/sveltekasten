@@ -1,6 +1,6 @@
-import { prisma } from "@plugin/db"
+import { prisma } from "../plugins/db.js"
 import Parser from "rss-parser"
-import type { Feed } from "@types"
+import type { Feed } from "@briefkasten/db"
 
 const parser = new Parser({
   defaultRSS: 2.0,
@@ -84,13 +84,13 @@ const updateFeed = async (feed: Feed) => {
           },
           feedMedia: {
             create: item.media?.map((media: Record<string, Record<string, unknown>>) => ({
-              href: media["$"].url,
+              href: media["$"]?.url,
               title: media["media:tite"]?.[0],
               description: media["media:description"]?.[0],
               credit: media["media:credit"]?.[0],
-              medium: media["$"].medium,
-              height: media["$"].height ? Number(media["$"].height) : null,
-              width: media["$"].width ? Number(media["$"].width) : null,
+              medium: media["$"]?.medium,
+              height: Number(media["$"]?.height),
+              width: Number(media["$"]?.width),
               user: {
                 connect: {
                   id: feed.userId,

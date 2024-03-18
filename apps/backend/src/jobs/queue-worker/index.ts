@@ -1,7 +1,7 @@
-import type { Task } from "@plugin/queue"
-import { actions } from "@lib/constants"
-import { createFeed } from "./create-feed"
-import { createScreenshot } from "./create-screenshot"
+import type { Task } from "../../plugins/queue.js"
+import { actions } from "../../lib/constants.js"
+import { createFeed } from "./create-feed.js"
+import { createScreenshot } from "./create-screenshot.js"
 
 export async function queueWorker(arg: Task): Promise<void> {
   switch (arg.action) {

@@ -1,4 +1,4 @@
-import { prisma } from "@plugin/db"
+import { prisma } from "../../plugins/db.js"
 import Parser from "rss-parser"
 
 const parser = new Parser({
@@ -64,15 +64,13 @@ export const createFeed = async (data: CreateFeedData) => {
             },
             feedMedia: {
               create: item.media?.map((media: Record<string, Record<string, unknown>>) => ({
-                href: media["$"].url,
+                href: media["$"]?.url,
                 title: media["media:tite"]?.[0],
                 description: media["media:description"]?.[0],
                 credit: media["media:credit"]?.[0],
-                medium: media["$"].medium,
-                // @ts-expect-error
-                height: media["$"].height ? parseInt(media["$"].height) : null,
-                // @ts-expect-error
-                width: media["$"].width ? parseInt(media["$"].width) : null,
+                medium: media["$"]?.medium,
+                height: Number(media["$"]?.height),
+                width: Number(media["$"]?.width),
                 user: {
                   connect: {
                     id: data.userId,

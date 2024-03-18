@@ -1,9 +1,21 @@
-import type { FastifyPluginAsync, FastifyInstance, FastifyPluginOptions, FastifyRequest, FastifyReply } from "fastify"
+import { Hono } from "hono"
+// import { cors } from "hono/cors"
+import { type HttpBindings } from "@hono/node-server"
 
-const root: FastifyPluginAsync = async (fastify: FastifyInstance, _options: FastifyPluginOptions): Promise<void> => {
-  fastify.get("/", async function (_request: FastifyRequest, _reply: FastifyReply) {
-    return { root: true }
+type Bindings = HttpBindings
+
+const api = new Hono<{ Bindings: Bindings }>()
+// TODO: Reenable
+// api.use("/*", cors())
+
+api.get("/", (c) => {
+  return c.text("Hello Hono!")
+})
+
+api.get("/remote", (c) => {
+  return c.json({
+    remoteAddress: c.env.incoming.socket.remoteAddress,
   })
-}
+})
 
-export default root
+export default api

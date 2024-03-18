@@ -1,8 +1,85 @@
-import type { FastifyInstance } from "fastify"
-import { postFeedSchema } from "./schema"
-import { getQueueHandler, postFeedToQueuehandler } from "./handler"
+import { Hono } from "hono"
+// import { cors } from "hono/cors"
+import { feedBodySchema } from "./schema.js"
+// import { getCookie, getSignedCookie, setCookie, setSignedCookie, deleteCookie } from "hono/cookie"
+import { getCookie, getSignedCookie } from "hono/cookie"
+import { verifyJwt } from "../../../lib/jwt.js"
+import { actions } from "../../../lib/constants.js"
+import { queue } from "../../../plugins/queue.js"
 
-export default async (fastify: FastifyInstance) => {
-  fastify.get("/", getQueueHandler)
-  fastify.post("/", { schema: postFeedSchema }, postFeedToQueuehandler)
-}
+const api = new Hono()
+// TODO: reenable
+// api.use("/v1/feed/*", cors({
+//   origin: ['https://example.com', 'https://example.org'],
+// }))
+const sessionToken = `eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiTi1NN0VheC1KZnZmc0NSNnhYRFpJbzE2ZE1FWE9vZkY5dzdPS1pxSFpuNHNUUEJRcFdTcHZrWVAxRWN4WkFaa0JPYmRNUzR4VXBrQkk1UzRBWU56X2cifQ..MPLPtsMIZXtoZhxbpvGscg.4iClekv9rVEfgU8ZPpLhJqUzxOSg7z-KF9haJXiRdALuPMMCttSzQUfzekTVOQ_fRHb9kEbFY84mAWftZii3bSvvWsW1RujoQq4yMd7nUbOzvEzSWdzcYi_TyBv6MQYnh_Fr9hFVlPEmDw24OaK-FhB4w7jLL4xkR9pcwRy9WK-R1S7PguUp5z27X7NWqu0ViCBKpJApfKXPXgvKsUlE4t3Ec00sCvhL4ud7eKwlHF6tHv15PoF979uaRVutCAsu9pZhf5GpZ9MCDKq4BiOZwPC4UIJHl7ezJ_92A_HAmlmQcaljdbkX9MTEKJPUvEq4R53TP_50AMBEKXkzpCudXmupBb808RSG5vAf7EPlfxe_5RSc63VgkQ8qVnTXD7gAgGqt8Ot7GcR_DpYVZNl3O1BVxiavn-jvPhvZXPPuzeokYPcuQQT0a_DbIG761yBjxJQXuz0RBnKuVy9SIaWGpic9E8qjlmd71o7Rl9YAtaVtRwN8kk7rslTPSZpFhu3iJfEP7d_Z1ZWMZkOU7uRY9g.tWgPUQwq1Bah0j2XPhqRyGMwFU0JE90KdfzzVFlVUfU`
+
+api.get("/", async (c) => {
+  // TODO: Get queue members
+  // const queue = queue.getQueue()
+  const queue = [
+    { id: "aaaaaaaaaaaa", feedUrl: "https://techcrunch.com/feed" },
+    { id: "bbbbbbbbbbbb", feedUrl: "https://engadget.com/feed" },
+  ]
+
+  try {
+    // const decodedJwt = await verifyJwt(getCookie(c, "authjs.session-token")!)
+    const decodedJwt = await verifyJwt(sessionToken)
+    console.log("post /v1/feed decodedJwt", decodedJwt)
+
+    return c.json({ queue, decodedJwt })
+  } catch (e) {
+    return c.json({ error: e }, 500)
+  }
+})
+
+api.post("/", feedBodySchema, async (c) => {
+  // let token
+  // if (request.headers.authorization) {
+  //   token = request.headers.authorization.split("Bearer ")[1]
+  // } else if (request.cookies["authjs.session-token"]) {
+  //   token = request.cookies["authjs.session-token"]
+  // }
+  //
+  // const payload = await decode({
+  //   token,
+  //   secret: process.env.JWT_SECRET!,
+  //   salt: "authjs.session-token",
+  // })
+  //
+  // // Unable to decode JWT
+  // if (!payload?.sub) {
+  //   throw request.server.httpErrors.unauthorized()
+  // }
+
+  console.log("context", c)
+
+  const decodedJwt = await verifyJwt(getCookie(c, "authjs.session-token")!)
+  console.log("post /v1/feed decodedJwt", decodedJwt)
+
+  // Hono Auth.js example: https://github.com/honojs/middleware/tree/main/packages/auth-js
+  const payload = await getSignedCookie(c, "authjs.session-token", process.env.JWT_SECRET!)
+  console.log("post /v1/feed payload", payload)
+
+  try {
+    const { feedUrl } = c.req.valid("json")
+
+    if (!feedUrl || !payload) {
+      throw c.json({ error: "feedUrl and userId required" }, 400)
+    }
+    // TODO: Add to queue
+    await queue.push({
+      action: actions.ADD_FEED,
+      data: {
+        feedUrl,
+        userId: payload,
+      },
+    })
+    return c.text("ok")
+  } catch (error) {
+    console.log(error)
+    return c.json(error)
+  }
+})
+
+export default api
