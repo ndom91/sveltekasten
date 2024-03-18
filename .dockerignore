@@ -1,4 +1,11 @@
-node_modules
 .gitignore
-.dockerfile
 Dockerfile
+node_modules
+build
+tests
+.sveltekit
+*.log*
+.cache
+.env
+.vercel
+.svelte-kit
