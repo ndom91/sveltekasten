@@ -23,8 +23,7 @@ api.get("/", async (c) => {
   ]
 
   try {
-    // const decodedJwt = await verifyJwt(getCookie(c, "authjs.session-token")!)
-    const decodedJwt = await verifyJwt(sessionToken)
+    const decodedJwt = await verifyJwt(getCookie(c, "authjs.session-token")!)
     console.log("post /v1/feed decodedJwt", decodedJwt)
 
     return c.json({ queue, decodedJwt })
@@ -34,37 +33,12 @@ api.get("/", async (c) => {
 })
 
 api.post("/", feedBodySchema, async (c) => {
-  // let token
-  // if (request.headers.authorization) {
-  //   token = request.headers.authorization.split("Bearer ")[1]
-  // } else if (request.cookies["authjs.session-token"]) {
-  //   token = request.cookies["authjs.session-token"]
-  // }
-  //
-  // const payload = await decode({
-  //   token,
-  //   secret: process.env.JWT_SECRET!,
-  //   salt: "authjs.session-token",
-  // })
-  //
-  // // Unable to decode JWT
-  // if (!payload?.sub) {
-  //   throw request.server.httpErrors.unauthorized()
-  // }
-
-  console.log("context", c)
-
   const decodedJwt = await verifyJwt(getCookie(c, "authjs.session-token")!)
-  console.log("post /v1/feed decodedJwt", decodedJwt)
-
-  // Hono Auth.js example: https://github.com/honojs/middleware/tree/main/packages/auth-js
-  const payload = await getSignedCookie(c, "authjs.session-token", process.env.JWT_SECRET!)
-  console.log("post /v1/feed payload", payload)
 
   try {
     const { feedUrl } = c.req.valid("json")
 
-    if (!feedUrl || !payload) {
+    if (!feedUrl || !decodedJwt?.sub) {
       throw c.json({ error: "feedUrl and userId required" }, 400)
     }
     // TODO: Add to queue
@@ -72,7 +46,7 @@ api.post("/", feedBodySchema, async (c) => {
       action: actions.ADD_FEED,
       data: {
         feedUrl,
-        userId: payload,
+        userId: decodedJwt.sub,
       },
     })
     return c.text("ok")
