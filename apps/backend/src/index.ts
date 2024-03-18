@@ -1,34 +1,16 @@
-import Fastify from "fastify"
-import { updateJob } from "@jobs/cron-update"
-import autoLoad from "@fastify/autoload"
-import { dirname, join } from "path"
-import { fileURLToPath } from "url"
+import { serve } from '@hono/node-server'
+import { Hono } from 'hono'
 
-const fastify = Fastify({ logger: { level: "warn" } })
-const _dirname = typeof __dirname === "undefined" ? dirname(fileURLToPath(import.meta.url)) : __dirname
+const app = new Hono()
 
-fastify.register(autoLoad, {
-  dir: join(_dirname, "routes"),
+app.get('/', (c) => {
+  return c.text('Hello Hono!')
 })
 
-fastify.register(autoLoad, {
-  dir: join(_dirname, "plugins"),
-})
+const port = 3000
+console.log(`Server is running on port ${port}`)
 
-;(async function () {
-  if (!process.env.JWT_SECRET) {
-    console.error("JWT_SECRET not set")
-    return
-  }
-  const port = process.env.PORT ? parseInt(process.env.PORT) : 8000
-  try {
-    await fastify.listen({ port, host: "0.0.0.0" })
-    console.log(`
-  🚀 Server ready at: http://0.0.0.0:${port}
-  ⌛ Next cron run at: ${updateJob.nextRun()}
-  `)
-  } catch (err) {
-    fastify.log.error(err)
-    process.exit(1)
-  }
-})()
+serve({
+  fetch: app.fetch,
+  port
+})

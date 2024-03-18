@@ -1,46 +1,13 @@
 {
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ],
   "compilerOptions": {
-    "outDir": "dist",
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "strict": true,
-    "strictNullChecks": true,
-    "noUncheckedIndexedAccess": true,
-
-    "lib": [
-      "es2022"
+    "types": [
+      "node"
     ],
-    "target": "es2022",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "esModuleInterop": true,
-    
-    "resolveJsonModule": true,
-    "moduleDetection": "force",
-    "isolatedModules": true,
-
-    "baseUrl": ".",
-    "paths": {
-      "@types": [
-        "./src/lib/types/index.ts"
-      ],
-      "@routes/*": [
-        "./src/routes/*"
-      ],
-      "@jobs/*": [
-        "./src/jobs/*"
-      ],
-      "@plugin/*": [
-        "./src/plugins/*"
-      ],
-      "@lib/*": [
-        "./src/lib/*"
-      ]
-    }
-  },
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+  }
 }

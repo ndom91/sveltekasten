@@ -34,5 +34,4 @@ ENV PORT=8080
 ENV NODE_ENV=production
 
 EXPOSE 8080
-CMD [ "dumb-init", "node", "build", "index.js"]
-# CMD [ "dumb-init", "pnpm", "preview", "--", "--port", "3000", "--host" ]
+CMD [ "dumb-init", "pnpm", "start"]

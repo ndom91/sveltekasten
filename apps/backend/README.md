@@ -1,19 +1,8 @@
-# Briefkasten RSS Worker
-
-## Setup
-
-1. Install dependencies
-
 ```
-$ pnpm install
+npm install
+npm run dev
 ```
 
-2. Start the worker
-
 ```
-pnpm start
+open http://localhost:3000
 ```
-
-## License
-
-MIT

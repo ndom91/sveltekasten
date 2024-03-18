@@ -1,5 +1,4 @@
 import fastq from "fastq"
-import fp from "fastify-plugin"
 import { actions } from "@lib/constants"
 import { queueWorker } from "@jobs/queue-worker"
 import type { queueAsPromised } from "fastq"
@@ -32,6 +31,6 @@ function queuePlugin(fastify: FastifyInstance, _options: FastifyPluginOptions, d
   done()
 }
 
-const fastifyQueue: FastifyPluginCallback = fp(queuePlugin, { name: "fastify-queue" })
+// const fastifyQueue: FastifyPluginCallback = fp(queuePlugin, { name: "fastify-queue" })
 
-export { fastifyQueue as default, queue }
+export { queuePlugin as default, queue }
