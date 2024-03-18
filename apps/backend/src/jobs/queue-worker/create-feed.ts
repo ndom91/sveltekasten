@@ -1,5 +1,8 @@
 import { prisma } from "../../plugins/db.js"
 import Parser from "rss-parser"
+import { getLogger } from "../../plugins/logger.js"
+
+const wLogger = getLogger({ prefix: "create-feed" })
 
 const parser = new Parser({
   defaultRSS: 2.0,
@@ -18,7 +21,7 @@ export const createFeed = async (data: CreateFeedData) => {
   const response = await fetch(data.feedUrl)
   const xml = await response.text()
   const feed = await parser.parseString(xml)
-  console.log("[QUEUE.WORKER]", "Inserting Feed:", feed.link)
+  wLogger.info(`Inserting feed: ${feed.link}`)
 
   await prisma.feed.create({
     data: {
@@ -82,5 +85,5 @@ export const createFeed = async (data: CreateFeedData) => {
       },
     },
   })
-  console.log("[QUEUE.WORKER]", "Feed Create Success", feed.link)
+  wLogger.info(`Feed Create Success ${feed.link}`)
 }

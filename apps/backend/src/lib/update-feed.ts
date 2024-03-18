@@ -1,6 +1,9 @@
 import { prisma } from "../plugins/db.js"
 import Parser from "rss-parser"
+import { getLogger } from "../plugins/logger.js"
 import type { Feed } from "@briefkasten/db"
+
+const wLogger = getLogger({ prefix: "update-feed" })
 
 const parser = new Parser({
   defaultRSS: 2.0,
@@ -22,7 +25,7 @@ const updateFeed = async (feed: Feed) => {
 
   // If no items in parsed feed, return
   if (!itemGuids.length) {
-    console.log("[CRON]", "No items in parsed feed: ", feed.url)
+    wLogger.info(`No items in parsed feed: ${feed.url}`)
     return
   }
 
@@ -42,22 +45,18 @@ const updateFeed = async (feed: Feed) => {
 
   // Diff pre-existing feed entries and new feed parsed items
   const newItems = items.filter((item) => !matchedFeedEntries.some((entry) => entry.guid === item.guid))
-  console.log(
-    "[CRON]",
-    "new.items",
-    newItems.map((item) => item.title),
-  )
+  wLogger.info(`New Items: ${newItems.map((item) => item.title)}`)
 
   // If no new items, return
   if (!newItems.length) {
-    console.log("[CRON]", "No new items to update in parsed feed:", feed.url)
+    wLogger.info(`No new items to update in parsed feed: ${feed.url}`)
     return
   }
 
   // If we have new items to insert, insert their FeedEntry and FeedEntryMedia
   await Promise.all(
     newItems.map((item) => {
-      console.log("[CRON]", "Inserting", item.link)
+      wLogger.info(`Inserting ${item.link}`)
       return prisma.feedEntry.create({
         data: {
           title: item.title ?? "",
