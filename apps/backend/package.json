@@ -7,8 +7,8 @@
   "scripts": {
     "dev-node": "tsx watch src/index.ts",
     "dev": "bun --bun --hot run src/index.ts",
-    "build": "rm -rf dist && node esbuild.mjs",
-    "start": "node build"
+    "build": "rm -rf dist && bun build ./src/**/*.ts --target=bun --outfile=server.js --outdir=dist",
+    "start": "bun --bun dist/index.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.535.0",
