@@ -84,10 +84,18 @@
     // Hack to get effect to run on cardOpen change
     cardOpen
     if (cardOpen) {
+      if (!document.startViewTransition) {
+        feedBodyElement.style.display = "block"
+      }
+      // @ts-expect-error - startViewTransition
       document.startViewTransition(() => {
         feedBodyElement.style.display = "block"
       })
     } else {
+      if (!document.startViewTransition) {
+        feedBodyElement.style.display = "none"
+      }
+      // @ts-expect-error
       document.startViewTransition(() => {
         feedBodyElement.style.display = "none"
       })

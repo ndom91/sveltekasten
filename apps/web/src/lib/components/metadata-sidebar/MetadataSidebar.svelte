@@ -6,6 +6,7 @@
   import FeedContent from "./FeedContent.svelte"
 
   const ui = useInterface()
+  let metadataSidebarElement = $state<HTMLElement>()
 
   const DISABLED_PATHS = ["/categories", "/tags"]
 
@@ -22,13 +23,36 @@
     $page.url.pathname === "/bookmarks" || $page.url.pathname === "/archives",
   )
   const feedPage = $derived($page.url.pathname === "/feeds")
+
+  $effect(() => {
+    // Hack to get effect to run on cardOpen change
+    ui.metadataSidebarOpen
+    if (ui.metadataSidebarOpen) {
+      if (!document.startViewTransition) {
+        metadataSidebarElement.style.width = "18rem"
+      }
+      // @ts-expect-error - startViewTransition
+      document.startViewTransition(() => {
+        metadataSidebarElement.style.width = "18rem"
+      })
+    } else {
+      if (!document.startViewTransition) {
+        metadataSidebarElement.style.width = "0rem"
+      }
+      // @ts-expect-error
+      document.startViewTransition(() => {
+        metadataSidebarElement.style.width = "0rem"
+      })
+    }
+  })
 </script>
 
 <svelte:window onkeydown={handleKeyDown} />
 <aside
+  bind:this={metadataSidebarElement}
   class={cn(
-    "space-between relative flex h-screen flex-shrink-0 flex-col border-l bg-zinc-50 transition-width dark:border-l-zinc-800 dark:bg-zinc-900",
-    ui.metadataSidebarOpen ? "basis-72" : "w-0",
+    "space-between relative flex h-screen flex-shrink-0 flex-col border-l bg-zinc-50 dark:border-l-zinc-800 dark:bg-zinc-900",
+    // ui.metadataSidebarOpen ? "basis-72" : "w-0",
   )}
 >
   {#if ui.metadataSidebarOpen}
