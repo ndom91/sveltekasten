@@ -24,26 +24,18 @@
   )
   const feedPage = $derived($page.url.pathname === "/feeds")
 
+  const mutate = () => {
+    if (ui.metadataSidebarOpen) {
+      metadataSidebarElement.style.width = "18rem"
+    } else {
+      metadataSidebarElement.style.width = "0rem"
+    }
+  }
+
   $effect(() => {
     // Hack to get effect to run on cardOpen change
     ui.metadataSidebarOpen
-    if (ui.metadataSidebarOpen) {
-      if (!document.startViewTransition) {
-        metadataSidebarElement.style.width = "18rem"
-      }
-      // @ts-expect-error - startViewTransition
-      document.startViewTransition(() => {
-        metadataSidebarElement.style.width = "18rem"
-      })
-    } else {
-      if (!document.startViewTransition) {
-        metadataSidebarElement.style.width = "0rem"
-      }
-      // @ts-expect-error
-      document.startViewTransition(() => {
-        metadataSidebarElement.style.width = "0rem"
-      })
-    }
+    document.startViewTransition ? document.startViewTransition(() => mutate()) : mutate()
   })
 </script>
 
