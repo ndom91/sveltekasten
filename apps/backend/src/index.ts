@@ -4,6 +4,7 @@ import { prettyJSON } from "hono/pretty-json"
 import { updateJob } from "./jobs/cron-update.js"
 import type { HttpBindings } from "@hono/node-server"
 
+import bookmark from "./routes/v1/bookmark/index.js"
 import feed from "./routes/v1/feed/index.js"
 import root from "./routes/root.js"
 
@@ -13,6 +14,7 @@ const app = new Hono<{ Bindings: Bindings }>()
 app.use(logger())
 app.use(prettyJSON())
 
+app.route("/v1/bookmark", bookmark)
 app.route("/v1/feed", feed)
 app.route("/", root)
 

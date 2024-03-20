@@ -1,43 +1,49 @@
 import { Hono } from "hono"
 import { getCookie } from "hono/cookie"
 import { verifyJwt } from "../../../lib/jwt.js"
-import { bookmarkSchema } from "./schema.js"
+import { bookmarkImageCookieValidator, bookmarkImageFormValidator } from "./schema.js"
 import { client } from "../../../plugins/storage.js"
 import { PutObjectCommand } from "@aws-sdk/client-s3"
 
 const api = new Hono()
 
-api.post("/", bookmarkSchema, async (c) => {
+api.post("/", bookmarkImageCookieValidator, bookmarkImageFormValidator, async (c) => {
   try {
     const decodedJwt = await verifyJwt(getCookie(c, "authjs.session-token")!)
+    const userId = decodedJwt?.sub
 
-    const { image, url } = c.req.valid("json")
+    const body = await c.req.parseBody()
 
-    if (!image || !decodedJwt?.sub) {
-      throw c.json({ error: "image required" }, 400)
+    const image = body.image as File
+    const url = new URL(body.url as string)
+    const cleanUrl = `${url.hostname}${url.pathname.replace(/\/$/, "")}`
+    console.log({ cleanUrl })
+    const extension = image.type.split("/")[1]
+
+    if (!image || !url || !userId) {
+      throw c.json({ error: "Missing required fields" }, 400)
     }
 
-    const isBufferExists = typeof Buffer !== "undefined"
     const putCommand = new PutObjectCommand({
       ACL: "public-read",
-      Bucket: process.env.R2_BUCKET,
-      Key: `${new URL(url).hostname}-${new Date().getTime()}.${image.extension}`,
+      Bucket: "briefkasten-dev",
+      Key: `${userId}/${cleanUrl.replaceAll("/", "_")}.${extension}`,
       Metadata: {
-        userId: decodedJwt.sub,
-        url: url,
+        userId,
+        url: url.toString(),
       },
-      Body: isBufferExists ? Buffer.from(await image.arrayBuffer()) : image,
+      // @ts-expect-error - ArrayBuffer works just fine..
+      Body: await image.arrayBuffer(),
       ContentType: image.type,
       ContentLength: image.size,
     })
 
     const uploadResponse = await client.send(putCommand)
-    console.log("uploadResponse", uploadResponse)
 
-    return c.json({ uploadResponse })
+    return c.json(uploadResponse)
   } catch (error) {
     console.log(error)
-    return c.json(error)
+    return c.json({ error }, 500)
   }
 })
 
