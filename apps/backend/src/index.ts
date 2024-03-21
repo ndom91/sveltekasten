@@ -1,5 +1,6 @@
 import { Hono } from "hono"
 import { logger } from "hono/logger"
+import { format } from "@formkit/tempo"
 import { prettyJSON } from "hono/pretty-json"
 import { updateJob } from "./jobs/cron-update.js"
 import type { HttpBindings } from "@hono/node-server"
@@ -24,7 +25,7 @@ const port = process.env.PORT ? parseInt(process.env.PORT) : 8000
 
 console.log(`
 🚀 Server ready at: http://0.0.0.0:${port}
-⌛ Next cron run at: ${updateJob.nextRun()}
+⌛ Next cron run at: ${format(updateJob.nextRun() ?? "", { date: "medium", time: "long" })}
 `)
 
 // Node
