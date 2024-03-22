@@ -7,7 +7,6 @@
   import { cn } from "$lib/utils/style"
   import { useInterface } from "$state/ui.svelte"
   import { flyAndScale } from "$lib/utils/style"
-  import UserSection from "$/routes/settings/components/UserSection.svelte"
 
   const ui = useInterface()
   let userSidebarElement = $state<HTMLElement>()!
@@ -21,9 +20,11 @@
 
   const mutate = () => {
     if (ui.userSidebarOpen) {
-      userSidebarElement.style.minWidth = "190px"
+      userSidebarElement.style.minWidth = "210px"
+      userSidebarElement.style.width = "210px"
     } else {
       userSidebarElement.style.minWidth = "72px"
+      userSidebarElement.style.width = "72px"
     }
   }
 
@@ -39,13 +40,13 @@
 <aside
   bind:this={userSidebarElement}
   class={cn(
-    "space-between flex h-full justify-between flex-col border-r bg-neutral-50 transition-all border-r-neutral-200 dark:border-r-neutral-900 dark:bg-neutral-900",
+    "space-between flex h-full justify-between flex-col border-r bg-neutral-50 transition-all border-r-neutral-200 dark:border-r-neutral-900 dark:bg-neutral-900 duration-100 delay-300",
   )}
 >
   <div class="p-4">
-    <div class="flex justify-between items-center">
+    <div class="flex justify-start items-center">
       <Button
-        class="flex justify-start w-full hover:no-underline"
+        class="flex justify-start hover:no-underline"
         size="icon"
         variant="link"
         on:click={ui.toggleUserSidebar}
@@ -54,7 +55,7 @@
       </Button>
       <span
         class={cn(
-          "transition-all text-xl font-light",
+          "transition-all text-xl font-light mx-auto",
           ui.userSidebarOpen
             ? "opacity-100 delay-300"
             : "opacity-0 delay-0 duration-0 pointer-events-none w-0",
@@ -64,7 +65,7 @@
       </span>
     </div>
     <div
-      class="my-4 mx-auto w-full rounded-full border-b-2 border-neutral-200 dark:border-neutral-800"
+      class="my-4 mx-auto w-full rounded-full border-b border-neutral-200 dark:border-neutral-800"
     />
     <nav class="flex flex-col gap-2 items-start mt-6">
       <Tooltip.Root>
@@ -273,7 +274,7 @@
             builders={[tooltipBuilder]}
             data-sveltekit-preload-data="hover"
             class={cn(
-              "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
+              "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300 delay-700",
               $page.url.pathname === "/categories" &&
                 "ring-2 ring-neutral-300 dark:ring-neutral-800",
             )}
@@ -298,10 +299,10 @@
             </svg>
             <span
               class={cn(
-                "text-lg font-normal transition-all",
+                "text-lg font-normal transition-all min-w-0 delay-700",
                 ui.userSidebarOpen
-                  ? "opacity-100 delay-300 ml-4"
-                  : "opacity-0 delay-0 duration-0 pointer-events-none w-0 ml-0",
+                  ? "opacity-100 ml-4"
+                  : "opacity-0 delay-0 duration-0 pointer-events-none ml-0",
               )}
             >
               Categories
@@ -372,22 +373,20 @@
   </div>
   <div class="flex flex-col justify-center items-start p-4 w-full">
     <div
-      class="my-4 mx-auto w-full rounded-full border-b-2 border-neutral-200 dark:border-neutral-800"
+      class="my-4 mx-auto w-full rounded-full border-b border-neutral-200 dark:border-neutral-800"
     />
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center w-full">
       <AvatarMenu />
 
       <span
         class={cn(
-          "transition-all",
+          "transition-all mx-auto text-md truncate",
           ui.userSidebarOpen
             ? "opacity-100 delay-300"
             : "opacity-0 delay-0 duration-0 pointer-events-none w-0",
         )}
       >
-        <span class="flex justify-start items-center ml-4 text-md truncate">
-          {$page.data.session?.user?.name ?? ""}
-        </span>
+        {$page.data.session?.user?.name ?? ""}
       </span>
     </div>
   </div>

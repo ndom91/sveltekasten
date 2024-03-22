@@ -7,7 +7,8 @@
   "scripts": {
     "dev-node": "tsx watch src/index.ts",
     "dev": "bun --bun --watch run src/index.ts",
-    "build": "rm -rf dist && bun build ./src/**/*.ts --target=bun --outfile=server.js --outdir=dist",
+    "build": "bun clean && bun build ./src/**/*.ts --target=bun --outfile=server.js --outdir=dist",
+    "clean": "rm -rf build",
     "start": "bun --bun dist/index.js"
   },
   "dependencies": {
