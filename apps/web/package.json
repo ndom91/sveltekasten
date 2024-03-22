@@ -5,7 +5,7 @@
     "dev": "vite dev --port 3000",
     "dev:bun": "bunx --bun vite dev --port 3000",
     "clean": "rm -rf build",
-    "build": "bun clean && bunx --bun vite build",
+    "build": "bun clean && vite build",
     "start": "bun run build/index.js",
     "preview": "vite preview",
     "format": "prettier --write",
