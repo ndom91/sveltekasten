@@ -5,7 +5,8 @@ services:
     ports:
       - "3000:3000"
     env_file: ./apps/web/.env
-    network: sveltekasten_network
+    networks: 
+      - sveltekasten_network
     restart: unless-stopped
     develop:
       # New 'develop' mode: https://docs.docker.com/compose/compose-file/develop
@@ -18,7 +19,8 @@ services:
   sveltekasten-backend:
     build: ./apps/backend
     env_file: apps/backend/.env
-    network: sveltekasten_network
+    networks: 
+      - sveltekasten_network
     restart: unless-stopped
     develop:
       # New 'develop' mode: https://docs.docker.com/compose/compose-file/develop
@@ -29,5 +31,5 @@ services:
           ignore:
             - node_modules
 
-network:
+networks:
   sveltekasten_network:
