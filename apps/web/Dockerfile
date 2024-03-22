@@ -1,3 +1,5 @@
+# Briefkasten Web
+
 FROM node:21-alpine AS base
 # https://pnpm.io/docker
 
@@ -29,9 +31,7 @@ WORKDIR /app
 RUN chown -R node:node /app
 USER node
 
-ENV HOST=0.0.0.0 
-ENV PORT=8080 
 ENV NODE_ENV=production
 
-EXPOSE 8080
+EXPOSE 3000
 CMD [ "dumb-init", "pnpm", "start"]

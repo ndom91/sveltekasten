@@ -1,10 +1,35 @@
 version: "3.8"
 services:
-  sveltekasten:
-    build: .
+  sveltekasten-web:
+    build: ./apps/web
     ports:
-      - "8080:8080"
-    env_file: .env
-    restart: on-failure
-    environment:
-      - HOST=0.0.0.0
+      - "3000:3000"
+    env_file: ./apps/web/.env
+    networks: 
+      - sveltekasten_network
+    restart: unless-stopped
+    develop:
+      # New 'develop' mode: https://docs.docker.com/compose/compose-file/develop
+      watch:
+        - path: ./apps/web/src
+          action: sync
+          target: /app/src
+          ignore:
+            - node_modules
+  sveltekasten-backend:
+    build: ./apps/backend
+    env_file: apps/backend/.env
+    networks: 
+      - sveltekasten_network
+    restart: unless-stopped
+    develop:
+      # New 'develop' mode: https://docs.docker.com/compose/compose-file/develop
+      watch:
+        - path: ./apps/backend/src
+          action: sync
+          target: /app/src
+          ignore:
+            - node_modules
+
+networks:
+  sveltekasten_network:
