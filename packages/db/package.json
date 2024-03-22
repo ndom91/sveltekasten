@@ -4,6 +4,7 @@
   "description": "Briefkasten Prisma Module",
   "author": "ndom91 <yo@ndo.dev> (https://ndo.dev/)",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "db:push": "pnpm exec prisma db push",
