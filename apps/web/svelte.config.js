@@ -1,4 +1,5 @@
-import adapter from "@sveltejs/adapter-node"
+// import adapter from "@sveltejs/adapter-node"
+import adapter from "svelte-adapter-bun"
 import * as child_process from "node:child_process"
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte"
 
@@ -6,7 +7,10 @@ import { vitePreprocess } from "@sveltejs/vite-plugin-svelte"
 const config = {
   preprocess: vitePreprocess(),
   kit: {
-    adapter: adapter(),
+    adapter: adapter({
+      dynamic_origin: true,
+      xff_depth: 1,
+    }),
     version: {
       name: child_process.execSync("git rev-parse HEAD").toString().trim().substring(0, 7),
     },
