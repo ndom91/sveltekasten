@@ -8,6 +8,7 @@ const config = {
   preprocess: vitePreprocess(),
   kit: {
     adapter: adapter({
+      precompress: true,
       dynamic_origin: true,
       xff_depth: 1,
     }),
