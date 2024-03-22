@@ -7,8 +7,10 @@
   import { cn } from "$lib/utils/style"
   import { useInterface } from "$state/ui.svelte"
   import { flyAndScale } from "$lib/utils/style"
+  import UserSection from "$/routes/settings/components/UserSection.svelte"
 
   const ui = useInterface()
+  let userSidebarElement = $state<HTMLElement>()!
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.repeat || event.target instanceof HTMLInputElement) return
@@ -16,28 +18,51 @@
       ui.toggleUserSidebar()
     }
   }
+
+  const mutate = () => {
+    if (ui.userSidebarOpen) {
+      userSidebarElement.style.minWidth = "190px"
+    } else {
+      userSidebarElement.style.minWidth = "72px"
+    }
+  }
+
+  $effect(() => {
+    // Hack to get effect to run on sidebar toggle
+    ui.userSidebarOpen
+    document.startViewTransition ? document.startViewTransition(() => mutate()) : mutate()
+  })
 </script>
 
 <svelte:window onkeydown={handleKeyDown} />
 
 <aside
+  bind:this={userSidebarElement}
   class={cn(
-    "space-between flex h-full justify-between flex-col border-r bg-neutral-50 transition-all duration-500 border-r-neutral-200 dark:border-r-neutral-900  dark:bg-neutral-900 basis-[200px]",
-    ui.userSidebarOpen ? "flex-shrink-0" : "flex-grow-0 basis-[72px]",
+    "space-between flex h-full justify-between flex-col border-r bg-neutral-50 transition-all border-r-neutral-200 dark:border-r-neutral-900 dark:bg-neutral-900",
   )}
 >
   <div class="p-4">
-    <Button
-      class="flex justify-start w-full hover:no-underline"
-      size="icon"
-      variant="link"
-      on:click={ui.toggleUserSidebar}
-    >
-      <Logo class="!size-10" />
-      {#if ui.userSidebarOpen}
-        <span class="mx-auto ml-4 text-xl font-light">Briefkasten</span>
-      {/if}
-    </Button>
+    <div class="flex justify-between items-center">
+      <Button
+        class="flex justify-start w-full hover:no-underline"
+        size="icon"
+        variant="link"
+        on:click={ui.toggleUserSidebar}
+      >
+        <Logo class="!size-10" />
+      </Button>
+      <span
+        class={cn(
+          "transition-all text-xl font-light",
+          ui.userSidebarOpen
+            ? "opacity-100 delay-300"
+            : "opacity-0 delay-0 duration-0 pointer-events-none w-0",
+        )}
+      >
+        Briefkasten
+      </span>
+    </div>
     <div
       class="my-4 mx-auto w-full rounded-full border-b-2 border-neutral-200 dark:border-neutral-800"
     />
@@ -73,12 +98,14 @@
             </svg>
             <span
               class={cn(
-                "ml-4 text-lg font-normal transition-all duration-500 w-auto delay-150",
-                ui.userSidebarOpen ? "block" : "hidden",
+                "text-lg font-normal transition-all",
+                ui.userSidebarOpen
+                  ? "opacity-100 delay-300 ml-4"
+                  : "opacity-0 delay-0 duration-0 pointer-events-none w-0 ml-0",
               )}
             >
-              Home</span
-            >
+              Home
+            </span>
           </Button>
         </Tooltip.Trigger>
         <Tooltip.Content
@@ -121,12 +148,14 @@
             </svg>
             <span
               class={cn(
-                "ml-4 text-lg font-normal transition-all duration-500 delay-150",
-                ui.userSidebarOpen ? "block opacity-100" : "opacity-0 hidden",
+                "text-lg font-normal transition-all",
+                ui.userSidebarOpen
+                  ? "opacity-100 delay-300 ml-4"
+                  : "opacity-0 delay-0 duration-0 pointer-events-none w-0 ml-0",
               )}
             >
-              Bookmarks</span
-            >
+              Bookmarks
+            </span>
           </Button>
         </Tooltip.Trigger>
         <Tooltip.Content
@@ -169,12 +198,14 @@
             </svg>
             <span
               class={cn(
-                "ml-4 text-lg font-normal transition-all duration-500 delay-150",
-                ui.userSidebarOpen ? "block opacity-100" : "opacity-0 hidden",
+                "text-lg font-normal transition-all",
+                ui.userSidebarOpen
+                  ? "opacity-100 delay-300 ml-4"
+                  : "opacity-0 delay-0 duration-0 pointer-events-none w-0 ml-0",
               )}
             >
-              Feeds</span
-            >
+              Feeds
+            </span>
           </Button>
         </Tooltip.Trigger>
         <Tooltip.Content
@@ -216,12 +247,14 @@
             </svg>
             <span
               class={cn(
-                "ml-4 text-lg font-normal transition-all duration-500 delay-150",
-                ui.userSidebarOpen ? "block opacity-100" : "opacity-0 hidden",
+                "text-lg font-normal transition-all",
+                ui.userSidebarOpen
+                  ? "opacity-100 delay-300 ml-4"
+                  : "opacity-0 delay-0 duration-0 pointer-events-none w-0 ml-0",
               )}
             >
-              Archive</span
-            >
+              Archive
+            </span>
           </Button>
         </Tooltip.Trigger>
         <Tooltip.Content
@@ -265,12 +298,14 @@
             </svg>
             <span
               class={cn(
-                "ml-4 text-lg font-normal transition-all duration-500 delay-150",
-                ui.userSidebarOpen ? "block opacity-100" : "opacity-0 hidden",
+                "text-lg font-normal transition-all",
+                ui.userSidebarOpen
+                  ? "opacity-100 delay-300 ml-4"
+                  : "opacity-0 delay-0 duration-0 pointer-events-none w-0 ml-0",
               )}
             >
-              Categories</span
-            >
+              Categories
+            </span>
           </Button>
         </Tooltip.Trigger>
         <Tooltip.Content
@@ -314,8 +349,10 @@
             </svg>
             <span
               class={cn(
-                "ml-4 text-lg font-normal transition-all duration-500 delay-150",
-                ui.userSidebarOpen ? "block opacity-100" : "opacity-0 hidden",
+                "text-lg font-normal transition-all",
+                ui.userSidebarOpen
+                  ? "opacity-100 delay-300 ml-4"
+                  : "opacity-0 delay-0 duration-0 pointer-events-none w-0 ml-0",
               )}
             >
               Tags
@@ -337,13 +374,21 @@
     <div
       class="my-4 mx-auto w-full rounded-full border-b-2 border-neutral-200 dark:border-neutral-800"
     />
-    <div class="flex">
+    <div class="flex justify-between items-center">
       <AvatarMenu />
-      {#if ui.userSidebarOpen}
+
+      <span
+        class={cn(
+          "transition-all",
+          ui.userSidebarOpen
+            ? "opacity-100 delay-300"
+            : "opacity-0 delay-0 duration-0 pointer-events-none w-0",
+        )}
+      >
         <span class="flex justify-start items-center ml-4 text-md truncate">
           {$page.data.session?.user?.name ?? ""}
         </span>
-      {/if}
+      </span>
     </div>
   </div>
 </aside>

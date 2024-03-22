@@ -6,7 +6,7 @@
   import FeedContent from "./FeedContent.svelte"
 
   const ui = useInterface()
-  let metadataSidebarElement = $state<HTMLElement>()
+  let metadataSidebarElement = $state<HTMLElement>()!
 
   const DISABLED_PATHS = ["/categories", "/tags"]
 
@@ -33,7 +33,7 @@
   }
 
   $effect(() => {
-    // Hack to get effect to run on cardOpen change
+    // Hack to get effect to run on sidebar toggle
     ui.metadataSidebarOpen
     document.startViewTransition ? document.startViewTransition(() => mutate()) : mutate()
   })
@@ -43,8 +43,7 @@
 <aside
   bind:this={metadataSidebarElement}
   class={cn(
-    "space-between relative flex h-screen flex-shrink-0 flex-col border-l bg-zinc-50 dark:border-l-zinc-800 dark:bg-zinc-900",
-    // ui.metadataSidebarOpen ? "basis-72" : "w-0",
+    "transition-all space-between relative flex h-screen flex-shrink-0 flex-col border-l bg-zinc-50 dark:border-l-zinc-800 dark:bg-zinc-900",
   )}
 >
   {#if ui.metadataSidebarOpen}
