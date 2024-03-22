@@ -2,7 +2,7 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "target": "ESNext",
+    "target": "es2022",
     "allowJs": true,
     "resolveJsonModule": true,
     "moduleDetection": "force",
@@ -15,11 +15,11 @@
     "outDir": "dist",
     "rootDir": ".",
 
-    "moduleResolution": "NodeNext",
-    "module": "NodeNext",
+    "moduleResolution": "nodenext",
+    "module": "nodenext",
+    "sourceMap": true,
     "declaration": true,
     "composite": true,
-    "sourceMap": true,
     "declarationMap": true,
 
     "lib": ["es2022", "dom", "dom.iterable"],
