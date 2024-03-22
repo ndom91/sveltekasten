@@ -3,9 +3,9 @@ services:
   sveltekasten-web:
     build: 
       context: .
-      dockerfile: ./apps/web/Dockerfile
-      args: 
-        PACKAGE_PATH: apps/web/
+      tags: 
+        - web:latest
+      target: web
     restart: unless-stopped
     networks: 
       - sveltekasten_network
@@ -15,9 +15,9 @@ services:
   sveltekasten-backend:
     build: 
       context: .
-      dockerfile: ./apps/backend/Dockerfile
-      args: 
-        PACKAGE_PATH: apps/web/
+      tags: 
+        - backend:latest
+      target: backend
     networks: 
       - sveltekasten_network
     restart: unless-stopped
