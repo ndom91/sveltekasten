@@ -1,5 +1,7 @@
 .gitignore
 Dockerfile
+docker-compose*
+.dockerignore
 node_modules
 build
 tests
@@ -9,3 +11,4 @@ tests
 .env
 .vercel
 .svelte-kit
+README.md
