@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
+    "outDir": "./dist",
     "strict": true,
     "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
 
     "lib": [
-      "es2022"
+      "es2022",
+      "dom"
     ],
     "target": "es2022",
     "module": "nodenext",
@@ -25,5 +26,8 @@
   },
   "include": [
     "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ],
 }
