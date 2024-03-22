@@ -67,7 +67,7 @@
             variant="outline"
             disabled={!ui.metadataSidebarData.bookmark}
             size="icon"
-            on:click={() => ui.toggleMetadataSidebarEditMode()}
+            onclick={() => ui.toggleMetadataSidebarEditMode()}
           >
             <svg
               class="size-5"

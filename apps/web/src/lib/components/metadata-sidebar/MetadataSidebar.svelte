@@ -8,7 +8,7 @@
   const ui = useInterface()
   let metadataSidebarElement = $state<HTMLElement>()!
 
-  const DISABLED_PATHS = ["/categories", "/tags"]
+  const DISABLED_PATHS = ["/categories", "/tags", "/settings", "/"]
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.repeat || event.target instanceof HTMLInputElement) return
