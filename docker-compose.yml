@@ -1,35 +1,27 @@
 version: "3.8"
 services:
   sveltekasten-web:
-    build: ./apps/web
+    build: 
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+      args: 
+        PACKAGE_PATH: apps/web/
+    restart: unless-stopped
+    networks: 
+      - sveltekasten_network
     ports:
       - "3000:3000"
     env_file: ./apps/web/.env
-    networks: 
-      - sveltekasten_network
-    restart: unless-stopped
-    develop:
-      # New 'develop' mode: https://docs.docker.com/compose/compose-file/develop
-      watch:
-        - path: ./apps/web/src
-          action: sync
-          target: /app/src
-          ignore:
-            - node_modules
   sveltekasten-backend:
-    build: ./apps/backend
-    env_file: apps/backend/.env
+    build: 
+      context: .
+      dockerfile: ./apps/backend/Dockerfile
+      args: 
+        PACKAGE_PATH: apps/web/
     networks: 
       - sveltekasten_network
     restart: unless-stopped
-    develop:
-      # New 'develop' mode: https://docs.docker.com/compose/compose-file/develop
-      watch:
-        - path: ./apps/backend/src
-          action: sync
-          target: /app/src
-          ignore:
-            - node_modules
+    env_file: apps/backend/.env
 
 networks:
   sveltekasten_network:
