@@ -1,9 +1,9 @@
 import { Cron } from "croner"
-// import { prisma } from "../plugins/db.js"
 import prisma from "@briefkasten/db"
 import { format } from "@formkit/tempo"
 import { updateFeed } from "../lib/update-feed.js"
 import { getLogger } from "../plugins/logger.js"
+import type { Feed } from "@briefkasten/db/types"
 
 const logger = getLogger({ prefix: "cron" })
 
@@ -23,7 +23,7 @@ export const updateJob = Cron(
     try {
       const oneHourAgo = new Date()
       oneHourAgo.setHours(oneHourAgo.getHours() - 1)
-      const feeds = await prisma.db.feed.findMany({
+      const feeds: Feed[] = await prisma.db.feed.findMany({
         where: {
           lastFetched: {
             lte: oneHourAgo,
