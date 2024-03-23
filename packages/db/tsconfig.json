@@ -16,7 +16,7 @@
     "rootDir": ".",
 
     "moduleResolution": "node",
-    "module": "preserve",
+    "module": "commonjs",
     "declaration": true,
 
     "lib": ["es2022", "dom", "dom.iterable"]
@@ -27,5 +27,5 @@
     "node_modules",
     "dist"
   ],
-  "include": ["index.ts", "zod-prisma/index.ts"]
+  "include": ["index.ts", "types/index.ts"]
 }

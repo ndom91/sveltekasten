@@ -12,27 +12,21 @@
     "db:generate": "pnpm exec prisma generate",
     "postinstally": "pnpm exec prisma generate"
   },
-  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/index.js",
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    },
-    "./types": {
-      "require": "./dist/zod-prisma/index.js",
-      "import": "./dist/zod-prisma/index.js",
-      "types": "./dist/zod-prisma/index.d.ts"
-    }
-  },
+  "files": [
+    "dist",
+    "prisma",
+    "package.json"
+  ],
   "devDependencies": {
     "@types/node": "^20.11.28",
-    "prisma": "5.11.0",
     "zod-prisma-types": "^3.1.6"
   },
   "dependencies": {
     "@prisma/client": "5.11.0",
+    "prisma": "5.11.0",
     "zod": "^3.21.1"
   },
   "prettier": {
