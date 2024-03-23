@@ -49,7 +49,7 @@ ENV NODE_ENV production
 
 COPY --chown=node:node --from=build /prod/web /prod/web
 WORKDIR /prod/web
-EXPOSE 3000
+EXPOSE ${PORT:-3000}
 CMD [ "pnpm", "start" ]
 
 ###########################
@@ -69,5 +69,5 @@ ENV NODE_ENV production
 
 COPY --chown=node:node --from=build /prod/backend /prod/backend
 WORKDIR /prod/backend
-EXPOSE 8000
+EXPOSE ${PORT:-3000}
 CMD [ "pnpm", "start" ]
