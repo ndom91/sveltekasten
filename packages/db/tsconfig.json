@@ -15,12 +15,9 @@
     "outDir": "dist",
     "rootDir": ".",
 
-    "moduleResolution": "nodenext",
-    "module": "nodenext",
-    "sourceMap": true,
+    "moduleResolution": "Bundler",
+    "module": "preserve",
     "declaration": true,
-    "composite": true,
-    "declarationMap": true,
 
     "lib": ["es2022", "dom", "dom.iterable"]
   },

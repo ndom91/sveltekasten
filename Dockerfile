@@ -24,13 +24,12 @@ RUN apt-get update -qq && \
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 # Generate prisma client and push db schema
-RUN cd packages/db && pnpm exec prisma generate && pnpm exec prisma db push
+RUN cd packages/db && pnpm exec prisma generate && pnpm exec prisma db push && pnpm build
 
 RUN pnpm run -r build
 
 RUN pnpm deploy --filter=sveltekasten-web --prod /prod/web
 RUN pnpm deploy --filter=sveltekasten-backend --prod /prod/backend
-
 
 ###########################
 #      WEB CONTAINER      #
