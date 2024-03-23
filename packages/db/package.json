@@ -12,9 +12,8 @@
     "db:generate": "pnpm exec prisma generate",
     "postinstally": "pnpm exec prisma generate"
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./index.ts",
+  "types": "./index.ts",
   "files": [
     "dist",
     "prisma",
