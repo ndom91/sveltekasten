@@ -1,6 +1,7 @@
-import { db } from "@briefkasten/db"
+// import { db } from "@briefkasten/db"
+import { db } from "$lib/prisma"
 import { fail, redirect } from "@sveltejs/kit"
-import { Prisma } from "@briefkasten/db"
+import * as Prisma from "@briefkasten/db"
 import { CategoryCreateInputSchema } from "@briefkasten/db/types"
 import type { Actions, PageServerLoad } from "./$types"
 

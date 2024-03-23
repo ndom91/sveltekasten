@@ -1,5 +1,6 @@
 import z from "zod"
-import { db } from "@briefkasten/db"
+// import { db } from "@briefkasten/db"
+import { db } from "$lib/prisma"
 import { text, json } from "@sveltejs/kit"
 import { BookmarkUncheckedCreateInputSchema } from "@briefkasten/db/types"
 import { fetchBookmarkMetadata } from "$server/lib/fetchBookmarkMetadata"

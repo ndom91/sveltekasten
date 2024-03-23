@@ -1,4 +1,4 @@
-import { db } from "@briefkasten/db"
+import { db } from "$lib/prisma"
 import { text, json } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
 

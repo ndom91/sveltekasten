@@ -1,5 +1,5 @@
 import "@auth/sveltekit"
-import { Prisma } from "@briefkasten/db"
+import * as Prisma from "@briefkasten/db"
 import type { BookmarkFlatTags } from "$lib/types"
 import type { Tag, Bookmark, Tag, Category, JsonValueType } from "@briefkasten/db/types"
 import type { AIFeaturesPreferences } from "./state/ui.svelte"

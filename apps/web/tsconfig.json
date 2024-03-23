@@ -16,7 +16,8 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "target": "es2022",
-    "module": "ESNext"
+    "module": "nodenext",
+    "moduleResolution": "nodenext"
   },
   "ts-node": {
     "esm": true
