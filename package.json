@@ -7,12 +7,12 @@
   "repository": "https://github.com/ndom91/sveltekasten.git",
   "license": "MIT",
   "scripts": {
-    "dev": "pnpm run --parallel dev",
+    "dev": "pnpm run --parallel --filter sveltekasten-web --filter sveltekasten-backend dev",
     "dev:web": "pnpm run --dir apps/web dev",
     "dev:api": "pnpm run --dir apps/backend dev",
     "build": "pnpm run --parallel build",
     "start": "pnpm run --parallel start",
-    "db:studio": "pnpm run --filter db db:studio",
+    "db:studio": "pnpm run --filter @briefkasten/db db:studio",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,yml,yaml,md}\""
   },
   "devDependencies": {
