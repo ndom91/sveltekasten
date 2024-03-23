@@ -1,4 +1,5 @@
-import prisma from "$lib/prisma"
+// import prisma from "$lib/prisma"
+import { db as prisma } from "@briefkasten/db"
 import { env } from "$env/dynamic/private"
 import { SvelteKitAuth } from "@auth/sveltekit"
 import { PrismaAdapter } from "@auth/prisma-adapter"

@@ -1,4 +1,5 @@
-import prisma from "$lib/prisma"
+// import prisma from "$lib/prisma"
+import { db as prisma } from "@briefkasten/db"
 import { redirect } from "@sveltejs/kit"
 import { fail } from "@sveltejs/kit"
 import { formSchema as quickAddSchema } from "$schemas/quick-add"

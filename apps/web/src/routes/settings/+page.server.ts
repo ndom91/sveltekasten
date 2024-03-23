@@ -1,5 +1,6 @@
 import { fail, redirect } from "@sveltejs/kit"
-import prisma from "$lib/prisma"
+// import prisma from "$lib/prisma"
+import { db as prisma } from "@briefkasten/db"
 import type { Actions } from "./$types"
 import type { PageServerLoad } from "./$types"
 import { WORKER_URL } from "$env/static/private"

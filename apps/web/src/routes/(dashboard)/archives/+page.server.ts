@@ -1,4 +1,5 @@
-import prisma from "$lib/prisma"
+// import prisma from "$lib/prisma"
+import { db as prisma } from "@briefkasten/db"
 import { fail, redirect } from "@sveltejs/kit"
 import type { Actions, PageServerLoad } from "./$types"
 

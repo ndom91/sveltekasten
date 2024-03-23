@@ -1,4 +1,5 @@
-import { prisma } from "../../plugins/db.js"
+// import { prisma } from "../../plugins/db.js"
+import { db } from "@briefkasten/db"
 import Parser from "rss-parser"
 import { getLogger } from "../../plugins/logger.js"
 
@@ -23,7 +24,7 @@ export const createFeed = async (data: CreateFeedData) => {
   const feed = await parser.parseString(xml)
   wLogger.info(`Inserting feed: ${feed.link}`)
 
-  await prisma.feed.create({
+  await db.feed.create({
     data: {
       name: feed.title ? feed.title : feed.link ?? "",
       url: data.feedUrl,
