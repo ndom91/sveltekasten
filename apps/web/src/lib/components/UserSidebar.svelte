@@ -40,7 +40,7 @@
 <aside
   bind:this={userSidebarElement}
   class={cn(
-    "space-between flex h-full justify-between flex-col border-r bg-neutral-50 transition-all border-r-neutral-200 dark:border-r-neutral-900 dark:bg-neutral-900 duration-100 delay-300",
+    "space-between flex h-full justify-between flex-col border-r bg-neutral-50 transition-all border-r-neutral-200 dark:border-r-neutral-900 dark:bg-neutral-900 duration-100 w-[72px]",
   )}
 >
   <div class="p-4">
@@ -274,7 +274,7 @@
             builders={[tooltipBuilder]}
             data-sveltekit-preload-data="hover"
             class={cn(
-              "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300 delay-700",
+              "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
               $page.url.pathname === "/categories" &&
                 "ring-2 ring-neutral-300 dark:ring-neutral-800",
             )}
@@ -299,10 +299,10 @@
             </svg>
             <span
               class={cn(
-                "text-lg font-normal transition-all min-w-0 delay-700",
+                "text-lg font-normal transition-all",
                 ui.userSidebarOpen
-                  ? "opacity-100 ml-4"
-                  : "opacity-0 delay-0 duration-0 pointer-events-none ml-0",
+                  ? "opacity-100 delay-300 ml-4"
+                  : "opacity-0 delay-0 duration-0 pointer-events-none w-0 ml-0",
               )}
             >
               Categories
