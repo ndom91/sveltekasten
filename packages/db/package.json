@@ -20,17 +20,17 @@
       "types": "./dist/index.d.ts"
     },
     "./types": {
-      "import": "./dist/types/zod-prisma/index.js",
-      "types": "./dist/types/zod-prisma/index.d.ts"
+      "import": "./dist/zod-prisma/index.js",
+      "types": "./dist/zod-prisma/index.d.ts"
     }
   },
   "devDependencies": {
     "prisma": "5.11.0",
-    "zod": "^3.21.1",
     "zod-prisma-types": "^3.1.6"
   },
   "dependencies": {
-    "@prisma/client": "5.11.0"
+    "@prisma/client": "5.11.0",
+    "zod": "^3.22.4"
   },
   "prettier": {
     "semi": false,

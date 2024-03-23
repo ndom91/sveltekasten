@@ -15,7 +15,7 @@
     "outDir": "dist",
     "rootDir": ".",
 
-    "moduleResolution": "Bundler",
+    "moduleResolution": "node",
     "module": "preserve",
     "declaration": true,
 
@@ -27,5 +27,5 @@
     "node_modules",
     "dist"
   ],
-  "include": ["index.ts", "types/zod-prisma/index.ts"]
+  "include": ["index.ts", "zod-prisma/index.ts"]
 }

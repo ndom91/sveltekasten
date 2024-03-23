@@ -1,2 +1,2 @@
 export * from "@prisma/client"
-export * as prismaZod from "./types/zod-prisma/index.js"
+export * as prismaZod from "./zod-prisma/index.js"

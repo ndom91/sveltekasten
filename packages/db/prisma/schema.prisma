@@ -10,9 +10,8 @@ generator client {
 
 generator zod {
   provider = "zod-prisma-types"
-  output   = "../types/zod-prisma"
+  output   = "../zod-prisma"
   useTypeAssertions = true
-  // prismaClientPath = "./../../node_modules/.pnpm/@prisma+client@5.11.0_prisma@5.11.0/node_modules/@prisma/client"
 }
 
 model Bookmark {
@@ -46,8 +45,7 @@ model TagsOnBookmarks {
   tag        Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@id([bookmarkId, tagId])
-  @@index([bookmarkId])
-  @@index([tagId])
+  @@index([bookmarkId, tagId])
 }
 
 model Tag {
