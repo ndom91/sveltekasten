@@ -1,5 +1,4 @@
-// import prisma from "$lib/prisma"
-import { db as prisma } from "@briefkasten/db"
+import { db } from "@briefkasten/db"
 import { fail, redirect } from "@sveltejs/kit"
 import type { Actions, PageServerLoad } from "./$types"
 
@@ -16,7 +15,7 @@ export const actions: Actions = {
       return fail(400)
     }
 
-    await prisma.bookmark.delete({
+    await db.bookmark.delete({
       where: {
         id: bookmarkId,
         userId: session.user.id,
@@ -42,7 +41,7 @@ export const load: PageServerLoad = async (event) => {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
 
-    const [data, count] = await prisma.bookmark.findManyAndCount({
+    const [data, count] = await db.bookmark.findManyAndCount({
       take: limit + skip,
       skip: skip,
       where: {

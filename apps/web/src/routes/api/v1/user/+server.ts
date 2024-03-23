@@ -1,5 +1,4 @@
-// import prisma from "$lib/prisma"
-import { db as prisma } from "@briefkasten/db"
+import { db } from "@briefkasten/db"
 import { text, json } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
 
@@ -11,7 +10,7 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
     }
     const { data } = await request.json()
 
-    const prismaResult = await prisma.user.update({
+    const prismaResult = await db.user.update({
       data: {
         settings: data.settings,
       },

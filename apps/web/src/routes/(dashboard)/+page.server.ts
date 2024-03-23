@@ -1,5 +1,4 @@
-// import prisma from "$lib/prisma"
-import { db as prisma } from "@briefkasten/db"
+import { db } from "@briefkasten/db"
 import { fail, redirect } from "@sveltejs/kit"
 import type { PageServerLoad } from "./$types"
 
@@ -16,7 +15,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
 
-    const [feedData, feedCount] = await prisma.feedEntry.findManyAndCount({
+    const [feedData, feedCount] = await db.feedEntry.findManyAndCount({
       take: 10,
       skip: 0,
       where: {
@@ -30,7 +29,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
       orderBy: { createdAt: "desc" },
     })
 
-    const [bookmarkData, bookmarkCount] = await prisma.bookmark.findManyAndCount({
+    const [bookmarkData, bookmarkCount] = await db.bookmark.findManyAndCount({
       take: 10,
       skip: 0,
       where: {

@@ -1,5 +1,4 @@
-// import prisma from "$lib/prisma"
-import { db as prisma } from "@briefkasten/db"
+import { db } from "@briefkasten/db"
 import { text, json } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
 
@@ -32,7 +31,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
       return new Response(null, { status: 401, statusText: "Missing 'type' parameter" })
     }
 
-    const [data, count] = await prisma[type].findManyAndCount({
+    const [data, count] = await db[type].findManyAndCount({
       take: limit,
       skip: skip,
       where: {

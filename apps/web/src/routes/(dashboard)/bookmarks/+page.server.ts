@@ -1,5 +1,4 @@
-// import prisma from "$lib/prisma"
-import { db as prisma } from "@briefkasten/db"
+import { db } from "@briefkasten/db"
 import { redirect } from "@sveltejs/kit"
 import { fail } from "@sveltejs/kit"
 import { formSchema as quickAddSchema } from "$schemas/quick-add"
@@ -23,7 +22,7 @@ export const actions: Actions = {
       return fail(400)
     }
 
-    await prisma.bookmark.delete({
+    await db.bookmark.delete({
       where: {
         id: bookmarkId,
         userId: session.user.id,
@@ -46,7 +45,7 @@ export const actions: Actions = {
         return fail(400, { type: "error", message: "Form invalid", metadataForm: form })
       }
 
-      await prisma.bookmark.update({
+      await db.bookmark.update({
         data: {
           title: form.data.title,
           desc: form.data.description,
@@ -107,7 +106,7 @@ export const actions: Actions = {
 
       const bookmarkMetadata = await fetchBookmarkMetadata(url)
 
-      const bookmark = await prisma.bookmark.create({
+      const bookmark = await db.bookmark.create({
         data: {
           url,
           title: title,
@@ -122,21 +121,21 @@ export const actions: Actions = {
           },
           tags: tags
             ? {
-              create: tags.map((tag: Tag) => ({
-                tag: {
-                  connect: {
-                    id: tag.id,
+                create: tags.map((tag: Tag) => ({
+                  tag: {
+                    connect: {
+                      id: tag.id,
+                    },
                   },
-                },
-              })),
-            }
+                })),
+              }
             : {},
           category: categoryId
             ? {
-              connect: {
-                id: categoryId,
-              },
-            }
+                connect: {
+                  id: categoryId,
+                },
+              }
             : {},
         },
       })
@@ -174,7 +173,7 @@ export const load: PageServerLoad = async (event) => {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
 
-    const [data, count] = await prisma.bookmark.findManyAndCount({
+    const [data, count] = await db.bookmark.findManyAndCount({
       take: limit + skip,
       skip: skip,
       where: {

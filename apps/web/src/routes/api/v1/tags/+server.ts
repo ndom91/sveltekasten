@@ -1,5 +1,4 @@
-// import prisma from "$lib/prisma"
-import { db as prisma } from "@briefkasten/db"
+import { db } from "@briefkasten/db"
 import { text, json } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
 
@@ -11,7 +10,7 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
     }
     const { data } = await request.json()
 
-    const prismaResult = await prisma.tag.update({
+    const prismaResult = await db.tag.update({
       data: {
         name: data.name,
       },
@@ -40,7 +39,7 @@ export const DELETE: RequestHandler = async ({ request, locals }) => {
     }
     const { data } = await request.json()
 
-    const prismaResult = await prisma.tag.delete({
+    const prismaResult = await prisma.db.tag.delete({
       where: {
         userId: session.user.id,
         id: data.id,

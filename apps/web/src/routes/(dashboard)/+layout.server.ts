@@ -1,5 +1,4 @@
-// import prisma from "$lib/prisma"
-import { db as prisma } from "@briefkasten/db"
+import { db } from "@briefkasten/db"
 import { fail } from "@sveltejs/kit"
 import { formSchema } from "$schemas/quick-add"
 import { zod } from "sveltekit-superforms/adapters"
@@ -16,11 +15,11 @@ export const load: LayoutServerLoad = async ({ locals }) => {
     if (!session?.user?.id) {
       fail(401, { type: "error", error: "Unauthenticated" })
     }
-    const [categories, tags] = await prisma.$transaction([
-      prisma.category.findMany({
+    const [categories, tags] = await db.$transaction([
+      db.category.findMany({
         where: { userId: session?.user?.id },
       }),
-      prisma.tag.findMany({
+      db.tag.findMany({
         where: { userId: session?.user?.id },
       }),
     ])

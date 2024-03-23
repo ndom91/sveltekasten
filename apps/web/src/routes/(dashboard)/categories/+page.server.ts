@@ -1,5 +1,4 @@
-// import prisma from "$lib/prisma"
-import { db as prisma } from "@briefkasten/db"
+import { db } from "@briefkasten/db"
 import { fail, redirect } from "@sveltejs/kit"
 import { Prisma } from "@briefkasten/db"
 import { CategoryCreateInputSchema } from "@briefkasten/db/types"
@@ -15,7 +14,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
     return fail(401, { type: "error", error: "Unauthenticated" })
   }
 
-  const response = await prisma.category.findMany({
+  const response = await db.category.findMany({
     where: { userId: session?.user?.id },
   })
 
@@ -37,7 +36,7 @@ export const actions: Actions = {
     try {
       CategoryCreateInputSchema.parse(formData)
 
-      await prisma.category.create({
+      await db.category.create({
         data: {
           name,
           description,
@@ -77,7 +76,7 @@ export const actions: Actions = {
         return fail(401, { type: "error", error: "Requires category ID" })
       }
 
-      await prisma.category.delete({
+      await db.category.delete({
         where: {
           id: String(categoryId),
           userId: session.user.id,

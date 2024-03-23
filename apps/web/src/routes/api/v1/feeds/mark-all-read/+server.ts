@@ -1,5 +1,4 @@
-// import prisma from "$lib/prisma"
-import { db as prisma } from "@briefkasten/db"
+import { db } from "@briefkasten/db"
 import { text, json } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
 
@@ -12,7 +11,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     }
     const { feedId } = await request.json()
 
-    const data = await prisma.feedEntry.updateMany({
+    const data = await db.feedEntry.updateMany({
       data: {
         unread: false,
       },

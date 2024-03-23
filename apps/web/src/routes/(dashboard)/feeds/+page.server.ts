@@ -1,5 +1,4 @@
-// import prisma from "$lib/prisma"
-import { db as prisma } from "@briefkasten/db"
+import { db } from "@briefkasten/db"
 import { fail, redirect } from "@sveltejs/kit"
 import type { PageServerLoad } from "./$types"
 import type { Feed } from "@briefkasten/db/types"
@@ -20,7 +19,7 @@ export const load: PageServerLoad = async ({ locals, url, depends }) => {
       return fail(401, { type: "error", error: "Attempted to load too many items" })
     }
 
-    const [feedEntryData, feedEntryCount] = await prisma.feedEntry.findManyAndCount({
+    const [feedEntryData, feedEntryCount] = await db.feedEntry.findManyAndCount({
       take: limit,
       skip: skip,
       where: { userId: session?.user?.id },
@@ -31,7 +30,7 @@ export const load: PageServerLoad = async ({ locals, url, depends }) => {
       orderBy: { published: "desc" },
     })
 
-    const [feedData, feedCount] = await prisma.feed.findManyAndCount({
+    const [feedData, feedCount] = await db.feed.findManyAndCount({
       where: { userId: session?.user?.id },
       select: {
         id: true,

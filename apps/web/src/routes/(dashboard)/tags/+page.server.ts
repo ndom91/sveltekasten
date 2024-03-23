@@ -1,5 +1,4 @@
-// import prisma from "$lib/prisma"
-import { db as prisma } from "@briefkasten/db"
+import { db } from "@briefkasten/db"
 import { fail, redirect } from "@sveltejs/kit"
 import { Prisma } from "@briefkasten/db"
 import { TagCreateInputSchema } from "@briefkasten/db/types"
@@ -15,7 +14,7 @@ export const load: PageServerLoad = async ({ url, locals }) => {
     return fail(401, { type: "error", error: "Unauthenticated" })
   }
 
-  const response = await prisma.tag.findMany({
+  const response = await db.tag.findMany({
     where: { userId: session.user.id },
   })
 
@@ -37,7 +36,7 @@ export const actions: Actions = {
     try {
       const parsedData = TagCreateInputSchema.parse(dataEntries)
 
-      await prisma.tag.create({
+      await db.tag.create({
         data: {
           name: parsedData.name,
           userId: session.user.id,
@@ -75,7 +74,7 @@ export const actions: Actions = {
         return fail(401, { type: "error", error: "Requires tag ID" })
       }
 
-      await prisma.tag.delete({
+      await db.tag.delete({
         where: {
           id: String(tagId),
           userId: session.user.id,

@@ -1,5 +1,4 @@
-// import prisma from "$lib/prisma"
-import { db as prisma } from "@briefkasten/db"
+import { db } from "@briefkasten/db"
 import { text, json } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
 
@@ -17,7 +16,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
       return new Response(null, { status: 401, statusText: "Attempted to load too many items" })
     }
 
-    const data = await prisma.feedEntry.findMany({
+    const data = await db.feedEntry.findMany({
       take: limit,
       skip: skip,
       where: { userId: session?.user?.id },
@@ -50,7 +49,7 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
     }
     const { feedEntry } = await request.json()
 
-    const data = await prisma.feedEntry.update({
+    const data = await db.feedEntry.update({
       data: {
         unread: feedEntry.unread,
       },

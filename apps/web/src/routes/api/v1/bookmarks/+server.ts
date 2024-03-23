@@ -1,6 +1,5 @@
 import z from "zod"
-// import prisma from "$lib/prisma"
-import { db as prisma } from "@briefkasten/db"
+import { db } from "@briefkasten/db"
 import { text, json } from "@sveltejs/kit"
 import { BookmarkUncheckedCreateInputSchema } from "@briefkasten/db/types"
 import { fetchBookmarkMetadata } from "$server/lib/fetchBookmarkMetadata"
@@ -20,7 +19,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
       return new Response(null, { status: 401, statusText: "Attempted to load too many items" })
     }
 
-    const data = await prisma.bookmark.findMany({
+    const data = await db.bookmark.findMany({
       take: limit,
       skip: skip,
       where: { userId: session?.user?.id },
@@ -53,7 +52,7 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
     }
     const { id, update } = await request.json()
 
-    const data = await prisma.bookmark.update({
+    const data = await db.bookmark.update({
       data: {
         ...update,
       },
@@ -103,7 +102,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
       }),
     )
 
-    const upsertResponse = await prisma.bookmark.createMany({
+    const upsertResponse = await db.bookmark.createMany({
       data: bookmarkData,
       skipDuplicates: true,
     })

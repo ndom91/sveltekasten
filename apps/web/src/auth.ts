@@ -1,5 +1,4 @@
-// import prisma from "$lib/prisma"
-import { db as prisma } from "@briefkasten/db"
+import { db } from "@briefkasten/db"
 import { env } from "$env/dynamic/private"
 import { SvelteKitAuth } from "@auth/sveltekit"
 import { PrismaAdapter } from "@auth/prisma-adapter"
@@ -58,10 +57,13 @@ export const providerMap = providers.map((provider) => {
   return { id: provider.id, name: provider.name }
 })
 
+// console.log("AUTH", )
+// console.log("AUTH.DB", db)
+
 export const { signIn, signOut, handle } = SvelteKitAuth({
   debug: false,
   trustHost: true,
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(db),
   providers,
   callbacks: {
     jwt: async ({ token, user }) => {

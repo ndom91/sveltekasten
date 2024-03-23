@@ -1,6 +1,5 @@
 import { fail, redirect } from "@sveltejs/kit"
-// import prisma from "$lib/prisma"
-import { db as prisma } from "@briefkasten/db"
+import { db } from "@briefkasten/db"
 import type { Actions } from "./$types"
 import type { PageServerLoad } from "./$types"
 import { WORKER_URL } from "$env/static/private"
@@ -18,7 +17,7 @@ export const actions: Actions = {
       return fail(400, { type: "error", message: "Missing Feed ID" })
     }
 
-    await prisma.feed.delete({
+    await db.feed.delete({
       where: {
         id: feedId,
         userId: session.user.id,
@@ -79,7 +78,7 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
 
-    const [feedData, feedCount] = await prisma.feed.findManyAndCount({
+    const [feedData, feedCount] = await db.feed.findManyAndCount({
       where: { userId: session?.user?.id },
       select: {
         id: true,
@@ -100,7 +99,7 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
       orderBy: { createdAt: "desc" },
     })
 
-    const [bookmarkData, bookmarkCount] = await prisma.bookmark.findManyAndCount({
+    const [bookmarkData, bookmarkCount] = await db.bookmark.findManyAndCount({
       where: {
         userId: session?.user?.id,
       },
@@ -115,7 +114,7 @@ export const load: PageServerLoad = async ({ parent, locals, url }) => {
       return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) }
     })
 
-    const user = await prisma.user.findUnique({
+    const user = await db.user.findUnique({
       select: {
         id: true,
         name: true,
