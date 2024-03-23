@@ -33,14 +33,12 @@ const createPrismaClient = () => {
   })
   return db
 }
-const db = globalForPrisma.prisma ?? createPrismaClient();
+export const db = globalForPrisma.prisma ?? createPrismaClient();
 
 declare global {
   // We need `var` to declare a global variable in TypeScript
   // eslint-disable-next-line no-var
   var prisma: PrismaClient | undefined;
 }
-
-// export const db = prisma
 
 // if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;

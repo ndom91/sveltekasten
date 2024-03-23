@@ -1,13 +1,13 @@
 import { Cron } from "croner"
-// import { db } from "@briefkasten/db"
+import { db } from "@briefkasten/db"
 import { format } from "@formkit/tempo"
 import { updateFeed } from "../lib/update-feed.js"
 import { getLogger } from "../plugins/logger.js"
 import type { Feed } from "@briefkasten/db/types"
 
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url ?? __filename);
-const { db } = require('@briefkasten/db');
+// import { createRequire } from 'module';
+// const require = createRequire(import.meta.url ?? __filename);
+// const { db } = require('@briefkasten/db');
 
 const logger = getLogger({ prefix: "cron" })
 

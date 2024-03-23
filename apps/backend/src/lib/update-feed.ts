@@ -1,13 +1,9 @@
 // import { prisma } from "../plugins/db.js"
-// import { db } from "@briefkasten/db"
+import { db } from "@briefkasten/db"
 import Parser from "rss-parser"
 import { getLogger } from "../plugins/logger.js"
-// import type { Feed } from "@briefkasten/db"
-import type { Feed, FeedEntry } from "@briefkasten/db/types"
-
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url ?? __filename);
-const { db } = require('@briefkasten/db');
+import type { Feed, FeedEntry } from "@briefkasten/db"
+// import type { Feed, FeedEntry } from "@briefkasten/db/types"
 
 const wLogger = getLogger({ prefix: "update-feed" })
 
@@ -36,7 +32,7 @@ const updateFeed = async (feed: Feed) => {
   }
 
   // Find pre-existing feed entries
-  const matchedFeedEntries: FeedEntry[] = await db.feedEntry.findMany({
+  const matchedFeedEntries = await db.feedEntry.findMany({
     select: {
       guid: true,
     },
