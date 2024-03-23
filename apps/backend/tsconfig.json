@@ -15,14 +15,11 @@
     "esModuleInterop": true,
 
     "resolveJsonModule": true,
-    "moduleDetection": "force",
     "isolatedModules": true,
 
     "types": [
       "node"
     ],
-    "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx",
   },
   "include": [
     "src/**/*.ts"

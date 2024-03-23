@@ -1,11 +1,6 @@
-// import { prisma } from "../../plugins/db.js"
-import { db } from "@briefkasten/db"
+import { db } from "../../plugins/prisma.js"
 import Parser from "rss-parser"
 import { getLogger } from "../../plugins/logger.js"
-
-// import { createRequire } from 'module';
-// const require = createRequire(import.meta.url ?? __filename);
-// const { db } = require('@briefkasten/db');
 
 const wLogger = getLogger({ prefix: "create-feed" })
 

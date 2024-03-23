@@ -12,13 +12,7 @@
     "db:generate": "pnpm exec prisma generate",
     "postinstally": "pnpm exec prisma generate"
   },
-  "main": "./index.ts",
-  "types": "./index.ts",
-  "files": [
-    "dist",
-    "prisma",
-    "package.json"
-  ],
+  "main": "./dist/index.js",
   "devDependencies": {
     "@types/node": "^20.11.28",
     "zod-prisma-types": "^3.1.6"
