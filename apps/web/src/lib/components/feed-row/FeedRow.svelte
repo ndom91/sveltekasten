@@ -27,7 +27,7 @@
   let isOptionsOpen = $state(false)
   let card = $state<HTMLElement>()
   let cardOpen = $state(false)
-  let feedBodyElement = $state<HTMLElement>()
+  let feedBodyElement = $state<HTMLElement>()!
 
   const openButtonGroup = () => {
     isOptionsOpen = true
@@ -82,9 +82,17 @@
 
   const mutate = () => {
     if (cardOpen) {
-      feedBodyElement.style.display = "block"
+      feedBodyElement.style.opacity = "1.0"
+      // feedBodyElement.style.minHeight = "fit-content"
+      // feedBodyElement.style.display = "block"
+      feedBodyElement.style.height = "fit-content"
+      feedBodyElement.style.transform = "scaleY(100%)"
     } else {
-      feedBodyElement.style.display = "none"
+      feedBodyElement.style.opacity = "0"
+      // feedBodyElement.style.minHeight = "0px"
+      // feedBodyElement.style.display = "none"
+      feedBodyElement.style.height = "0px"
+      feedBodyElement.style.transform = "scaleY(0)"
     }
   }
 
@@ -137,7 +145,10 @@
     </span>
     <div
       bind:this={feedBodyElement}
-      class="prose max-w-screen-lg origin-top prose-img:!w-full dark:prose-blockquote:text-zinc-200 prose-img:!h-auto prose-img:max-w-screen-md prose-img:object-contain prose-video:aspect-video prose-video:max-w-screen-sm dark:text-zinc-100 dark:prose-headings:text-zinc-100 dark:prose-a:text-zinc-200 dark:prose-strong:text-zinc-100 feedRow hidden"
+      class={cn(
+        "prose max-w-screen-lg origin-top prose-img:!w-full dark:prose-blockquote:text-zinc-200 prose-img:!h-auto prose-img:max-w-screen-md prose-img:object-contain prose-video:aspect-video prose-video:max-w-screen-sm dark:text-zinc-100 dark:prose-headings:text-zinc-100 dark:prose-a:text-zinc-200 dark:prose-strong:text-zinc-100 transition-all h-0 opacity-0",
+        cardOpen ? "h-fit" : "h-0",
+      )}
     >
       {@html dompurify.sanitize(feedEntry.content ?? "")}
     </div>
@@ -175,11 +186,3 @@
     {handleStartTextSummarization}
   />
 </div>
-
-<style>
-  @media (prefers-reduced-motion: no-preference) {
-    .feedRow {
-      view-transition-name: feedRow;
-    }
-  }
-</style>
