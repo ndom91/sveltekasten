@@ -3,7 +3,9 @@ import { PrismaClient, Prisma } from "@prisma/client";
 export * from "@prisma/client"
 export * as prismaZod from "./zod-prisma/index.js"
 
-const globalForPrisma = globalThis as { prisma?: PrismaClient };
+// TODO: any; PrismaClient doens't workA
+// https://github.com/braydenwerner/t3-turbo-next-app-router/blob/master/packages/db/index.ts
+const globalForPrisma = globalThis as { prisma?: any };
 
 export const db = globalForPrisma.prisma || new PrismaClient().$extends({
   name: "findManyAndCount",
@@ -13,7 +15,7 @@ export const db = globalForPrisma.prisma || new PrismaClient().$extends({
         this: Model,
         args: Prisma.Exact<Args, Prisma.Args<Model, "findMany">>,
       ): Promise<[Prisma.Result<Model, Args, "findMany">, number]> {
-        return prisma.$transaction([
+        return db.$transaction([
           (this as any).findMany(args),
           (this as any).count({ where: (args as any).where }),
         ]) as any

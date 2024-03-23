@@ -281,6 +281,9 @@ importers:
         specifier: ^3.21.1
         version: 3.22.4
     devDependencies:
+      '@types/node':
+        specifier: ^20.11.28
+        version: 20.11.28
       prisma:
         specifier: 5.11.0
         version: 5.11.0

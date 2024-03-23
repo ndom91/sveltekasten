@@ -1,5 +1,5 @@
 // import { prisma } from "../plugins/db.js"
-import { db } from "@briefkasten/db"
+import prisma from "@briefkasten/db"
 import Parser from "rss-parser"
 import { getLogger } from "../plugins/logger.js"
 import type { Feed } from "@briefkasten/db"
@@ -31,7 +31,7 @@ const updateFeed = async (feed: Feed) => {
   }
 
   // Find pre-existing feed entries
-  const matchedFeedEntries = await db.feedEntry.findMany({
+  const matchedFeedEntries = await prisma.db.feedEntry.findMany({
     select: {
       guid: true,
     },
@@ -58,7 +58,7 @@ const updateFeed = async (feed: Feed) => {
   await Promise.all(
     newItems.map((item) => {
       wLogger.info(`Inserting ${item.link}`)
-      return db.feedEntry.create({
+      return prisma.db.feedEntry.create({
         data: {
           title: item.title ?? "",
           guid: item.guid,
