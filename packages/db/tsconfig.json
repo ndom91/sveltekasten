@@ -9,7 +9,7 @@
     // "strictNullChecks": true,
     // "noUncheckedIndexedAccess": true,
     //
-    // "outDir": "dist",
+    "outDir": "dist",
     // "rootDir": ".",
     //
     // "module": "commonjs",
@@ -17,7 +17,7 @@
     // "types": ["node"],
     "alwaysStrict": true,
     "composite": false,
-    "esModuleInterop": true,
+    "esModuleInterop": false,
     "forceConsistentCasingInFileNames": true,
     "inlineSources": false,
     "isolatedModules": true,
@@ -31,13 +31,8 @@
 
 
     "alwaysStrict": true,
-    "jsx": "preserve",
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "nodenext",
-    "noEmit": true,
-    "declaration": false,
-    "declarationMap": false,
-    "resolveJsonModule": true
   },
   "exclude": [
     "node_modules",

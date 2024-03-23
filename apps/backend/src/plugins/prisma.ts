@@ -1,6 +1,6 @@
-import database from "@briefkasten/db"
+import { PrismaClient } from "@briefkasten/db"
 
-const { PrismaClient } = database
+// const { PrismaClient } = database
 
 const prisma = new PrismaClient()
 

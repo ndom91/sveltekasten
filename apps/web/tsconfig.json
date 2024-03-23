@@ -6,7 +6,6 @@
     "resolveJsonModule": true,
     "useUnknownInCatchVariables": true,
     "skipLibCheck": true,
-    "moduleDetection": "force",
     "isolatedModules": true,
     "lib": [
       "dom",
@@ -16,10 +15,6 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "target": "es2022",
-    "module": "nodenext",
-    "moduleResolution": "nodenext"
-  },
-  "ts-node": {
-    "esm": true
+    "module": "nodenext"
   }
 }

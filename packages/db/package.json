@@ -12,6 +12,7 @@
     "db:generate": "pnpm exec prisma generate",
     "postinstally": "pnpm exec prisma generate"
   },
+  "type": "module",
   "main": "./dist/index.js",
   "devDependencies": {
     "@types/node": "^20.11.28",

@@ -1,4 +1,3 @@
-// import { Prisma, PrismaClient } from "@briefkasten/db"
 import * as database from "@briefkasten/db"
 
 const { PrismaClient, Prisma } = database
@@ -22,19 +21,3 @@ const prisma = new PrismaClient().$extends({
 
 export default prisma
 export { prisma as db }
-
-// import { dev } from "$app/environment"
-// import * as database from "@briefkasten/db"
-// console.log("database", database)
-// // export { db }
-// import { default as ProdPrisma } from "@briefkasten/db"
-//
-// let db
-//
-// if (!dev) {
-//   db = database.db
-// } else {
-//   db = ProdPrisma.db
-// }
-// //
-// export { db }
