@@ -12,7 +12,8 @@
     "dev:api": "pnpm run --dir apps/backend dev",
     "build": "pnpm run --parallel build",
     "start": "pnpm run --parallel start",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,yml,yaml,md}\""
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,yml,yaml,md}\"",
+    "db:generate": "pnpm run --parallel db:generate"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "7.2.0",
