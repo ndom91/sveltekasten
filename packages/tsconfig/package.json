@@ -1,0 +1,13 @@
+{
+  "name": "@briefkasten/tsconfig",
+  "version": "0.0.0",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "clean": "rm -rf node_modules"
+  },
+  "files": [
+    "base.json",
+    "react-library.json"
+  ]
+}
