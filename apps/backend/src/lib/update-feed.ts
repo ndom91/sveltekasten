@@ -1,8 +1,7 @@
 import { db } from "../plugins/prisma.js"
 import Parser from "rss-parser"
 import { getLogger } from "../plugins/logger.js"
-import type { Feed } from "@briefkasten/db/types"
-// import type { Feed, FeedEntry } from "@briefkasten/db/types"
+import type { Feed } from "./types/index.js"
 
 const wLogger = getLogger({ prefix: "update-feed" })
 

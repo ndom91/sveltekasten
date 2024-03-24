@@ -3,7 +3,7 @@ import { db } from "../plugins/prisma.js"
 import { format } from "@formkit/tempo"
 import { updateFeed } from "../lib/update-feed.js"
 import { getLogger } from "../plugins/logger.js"
-import type { Feed } from "@briefkasten/db/types"
+import type { Feed } from "../lib/types/index.js"
 
 const logger = getLogger({ prefix: "cron" })
 

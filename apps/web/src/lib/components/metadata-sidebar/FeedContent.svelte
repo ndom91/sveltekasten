@@ -6,7 +6,7 @@
   import { Checkbox } from "$lib/components/ui/checkbox"
   import { useInterface } from "$state/ui.svelte"
   import type { PageServerLoad } from "./$types"
-  import type { Feed } from "@briefkasten/db/types"
+  import type { Feed } from "$lib/types/zod"
 
   const ui = useInterface()
 

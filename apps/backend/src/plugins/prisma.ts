@@ -1,6 +1,4 @@
-import * as database from "@briefkasten/db"
-
-const { PrismaClient } = database
+import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient()
 

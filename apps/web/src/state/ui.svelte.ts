@@ -1,4 +1,4 @@
-import type { Category, Tag } from "@briefkasten/db/types"
+import type { Category, Tag } from "$lib/types/zod"
 
 export const TTSLocation = {
   BROWSER: "BROWSER",

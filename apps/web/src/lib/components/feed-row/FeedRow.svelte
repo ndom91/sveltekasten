@@ -7,7 +7,7 @@
   import dompurify from "isomorphic-dompurify"
   import FeedActions from "./FeedActions.svelte"
   import { useInterface } from "$state/ui.svelte"
-  import type { Feed, FeedEntry, FeedEntryMedia } from "@briefkasten/db/types"
+  import type { Feed, FeedEntry, FeedEntryMedia } from "$lib/types/zod"
 
   const ui = useInterface()
 

@@ -1,8 +1,6 @@
 import { fail, redirect } from "@sveltejs/kit"
-// import { db } from "@briefkasten/db"
 import { db } from "$lib/prisma"
-import type { Actions } from "./$types"
-import type { PageServerLoad } from "./$types"
+import type { PageServerLoad, Actions } from "./$types"
 import { WORKER_URL } from "$env/static/private"
 
 export const actions: Actions = {

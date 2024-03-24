@@ -12,7 +12,6 @@
     "dev:api": "pnpm run --dir apps/backend dev",
     "build": "pnpm run --parallel build",
     "start": "pnpm run --parallel start",
-    "db:studio": "pnpm run --filter @briefkasten/db db:studio",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,yml,yaml,md}\""
   },
   "devDependencies": {

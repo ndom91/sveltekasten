@@ -18,6 +18,7 @@ const config = {
       $server: "src/server",
       $lib: "src/lib",
       $state: "src/state",
+      $types: "src/lib/types",
     },
   },
 }

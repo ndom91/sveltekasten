@@ -1,8 +1,7 @@
-// import { db } from "@briefkasten/db"
 import { db } from "$lib/prisma"
 import { fail, redirect } from "@sveltejs/kit"
-import * as Prisma from "@briefkasten/db"
-import { TagCreateInputSchema } from "@briefkasten/db/types"
+import { Prisma } from "@prisma/client"
+import { TagCreateInputSchema } from "$lib/types/zod"
 import type { Actions, PageServerLoad } from "./$types"
 
 export const load: PageServerLoad = async ({ url, locals }) => {

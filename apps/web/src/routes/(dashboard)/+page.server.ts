@@ -1,4 +1,3 @@
-// import { db } from "@briefkasten/db"
 import { db } from "$lib/prisma"
 import { fail, redirect } from "@sveltejs/kit"
 import type { PageServerLoad } from "./$types"

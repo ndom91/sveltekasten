@@ -48,11 +48,6 @@ ENV NODE_ENV production
 
 COPY --chown=node:node --from=build /prod/web /prod/web
 
-RUN ls -lah /prod/web
-RUN ls -lah /prod/web/node_modules
-RUN ls -lah /prod/web/node_modules/@briefkasten/db/
-RUN ls -lah /prod/web/node_modules/@prisma/client/
-
 WORKDIR /prod/web
 EXPOSE ${PORT:-3000}
 CMD [ "pnpm", "start" ]
@@ -73,11 +68,6 @@ ENV NODE_ENV production
     # apt-get install -y openssl
 
 COPY --chown=node:node --from=build /prod/backend /prod/backend
-
-RUN ls -lah /prod/backend
-RUN ls -lah /prod/backend/node_modules
-RUN ls -lah /prod/backend/node_modules/@briefkasten/db/
-RUN ls -lah /prod/backend/node_modules/@prisma/client
 
 WORKDIR /prod/backend
 EXPOSE ${PORT:-3000}

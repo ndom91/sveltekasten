@@ -12,7 +12,7 @@
   import { createTable, Render, Subscribe, createRender } from "svelte-headless-table"
   import { addSortBy } from "svelte-headless-table/plugins"
   import DataTableActions from "./feed-data-table-actions.svelte"
-  import type { Feed } from "@briefkasten/db/types"
+  import type { Feed } from "$lib/types/zod"
 
   let isDeleteDialogOpen = $state(false)
   let targetFeed = $state<Feed>()

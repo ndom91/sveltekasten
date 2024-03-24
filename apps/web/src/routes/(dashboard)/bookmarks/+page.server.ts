@@ -1,4 +1,3 @@
-// import { db } from "@briefkasten/db"
 import { db } from "$lib/prisma"
 import { redirect } from "@sveltejs/kit"
 import { fail } from "@sveltejs/kit"
@@ -8,7 +7,7 @@ import { superValidate, message } from "sveltekit-superforms"
 import { zod } from "sveltekit-superforms/adapters"
 import { fetchBookmarkMetadata } from "$server/lib/fetchBookmarkMetadata"
 import type { Actions, PageServerLoad } from "./$types"
-import type { Tag } from "@briefkasten/db/types"
+import type { Tag } from "$lib/types/zod"
 
 export const actions: Actions = {
   deleteBookmark: async ({ request, locals }) => {
@@ -122,21 +121,21 @@ export const actions: Actions = {
           },
           tags: tags
             ? {
-                create: tags.map((tag: Tag) => ({
-                  tag: {
-                    connect: {
-                      id: tag.id,
-                    },
+              create: tags.map((tag: Tag) => ({
+                tag: {
+                  connect: {
+                    id: tag.id,
                   },
-                })),
-              }
+                },
+              })),
+            }
             : {},
           category: categoryId
             ? {
-                connect: {
-                  id: categoryId,
-                },
-              }
+              connect: {
+                id: categoryId,
+              },
+            }
             : {},
         },
       })

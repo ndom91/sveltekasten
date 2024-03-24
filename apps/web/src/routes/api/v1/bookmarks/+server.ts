@@ -1,7 +1,7 @@
 import z from "zod"
 import { db } from "$lib/prisma"
 import { text, json } from "@sveltejs/kit"
-import { BookmarkUncheckedCreateInputSchema } from "@briefkasten/db/types"
+import { BookmarkUncheckedCreateInputSchema } from "$lib/types/zod"
 import { fetchBookmarkMetadata } from "$server/lib/fetchBookmarkMetadata"
 import type { RequestHandler } from "./$types"
 

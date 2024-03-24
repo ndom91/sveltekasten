@@ -1,4 +1,3 @@
-// import { db } from "@briefkasten/db"
 import { db } from "$lib/prisma"
 import { fail } from "@sveltejs/kit"
 import { formSchema } from "$schemas/quick-add"

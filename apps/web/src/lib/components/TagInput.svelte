@@ -10,7 +10,7 @@
   import { Combobox } from "bits-ui"
   import { flyAndScale } from "$lib/utils/style"
   import { formFieldProxy, type SuperForm, type FormPathLeaves } from "sveltekit-superforms"
-  import type { Tag as RawTag } from "@briefkasten/db/types"
+  import type { Tag as RawTag } from "$lib/types/zod"
 
   let {
     form,

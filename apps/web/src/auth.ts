@@ -1,4 +1,3 @@
-// import { db } from "@briefkasten/db"
 import { db } from "$lib/prisma"
 import { env } from "$env/dynamic/private"
 import { SvelteKitAuth } from "@auth/sveltekit"

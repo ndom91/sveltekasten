@@ -1,6 +1,4 @@
-import * as database from "@briefkasten/db"
-
-const { PrismaClient, Prisma } = database
+import { PrismaClient, Prisma } from "@prisma/client"
 
 const prisma = new PrismaClient().$extends({
   name: "findManyAndCount",
