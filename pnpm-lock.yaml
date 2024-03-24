@@ -74,6 +74,9 @@ importers:
       zod:
         specifier: ^3.22.4
         version: 3.22.4
+      zod-prisma-types:
+        specifier: ^3.1.6
+        version: 3.1.6
     devDependencies:
       '@types/node':
         specifier: ^20.11.28
@@ -90,9 +93,6 @@ importers:
       tsx:
         specifier: ^4.7.1
         version: 4.7.1
-      zod-prisma-types:
-        specifier: ^3.1.6
-        version: 3.1.6
 
   apps/web:
     dependencies:
@@ -213,6 +213,9 @@ importers:
       zod:
         specifier: ^3.21.1
         version: 3.22.4
+      zod-prisma-types:
+        specifier: ^3.1.6
+        version: 3.1.6
     devDependencies:
       '@sveltejs/adapter-auto':
         specifier: 3.1.1
@@ -283,9 +286,6 @@ importers:
       typescript-svelte-plugin:
         specifier: ^0.3.37
         version: 0.3.37(svelte@5.0.0-next.79)(typescript@5.4.2)
-      zod-prisma-types:
-        specifier: ^3.1.6
-        version: 3.1.6
 
 packages:
 
@@ -1968,7 +1968,7 @@ packages:
     resolution: {integrity: sha512-oK25sTb2q2TPN7OipiU5xkCpDPNvdWvmFgU9UmmPr8uEt2CdwDjxiWonULgwd6YfqnCOLNpLq0wBIONjelaVMg==}
     dependencies:
       '@prisma/debug': 5.11.0
-    dev: true
+    dev: false
 
   /@prisma/get-platform@5.11.0:
     resolution: {integrity: sha512-rxtHpMLxNTHxqWuGOLzR2QOyQi79rK1u1XYAVLZxDGTLz/A+uoDnjz9veBFlicrpWjwuieM4N6jcnjj/DDoidw==}
@@ -3481,7 +3481,7 @@ packages:
 
   /code-block-writer@12.0.0:
     resolution: {integrity: sha512-q4dMFMlXtKR3XNBHyMHt/3pwYNA69EDk00lloMOaaUMKPUXBw6lpXtbu3MMVG6/uOihGnRDOlkyqsONEUj60+w==}
-    dev: true
+    dev: false
 
   /color-convert@1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
@@ -4761,6 +4761,7 @@ packages:
 
   /lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+    dev: false
 
   /logform@2.6.0:
     resolution: {integrity: sha512-1ulHeNPp6k/LD8H91o7VYFBng5i1BDE7HoKxVbZiGFidS1Rj65qcywLxX+pVfAPoQJEjRdvKcusKwOupHCVOVQ==}
@@ -7065,7 +7066,7 @@ packages:
       code-block-writer: 12.0.0
       lodash: 4.17.21
       zod: 3.22.4
-    dev: true
+    dev: false
 
   /zod-to-json-schema@3.22.4(zod@3.22.4):
     resolution: {integrity: sha512-2Ed5dJ+n/O3cU383xSY28cuVi0BCQhF8nYqWU5paEpl7fVdqdAmiLdqLyfblbNdfOFwFfi/mqU4O1pwc60iBhQ==}
@@ -7079,3 +7080,4 @@ packages:
 
   /zod@3.22.4:
     resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
+    dev: false
