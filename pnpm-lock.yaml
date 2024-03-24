@@ -208,6 +208,9 @@ importers:
         specifier: ^3.21.1
         version: 3.22.4
     devDependencies:
+      '@briefkasten/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
       '@sveltejs/adapter-auto':
         specifier: 3.1.1
         version: 3.1.1(@sveltejs/kit@2.5.4)
@@ -284,12 +287,17 @@ importers:
         specifier: ^3.21.1
         version: 3.22.4
     devDependencies:
+      '@briefkasten/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
       '@types/node':
         specifier: ^20.11.28
         version: 20.11.28
       zod-prisma-types:
         specifier: ^3.1.6
         version: 3.1.6
+
+  packages/tsconfig: {}
 
 packages:
 

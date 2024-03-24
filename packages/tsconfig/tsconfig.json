@@ -1,8 +1,21 @@
 {
-  "extends": "./base.json",
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@briefkasten/tsconfig/base.json",
   "compilerOptions": {
-    "noEmit": true,
+    "types": ["node"],
+    "baseUrl": "./src",
+    "target": "esnext",
+    "lib": ["esnext"],
+    "module": "CommonJS",
+    "noEmit": false,
+    "incremental": true,
+    "declaration": true,
+    "declarationDir": "./dist",
+    "rootDir": "./src",
+    "composite": true,
+    "outDir": "./dist",
+    "experimentalDecorators": true
   },
-  "include": ["**/*.ts", "**/*.tsx", "**/*.d.ts", "**/*.json"],
-  "exclude": ["dist", "build", "node_modules"]
+  "include": ["./src"],
+  "exclude": ["**/node_modules", "**/.*/", "./dist", "./build"]
 }

@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "vite dev --port 3000",
     "dev:bun": "bunx --bun vite dev --port 3000",
-    "clean": "rm -rf build",
+    "clean": "rm -rf build || true",
     "build:bun": "bun clean && vite build",
     "build": "pnpm clean && vite build",
     "start": "node build/index.js",
@@ -16,6 +16,7 @@
   },
   "type": "module",
   "devDependencies": {
+    "@briefkasten/tsconfig": "workspace:*",
     "@sveltejs/adapter-auto": "3.1.1",
     "@sveltejs/adapter-node": "^5.0.1",
     "@sveltejs/kit": "2.5.4",

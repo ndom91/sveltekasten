@@ -17,5 +17,7 @@ build/
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
+tsconfig.tsbuildinfo
+
 haters/
 
