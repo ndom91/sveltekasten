@@ -30,7 +30,7 @@ api.post("/", feedBodySchema, async (c) => {
     const cookieName = process.env.NODE_ENV !== "production" ? "authjs.session-token" : "__Secure-authjs.session-token"
     const cookie = getCookie(c, cookieName)!
     const decodedJwt = await verifyJwt(cookie)
-    console.log("cookie", { decodedJwt })
+    console.log("cookie", { cookieName, cookie, decodedJwt })
 
     const { feedUrl } = c.req.valid("json")
 
