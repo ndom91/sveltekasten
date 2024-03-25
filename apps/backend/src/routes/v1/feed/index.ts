@@ -28,6 +28,8 @@ api.post("/", feedBodySchema, async (c) => {
 
     const { feedUrl } = c.req.valid("json")
 
+    console.log("feed.inputs", { feedUrl, jwtSub: decodedJwt?.sub })
+
     if (!feedUrl || !decodedJwt?.sub) {
       throw c.json({ error: "feedUrl required" }, 400)
     }
