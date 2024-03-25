@@ -24,7 +24,7 @@ services:
     networks: 
       - sveltekasten_network
     ports:
-      - "3000:3000"
+      - 3000:3000
     env_file: ./apps/web/.env
   sveltekasten-backend:
     build: 
@@ -32,6 +32,8 @@ services:
       tags: 
         - backend:latest
       target: backend
+    ports:
+      - 8000:8000
     networks: 
       - sveltekasten_network
     restart: unless-stopped

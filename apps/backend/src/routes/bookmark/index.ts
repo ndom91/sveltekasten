@@ -3,9 +3,9 @@ import { HTTPException } from "hono/http-exception"
 import { getCookie } from "hono/cookie"
 import { timing, setMetric, startTime, endTime } from "hono/timing"
 
-import { verifyJwt } from "../../../lib/jwt.js"
+import { verifyJwt } from "../../lib/jwt.js"
 import { bookmarkImageCookieValidator, bookmarkImageFormValidator } from "./schema.js"
-import { client } from "../../../plugins/storage.js"
+import { client } from "../../plugins/storage.js"
 import { PutObjectCommand } from "@aws-sdk/client-s3"
 
 const api = new Hono()

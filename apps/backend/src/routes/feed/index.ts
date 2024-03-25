@@ -2,10 +2,10 @@ import { Hono } from "hono"
 import { HTTPException } from "hono/http-exception"
 import { feedBodySchema } from "./schema.js"
 import { getCookie } from "hono/cookie"
-import { verifyJwt } from "../../../lib/jwt.js"
-import { parse } from "../../../lib/cookie.js"
-import { actions } from "../../../lib/constants.js"
-import { queue } from "../../../plugins/queue.js"
+import { verifyJwt } from "../../lib/jwt.js"
+import { parse } from "../../lib/cookie.js"
+import { actions } from "../../lib/constants.js"
+import { queue } from "../../plugins/queue.js"
 
 const api = new Hono()
 
