@@ -83,14 +83,10 @@
   const mutate = () => {
     if (cardOpen) {
       feedBodyElement.style.opacity = "1.0"
-      // feedBodyElement.style.minHeight = "fit-content"
-      // feedBodyElement.style.display = "block"
       feedBodyElement.style.height = "fit-content"
       feedBodyElement.style.transform = "scaleY(100%)"
     } else {
       feedBodyElement.style.opacity = "0"
-      // feedBodyElement.style.minHeight = "0px"
-      // feedBodyElement.style.display = "none"
       feedBodyElement.style.height = "0px"
       feedBodyElement.style.transform = "scaleY(0)"
     }

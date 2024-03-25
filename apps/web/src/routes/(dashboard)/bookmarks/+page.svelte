@@ -96,10 +96,10 @@
     try {
       pageNumber += 1
       const limit = limitLoadCount
-      const skip = limitLoadCount * (pageNumber - 1)
+      const skip = limitLoadCount * pageNumber
 
       // If there are less results than the first page, we are done
-      if (allItems.length < skip) {
+      if (allItems.length !== 0 && allItems.length < skip) {
         loaderState.complete()
         return
       }
