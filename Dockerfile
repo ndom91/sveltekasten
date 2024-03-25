@@ -81,5 +81,5 @@ RUN cd /prod/backend && pnpm dlx prisma generate
 RUN ls -lah /prod/backend
 
 WORKDIR /prod/backend
-EXPOSE ${PORT:-3000}
+EXPOSE ${PORT:-8000}
 CMD [ "pnpm", "start" ]
