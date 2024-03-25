@@ -102,7 +102,17 @@
       {/if}
     {:else}
       <div class="grid place-items-center w-full h-24">
-        <p>No items found</p>
+        {#if type === ScrollerTypes.BOOKMARKS}
+          <div>
+            Go to the <a href="/bookmarks" class="underline underline-offset-4">bookmarks</a> page to
+            find multiple ways to add new bookmarks
+          </div>
+        {:else if type === ScrollerTypes.FEEDS}
+          <div>
+            Go to <a href="/settings?tab=feeds" class="underline underline-offset-4">settings</a> to
+            add a new RSS feed to follow
+          </div>
+        {/if}
       </div>
     {/each}
   </div>

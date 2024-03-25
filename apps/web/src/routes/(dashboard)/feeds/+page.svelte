@@ -1,11 +1,12 @@
 <script lang="ts">
+  import { untrack, onDestroy } from "svelte"
   import { dev } from "$app/environment"
   import toast from "svelte-french-toast"
   import { ofetch } from "ofetch"
   import { Navbar } from "$lib/components/navbar"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { FeedRow } from "$lib/components/feed-row"
-  import { untrack, onDestroy } from "svelte"
+  import Blob from "$lib/assets/blob1.png"
 
   import { useInterface, TTSLocation, defaultAISettings } from "$state/ui.svelte"
   import { InfiniteLoader, loaderState } from "svelte-infinite"
@@ -273,7 +274,7 @@
 
   // Handle search input changes
   // Reset fields and load first results from api
-  $effect.pre((data) => {
+  $effect.pre(() => {
     ui.searchQuery
     untrack(() => {
       loaderState.reset()
@@ -349,9 +350,14 @@
       {/each}
     </InfiniteLoader>
   {:else}
-    <EmptyState />
+    <EmptyState showArrow={false}>
+      {#snippet illustration()}
+        <img src={Blob} alt="Empty State Blob" class="w-full max-w-md grayscale dark:invert" />
+      {/snippet}
+    </EmptyState>
     <p class="mx-auto w-1/2 text-center text-muted-foreground">
-      Get started by adding a feed in <a class="underline" href="/settings">settings</a>
+      Get started by adding a feed in
+      <a class="underline underline-offset-2" href="/settings"> settings </a>
     </p>
   {/if}
 </main>
