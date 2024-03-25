@@ -31,6 +31,7 @@
   $effect(() => {
     // Hack to get effect to run on sidebar toggle
     ui.userSidebarOpen
+    // @ts-expect-error
     document.startViewTransition ? document.startViewTransition(() => mutate()) : mutate()
   })
 </script>

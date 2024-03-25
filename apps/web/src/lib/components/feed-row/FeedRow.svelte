@@ -99,6 +99,7 @@
   $effect(() => {
     // Hack to get effect to run on cardOpen change
     cardOpen
+    // @ts-expect-error
     document.startViewTransition ? document.startViewTransition(() => mutate()) : mutate()
   })
 

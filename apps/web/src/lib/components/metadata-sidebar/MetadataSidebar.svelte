@@ -8,12 +8,9 @@
   const ui = useInterface()
   let metadataSidebarElement = $state<HTMLElement>()!
 
-  const DISABLED_PATHS = ["/categories", "/tags", "/settings", "/"]
-
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.repeat || event.target instanceof HTMLInputElement) return
     if (event.code === "BracketRight") {
-      if (DISABLED_PATHS.includes($page.url.pathname)) return
       event.preventDefault()
       ui.toggleMetadataSidebar()
     }
@@ -35,6 +32,7 @@
   $effect(() => {
     // Hack to get effect to run on sidebar toggle
     ui.metadataSidebarOpen
+    // @ts-expect-error
     document.startViewTransition ? document.startViewTransition(() => mutate()) : mutate()
   })
 </script>
