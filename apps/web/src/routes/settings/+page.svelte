@@ -24,11 +24,11 @@
 <div class="flex h-full">
   <CommandBar />
   <Sidebar />
-  <div class="flex flex-col flex-grow items-center w-full">
+  <div class="flex flex-col flex-grow items-start w-full">
     <Navbar simple />
     <Tabs.Root
       value={tab ?? "user"}
-      class="flex flex-col flex-grow w-full max-w-screen-2xl"
+      class="flex flex-col flex-grow w-full max-w-screen-3xl"
       onValueChange={handleTabChange}
     >
       <div class="p-4">

@@ -25,6 +25,7 @@ api.get("/", async (c) => {
 api.post("/", feedBodySchema, async (c) => {
   try {
     const decodedJwt = await verifyJwt(getCookie(c, "authjs.session-token")!)
+    console.log("decodedJwt", decodedJwt)
 
     const { feedUrl } = c.req.valid("json")
 

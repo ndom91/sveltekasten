@@ -49,6 +49,10 @@
       header: "Name",
     }),
     table.column({
+      accessor: "url",
+      header: "URL",
+    }),
+    table.column({
       accessor: ({ _count }) => _count.feedEntries,
       id: "count",
       header: "Entries",
@@ -147,8 +151,12 @@
                       <Table.Cell class="max-w-48 truncate" {...attrs}>
                         <Render of={cell.render()} />
                       </Table.Cell>
-                    {:else if cell.id === "actions"}
+                    {:else if cell.id === "url"}
                       <Table.Cell class="max-w-48 truncate" {...attrs}>
+                        <Render of={cell.render()} />
+                      </Table.Cell>
+                    {:else if cell.id === "actions"}
+                      <Table.Cell class="max-w-24" {...attrs}>
                         <DataTableActions
                           id={row.original.id}
                           toggleDeleteDialog={handleToggleDeleteDialog}
