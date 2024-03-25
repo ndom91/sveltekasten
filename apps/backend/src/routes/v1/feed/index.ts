@@ -24,15 +24,14 @@ api.get("/", async (c) => {
 
 api.post("/", feedBodySchema, async (c) => {
   try {
-    const decodedJwt = await verifyJwt(getCookie(c, "authjs.session-token")!)
-    console.log("decodedJwt", decodedJwt)
+    const cookieName = process.env.NODE_ENV !== "production" ? "authjs.session-token" : "__Secure-auth.session-token"
+    const cookie = getCookie(c, cookieName)!
+    const decodedJwt = await verifyJwt(cookie)
 
     const { feedUrl } = c.req.valid("json")
 
-    console.log("feed.inputs", { feedUrl, jwtSub: decodedJwt?.sub })
-
     if (!feedUrl || !decodedJwt?.sub) {
-      throw c.json({ error: "feedUrl required" }, 400)
+      throw c.json({ error: "Failed to add feed, missing inputs" }, 500)
     }
     // TODO: Add to queue
     await queue.push({
