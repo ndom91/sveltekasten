@@ -352,7 +352,7 @@
   {:else}
     <EmptyState showArrow={false}>
       {#snippet illustration()}
-        <img src={Blob} alt="Empty State Blob" class="w-full max-w-md grayscale dark:invert" />
+        <img src={Blob} alt="Empty State Blob" class="m-16 w-full max-w-md grayscale dark:invert" />
       {/snippet}
     </EmptyState>
     <p class="mx-auto w-1/2 text-center text-muted-foreground">

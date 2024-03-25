@@ -7,7 +7,7 @@
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
 
   let {
-    open,
+    open = $bindable(),
     url,
   }: {
     open: boolean

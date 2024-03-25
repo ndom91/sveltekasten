@@ -9,7 +9,7 @@
 
   let {
     form,
-    open,
+    open = $bindable(),
     feed,
   }: {
     open: boolean

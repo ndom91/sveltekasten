@@ -7,7 +7,7 @@
   import type { ActionData } from "./$types"
 
   let {
-    open,
+    open = $bindable(),
     bookmarkId,
   }: {
     form?: ActionData

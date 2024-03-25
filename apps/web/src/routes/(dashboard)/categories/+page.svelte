@@ -11,7 +11,7 @@
   import { addSortBy } from "svelte-headless-table/plugins"
   import DataTableActions from "./data-table-actions.svelte"
 
-  let { data } = $props()
+  let { data }: { data: any } = $props()
   const categoryStore = writable(data.categories)
 
   $effect(() => {

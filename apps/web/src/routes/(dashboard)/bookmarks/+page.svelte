@@ -13,7 +13,7 @@
   import { untrack, onDestroy } from "svelte"
 
   const ui = useInterface()
-  const { data } = $props()
+  const { data = $bindable() }: { data: any } = $props()
 
   let pageNumber = $state(1)
   let allItems = $state<LoadBookmarkFlatTags[]>(data.bookmarks.data!)
