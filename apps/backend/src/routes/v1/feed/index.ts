@@ -24,7 +24,7 @@ api.get("/", async (c) => {
 
 api.post("/", feedBodySchema, async (c) => {
   try {
-    const cookieName = process.env.NODE_ENV !== "production" ? "authjs.session-token" : "__Secure-auth.session-token"
+    const cookieName = process.env.NODE_ENV !== "production" ? "authjs.session-token" : "__Secure-authjs.session-token"
     const cookie = getCookie(c, cookieName)!
     const decodedJwt = await verifyJwt(cookie)
     console.log("cookie", { cookieName, cookie, decodedJwt })

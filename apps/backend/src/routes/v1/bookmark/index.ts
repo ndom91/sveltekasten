@@ -9,7 +9,7 @@ const api = new Hono()
 
 api.post("/", bookmarkImageCookieValidator, bookmarkImageFormValidator, async (c) => {
   try {
-    const cookieName = process.env.NODE_ENV !== "production" ? "authjs.session-token" : "__Secure-auth.session-token"
+    const cookieName = process.env.NODE_ENV !== "production" ? "authjs.session-token" : "__Secure-authjs.session-token"
     const cookie = getCookie(c, cookieName)!
     const decodedJwt = await verifyJwt(cookie)
     const userId = decodedJwt?.sub
