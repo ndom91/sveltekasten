@@ -8,39 +8,32 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
       - POSTGRES_DB=${POSTGRES_DB:-briefkasten}
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-postgres}']
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
       interval: 10s
       timeout: 5s
       retries: 5
     volumes:
       - database:/var/lib/postgresql/data
   sveltekasten-web:
-    build: 
+    build:
       context: .
-      tags: 
+      tags:
         - web:latest
       target: web
     restart: unless-stopped
-    networks: 
-      - sveltekasten_network
     ports:
-      - 3000:3000
+      - ${PORT:-3000}:${PORT:-3000}
     env_file: ./apps/web/.env
   sveltekasten-backend:
-    build: 
+    build:
       context: .
-      tags: 
+      tags:
         - backend:latest
       target: backend
     ports:
-      - 8000:8000
-    networks: 
-      - sveltekasten_network
+      - ${PORT:-8000}:${PORT:-8000}
     restart: unless-stopped
     env_file: apps/backend/.env
-
-networks:
-  sveltekasten_network:
 
 volumes:
   database:
