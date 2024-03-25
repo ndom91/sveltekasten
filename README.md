@@ -47,6 +47,26 @@ $ pnpm build
 $ pnpm start
 ```
 
+## 🐋 Docker
+
+1. Run web and backend as two containers in the background
+
+```sh
+docker compose up -d
+```
+
+2. Run web and backend and postgres container
+
+```sh
+docker compose up --profile postgres -d
+```
+
+3. Run web and backend with local code mounted in for development
+
+```sh
+docker compose -f docker-compose.local-dev.yml up -d
+```
+
 ## 👷 Contributing
 
 This project is open to any and all contributions! Please stick to the ESLint / Prettier settings and I'll be happy to take a look at your issue / PR 😀

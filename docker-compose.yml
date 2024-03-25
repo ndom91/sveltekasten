@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   database:
-    profiles: ["prod"]
+    profiles: ["postgres"]
     image: postgres:15
     environment:
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
