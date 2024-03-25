@@ -27,10 +27,21 @@ api.get("/", async (c) => {
 api.post("/", feedBodySchema, async (c) => {
   try {
     // TODO: Extract to reusable middleware
-    const cookieName = process.env.NODE_ENV !== "production" ? "authjs.session-token" : "__Secure-authjs.session-token"
-    const cookie = getCookie(c, cookieName)!
-    const decodedJwt = await verifyJwt(cookie)
-    console.log("cookie", { cookieName, cookie, decodedJwt })
+    // const cookieName = process.env.NODE_ENV !== "production" ? "authjs.session-token" : "__Secure-authjs.session-token"
+    let cookie
+    if (process.env.NODE_ENV !== "production") {
+      cookie = getCookie(c, "authjs.session-token")
+    } else {
+      cookie = getCookie(c, "authjs.session-token", "secure")
+    }
+    const decodedJwt = await verifyJwt(cookie ?? "")
+
+    console.log("cookie", {
+      env: process.env.NODE_ENV,
+      cookieName: "authjs.session-token",
+      cookie,
+      decodedJwt,
+    })
 
     const { feedUrl } = c.req.valid("json")
 
