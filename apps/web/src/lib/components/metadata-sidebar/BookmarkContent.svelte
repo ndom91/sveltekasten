@@ -70,7 +70,7 @@
             onclick={() => ui.toggleMetadataSidebarEditMode()}
           >
             <svg
-              class="size-5"
+              class="pointer-events-none size-5"
               data-slot="icon"
               fill="none"
               stroke-width="1.5"
