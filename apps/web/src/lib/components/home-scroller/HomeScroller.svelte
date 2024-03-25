@@ -3,6 +3,8 @@
   import BookmarkPreviewCard from "./BookmarkPreviewCard.svelte"
   import { ScrollerTypes } from "$lib/types"
   import { capitalize } from "$lib/utils"
+  import Browser from "$lib/assets/browser.png"
+  import Bell from "$lib/assets/bell.png"
 
   type ScrollerProps = {
     type: keyof typeof ScrollerTypes
@@ -103,15 +105,25 @@
     {:else}
       <div class="grid place-items-center w-full h-24">
         {#if type === ScrollerTypes.BOOKMARKS}
-          <div>
+          <div class="z-10">
             Go to the <a href="/bookmarks" class="underline underline-offset-4">bookmarks</a> page to
             find multiple ways to add new bookmarks
           </div>
+          <img
+            src={Browser}
+            alt="Empty State Browser"
+            class="absolute top-0 -right-4 w-72 max-w-md opacity-20 pointer-events-none rotate-[18deg] grayscale dark:invert"
+          />
         {:else if type === ScrollerTypes.FEEDS}
-          <div>
+          <div class="z-10">
             Go to <a href="/settings?tab=feeds" class="underline underline-offset-4">settings</a> to
             add a new RSS feed to follow
           </div>
+          <img
+            src={Bell}
+            alt="Empty State Browser"
+            class="absolute top-4 -right-4 w-64 max-w-md opacity-20 pointer-events-none rotate-[10deg] grayscale dark:invert"
+          />
         {/if}
       </div>
     {/each}
