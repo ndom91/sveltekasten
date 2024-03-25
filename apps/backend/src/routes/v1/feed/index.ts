@@ -3,16 +3,11 @@ import { HTTPException } from "hono/http-exception"
 import { feedBodySchema } from "./schema.js"
 import { getCookie } from "hono/cookie"
 import { verifyJwt } from "../../../lib/jwt.js"
+import { parse } from "../../../lib/cookie.js"
 import { actions } from "../../../lib/constants.js"
 import { queue } from "../../../plugins/queue.js"
 
 const api = new Hono()
-
-console.log("jwtArgs", {
-  secret: process.env.JWT_SECRET!,
-  cookie: process.env.NODE_ENV !== "production" ? "authjs.session-token" : "__Secure-authjs.session-token",
-  alg: "HS512",
-})
 
 api.get("/", async (c) => {
   try {
@@ -27,16 +22,25 @@ api.get("/", async (c) => {
 api.post("/", feedBodySchema, async (c) => {
   try {
     // TODO: Extract to reusable middleware
-    // const cookieName = process.env.NODE_ENV !== "production" ? "authjs.session-token" : "__Secure-authjs.session-token"
-    let cookie
-    if (process.env.NODE_ENV !== "production") {
-      cookie = getCookie(c, "authjs.session-token")
-    } else {
-      cookie = getCookie(c, "authjs.session-token", "secure")
-    }
+    const cookieName = process.env.NODE_ENV !== "production" ? "authjs.session-token" : "__Secure-authjs.session-token"
+    // console.log("c.env.incoming", c.req.headers.get("authjs.session-token"))
+    // console.log("c.req", c.req)
+    // console.log("c.req.headers.raw", c.req.raw)
+    // console.log("c.env", c.env)
+    // console.log("c.env.incoming.rawHeaders", c.env.incoming.rawHeaders)
+    console.log("cookieString", c.req.raw.headers.get("Cookie"))
+    const cookies = parse(c.req.raw.headers.get("Cookie")!)
+    console.log("cookiesObj", cookies)
+    // let cookie
+    // if (process.env.NODE_ENV !== "production") {
+    //   cookie = getCookie(c, "authjs.session-token")
+    // } else {
+    //   cookie = getCookie(c, "authjs.session-token", "secure")
+    // }
+    const cookie = cookies[cookieName]
     const decodedJwt = await verifyJwt(cookie ?? "")
 
-    console.log("cookie", {
+    console.log("debug.cookie", {
       env: process.env.NODE_ENV,
       cookieName: "authjs.session-token",
       cookie,

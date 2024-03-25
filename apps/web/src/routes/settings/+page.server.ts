@@ -47,7 +47,6 @@ export const actions: Actions = {
         },
         body: JSON.stringify({
           feedUrl,
-          userId: session.user.id,
         }),
       })
       if (!feedRes.ok) {
