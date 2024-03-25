@@ -34,6 +34,7 @@ api.post("/", feedBodySchema, async (c) => {
     } else {
       cookie = getCookie(c, "authjs.session-token", "secure")
     }
+    console.log("cookie", cookie)
     const decodedJwt = await verifyJwt(cookie ?? "")
 
     console.log("debug.cookie", {

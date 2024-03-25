@@ -38,11 +38,15 @@ export async function verifyJwt(token: string) {
   const secret = process.env.JWT_SECRET
   if (!secret) throw new Error("JWT_SECRET not set")
 
+  const salt = process.env.NODE_ENV !== "production" ? "authjs.session-token" : "__Secure-authjs.session-token"
+
+  console.log("decodeInputs", { token, secret, salt })
+
   try {
     return await decode({
       token,
       secret,
-      salt: "authjs.session-token",
+      salt,
     })
   } catch (e) {
     console.error(e)
