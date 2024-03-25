@@ -11,7 +11,7 @@ import root from "./routes/root.js"
 
 type Bindings = HttpBindings
 
-const app = new Hono<{ Bindings: Bindings }>({ strict: false }).basePath('/api/v1')
+const app = new Hono<{ Bindings: Bindings }>({ strict: false }).basePath('/api/v0')
 app.use(logger())
 app.use(prettyJSON())
 
