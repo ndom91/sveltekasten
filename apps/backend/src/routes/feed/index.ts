@@ -22,22 +22,18 @@ api.get("/", async (c) => {
 api.post("/", feedBodySchema, async (c) => {
   try {
     // TODO: Extract to reusable middleware
-    const cookieName = process.env.NODE_ENV !== "production" ? "authjs.session-token" : "__Secure-authjs.session-token"
-    // console.log("c.env.incoming", c.req.headers.get("authjs.session-token"))
-    // console.log("c.req", c.req)
-    // console.log("c.req.headers.raw", c.req.raw)
-    // console.log("c.env", c.env)
-    // console.log("c.env.incoming.rawHeaders", c.env.incoming.rawHeaders)
+    // const cookieName = process.env.NODE_ENV !== "production" ? "authjs.session-token" : "__Secure-authjs.session-token"
     console.log("cookieString", c.req.raw.headers.get("Cookie"))
     const cookies = parse(c.req.raw.headers.get("Cookie")!)
     console.log("cookiesObj", cookies)
-    // let cookie
-    // if (process.env.NODE_ENV !== "production") {
-    //   cookie = getCookie(c, "authjs.session-token")
-    // } else {
-    //   cookie = getCookie(c, "authjs.session-token", "secure")
-    // }
-    const cookie = cookies[cookieName]
+    // const cookie = cookies[cookieName]
+
+    let cookie
+    if (process.env.NODE_ENV !== "production") {
+      cookie = getCookie(c, "authjs.session-token")
+    } else {
+      cookie = getCookie(c, "authjs.session-token", "secure")
+    }
     const decodedJwt = await verifyJwt(cookie ?? "")
 
     console.log("debug.cookie", {
