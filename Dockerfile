@@ -23,9 +23,9 @@ RUN apt-get update -qq && \
 
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
-# Generate prisma client and push db schema (only once)
-RUN cd apps/web && pnpm exec prisma generate && pnpm exec prisma db push
-RUN cd apps/backend && pnpm exec prisma generate
+# Generate prisma client
+RUN cd apps/backend && pnpm exec prisma generate && pnpm exec prisma generate
+RUN cd apps/web && pnpm exec prisma generate
 
 RUN pnpm run -r build
 
@@ -44,10 +44,15 @@ ENV NODE_ENV production
 # RUN adduser --system --uid 1001 node
  
 # Install openssl for prisma
-# RUN apt-get update -qq && \
-    # apt-get install -y openssl
+RUN apt-get update -qq && \
+    apt-get install -y openssl
 
 COPY --chown=node:node --from=build /prod/web /prod/web
+
+# Generate prisma client and push db schema
+RUN cd /prod/web && pnpm dlx prisma generate
+
+RUN ls -lah /prod/web
 
 WORKDIR /prod/web
 EXPOSE ${PORT:-3000}
@@ -65,10 +70,15 @@ ENV NODE_ENV production
 # RUN adduser --system --uid 1001 node
 
 # Install openssl for prisma
-# RUN apt-get update -qq && \
-    # apt-get install -y openssl
+RUN apt-get update -qq && \
+    apt-get install -y openssl
 
 COPY --chown=node:node --from=build /prod/backend /prod/backend
+
+# Generate prisma client
+RUN cd /prod/backend && pnpm dlx prisma generate
+
+RUN ls -lah /prod/backend
 
 WORKDIR /prod/backend
 EXPOSE ${PORT:-3000}
