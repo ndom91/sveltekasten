@@ -7,6 +7,7 @@
   const { id }: { id: string } = $props()
 
   const handleEdit = async () => {
+    // TODO: implement tag edit
     console.log("Edit", id)
   }
 </script>

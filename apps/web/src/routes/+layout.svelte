@@ -79,7 +79,7 @@
     if (isDragOver) {
       setTimeout(() => {
         isDragOver = false
-      }, 10000)
+      }, 4000)
     }
   })
 

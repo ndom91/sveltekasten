@@ -44,7 +44,7 @@ api.post("/", feedBodySchema, async (c) => {
     })
     return c.text("ok")
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return c.json(error)
   }
 })

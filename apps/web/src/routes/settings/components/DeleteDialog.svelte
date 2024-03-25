@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { dev } from "$app/environment"
   import { enhance } from "$app/forms"
   import { handleActionResults } from "$lib/utils/form-action"
   import { buttonVariants } from "$lib/components/ui/button"
@@ -18,8 +19,8 @@
 
   $effect(() => {
     if (form?.type === "success") {
-      console.log("form.type === 'success', closing")
       open = false
+      dev && console.log("form.type === 'success'", { open })
     }
   })
 </script>

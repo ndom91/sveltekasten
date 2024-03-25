@@ -9,7 +9,9 @@ const api = new Hono()
 
 api.post("/", bookmarkImageCookieValidator, bookmarkImageFormValidator, async (c) => {
   try {
-    const decodedJwt = await verifyJwt(getCookie(c, "authjs.session-token")!)
+    const cookieName = process.env.NODE_ENV !== "production" ? "authjs.session-token" : "__Secure-auth.session-token"
+    const cookie = getCookie(c, cookieName)!
+    const decodedJwt = await verifyJwt(cookie)
     const userId = decodedJwt?.sub
 
     const body = await c.req.parseBody()
@@ -17,7 +19,6 @@ api.post("/", bookmarkImageCookieValidator, bookmarkImageFormValidator, async (c
     const image = body.image as File
     const url = new URL(body.url as string)
     const cleanUrl = `${url.hostname}${url.pathname.replace(/\/$/, "")}`
-    console.log({ cleanUrl })
     const extension = image.type.split("/")[1]
 
     if (!image || !url || !userId) {
@@ -42,7 +43,7 @@ api.post("/", bookmarkImageCookieValidator, bookmarkImageFormValidator, async (c
 
     return c.json(uploadResponse)
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return c.json({ error }, 500)
   }
 })

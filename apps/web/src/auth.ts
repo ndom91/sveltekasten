@@ -57,9 +57,6 @@ export const providerMap = providers.map((provider) => {
   return { id: provider.id, name: provider.name }
 })
 
-// console.log("AUTH", )
-// console.log("AUTH.DB", db)
-
 export const { signIn, signOut, handle } = SvelteKitAuth({
   debug: false,
   trustHost: true,

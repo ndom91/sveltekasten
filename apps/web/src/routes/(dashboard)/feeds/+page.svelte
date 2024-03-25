@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { dev } from "$app/environment"
   import toast from "svelte-french-toast"
   import { ofetch } from "ofetch"
   import { Navbar } from "$lib/components/navbar"
@@ -78,7 +79,7 @@
           break
 
         case "ready":
-          console.log("pipeline ready")
+          dev && console.log("pipeline ready")
           // Pipeline ready: the worker is ready to accept messages.
           // ready = true
           break
@@ -87,10 +88,10 @@
           disabledTtsButton = false
 
           const blobUrl = URL.createObjectURL(e.data.output)
-          console.log(`Audio Set: ${blobUrl}`)
+          dev && console.log(`Audio Set: ${blobUrl}`)
           ui.textToSpeechAudioBlob = blobUrl
           ui.textToSpeechLoading = false
-          console.timeEnd("audio.generate")
+          dev && console.timeEnd("audio.generate")
           break
       }
     }
@@ -122,7 +123,7 @@
       ui.aiFeaturesPreferences.tts.location !== TTSLocation.BROWSER
     )
       return
-    console.time("audio.generate")
+    dev && console.time("audio.generate")
     disabledTtsButton = true
     ui.textToSpeechLoading = true
     ttsWorker.postMessage({
@@ -146,8 +147,8 @@
           disabledTtsButton = false
 
           ui.summarizationLoading = false
-          console.log("Summary:", e.data.output)
-          console.timeEnd("summary.generate")
+          dev && console.log("Summary:", e.data.output)
+          dev && console.timeEnd("summary.generate")
           break
       }
     }
@@ -159,7 +160,7 @@
 
   const handleSummarizeText = (text: string) => {
     if (!summaryWorker || !ui.aiFeaturesPreferences.summarization.enabled) return
-    console.time("summary.generate")
+    dev && console.time("summary.generate")
     disabledTtsButton = true
     ui.summarizationLoading = true
     summaryWorker.postMessage({
