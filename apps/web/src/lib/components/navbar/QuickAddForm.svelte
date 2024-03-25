@@ -36,7 +36,13 @@
   const categoryProxy = fieldProxy(form, "categoryId", {})
 </script>
 
-<form method="POST" action="/bookmarks?/quickAdd" use:enhance class="flex flex-col gap-2">
+<form
+  id="quickAdd"
+  method="POST"
+  action="/bookmarks?/quickAdd"
+  use:enhance
+  class="flex flex-col gap-2"
+>
   <div class="flex flex-col gap-2 align-start">
     <Label class="flex justify-between items-end" for="title"
       >Title<small class="text-neutral-400 dark:text-neutral-600">required</small></Label
