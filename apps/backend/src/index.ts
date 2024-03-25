@@ -3,7 +3,7 @@ import { logger } from "hono/logger"
 import { format } from "@formkit/tempo"
 import { prettyJSON } from "hono/pretty-json"
 import { updateJob } from "./jobs/cron-update.js"
-import type { HttpBindings } from "@hono/node-server"
+import { serve, type HttpBindings } from "@hono/node-server"
 
 import bookmark from "./routes/v1/bookmark/index.js"
 import feed from "./routes/v1/feed/index.js"
@@ -28,14 +28,7 @@ console.log(`
 ⌛ Next cron run at: ${format(updateJob.nextRun() ?? "", { date: "medium", time: "long" })}
 `)
 
-// Node
-// serve({
-//   fetch: app.fetch,
-//   port,
-// })
-
-// Bun
-export default {
+serve({
   fetch: app.fetch,
   port,
-}
+})

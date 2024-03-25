@@ -9,7 +9,7 @@
   import DeleteDialog from "./DeleteDialog.svelte"
   import { format } from "@formkit/tempo"
   import { writable } from "svelte/store"
-  import { createTable, Render, Subscribe, createRender } from "svelte-headless-table"
+  import { createTable, Render, Subscribe } from "svelte-headless-table"
   import { addSortBy } from "svelte-headless-table/plugins"
   import DataTableActions from "./feed-data-table-actions.svelte"
   import type { Feed } from "$lib/types/zod"
