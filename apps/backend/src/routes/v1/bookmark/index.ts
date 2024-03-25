@@ -1,5 +1,4 @@
 import { Hono } from "hono"
-import { jwt } from "hono/jwt"
 import { HTTPException } from "hono/http-exception"
 import { getCookie } from "hono/cookie"
 import { timing, setMetric, startTime, endTime } from "hono/timing"
@@ -12,13 +11,6 @@ import { PutObjectCommand } from "@aws-sdk/client-s3"
 const api = new Hono()
 
 api.use(timing())
-api.use(
-  jwt({
-    secret: process.env.JWT_SECRET!,
-    cookie: process.env.NODE_ENV !== "production" ? "authjs.session-token" : "__Secure-authjs.session-token",
-    alg: "HS512",
-  }),
-)
 
 api.post("/", bookmarkImageCookieValidator, bookmarkImageFormValidator, async (c) => {
   try {
@@ -68,7 +60,7 @@ api.post("/", bookmarkImageCookieValidator, bookmarkImageFormValidator, async (c
     return c.json(uploadResponse)
   } catch (error) {
     console.error(error)
-    return new HTTPException(500, { message: String(error) })
+    throw new HTTPException(500, { message: String(error) })
   }
 })
 
