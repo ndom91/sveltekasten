@@ -30,8 +30,16 @@
   <div class="flex justify-start px-4 pt-4 w-full">
     <h2 class="text-xl font-thin">Latest Items</h2>
   </div>
-  <HomeScroller items={[]} count={data.bookmarks.count} type={ScrollerTypes.BOOKMARKS} />
-  <HomeScroller items={[]} count={data.feedEntries.count} type={ScrollerTypes.FEEDS} />
+  <HomeScroller
+    items={data.bookmarks.data}
+    count={data.bookmarks.count}
+    type={ScrollerTypes.BOOKMARKS}
+  />
+  <HomeScroller
+    items={data.feedEntries.data}
+    count={data.feedEntries.count}
+    type={ScrollerTypes.FEEDS}
+  />
 </main>
 
 {#snippet emptyHelper()}
