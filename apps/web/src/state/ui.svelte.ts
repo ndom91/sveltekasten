@@ -51,7 +51,8 @@ let textToSpeechAudioBlob = $state("")
 let textToSpeechLoading = $state(false)
 let summarizationLoading = $state(false)
 let summarizationContent = $state("")
-let aiFeaturesPreferences = $state<AIFeaturesPreferences>({
+
+export const defaultAISettings = {
   tts: {
     enabled: true,
     location: TTSLocation.SERVER,
@@ -63,7 +64,8 @@ let aiFeaturesPreferences = $state<AIFeaturesPreferences>({
   transcription: {
     enabled: true,
   },
-})
+}
+let aiFeaturesPreferences = $state<AIFeaturesPreferences>(defaultAISettings)
 
 export function useInterface() {
   return {
