@@ -25,6 +25,7 @@
   })
   const columns = table.createColumns([
     table.column({
+      // @ts-expect-error string is allowed
       accessor: "id",
       header: "ID",
       plugins: {
@@ -34,20 +35,22 @@
       },
     }),
     table.column({
+      // @ts-expect-error string is allowed
       accessor: "name",
       header: "Name",
     }),
     table.column({
+      // @ts-expect-error string is allowed
       accessor: "createdAt",
       header: "Created",
       cell: ({ value }) => format(value, "medium"),
     }),
     table.column({
-      accessor: ({ id }) => id,
+      // @ts-expect-error
+      accessor: "actions",
       header: "",
-      cell: ({ value }) => {
-        return createRender(DataTableActions, { id: value })
-      },
+      // @ts-expect-error
+      cell: (data) => createRender(DataTableActions, { id: data.row.original.id }),
       plugins: {
         sort: {
           disable: true,
@@ -75,7 +78,7 @@
           <Table.Row class="hover:!bg-transparent">
             {#each headerRow.cells as cell (cell.id)}
               <Subscribe attrs={cell.attrs()} let:attrs let:props props={cell.props()}>
-                <Table.Head {...attrs}>
+                <Table.Head {...attrs} class={cell.id === "id" ? "hidden lg:table-cell" : ""}>
                   {#if ["name", "createdAt"].includes(cell.id)}
                     <Button class="text-left" variant="ghost" on:click={props.sort.toggle}>
                       <Render of={cell.render()} />
@@ -119,16 +122,20 @@
             {#each row.cells as cell (cell.id)}
               <Subscribe attrs={cell.attrs()} let:attrs>
                 {#if cell.id === ""}
-                  <Table.Cell class="text-right max-w-32" {...attrs}>
+                  <Table.Cell class="text-right max-w-24" {...attrs}>
                     <Render of={cell.render()} />
                   </Table.Cell>
                 {:else if cell.id === "name"}
                   <Table.Cell class="w-full" {...attrs}>
                     <Render of={cell.render()} />
                   </Table.Cell>
+                {:else if cell.id === "actions"}
+                  <Table.Cell class="w-32 max-w-32" {...attrs}>
+                    <Render of={cell.render()} />
+                  </Table.Cell>
                 {:else if cell.id === "id"}
                   <Table.Cell
-                    class="max-w-60 text-neutral-400 truncate dark:text-neutral-600"
+                    class="hidden lg:block lg:w-48 text-neutral-400 truncate lg:max-w-48 dark:text-neutral-600"
                     {...attrs}
                   >
                     <Render of={cell.render()} />

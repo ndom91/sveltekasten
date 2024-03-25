@@ -9,7 +9,7 @@
   import DeleteDialog from "./DeleteDialog.svelte"
   import { format } from "@formkit/tempo"
   import { writable } from "svelte/store"
-  import { createTable, Render, Subscribe } from "svelte-headless-table"
+  import { createTable, createRender, Render, Subscribe } from "svelte-headless-table"
   import { addSortBy } from "svelte-headless-table/plugins"
   import DataTableActions from "./feed-data-table-actions.svelte"
   import type { Feed } from "$lib/types/zod"
@@ -36,6 +36,7 @@
 
   const columns = table.createColumns([
     table.column({
+      // @ts-expect-error string is allowed
       accessor: "id",
       header: "ID",
       plugins: {
@@ -45,32 +46,43 @@
       },
     }),
     table.column({
+      // @ts-expect-error string is allowed
       accessor: "name",
       header: "Name",
     }),
     table.column({
+      // @ts-expect-error string is allowed
       accessor: "url",
       header: "URL",
     }),
     table.column({
+      // @ts-expect-error
       accessor: ({ _count }) => _count.feedEntries,
       id: "count",
       header: "Entries",
     }),
     table.column({
+      // @ts-expect-error string is allowed
       accessor: "lastFetched",
       header: "Last Fetched",
       cell: ({ value }) => format(value, { date: "medium", time: "medium" }),
     }),
     table.column({
+      // @ts-expect-error string is allowed
       accessor: "createdAt",
       header: "Created",
       cell: ({ value }) => format(value, "medium"),
     }),
     table.column({
-      id: "actions",
+      // @ts-expect-error string is allowed
       accessor: "actions",
       header: "",
+      cell: (data) =>
+        createRender(DataTableActions, {
+          // @ts-expect-error
+          id: data.row.original.id,
+          toggleDeleteDialog: handleToggleDeleteDialog,
+        }),
       plugins: {
         sort: {
           disable: true,
@@ -96,7 +108,7 @@
               <Table.Row class="hover:!bg-transparent">
                 {#each headerRow.cells as cell (cell.id)}
                   <Subscribe attrs={cell.attrs()} let:attrs let:props props={cell.props()}>
-                    <Table.Head {...attrs}>
+                    <Table.Head {...attrs} class={cell.id === "id" ? "hidden lg:table-cell" : ""}>
                       {#if ["name", "createdAt", "count"].includes(cell.id)}
                         <Button class="text-left" variant="ghost" on:click={props.sort.toggle}>
                           <Render of={cell.render()} />
@@ -156,16 +168,12 @@
                         <Render of={cell.render()} />
                       </Table.Cell>
                     {:else if cell.id === "actions"}
-                      <Table.Cell class="max-w-24" {...attrs}>
-                        <DataTableActions
-                          id={row.original.id}
-                          toggleDeleteDialog={handleToggleDeleteDialog}
-                        />
+                      <Table.Cell class="w-32 max-w-32" {...attrs}>
+                        <Render of={cell.render()} />
                       </Table.Cell>
                     {:else if cell.id === "id"}
                       <Table.Cell
-                        title={cell.value}
-                        class="max-w-24 text-neutral-400 truncate dark:text-neutral-600"
+                        class="hidden lg:block lg:w-48 text-neutral-400 truncate lg:max-w-48 dark:text-neutral-600"
                         {...attrs}
                       >
                         <Render of={cell.render()} />
