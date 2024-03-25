@@ -1,5 +1,5 @@
 import { Hono } from "hono"
-// import { cors } from "hono/cors"
+import { HTTPException } from "hono/http-exception"
 import { feedBodySchema } from "./schema.js"
 import { getCookie } from "hono/cookie"
 import { verifyJwt } from "../../../lib/jwt.js"
@@ -7,10 +7,12 @@ import { actions } from "../../../lib/constants.js"
 import { queue } from "../../../plugins/queue.js"
 
 const api = new Hono()
-// TODO: reenable
-// api.use("/v1/feed/*", cors({
-//   origin: ['https://example.com', 'https://example.org'],
-// }))
+
+console.log("jwtArgs", {
+  secret: process.env.JWT_SECRET!,
+  cookie: process.env.NODE_ENV !== "production" ? "authjs.session-token" : "__Secure-authjs.session-token",
+  alg: "HS512",
+})
 
 api.get("/", async (c) => {
   try {
@@ -24,17 +26,18 @@ api.get("/", async (c) => {
 
 api.post("/", feedBodySchema, async (c) => {
   try {
+    // TODO: Extract to reusable middleware
     const cookieName = process.env.NODE_ENV !== "production" ? "authjs.session-token" : "__Secure-authjs.session-token"
     const cookie = getCookie(c, cookieName)!
     const decodedJwt = await verifyJwt(cookie)
-    console.log("cookie", { cookieName, cookie, decodedJwt })
+    console.log("cookie", { decodedJwt })
 
     const { feedUrl } = c.req.valid("json")
 
     if (!feedUrl || !decodedJwt?.sub) {
-      throw c.json({ error: "Failed to add feed, missing inputs" }, 500)
+      throw new HTTPException(500, { message: "Failed to add feed, missing inputs" })
     }
-    // TODO: Add to queue
+
     await queue.push({
       action: actions.ADD_FEED,
       data: {
