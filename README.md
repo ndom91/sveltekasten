@@ -6,9 +6,11 @@
 ![GitHub](https://img.shields.io/github/license/ndom91/briefkasten?style=flat-square)
 [![Demo](https://img.shields.io/badge/demo-click%20here-brightgreen?style=flat-square)](https://briefkastenhq.com)
 
-🚧 Experimental Svelte rewrite of [Briefkasten](https://github.com/ndom91/briefkasten).
+<kbd>
 
-> Self-hosted bookmarking application. Works with any Prisma compatible database (MySQL, Postgres, SQLite, etc.)
+🚧 Experimental Svelte rewrite of [Briefkasten](https://github.com/ndom91/briefkasten) 🚧
+
+</kbd>
 
 ## 🚀 Getting Started
 
