@@ -1,18 +1,19 @@
-# Briefkasten in Svelte!
+# 📬 Briefkasten v2
 
-![GitHub deployments](https://img.shields.io/github/deployments/ndom91/briefkasten/production?label=ci%2Fcd&style=flat-square)
-![GitHub issues](https://img.shields.io/github/issues/ndom91/briefkasten?style=flat-square)
-![Checkly](https://api.checklyhq.com/v1/badges/checks/9c682653-d7de-4e32-8183-73d76631b0e2?style=flat-square&responseTime=false)
-![GitHub](https://img.shields.io/github/license/ndom91/briefkasten?style=flat-square)
-[![Demo](https://img.shields.io/badge/demo-click%20here-brightgreen?style=flat-square)](https://briefkastenhq.com)
+![GitHub issues](https://img.shields.io/github/issues/ndom91/sveltekasten?style=for-the-badge&labelColor=black&color=black)
+![GitHub](https://img.shields.io/github/license/ndom91/sveltekasten?style=for-the-badge&labelColor=black&color=black)
+[![Demo](https://img.shields.io/badge/demo-click%20here-brightgreen?style=for-the-badge&labelColor=black&color=black)](https://dev.briefkastenhq.com)
 
-<kbd>
+<h3 align="center"> <pre>  <br>   🚧 Experimental Svelte rewrite of Briefkasten 🚧   <br>  </pre> </h3>
 
-🚧 Experimental Svelte rewrite of [Briefkasten](https://github.com/ndom91/briefkasten) 🚧
+### Links: [Beta Instance](https://dev.briefkastenhq.com) | [Docs](https://docs.briefkastenhq.com)
+> [!NOTE]
+> This is the **temporary** repository for **Briefkasten V2**. I will move this code to the original `ndom91/briefkasten` repository as we get closer to GA release. However, if you'd like to help out, don't hesitate to file issues here, etc. For more info, check out this [discussion post](https://github.com/ndom91/briefkasten/discussions/65).
 
-</kbd>
 
 ## 🚀 Getting Started
+
+This is setup as a monorepo with (1) `apps/web` being a SvelteKit web application and (2) `apps/backend` being a Hono-based backend service. There are npm scripts in the root `package.json` to control all (most?) things.
 
 1. Clone the repository
 
@@ -26,14 +27,16 @@ $ git clone git@github.com:ndom91/sveltekasten.git && cd sveltekasten
 $ pnpm install
 ```
 
-3. Copy the `.env.example` file to `.env`, and open it with your favorite text editor to fill in your environment variables.
+This will install the dependencies for both apps.
+
+3. Both `web` and `backend` need separate `.env` files. Copy both `.env.example` files to `.env`, and open them with your favorite text editor to fill in your environment variables.
 
 ```sh
-$ cp .env.example .env
-$ vim .env
+$ cd apps/web && cp .env.example .env
+$ cd apps/backend && cp .env.example .env
 ```
 
-In this environment variables file, make sure to at least fill in the `DATABASE_URL`, `AUTH_SECRET` and `GITHUB_ID`, `GITHUB_SECRET`. The rest of the environment variables depend on the services / features you want to use. For example, Google/Github for OAuth login and/or Supabase for object storage.
+In these environment variable files, make sure to at least fill in the `DATABASE_URL`, `AUTH_SECRET`, `JWT_SECRET`, `WORKER_URL` and one [Auth.js](https://authjs.dev) authentication provider, so for example `GITHUB_ID`, `GITHUB_SECRET`. The rest of the environment variables depend on the services / features you want to use.
 
 4. Start the server!
 
@@ -51,19 +54,21 @@ $ pnpm start
 
 ## 🐋 Docker
 
-1. Run web and backend as two containers in the background
+The Docker setup is still a bit of a WIP, but has been simplified a bit.
+
+1. Run web and backend in the background
 
 ```sh
 docker compose up -d
 ```
 
-2. Run web and backend and postgres container
+2. Run web and backend and an additional postgres container
 
 ```sh
 docker compose up --profile postgres -d
 ```
 
-3. Run web and backend with local code mounted in for development
+3. Run web and backend containers with local code mounted in for development
 
 ```sh
 docker compose -f docker-compose.local-dev.yml up -d
@@ -71,7 +76,9 @@ docker compose -f docker-compose.local-dev.yml up -d
 
 ## 👷 Contributing
 
-This project is open to any and all contributions! Please stick to the ESLint / Prettier settings and I'll be happy to take a look at your issue / PR 😀
+This project is open to all contributions. Please stick to the repo settings and I'll be happy to take a look at your issue / PR!
+
+**Note that this repository will be nuked relatively soon and all code will be moved to the main `ndom91/briefkasten` repository**
 
 ## 📝 License
 
