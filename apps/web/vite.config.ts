@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [
     sveltekit(),
     partytownVite({
-      dest: join(__dirname, "dist", "~partytown"),
+      dest: join(__dirname, "build", "client", "~partytown"),
     }),
   ],
   server: {

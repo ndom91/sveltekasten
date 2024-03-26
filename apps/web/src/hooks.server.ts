@@ -1,8 +1,8 @@
-import type { Handle } from "@sveltejs/kit"
 import { dev } from "$app/environment"
 import { sequence } from "@sveltejs/kit/hooks"
 import { handle as handleAuth } from "./auth"
 import { providerMap } from "./auth"
+import type { Handle } from "@sveltejs/kit"
 
 const logger: Handle = async ({ event, resolve }) => {
   if (!dev) {
