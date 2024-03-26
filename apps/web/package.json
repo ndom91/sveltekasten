@@ -47,6 +47,7 @@
   "dependencies": {
     "@auth/prisma-adapter": "^1.5.0",
     "@auth/sveltekit": "^0.14.0",
+    "@builder.io/partytown": "^0.10.1",
     "@formkit/tempo": "^0.0.17",
     "@prisma/client": "5.11.0",
     "@xenova/transformers": "^2.16.1",

@@ -124,7 +124,7 @@
               <td><Kbd key="&bsol;" /></td>
             </tr>
             <tr>
-              <td>Toggle Mark as Read</td>
+              <td>Toggle Mark as Unread</td>
               <td><Kbd key="u" /></td>
             </tr>
           </tbody>

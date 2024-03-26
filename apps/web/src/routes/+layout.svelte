@@ -1,8 +1,11 @@
 <script lang="ts">
   import { z } from "zod"
-  import { Toaster } from "svelte-french-toast"
-  // import { Toaster } from "$lib/components/ui/sonner"
+  import { dev } from "$app/environment"
+  import { page } from "$app/stores"
   import toast from "svelte-french-toast"
+  // import { Toaster } from "$lib/components/ui/sonner"
+  import { Toaster } from "svelte-french-toast"
+  import { partytownSnippet } from "@builder.io/partytown/integration"
   import { cn } from "$lib/utils/style"
   import { goto, onNavigate } from "$app/navigation"
   import ConfirmAddDialog from "./ConfirmAddDialog.svelte"
@@ -119,6 +122,21 @@
 <svelte:head>
   <title>Briefkasten</title>
   <meta name="description" content="RSS Feeds, Bookmarks and more!" />
+  {#if !dev && $page.url.hostname === 'dev.briefkastenhq.com'}
+    <script>
+      partytown = {
+        forward: ["plausible"],
+      }
+    </script>
+    {@html "<script>" + partytownSnippet() + "</script>"}
+
+    <script
+      type="text/partytown"
+      src="/p.js"
+      data-domain="dev.briefkastenhq.com"
+      data-api="https://stats.ndo.dev/api/event"
+    ></script>
+  {/if}
 </svelte:head>
 
 <svelte:window
