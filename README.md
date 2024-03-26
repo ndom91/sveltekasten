@@ -1,16 +1,15 @@
-# Briefkasten in Svelte!
+# 📬 Briefkasten v2
 
-![GitHub issues](https://img.shields.io/github/issues/ndom91/sveltekasten?style=flat-square)
-![GitHub](https://img.shields.io/github/license/ndom91/sveltekasten?style=flat-square)
-[![Demo](https://img.shields.io/badge/demo-click%20here-brightgreen?style=flat-square)](https://dev.briefkastenhq.com)
-
+![GitHub issues](https://img.shields.io/github/issues/ndom91/sveltekasten?style=for-the-badge&labelColor=black&color=black)
+![GitHub](https://img.shields.io/github/license/ndom91/sveltekasten?style=for-the-badge&labelColor=black&color=black)
+[![Demo](https://img.shields.io/badge/demo-click%20here-brightgreen?style=for-the-badge&labelColor=black&color=black)](https://dev.briefkastenhq.com)
 
 <h3 align="center"> <pre>  <br>   🚧 Experimental Svelte rewrite of Briefkasten 🚧   <br>  </pre> </h3>
 
+### Links: [Beta Instance](https://dev.briefkastenhq.com) | [Docs](https://docs.briefkastenhq.com)
 > [!NOTE]
 > This is the **temporary** repository for **Briefkasten V2**. I will move this code to the original `ndom91/briefkasten` repository as we get closer to GA release. However, if you'd like to help out, don't hesitate to file issues here, etc. For more info, check out this [discussion post](https://github.com/ndom91/briefkasten/discussions/65).
 
-### Links: [Beta Instance](https://dev.briefkastenhq.com) | [Docs](https://docs.briefkastenhq.com)
 
 ## 🚀 Getting Started
 
