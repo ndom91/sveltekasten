@@ -8,6 +8,7 @@ package
 !.env.example
 .vercel
 local.db*
+data/
 
 dist/
 build/

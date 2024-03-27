@@ -42,7 +42,7 @@ api.post("/", bookmarkImageCookieValidator, bookmarkImageFormValidator, async (c
     startTime(c, "upload")
     const putCommand = new PutObjectCommand({
       ACL: "public-read",
-      Bucket: "briefkasten-dev",
+      Bucket: process.env.BUCKET_NAME ?? "briefkasten-dev",
       Key: `${userId}/${cleanUrl.replaceAll("/", "_")}.${extension}`,
       Metadata: {
         userId,
