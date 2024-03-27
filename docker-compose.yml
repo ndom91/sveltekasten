@@ -7,6 +7,8 @@ services:
         - web:latest
       target: web
     restart: unless-stopped
+    networks:
+      - briefkasten
     ports:
       - ${PORT:-3000}:${PORT:-3000}
     env_file: ./apps/web/.env
@@ -16,6 +18,8 @@ services:
       tags:
         - backend:latest
       target: backend
+    networks:
+      - briefkasten
     ports:
       - ${PORT:-8000}:${PORT:-8000}
     restart: unless-stopped
@@ -23,3 +27,6 @@ services:
 
 volumes:
   database:
+
+networks:
+  briefkasten:
