@@ -134,7 +134,7 @@
       type="text/partytown"
       src="/p.js"
       data-domain="dev.briefkastenhq.com"
-      data-api="https://stats.ndo.dev/api/event"
+      data-api="/add/event"
     ></script>
   {/if}
 </svelte:head>
