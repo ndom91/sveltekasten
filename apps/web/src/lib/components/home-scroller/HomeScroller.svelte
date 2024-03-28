@@ -103,7 +103,7 @@
         <FeedItemPreviewCard item={item as LoadFeedEntry} />
       {/if}
     {:else}
-      <div class="grid place-items-center w-full h-24">
+      <div class="grid place-items-center w-full h-48">
         {#if type === ScrollerTypes.BOOKMARKS}
           <div class="z-10">
             Go to the <a href="/bookmarks" class="underline underline-offset-4">bookmarks</a> page to
@@ -112,7 +112,7 @@
           <img
             src={Browser}
             alt="Empty State Browser"
-            class="absolute top-0 -right-4 w-72 max-w-md opacity-20 pointer-events-none rotate-[18deg] grayscale dark:invert"
+            class="absolute -right-4 -bottom-20 w-72 max-w-md opacity-20 pointer-events-none rotate-[18deg] grayscale dark:invert"
           />
         {:else if type === ScrollerTypes.FEEDS}
           <div class="z-10">
@@ -122,7 +122,7 @@
           <img
             src={Bell}
             alt="Empty State Browser"
-            class="absolute top-4 -right-4 w-64 max-w-md opacity-20 pointer-events-none rotate-[10deg] grayscale dark:invert"
+            class="absolute -right-4 -bottom-16 w-64 max-w-md opacity-20 pointer-events-none rotate-[10deg] grayscale dark:invert"
           />
         {/if}
       </div>
