@@ -13,7 +13,7 @@
 </script>
 
 <ModeWatcher />
-<DropdownMenu.Root closeOnItemClick={false}>
+<DropdownMenu.Root>
   <DropdownMenu.Trigger
     class="rounded-full transition duration-300 outline-none focus:ring-2 focus:outline-none dark:focus:ring-zinc-500 focus:ring-zinc-200"
   >
