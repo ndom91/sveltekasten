@@ -24,7 +24,6 @@
     "@hono/zod-validator": "^0.2.0",
     "@panva/hkdf": "^1.1.1",
     "@prisma/client": "5.11.0",
-    "chrome-aws-lambda": "^10.1.0",
     "croner": "^8.0.1",
     "fastq": "^1.17.1",
     "hono": "^4.1.4",
