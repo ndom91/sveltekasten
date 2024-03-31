@@ -29,7 +29,7 @@
     "fastq": "^1.17.1",
     "hono": "^4.1.4",
     "jose": "^5.2.3",
-    "playwright-core": "^1.42.1",
+    "playwright-chromium": "^1.42.1",
     "rss-parser": "^3.13.0",
     "sharp": "^0.33.3",
     "thumbhash": "^0.1.1",

@@ -42,10 +42,10 @@
 <AlertDialog.Root bind:open closeOnOutsideClick closeOnEscape>
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>Add New Bookmark</AlertDialog.Title>
+      <AlertDialog.Title>Create</AlertDialog.Title>
       <AlertDialog.Description>
         <div>Are you sure you want to add this URL?</div>
-        <div class="mt-2 font-bold break-all line-clamp-2">{url}?</div>
+        <div class="mt-2 font-bold break-all line-clamp-2">{url}</div>
       </AlertDialog.Description>
     </AlertDialog.Header>
     <AlertDialog.Footer>

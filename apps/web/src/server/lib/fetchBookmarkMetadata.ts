@@ -43,11 +43,6 @@ export const fetchBookmarkMetadata = async (url: string) => {
     b64Thumbhash = await getThumbhash(imageUrl)
   } catch (error) {
     console.error("Failed to get thumbhash", String(error))
-    // if (error instanceof Error) {
-    //   console.error("Failed to get thumbhash", error.message)
-    // } else {
-    //   console.error("Failed to get thumbhash", error)
-    // }
   }
 
   return {

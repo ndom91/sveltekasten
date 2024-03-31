@@ -1,6 +1,5 @@
-import chrome from "chrome-aws-lambda"
 import { db } from "../../plugins/prisma.js"
-import { chromium } from "playwright-core"
+import { chromium } from "playwright-chromium"
 import { uploadImage } from "../../plugins/storage.js"
 import { readFile } from "node:fs/promises"
 import { existsSync } from "node:fs"
@@ -67,20 +66,20 @@ const updateImageUrl = async ({ image, imageUrl, url, userId }: UpdateImageUrlAr
 const screenshotUrl = async ({ url }: ScreenshotArgs) => {
   const localChromiumPath = await getLocalChromiumPath()
   const browser = await chromium.launch({
-    args: chrome.args,
-    executablePath: process.env.NODE_ENV !== "development" ? await chrome.executablePath : localChromiumPath,
+    executablePath: process.env.NODE_ENV !== "development" ? chromium.executablePath() : localChromiumPath,
     headless: true,
-    // ignoreHTTPSErrors: true,
   })
 
   const page = await browser.newPage({
-    // width: 1920,
-    // height: 1080,
+    locale: "en-US",
+    viewport: { width: 1920, height: 1080 },
     deviceScaleFactor: 1,
+    userAgent:
+      "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
   })
   await page.goto(url)
 
-  // Accepting cookie banners
+  // Finding and accepting cookie banners
   const selectors = [
     "[id*=cookie] a",
     "[class*=consent] button",
@@ -88,16 +87,16 @@ const screenshotUrl = async ({ url }: ScreenshotArgs) => {
     "[id*=cookie] button",
     "[class*=cookie] button",
   ]
+  const cookieSelectors = page.locator(selectors.join(", "))
 
-  const regex = /(Accept all|I agree|Accept|Agree|Agree all|Ich stimme zu|Okay|OK)/
+  const btnRegex = new RegExp(/(Accept all|I agree|Accept|Agree|Agree all|Ich stimme zu|Okay|OK)/, "gi")
+  const cookieBtnLocator = page.getByRole("button", { name: btnRegex })
 
-  const elements = await page.$$(`'${selectors.join(", ")}'`)
-  if (elements) {
-    for (const el of elements) {
-      const innerText = (await el.getProperty("innerText")).toString()
-      regex.test(innerText) && el.click()
-    }
-  }
+  // Handler if one of these selectors appears
+  await page.addLocatorHandler(cookieSelectors, async () => {
+    await cookieBtnLocator.click()
+  })
+
   // Snap screenshot
   const buffer = await page.screenshot({ type: "png" })
 
