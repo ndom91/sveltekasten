@@ -40,8 +40,6 @@ export async function verifyJwt(token: string) {
 
   const salt = process.env.NODE_ENV !== "production" ? "authjs.session-token" : "__Secure-authjs.session-token"
 
-  console.log("decodeInputs", { token, secret, salt })
-
   try {
     return await decode({
       token,

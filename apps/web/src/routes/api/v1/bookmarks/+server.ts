@@ -3,6 +3,7 @@ import { db } from "$lib/prisma"
 import { text, json } from "@sveltejs/kit"
 import { BookmarkUncheckedCreateInputSchema } from "$lib/types/zod"
 import { fetchBookmarkMetadata } from "$server/lib/fetchBookmarkMetadata"
+import { WORKER_URL } from "$env/static/private"
 import type { RequestHandler } from "./$types"
 
 // Get more Bookmarks
@@ -78,7 +79,7 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
 }
 
 // Create Bookmark(s)
-export const POST: RequestHandler = async ({ request, locals }) => {
+export const POST: RequestHandler = async ({ request, locals, fetch }) => {
   try {
     const session = await locals.auth()
     if (!session?.user?.id) {
@@ -87,7 +88,6 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     const inputData = await request.json()
     const data = z.array(BookmarkUncheckedCreateInputSchema).parse(inputData)
 
-    // for await (const bookmark of data) {
     const bookmarkData = await Promise.all(
       data.map(async (bookmark) => {
         const { imageUrl, imageBlur, metadata } = await fetchBookmarkMetadata(bookmark.url)
@@ -107,14 +107,21 @@ export const POST: RequestHandler = async ({ request, locals }) => {
       skipDuplicates: true,
     })
 
+    // Add bookmark to queue for fetching screenshot
+    if (WORKER_URL) {
+      await fetch(`${WORKER_URL}/bookmark`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data: bookmarkData }),
+      })
+    }
+
     return json({ data: upsertResponse, bookmarkData })
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message)
-    } else {
-      console.error(error)
-    }
-    return new Response(String(error), { status: 401 })
+    console.error(String(error))
+    return new Response(String(error))
   }
 }
 

@@ -6,6 +6,7 @@ import { formSchema as metadataSchema } from "$schemas/metadata-sidebar"
 import { superValidate, message } from "sveltekit-superforms"
 import { zod } from "sveltekit-superforms/adapters"
 import { fetchBookmarkMetadata } from "$server/lib/fetchBookmarkMetadata"
+import { WORKER_URL } from "$env/static/private"
 import type { Actions, PageServerLoad } from "./$types"
 import type { Tag } from "$lib/types/zod"
 
@@ -139,6 +140,17 @@ export const actions: Actions = {
             : {},
         },
       })
+
+      // Add bookmark to queue for fetching screenshot
+      if (WORKER_URL) {
+        await event.fetch(`${WORKER_URL}/bookmark`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ data: [{ url }] }),
+        })
+      }
 
       return message(form, {
         bookmark: bookmark,

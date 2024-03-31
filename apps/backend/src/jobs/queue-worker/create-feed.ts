@@ -12,7 +12,7 @@ const parser = new Parser({
   },
 })
 
-type CreateFeedData = {
+export type CreateFeedData = {
   userId: string
   feedUrl: string
 }
