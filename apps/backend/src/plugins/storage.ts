@@ -1,7 +1,7 @@
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
 
 type UploadImageArgs = {
-  image: File
+  image: Buffer
   url: URL
   userId: string
 }
@@ -22,9 +22,8 @@ export const client = new S3Client({
 export const uploadImage = async ({ image, url, userId }: UploadImageArgs) => {
   const urlObj = new URL(url)
   const cleanUrl = `${urlObj.hostname}${urlObj.pathname.replace(/\/$/, "")}`
-  const extension = image.type.split("/")[1]
 
-  const key = `${userId}/${cleanUrl.replaceAll("/", "_")}.${extension}`
+  const key = `${userId}/${cleanUrl.replaceAll("/", "_")}.png`
   const putCommand = new PutObjectCommand({
     ACL: "public-read",
     Bucket: process.env.BUCKET_NAME ?? "briefkasten-dev",
@@ -33,10 +32,9 @@ export const uploadImage = async ({ image, url, userId }: UploadImageArgs) => {
       userId,
       url: url.toString(),
     },
-    // @ts-expect-error - ArrayBuffer works just fine..
-    Body: await image.arrayBuffer(),
-    ContentType: image.type,
-    ContentLength: image.size,
+    Body: image,
+    ContentType: "image/png",
+    ContentLength: image.length,
   })
 
   await client.send(putCommand)

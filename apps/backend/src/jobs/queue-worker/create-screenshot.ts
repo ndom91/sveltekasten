@@ -8,7 +8,7 @@ import { userInfo } from "node:os"
 import { getThumbhash } from "../../lib/image.js"
 
 type UpdateImageUrlArgs = {
-  image: File
+  image: Buffer
   imageUrl: string
   url: string
   userId: string
@@ -72,7 +72,7 @@ const screenshotUrl = async ({ url }: ScreenshotArgs) => {
 
   const page = await browser.newPage({
     locale: "en-US",
-    viewport: { width: 1920, height: 1080 },
+    viewport: { width: 960, height: 540 },
     deviceScaleFactor: 1,
     userAgent:
       "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
@@ -98,14 +98,12 @@ const screenshotUrl = async ({ url }: ScreenshotArgs) => {
   })
 
   // Snap screenshot
-  const buffer = await page.screenshot({ type: "png" })
+  const buffer = await page.screenshot({ type: "png", scale: "css" })
 
   await page.close()
   await browser.close()
 
-  const urlObj = new URL(url)
-  const filename = `{urlObj.hostname}${urlObj.pathname.replace(/\/$/, "")}.png`
-  return new File([buffer], filename, { type: "image/png" })
+  return buffer
 }
 
 // Workaround for NixOS Local Chromium Path
