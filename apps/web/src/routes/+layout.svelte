@@ -154,7 +154,7 @@
 
 <Toaster
   position="bottom-right"
-  toastOptions={{ style: "background-color: #111111; color: #fff" }}
+  toastOptions={{ style: "background-color: #11111175; padding: 12px; color: #fff; backdrop-filter: blur(8px);" }}
 />
 
 <slot />
