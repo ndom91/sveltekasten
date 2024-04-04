@@ -356,7 +356,7 @@
       {/snippet}
     </EmptyState>
     <p class="mx-auto w-1/2 text-center text-muted-foreground">
-      Get started by adding a feed in
+      Get started by adding a feed in the
       <a class="underline underline-offset-2" href="/settings"> settings </a>
     </p>
   {/if}
