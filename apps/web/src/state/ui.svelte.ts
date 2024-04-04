@@ -1,8 +1,8 @@
 import type { Category, Tag } from "$lib/types/zod"
 
 export const TTSLocation = {
-  BROWSER: "BROWSER",
-  SERVER: "SERVER",
+  BROWSER: "Browser",
+  SERVER: "Server",
 } as const
 
 type TTSLocation = keyof typeof TTSLocation

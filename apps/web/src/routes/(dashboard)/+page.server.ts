@@ -44,7 +44,6 @@ export const load: PageServerLoad = async ({ locals, url }) => {
     })
 
     return {
-      session,
       feedEntries: {
         data: feedData,
         count: feedCount,

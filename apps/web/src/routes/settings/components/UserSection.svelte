@@ -19,39 +19,29 @@
   import * as Card from "$lib/components/ui/card"
   import * as Select from "$lib/components/ui/select"
   import { clipboard } from "$lib/utils/clipboard"
-  // import { useInterface } from "$state/ui.svelte"
   import { Badge } from "$/lib/components/ui/badge"
-  import { TTSLocation } from "$state/ui.svelte"
+  import { TTSLocation, defaultAISettings } from "$state/ui.svelte"
   import { bookmarkTypes, parseImportFile, importBookmarks, exportBookmarks } from "../utils"
   import { parseChromeBookmarks, parsePocketBookmarks } from "../import"
   import * as Table from "$lib/components/ui/table"
-  import { capitalize } from "$lib/utils"
-
-  // const ui = useInterface()
 
   let exportLoading = $state(false)
   let importLoading = $state(false)
-  let ttsEnabled = $state($page.data.user?.settings?.ai?.tts?.enabled ?? true)
-  let ttsLocation = $state({
-    value: $page.data.user?.settings?.ai?.tts?.location.toUpperCase() ?? TTSLocation.SERVER,
-    label: capitalize($page.data.user?.settings?.ai?.tts?.location ?? TTSLocation.SERVER),
-  })
-  let ttsSpeaker = $state({
-    value: $page.data.user?.settings?.ai?.tts?.speaker ?? "en-US-GuyNeural",
-    label: $page.data.user?.settings?.ai?.tts?.speaker ?? "en-US-GuyNeural",
-  })
-  let summarizationEnabled = $state($page.data.user?.settings?.ai?.summarization?.enabled ?? true)
-  let transcriptionEnabled = $state($page.data.user?.settings?.ai?.transcription?.enabled ?? true)
+  let {
+    tts: { enabled: ttsEnabled, speaker: ttsSpeaker, location: ttsLocation },
+    summarization: { enabled: summarizationEnabled },
+  } = $state($page.data.user?.settings?.ai ?? defaultAISettings)
 
   type UpdateUserSettingsArgs = {
     ttsEnabled: boolean
     ttsSpeaker: string
     ttsLocation: string
     summarizationEnabled: boolean
-    transcriptionEnabled: boolean
+    // transcriptionEnabled: boolean
   }
+
   const updateUser = async (userSettings: UpdateUserSettingsArgs) => {
-    const userUpdateResponse = await ofetch("/api/v1/user", {
+    await ofetch("/api/v1/user", {
       method: "PUT",
       body: {
         data: {
@@ -65,16 +55,16 @@
               summarization: {
                 enabled: userSettings.summarizationEnabled,
               },
-              transcription: {
-                enabled: userSettings.transcriptionEnabled,
-              },
+              // transcription: {
+              //   enabled: userSettings.transcriptionEnabled,
+              // },
             },
           },
         },
       },
     })
     // TODO: Reenable when not running onMount
-    // toast.success("Settings updated")
+    toast.success("Settings updated")
   }
 
   const speakers = [
@@ -89,28 +79,17 @@
     "en-US-SteffanNeural",
   ]
 
-  $effect(() => {
-    // TODO: do not fire onMount, only on subscribed values change
-    updateUser({
-      ttsEnabled: ttsEnabled,
-      ttsSpeaker: ttsSpeaker.label?.trim(),
-      ttsLocation: ttsLocation.label?.trim(),
-      summarizationEnabled: summarizationEnabled,
-      transcriptionEnabled: transcriptionEnabled,
-    })
-  })
-
-  const ttsSelectValues = Object.keys(TTSLocation).map((location) => ({
+  const ttsLocationItems = Object.values(TTSLocation).map((location) => ({
     value: location,
-    label: capitalize(location),
+    label: location,
   }))
 
   // Import Bookmarks
-  let importFile = $state<FileList>(null)
+  let importFile = $state<FileList | null>(null)
   let parsedBookmarks = $state<ParsedBookmark[]>([])
 
   $effect(() => {
-    if (!importFile) return
+    if (!importFile?.[0]) return
     const fileReader = new FileReader()
     fileReader.readAsText(importFile[0])
     fileReader.onloadend = (e) => {
@@ -136,7 +115,7 @@
         toast.error(`No bookmarks successfully parsed. See console for any potential errors.`)
         return
       }
-      await importBookmarks(parsedBookmarks, $page.data?.session?.user?.id)
+      await importBookmarks(parsedBookmarks, $page.data?.session?.user?.id!)
       parsedBookmarks = []
     } catch (error) {
       console.error(error)
@@ -151,6 +130,28 @@
     exportBookmarks($page.data.bookmarks.data)
     exportLoading = false
   }
+
+  const handleSummarizationToggle = () => {
+    summarizationEnabled = !summarizationEnabled
+    updateUser({
+      ttsEnabled: ttsEnabled,
+      ttsSpeaker: ttsSpeaker.trim(),
+      ttsLocation: ttsLocation.trim(),
+      summarizationEnabled: summarizationEnabled,
+      // transcriptionEnabled: transcriptionEnabled,
+    })
+  }
+
+  const handleTTSToggle = () => {
+    ttsEnabled = !ttsEnabled
+    updateUser({
+      ttsEnabled: ttsEnabled,
+      ttsSpeaker: ttsSpeaker.trim(),
+      ttsLocation: ttsLocation.trim(),
+      summarizationEnabled: summarizationEnabled,
+      // transcriptionEnabled: transcriptionEnabled,
+    })
+  }
 </script>
 
 <div class="flex flex-col gap-2 justify-start items-start h-full">
@@ -163,14 +164,16 @@
     </Card.Header>
     <Card.Content class="p-4">
       <div class="flex gap-2 items-center">
-        For use in the <a
-          href="https://docs.briefkastenhq.com"
-          target="_blank"
-          class="underline underline-offset-4"
-        >
-          Briefkasten Extension</a
-        >
-        you can use the following token:
+        <span>
+          For use in the <a
+            href="https://docs.briefkastenhq.com"
+            target="_blank"
+            class="underline underline-offset-4"
+          >
+            Briefkasten Extension</a
+          >
+          you can use the following token:
+        </span>
         <div
           class="flex justify-between items-center p-2 font-mono rounded-md bg-neutral-100 dark:bg-neutral-700"
         >
@@ -230,10 +233,15 @@
         </p>
         <div class="flex flex-col gap-4 items-start">
           <div class="flex gap-4 items-start">
-            <Checkbox id="summarization" class="mt-1" bind:checked={summarizationEnabled} />
+            <Checkbox
+              id="summarization"
+              class="mt-1"
+              checked={summarizationEnabled}
+              onCheckedChange={handleSummarizationToggle}
+            />
             <div>
               <label for="summarization" class="">
-                <div class="text-lg">Summarization</div>
+                <div class="text-lg hover:cursor-pointer">Summarization</div>
                 <div class="text-neutral-500">
                   Our summaries feature is using the <code>Xenova/distilbart-cnn-6-6</code> model and
                   takes about ~30s on average to summarize a medium length article. We recommend this
@@ -243,11 +251,18 @@
             </div>
           </div>
           <div class="flex gap-4 items-start">
-            <Checkbox class="mt-1" id="tts" bind:checked={ttsEnabled} />
+            <Checkbox
+              class="mt-1"
+              id="tts"
+              checked={ttsEnabled}
+              onCheckedChange={handleTTSToggle}
+            />
             <div>
               <div class="flex flex-col gap-4">
                 <label for="tts" class="flex flex-col gap-2">
-                  <div class="text-lg dark:text-neutral-50">Text to Speech</div>
+                  <div class="text-lg hover:cursor-pointer dark:text-neutral-50">
+                    Text to Speech
+                  </div>
                   <p class="text-neutral-500">
                     In the browser, our text-to-speech (TTS) feature is using the <code
                       >Xenova/speecht5_tts</code
@@ -272,8 +287,17 @@
                     >
                     <Select.Root
                       name="ttsLocation"
-                      items={ttsSelectValues}
-                      bind:selected={ttsLocation}
+                      items={ttsLocationItems}
+                      selected={{ value: ttsLocation, label: ttsLocation }}
+                      onSelectedChange={(selected) => {
+                        ttsLocation = selected?.value
+                        updateUser({
+                          ttsEnabled: ttsEnabled,
+                          ttsSpeaker: ttsSpeaker.trim(),
+                          ttsLocation: ttsLocation.trim(),
+                          summarizationEnabled: summarizationEnabled,
+                        })
+                      }}
                     >
                       <Select.Trigger
                         class="w-full disabled:cursor-default enabled:bg-neutral-200 enabled:dark:bg-neutral-950"
@@ -282,7 +306,7 @@
                       </Select.Trigger>
                       <Select.Input />
                       <Select.Content>
-                        {#each ttsSelectValues as location}
+                        {#each ttsLocationItems as location}
                           <Select.Item value={location.value}>{location.label}</Select.Item>
                         {/each}
                       </Select.Content>
@@ -292,16 +316,26 @@
                     <label
                       for="ttsSpeaker"
                       class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 data-invalid:text-destructive text-neutral-800 dark:text-neutral-50"
-                      >Voice</label
                     >
+                      Voice
+                    </label>
                     <Select.Root
                       name="ttsSpeaker"
                       items={speakers.map((speaker) => ({
                         value: speaker,
                         label: speaker,
                       }))}
-                      disabled={ttsLocation.value !== TTSLocation.SERVER}
-                      bind:selected={ttsSpeaker}
+                      disabled={ttsLocation !== TTSLocation.SERVER}
+                      selected={{ value: ttsSpeaker, label: ttsSpeaker }}
+                      onSelectedChange={(selected) => {
+                        ttsSpeaker = selected?.value
+                        updateUser({
+                          ttsEnabled: ttsEnabled,
+                          ttsSpeaker: ttsSpeaker.trim(),
+                          ttsLocation: ttsLocation.trim(),
+                          summarizationEnabled: summarizationEnabled,
+                        })
+                      }}
                     >
                       <Select.Trigger
                         class="w-full disabled:cursor-not-allowed enabled:bg-neutral-200 enabled:dark:bg-neutral-950"
@@ -355,7 +389,7 @@
           accept="text/html"
           id="import-bookmarks"
           type="file"
-          class="flex py-2 px-3 w-full max-w-sm h-10 text-sm bg-transparent rounded-md border hover:cursor-pointer focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-input ring-offset-background file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-ring"
+          class="flex py-2 px-3 w-72 text-sm bg-transparent rounded-md border hover:cursor-pointer focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-input ring-offset-background file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-ring"
           bind:files={importFile}
         />
       </div>

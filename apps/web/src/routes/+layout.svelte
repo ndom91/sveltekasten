@@ -1,16 +1,26 @@
 <script lang="ts">
   import { z } from "zod"
-  import { dev } from "$app/environment"
-  import { page } from "$app/stores"
   import toast from "svelte-french-toast"
-  // import { Toaster } from "$lib/components/ui/sonner"
   import { Toaster } from "svelte-french-toast"
+  // import { Toaster } from "$lib/components/ui/sonner"
   import { partytownSnippet } from "@builder.io/partytown/integration"
+
+  import { page } from "$app/stores"
+  import { dev } from "$app/environment"
   import { cn } from "$lib/utils/style"
   import { goto, onNavigate } from "$app/navigation"
+  import { useInterface, defaultAISettings } from "$state/ui.svelte"
   import ConfirmAddDialog from "./ConfirmAddDialog.svelte"
   import KeyboardShortcutsHelp from "$lib/components/KeyboardShortcutsHelp.svelte"
+  import type { LayoutData } from './$types';
+
   import "$lib/styles/global.css"
+
+  const ui = useInterface()
+
+  const { data }: { data: LayoutData } = $props();
+  // Set current user preferences to store
+  ui.aiFeaturesPreferences = data.session?.user?.settings.ai ?? defaultAISettings
 
   // View transition
   onNavigate((navigation) => {

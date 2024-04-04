@@ -8,7 +8,7 @@
   import { FeedRow } from "$lib/components/feed-row"
   import Blob from "$lib/assets/blob1.png"
 
-  import { useInterface, TTSLocation, defaultAISettings } from "$state/ui.svelte"
+  import { useInterface, TTSLocation } from "$state/ui.svelte"
   import { InfiniteLoader, loaderState } from "svelte-infinite"
   import { invalidateAll } from "$app/navigation"
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
@@ -27,9 +27,6 @@
   $effect(() => {
     allItems = data.feedEntries?.data
   })
-
-  // Set current user preferences to store
-  ui.aiFeaturesPreferences = data.session?.user?.settings.ai ?? defaultAISettings
 
   let pageNumber = $state(1)
   let allItems = $state<LoadFeedEntry[]>(data.feedEntries?.data)
