@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores"
-  import { blur } from "svelte/transition"
+  import KeyboardShortcutsHelp from "$lib/components/KeyboardShortcutsHelp.svelte"
   import * as Avatar from "$lib/components/ui/avatar"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import { Skeleton } from "$lib/components/ui/skeleton"
@@ -10,6 +10,11 @@
   import { flyAndScale } from "$lib/utils/style"
 
   let isDarkMode = $derived($mode === "dark")
+  let showKeyboardShortcuts = $state(false)
+
+  const toggleKeyboardShorcuts = () => {
+    showKeyboardShortcuts = !showKeyboardShortcuts
+  }
 </script>
 
 <ModeWatcher />
@@ -33,27 +38,37 @@
     sideOffset={8}
   >
     <DropdownMenu.Group>
-      <DropdownMenu.Label class="justify-start w-full line-clamp-2 truncate">
-        <div>
+      <DropdownMenu.Label class="justify-start w-full max-w-32">
+        <div class="truncate">
           {$page.data.session?.user?.name ?? $page.data.session?.user?.email}
         </div>
         <div class="font-light text-zinc-400 dark:text-zinc-600">{version}</div>
       </DropdownMenu.Label>
-      <DropdownMenu.Separator />
+      <DropdownMenu.Separator class="bg-neutral-100 dark:bg-neutral-800" />
       <DropdownMenu.CheckboxItem
-        class="justify-start hover:cursor-pointer"
+        class="justify-start hover:cursor-pointer before:content-[''] before:absolute before:left-1 before:ring-2 before:ring-neutral-200 before:size-[1.35rem] before:rounded-sm data-[state=checked]:before:ring-neutral-800"
         onCheckedChange={toggleMode}
         checked={isDarkMode}
       >
         Dark Mode
       </DropdownMenu.CheckboxItem>
-      <DropdownMenu.Item href="/settings" class="justify-start hover:cursor-pointer"
-        >Settings</DropdownMenu.Item
+      <DropdownMenu.Item
+        onclick={toggleKeyboardShorcuts}
+        class="justify-start hover:cursor-pointer"
       >
-      <DropdownMenu.Separator />
+        Show Shortcuts
+      </DropdownMenu.Item>
+      <DropdownMenu.Item href="/settings" class="justify-start hover:cursor-pointer">
+        Settings
+      </DropdownMenu.Item>
+      <DropdownMenu.Separator class="bg-neutral-100 dark:bg-neutral-800" />
       <DropdownMenu.Item class="justify-start hover:cursor-pointer">
         <SignOut signOutPage="signout">Sign Out</SignOut>
       </DropdownMenu.Item>
     </DropdownMenu.Group>
   </DropdownMenu.Content>
 </DropdownMenu.Root>
+
+{#if showKeyboardShortcuts}
+  <KeyboardShortcutsHelp bind:open={showKeyboardShortcuts} />
+{/if}
