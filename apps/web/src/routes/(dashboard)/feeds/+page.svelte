@@ -120,8 +120,10 @@
       !ttsWorker ||
       !ui.aiFeaturesPreferences.tts.enabled ||
       ui.aiFeaturesPreferences.tts.location !== TTSLocation.Browser
-    )
+    ) {
       return
+    }
+
     dev && console.time("audio.generate")
     disabledTtsButton = true
     ui.textToSpeechLoading = true
@@ -143,11 +145,10 @@
     const onMessageReceived = (e: TODO) => {
       switch (e.data.status) {
         case "complete":
-          disabledTtsButton = false
-
           // TODO: UI to display summary
           ui.summarizationLoading = false
-          dev && console.log("Summary:", e.data.output)
+          toast.success(e.data.output, { duration: 10000, icon: "" })
+          console.log("Summary:", e.data.output)
           dev && console.timeEnd("summary.generate")
           break
       }

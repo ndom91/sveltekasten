@@ -142,6 +142,7 @@
           builders={[tooltipBuilder]}
           variant="ghost"
           size="icon"
+          disabled={ui.summarizationLoading}
           on:click={handleStartTextSummarization}
         >
           {#if ui.summarizationLoading}
@@ -206,6 +207,7 @@
           builders={[tooltipBuilder]}
           variant="ghost"
           size="icon"
+          disabled={ui.textToSpeechLoading}
           on:click={handleSetTextToSpeechContent}
         >
           {#if ui.textToSpeechLoading}
