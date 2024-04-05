@@ -46,7 +46,7 @@
       </DropdownMenu.Label>
       <DropdownMenu.Separator class="bg-neutral-100 dark:bg-neutral-800" />
       <DropdownMenu.CheckboxItem
-        class="justify-start hover:cursor-pointer before:content-[''] before:absolute before:left-1 before:ring-2 before:ring-neutral-200 before:size-[1.35rem] before:rounded-sm data-[state=checked]:before:ring-neutral-800"
+        class="justify-start hover:cursor-pointer before:content-[''] before:absolute before:left-1 before:bg-neutral-200 before:size-[1.35rem] before:rounded-sm data-[state=checked]:before:bg-neutral-800 [&_svg]:size-4"
         onCheckedChange={toggleMode}
         checked={isDarkMode}
       >
