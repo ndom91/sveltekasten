@@ -195,7 +195,7 @@
         </Button>
       </Tooltip.Trigger>
       <Tooltip.Content side="top">
-        <p>Summarize Article (AI)</p>
+        <p>Summarize Article</p>
       </Tooltip.Content>
     </Tooltip.Root>
   {/if}
@@ -248,7 +248,7 @@
         </Button>
       </Tooltip.Trigger>
       <Tooltip.Content side="top">
-        <p>Listen to Article (AI)</p>
+        <p>Listen to Article</p>
       </Tooltip.Content>
     </Tooltip.Root>
   {/if}
