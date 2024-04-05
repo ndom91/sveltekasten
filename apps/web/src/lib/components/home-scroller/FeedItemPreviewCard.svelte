@@ -76,7 +76,7 @@
     <a
       href={item.link}
       target="_blank"
-      class="focus:underline focus:outline-none line-clamp-2 focus:outline-offset-2"
+      class="transition focus:underline focus:outline-none line-clamp-2 focus:outline-offset-2"
       title={item.title}
     >
       {item.title}

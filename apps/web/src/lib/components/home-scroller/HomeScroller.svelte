@@ -24,7 +24,7 @@
     </h2>
     {#if items.length}
       <a
-        class="flex gap-2 items-center p-1 rounded-md focus:ring-2 focus:outline-none focus:dark:ring-neutral-700"
+        class="flex gap-2 items-center p-1 rounded-md transition focus:ring-2 focus:outline-none focus:ring-neutral-300 focus:dark:ring-neutral-700"
         data-sveltekit-preload-data="hover"
         href={`/${type.toLowerCase()}`}
       >
