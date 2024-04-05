@@ -13,11 +13,13 @@
   const {
     class: className,
     src,
+    alt,
     thumbhash,
     ...rest
   }: {
     src: string
     class?: string
+    alt?: string
     thumbhash?: string
   } = $props()
 
@@ -39,6 +41,7 @@
     class="object-cover object-center absolute top-0 left-0 w-full h-full rounded-md opacity-0 transition duration-500"
     class:srcImageLoaded={loaded}
     use:onload
+    alt={alt ?? "Bookmark Image"}
     {src}
     {...rest}
   />
