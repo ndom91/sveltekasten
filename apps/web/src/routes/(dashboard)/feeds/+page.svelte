@@ -14,7 +14,7 @@
   import { invalidateAll } from "$app/navigation"
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
   import ttsWorkerUrl from "$lib/transformers/tts-worker?url"
-  import summaryWorkerUrl from "$lib/transformers/translate-worker?url"
+  import summaryWorkerUrl from "$lib/transformers/summary-worker?url"
 
   const ui = useInterface()
   const { data } = $props()
@@ -30,7 +30,7 @@
   })
 
   let pageNumber = $state(1)
-  let allItems = $state<LoadFeedEntry[] | {} | undefined>(data.feedEntries?.data)
+  let allItems = $state<LoadFeedEntry[]>(data.feedEntries?.data)
   let rootElement = $state<HTMLElement>()
   const limitLoadCount = 20
 
@@ -46,7 +46,7 @@
   $effect(() => {
     if (
       !ui.aiFeaturesPreferences.tts.enabled ||
-      ui.aiFeaturesPreferences.tts.location !== TTSLocation.BROWSER
+      ui.aiFeaturesPreferences.tts.location !== TTSLocation.Browser
     )
       return
     if (!ttsWorker) {
@@ -102,7 +102,7 @@
 
   const handleGenerateSpeech = async (text: string) => {
     if (!ui.aiFeaturesPreferences.tts.enabled) return
-    if (ui.aiFeaturesPreferences.tts.location.toUpperCase() === TTSLocation.SERVER) {
+    if (ui.aiFeaturesPreferences.tts.location.toUpperCase() === TTSLocation.Server) {
       const blobData = await ofetch("/api/v1/tts", {
         method: "POST",
         body: {
@@ -119,7 +119,7 @@
     if (
       !ttsWorker ||
       !ui.aiFeaturesPreferences.tts.enabled ||
-      ui.aiFeaturesPreferences.tts.location !== TTSLocation.BROWSER
+      ui.aiFeaturesPreferences.tts.location !== TTSLocation.Browser
     )
       return
     dev && console.time("audio.generate")
@@ -145,6 +145,7 @@
         case "complete":
           disabledTtsButton = false
 
+          // TODO: UI to display summary
           ui.summarizationLoading = false
           dev && console.log("Summary:", e.data.output)
           dev && console.timeEnd("summary.generate")

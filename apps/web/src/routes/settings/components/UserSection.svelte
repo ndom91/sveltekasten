@@ -325,7 +325,7 @@
                         value: speaker,
                         label: speaker,
                       }))}
-                      disabled={ttsLocation !== TTSLocation.SERVER}
+                      disabled={ttsLocation !== TTSLocation.Server}
                       selected={{ value: ttsSpeaker, label: ttsSpeaker }}
                       onSelectedChange={(selected) => {
                         ttsSpeaker = selected?.value

@@ -55,7 +55,7 @@ let summarizationContent = $state("")
 export const defaultAISettings = {
   tts: {
     enabled: true,
-    location: TTSLocation.SERVER,
+    location: TTSLocation.Server,
     speaker: "en-US-GuyNeural",
   },
   summarization: {
