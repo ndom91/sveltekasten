@@ -1,6 +1,7 @@
 <script lang="ts">
   import { untrack, onDestroy } from "svelte"
   import { dev } from "$app/environment"
+  import { page } from "$app/stores"
   import toast from "svelte-french-toast"
   import { ofetch } from "ofetch"
   import { Navbar } from "$lib/components/navbar"
@@ -29,7 +30,7 @@
   })
 
   let pageNumber = $state(1)
-  let allItems = $state<LoadFeedEntry[]>(data.feedEntries?.data)
+  let allItems = $state<LoadFeedEntry[] | {} | undefined>(data.feedEntries?.data)
   let rootElement = $state<HTMLElement>()
   const limitLoadCount = 20
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { page } from "$app/stores"
   import { cn } from "$lib/utils/style"
   import { Button } from "$lib/components/ui/button"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
@@ -8,7 +9,7 @@
 
   const ui = useInterface()
 
-  const enableSummary = ui.aiFeaturesPreferences.summarization.enabled
+  const enableSummary = $page.data.session?.user?.settings.ai?.summarization.enabled ?? false
   const enableTTS = ui.aiFeaturesPreferences.tts.enabled
 
   const {

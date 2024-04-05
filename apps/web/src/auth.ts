@@ -63,23 +63,22 @@ export const { signIn, signOut, handle } = SvelteKitAuth({
   adapter: PrismaAdapter(db),
   providers,
   callbacks: {
-    jwt: async ({ token, user }) => {
-      if (user) {
-        token.userSettings = user.settings ?? {}
+    // jwt: async ({ token, user, ...rest }) => {
+    //   if (user) {
+    //     token.userSettings = user.settings ?? {}
+    //   }
+    //   return token
+    // },
+    session: async ({ session, user }) => {
+      if (user.settings) {
+        session.user.settings = user.settings as { ai: any }
       }
-      return token
-    },
-    session: async ({ session, token }) => {
-      if (token?.sub && session.user) {
-        session.user.id = token.sub
-      }
-      session.user.settings = token.userSettings as Record<string, unknown>
       return session
     },
   },
-  session: {
-    strategy: "jwt",
-  },
+  // session: {
+  //   strategy: "jwt",
+  // },
   pages: {
     signIn: "/login",
   },

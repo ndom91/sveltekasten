@@ -11,7 +11,7 @@
 
   const tab = $derived($page.url.searchParams.get("tab"))
 
-  const handleTabChange = (data) => {
+  const handleTabChange = (data: string | undefined) => {
     goto(`?tab=${data}`)
   }
 </script>
