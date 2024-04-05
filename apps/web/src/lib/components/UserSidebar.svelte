@@ -47,7 +47,7 @@
   <div class="p-4">
     <div class="flex justify-start items-center">
       <Button
-        class="flex justify-start rounded-lg hover:no-underline"
+        class="flex justify-start rounded-full transition focus:ring-2 focus:outline-none focus:dark:ring-neutral-700"
         size="icon"
         variant="link"
         on:click={ui.toggleUserSidebar}
