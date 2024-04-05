@@ -22,7 +22,11 @@
         {format(item.createdAt, { date: "medium", time: "short" })}
       </span>
     </div>
-    <a href={item.url} target="_blank" class="">
+    <a
+      href={item.url}
+      target="_blank"
+      class="focus:underline focus:outline-none focus:outline-offset-2"
+    >
       <span class="line-clamp-1" title={item.title}>{item.title}</span>
       <span class="line-clamp-2">{item.desc}</span>
     </a>

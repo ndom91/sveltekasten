@@ -73,7 +73,12 @@
         {format(item.published!, { date: "medium", time: "short" })}
       </span>
     </div>
-    <a href={item.link} target="_blank" class="line-clamp-2" title={item.title}>
+    <a
+      href={item.link}
+      target="_blank"
+      class="focus:underline focus:outline-none line-clamp-2 focus:outline-offset-2"
+      title={item.title}
+    >
       {item.title}
     </a>
   </div>
