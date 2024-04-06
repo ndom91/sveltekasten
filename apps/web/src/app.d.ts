@@ -6,6 +6,7 @@ import type { AIFeaturesPreferences } from "./state/ui.svelte"
 
 declare module "@auth/sveltekit" {
   interface User {
+    userId: string
     settings: {
       ai: AIFeaturesPreferences
     }
@@ -40,12 +41,6 @@ declare global {
     // interface Platform {}
     // interface PrivateEnv {}
     // interface PublicEnv {}
-  }
-}
-
-declare module "@auth/sveltekit" {
-  interface User {
-    userId: string
   }
 }
 
