@@ -26,7 +26,7 @@
   <Tooltip.Root>
     <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
       <Button
-        class="absolute top-4 right-4 p-2 rounded-full border opacity-0 transition duration-200 ease-in-out group-hover:opacity-100 bg-neutral-50 border-neutral-100 dark:bg-neutral-900 dark:border-neutral-800"
+        class="absolute top-4 right-4 p-2 rounded-full border opacity-0 transition duration-200 ease-in-out group-hover:opacity-100 focus:ring-2 focus:ring-offset-0 focus:opacity-100 focus:outline-none bg-neutral-50 border-neutral-100 dark:bg-neutral-900 dark:border-neutral-800 focus:dark:ring-neutral-700"
         builders={[tooltipBuilder]}
         variant="ghost"
         size="icon"
@@ -73,7 +73,12 @@
         {format(item.published!, { date: "medium", time: "short" })}
       </span>
     </div>
-    <a href={item.link} target="_blank" class="line-clamp-2" title={item.title}>
+    <a
+      href={item.link}
+      target="_blank"
+      class="transition focus:underline focus:outline-none line-clamp-2 focus:outline-offset-2"
+      title={item.title}
+    >
       {item.title}
     </a>
   </div>

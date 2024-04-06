@@ -11,6 +11,11 @@ declare module "@auth/sveltekit" {
       ai: AIFeaturesPreferences
     }
   }
+  interface Session {
+    settings: {
+      ai: AIFeaturesPreferences
+    }
+  }
 }
 
 type Provider = {

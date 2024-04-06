@@ -1,6 +1,10 @@
+<script lang="ts">
+  const { ...restProps } = $props()
+</script>
+
 <svg
-  {...$$props}
-  width="119"
+  {...restProps}
+  width="128"
   height="128"
   viewBox="0 0 119 128"
   stroke="none"

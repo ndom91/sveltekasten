@@ -60,7 +60,7 @@
     class="w-60 h-36 rounded-md border transition border-neutral-100 dark:border-neutral-800"
   />
   <div class="flex flex-col gap-2">
-    <span class="text-xl font-bold line-clamp-1 text-clip" title={bookmark.title}>
+    <span class="text-xl font-semibold line-clamp-1 text-clip" title={bookmark.title}>
       {bookmark.title}
     </span>
     <p class="break-words line-clamp-2">{bookmark.desc}</p>

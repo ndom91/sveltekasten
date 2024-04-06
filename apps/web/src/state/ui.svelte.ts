@@ -1,8 +1,8 @@
 import type { Category, Tag } from "$lib/types/zod"
 
 export const TTSLocation = {
-  BROWSER: "BROWSER",
-  SERVER: "SERVER",
+  Browser: "Browser",
+  Server: "Server",
 } as const
 
 type TTSLocation = keyof typeof TTSLocation
@@ -55,7 +55,7 @@ let summarizationContent = $state("")
 export const defaultAISettings = {
   tts: {
     enabled: true,
-    location: TTSLocation.SERVER,
+    location: TTSLocation.Server,
     speaker: "en-US-GuyNeural",
   },
   summarization: {

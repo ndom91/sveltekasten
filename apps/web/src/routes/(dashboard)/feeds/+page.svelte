@@ -1,6 +1,7 @@
 <script lang="ts">
   import { untrack, onDestroy } from "svelte"
   import { dev } from "$app/environment"
+  import { page } from "$app/stores"
   import toast from "svelte-french-toast"
   import { ofetch } from "ofetch"
   import { Navbar } from "$lib/components/navbar"
@@ -8,12 +9,12 @@
   import { FeedRow } from "$lib/components/feed-row"
   import Blob from "$lib/assets/blob1.png"
 
-  import { useInterface, TTSLocation, defaultAISettings } from "$state/ui.svelte"
+  import { useInterface, TTSLocation } from "$state/ui.svelte"
   import { InfiniteLoader, loaderState } from "svelte-infinite"
   import { invalidateAll } from "$app/navigation"
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
   import ttsWorkerUrl from "$lib/transformers/tts-worker?url"
-  import summaryWorkerUrl from "$lib/transformers/translate-worker?url"
+  import summaryWorkerUrl from "$lib/transformers/summary-worker?url"
 
   const ui = useInterface()
   const { data } = $props()
@@ -27,9 +28,6 @@
   $effect(() => {
     allItems = data.feedEntries?.data
   })
-
-  // Set current user preferences to store
-  ui.aiFeaturesPreferences = data.session?.user?.settings.ai ?? defaultAISettings
 
   let pageNumber = $state(1)
   let allItems = $state<LoadFeedEntry[]>(data.feedEntries?.data)
@@ -48,7 +46,7 @@
   $effect(() => {
     if (
       !ui.aiFeaturesPreferences.tts.enabled ||
-      ui.aiFeaturesPreferences.tts.location !== TTSLocation.BROWSER
+      ui.aiFeaturesPreferences.tts.location !== TTSLocation.Browser
     )
       return
     if (!ttsWorker) {
@@ -104,7 +102,7 @@
 
   const handleGenerateSpeech = async (text: string) => {
     if (!ui.aiFeaturesPreferences.tts.enabled) return
-    if (ui.aiFeaturesPreferences.tts.location.toUpperCase() === TTSLocation.SERVER) {
+    if (ui.aiFeaturesPreferences.tts.location.toUpperCase() === TTSLocation.Server) {
       const blobData = await ofetch("/api/v1/tts", {
         method: "POST",
         body: {
@@ -121,9 +119,11 @@
     if (
       !ttsWorker ||
       !ui.aiFeaturesPreferences.tts.enabled ||
-      ui.aiFeaturesPreferences.tts.location !== TTSLocation.BROWSER
-    )
+      ui.aiFeaturesPreferences.tts.location !== TTSLocation.Browser
+    ) {
       return
+    }
+
     dev && console.time("audio.generate")
     disabledTtsButton = true
     ui.textToSpeechLoading = true
@@ -145,10 +145,10 @@
     const onMessageReceived = (e: TODO) => {
       switch (e.data.status) {
         case "complete":
-          disabledTtsButton = false
-
+          // TODO: UI to display summary
           ui.summarizationLoading = false
-          dev && console.log("Summary:", e.data.output)
+          toast.success(e.data.output, { duration: 10000, icon: "" })
+          console.log("Summary:", e.data.output)
           dev && console.timeEnd("summary.generate")
           break
       }
@@ -356,7 +356,7 @@
       {/snippet}
     </EmptyState>
     <p class="mx-auto w-1/2 text-center text-muted-foreground">
-      Get started by adding a feed in
+      Get started by adding a feed in the
       <a class="underline underline-offset-2" href="/settings"> settings </a>
     </p>
   {/if}

@@ -8,7 +8,7 @@
 <Dialog.Root bind:open>
   <Dialog.Content class="!w-[clamp(700px,_33%_,1000px)] !max-w-none">
     <Dialog.Header>
-      <Dialog.Title>Keyboard Shortcuts</Dialog.Title>
+      <Dialog.Title class="text-2xl font-bold">Keyboard Shortcuts</Dialog.Title>
       <Dialog.Description>
         <table class="my-4 w-full">
           <tbody class="*:h-10">

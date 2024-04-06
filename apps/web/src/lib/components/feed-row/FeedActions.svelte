@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { page } from "$app/stores"
   import { cn } from "$lib/utils/style"
   import { Button } from "$lib/components/ui/button"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
@@ -8,7 +9,7 @@
 
   const ui = useInterface()
 
-  const enableSummary = ui.aiFeaturesPreferences.summarization.enabled
+  const enableSummary = $page.data.session?.user?.settings.ai?.summarization.enabled ?? false
   const enableTTS = ui.aiFeaturesPreferences.tts.enabled
 
   const {
@@ -141,6 +142,7 @@
           builders={[tooltipBuilder]}
           variant="ghost"
           size="icon"
+          disabled={ui.summarizationLoading}
           on:click={handleStartTextSummarization}
         >
           {#if ui.summarizationLoading}
@@ -194,7 +196,7 @@
         </Button>
       </Tooltip.Trigger>
       <Tooltip.Content side="top">
-        <p>Summarize Article (AI)</p>
+        <p>Summarize Article</p>
       </Tooltip.Content>
     </Tooltip.Root>
   {/if}
@@ -205,6 +207,7 @@
           builders={[tooltipBuilder]}
           variant="ghost"
           size="icon"
+          disabled={ui.textToSpeechLoading}
           on:click={handleSetTextToSpeechContent}
         >
           {#if ui.textToSpeechLoading}
@@ -247,7 +250,7 @@
         </Button>
       </Tooltip.Trigger>
       <Tooltip.Content side="top">
-        <p>Listen to Article (AI)</p>
+        <p>Listen to Article</p>
       </Tooltip.Content>
     </Tooltip.Root>
   {/if}

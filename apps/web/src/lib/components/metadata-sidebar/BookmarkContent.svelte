@@ -197,7 +197,9 @@
               (cat) => cat.id === e?.value,
             )!)}
         >
-          <Select.Trigger class="w-full disabled:cursor-default enabled:bg-zinc-950">
+          <Select.Trigger
+            class="w-full disabled:cursor-default enabled:bg-zinc-100 dark:enabled:bg-zinc-950"
+          >
             <Select.Value placeholder="Category" />
           </Select.Trigger>
           <Select.Input />

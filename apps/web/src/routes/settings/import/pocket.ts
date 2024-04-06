@@ -4,6 +4,8 @@ export const parsePocketBookmarks = (doc: Document) => {
   const dataElements = doc.querySelectorAll("body ul > li") as NodeListOf<
     HTMLElement | HTMLDListElement
   >
+  if (!dataElements) return []
+
   return Array.from(dataElements)
     .map((element) => {
       // @ts-expect-error No DOM interface for DT, MDN says its a `HTMLElement`s

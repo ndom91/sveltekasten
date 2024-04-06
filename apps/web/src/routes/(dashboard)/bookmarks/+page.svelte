@@ -206,25 +206,52 @@
     </InfiniteLoader>
   {:else}
     <EmptyState />
-    <p class="mx-auto w-1/2 text-center text-muted-foreground">
-      Get started by adding a bookmark with the
-      <svg
-        class="inline p-1 rounded-md size-7 dark:bg-zinc-700"
-        data-slot="icon"
-        fill="none"
-        stroke-width="1.5"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Zm9.75-9.75H18a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 18 3.75h-2.25A2.25 2.25 0 0 0 13.5 6v2.25a2.25 2.25 0 0 0 2.25 2.25Z"
-        ></path>
-      </svg>
-      button above or by pressing <KeyboardIndicator class="text-sm" key="Alt N" />
-    </p>
+    <ul
+      class="p-12 mx-auto mt-6 space-y-8 w-full list-none text-left md:p-8 md:px-0 md:w-1/2 text-muted-foreground"
+    >
+      <li class="relative">
+        <span
+          class="absolute -left-5 -top-11 text-7xl font-bold -z-10 text-neutral-500/10 dark:text-neutral-900/40"
+          >1</span
+        >
+        Open the quick add form with the add button (
+        <svg
+          class="inline p-1 rounded-md size-7 bg-zinc-300 text-zinc-800 dark:bg-zinc-600 dark:text-zinc-100"
+          data-slot="icon"
+          fill="none"
+          stroke-width="1.5"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Zm9.75-9.75H18a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 18 3.75h-2.25A2.25 2.25 0 0 0 13.5 6v2.25a2.25 2.25 0 0 0 2.25 2.25Z"
+          ></path>
+        </svg>
+        ) above <i>or</i> by using the keyboard shortcut, <KeyboardIndicator
+          class="text-sm"
+          key="Alt N"
+        />.
+      </li>
+      <li class="relative">
+        <span
+          class="absolute -left-7 -top-11 text-7xl font-bold -z-10 text-neutral-500/10 dark:text-neutral-900/40"
+          >2</span
+        > Drag-and-drop a URL onto the page.
+      </li>
+      <li class="relative">
+        <span
+          class="absolute -left-7 -top-9 text-7xl font-bold -z-10 text-neutral-500/10 dark:text-neutral-900/40"
+          >3</span
+        >
+        With a URL in your clipboard, paste onto the page with <KeyboardIndicator
+          class="text-sm"
+          key="Ctrl V"
+        />.
+      </li>
+    </ul>
   {/if}
 </main>

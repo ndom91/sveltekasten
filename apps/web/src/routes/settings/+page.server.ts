@@ -65,7 +65,7 @@ export const actions: Actions = {
   },
 }
 
-export const load: PageServerLoad = async ({ parent, locals, url }) => {
+export const load: PageServerLoad = async ({ locals, url }) => {
   try {
     const session = await locals.auth()
     if (!session && url.pathname !== "/login") {

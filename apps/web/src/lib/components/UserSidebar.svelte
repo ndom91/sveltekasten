@@ -47,7 +47,7 @@
   <div class="p-4">
     <div class="flex justify-start items-center">
       <Button
-        class="flex justify-start hover:no-underline"
+        class="flex justify-start rounded-full transition focus:ring-2 focus:outline-none focus:dark:ring-neutral-700"
         size="icon"
         variant="link"
         on:click={ui.toggleUserSidebar}
@@ -57,9 +57,7 @@
       <span
         class={cn(
           "transition-all text-xl font-light mx-auto",
-          ui.userSidebarOpen
-            ? "opacity-100 delay-300"
-            : "opacity-0 delay-0 duration-0 pointer-events-none w-0",
+          ui.userSidebarOpen ? "opacity-100" : "opacity-0 duration-0 pointer-events-none w-0",
         )}
       >
         Briefkasten
@@ -102,8 +100,8 @@
               class={cn(
                 "text-lg font-normal transition-all",
                 ui.userSidebarOpen
-                  ? "opacity-100 delay-300 ml-4"
-                  : "opacity-0 delay-0 duration-0 pointer-events-none w-0 ml-0",
+                  ? "opacity-100 w-min ml-4"
+                  : "opacity-0 duration-0 pointer-events-none w-0 ml-0",
               )}
             >
               Home
@@ -152,8 +150,8 @@
               class={cn(
                 "text-lg font-normal transition-all",
                 ui.userSidebarOpen
-                  ? "opacity-100 delay-300 ml-4"
-                  : "opacity-0 delay-0 duration-0 pointer-events-none w-0 ml-0",
+                  ? "opacity-100 ml-4"
+                  : "opacity-0 duration-0 pointer-events-none w-0 ml-0",
               )}
             >
               Bookmarks
@@ -202,8 +200,8 @@
               class={cn(
                 "text-lg font-normal transition-all",
                 ui.userSidebarOpen
-                  ? "opacity-100 delay-300 ml-4"
-                  : "opacity-0 delay-0 duration-0 pointer-events-none w-0 ml-0",
+                  ? "opacity-100 ml-4"
+                  : "opacity-0 duration-0 pointer-events-none w-0 ml-0",
               )}
             >
               Feeds
@@ -251,8 +249,8 @@
               class={cn(
                 "text-lg font-normal transition-all",
                 ui.userSidebarOpen
-                  ? "opacity-100 delay-300 ml-4"
-                  : "opacity-0 delay-0 duration-0 pointer-events-none w-0 ml-0",
+                  ? "opacity-100 ml-4"
+                  : "opacity-0 duration-0 pointer-events-none w-0 ml-0",
               )}
             >
               Archive
@@ -302,8 +300,8 @@
               class={cn(
                 "text-lg font-normal transition-all",
                 ui.userSidebarOpen
-                  ? "opacity-100 delay-300 ml-4"
-                  : "opacity-0 delay-0 duration-0 pointer-events-none w-0 ml-0",
+                  ? "opacity-100 ml-4"
+                  : "opacity-0 duration-0 pointer-events-none w-0 ml-0",
               )}
             >
               Categories
@@ -353,8 +351,8 @@
               class={cn(
                 "text-lg font-normal transition-all",
                 ui.userSidebarOpen
-                  ? "opacity-100 delay-300 ml-4"
-                  : "opacity-0 delay-0 duration-0 pointer-events-none w-0 ml-0",
+                  ? "opacity-100 ml-4"
+                  : "opacity-0 duration-0 pointer-events-none w-0 ml-0",
               )}
             >
               Tags
@@ -382,9 +380,7 @@
       <span
         class={cn(
           "transition-all mx-auto text-md truncate",
-          ui.userSidebarOpen
-            ? "opacity-100 delay-300"
-            : "opacity-0 delay-0 duration-0 pointer-events-none w-0",
+          ui.userSidebarOpen ? "opacity-100" : "opacity-0 duration-0 pointer-events-none w-0",
         )}
       >
         {$page.data.session?.user?.name ?? ""}
