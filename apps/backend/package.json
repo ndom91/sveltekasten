@@ -18,17 +18,17 @@
     "db:generate": "prisma generate"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.540.0",
-    "@formkit/tempo": "^0.0.17",
-    "@hono/node-server": "^1.9.0",
-    "@hono/zod-validator": "^0.2.0",
+    "@aws-sdk/client-s3": "^3.550.0",
+    "@formkit/tempo": "^0.0.19",
+    "@hono/node-server": "^1.9.1",
+    "@hono/zod-validator": "^0.2.1",
     "@panva/hkdf": "^1.1.1",
-    "@prisma/client": "5.11.0",
+    "@prisma/client": "5.12.1",
     "croner": "^8.0.1",
     "fastq": "^1.17.1",
-    "hono": "^4.1.4",
+    "hono": "^4.2.2",
     "jose": "^5.2.3",
-    "playwright-chromium": "^1.42.1",
+    "playwright-chromium": "^1.43.0",
     "rss-parser": "^3.13.0",
     "sharp": "^0.33.3",
     "thumbhash": "^0.1.1",
@@ -37,11 +37,11 @@
     "zod-prisma-types": "^3.1.6"
   },
   "devDependencies": {
-    "@types/node": "^20.11.30",
+    "@types/node": "^20.12.5",
     "@types/xml2js": "^0.4.14",
     "eslint-plugin-prettier": "^5.1.3",
-    "prisma": "5.11.0",
-    "tsx": "^4.7.1"
+    "prisma": "5.12.1",
+    "tsx": "^4.7.2"
   },
   "eslintConfig": {
     "root": true,
