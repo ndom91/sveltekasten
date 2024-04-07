@@ -1,16 +1,18 @@
 datasource db {
-  provider = "postgres"
-  url      = env("DATABASE_URL")
+  provider   = "postgres"
+  url        = env("DATABASE_URL")
+  extensions = [pg_trgm]
 }
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch"]
+   // previewFeatures = ["fullTextSearch"]
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 generator zod {
-  provider = "pnpm dlx zod-prisma-types"
-  output   = "../src/lib/types/zod"
+  provider          = "pnpm dlx zod-prisma-types"
+  output            = "../src/lib/types/zod"
   useTypeAssertions = true
 }
 
@@ -45,7 +47,6 @@ model TagsOnBookmarks {
   tag        Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@id([bookmarkId, tagId])
-  @@index([bookmarkId, tagId])
 }
 
 model Tag {

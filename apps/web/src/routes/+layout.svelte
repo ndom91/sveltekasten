@@ -100,6 +100,7 @@
     e.preventDefault()
     e.stopPropagation()
     console.log("DragEnter", e)
+    // TODO: Ignore page's own URL
     // TODO: Ensure dragging stuff from the page doesn't trigger drag-n-drop overlay
     if (e.relatedTarget) return
     isDragOver = true
