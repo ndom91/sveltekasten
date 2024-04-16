@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: lts/*
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install && pnpm --filter sveltekasten-web db:generate
       - name: Run Playwright tests
         run: pnpm --filter sveltekasten-web test:e2e
       - uses: actions/upload-artifact@v4
