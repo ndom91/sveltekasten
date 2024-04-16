@@ -15,7 +15,7 @@
   const ui = useInterface()
   const { data = $bindable() }: { data: any } = $props()
 
-  let pageNumber = $state(1)
+  let pageNumber = $state(0)
   let allItems = $state<LoadBookmarkFlatTags[]>(data.bookmarks.data!)
   let rootElement = $state<HTMLElement>()
 
@@ -47,30 +47,22 @@
           category: true,
           tags: { include: { tag: true } },
         },
-        where: {},
+        where: {
+          archived: false,
+        },
       }
       if (ui.searchQuery) {
         body.where = {
-          OR: [
-            {
-              title: {
-                contains: `%${ui.searchQuery}%`,
-                mode: "insensitive",
-              },
-            },
-            {
-              url: {
-                contains: `%${ui.searchQuery}%`,
-                mode: "insensitive",
-              },
-            },
-            {
-              desc: {
-                contains: `%${ui.searchQuery}%`,
-                mode: "insensitive",
-              },
-            },
-          ],
+          archived: false,
+          title: {
+            search: ui.searchQuery,
+          },
+          url: {
+            search: ui.searchQuery,
+          },
+          desc: {
+            search: ui.searchQuery,
+          },
         }
       }
       const { data, count } = await ofetch("/api/v1/search", {
@@ -82,11 +74,7 @@
         count,
       }
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message)
-      } else {
-        console.error(error)
-      }
+      console.error(String(error))
       toast.error(String(error))
     }
   }
@@ -97,12 +85,6 @@
       pageNumber += 1
       const limit = limitLoadCount
       const skip = limitLoadCount * pageNumber
-
-      // If there are less results than the first page, we are done
-      if (allItems.length !== 0 && allItems.length < skip) {
-        loaderState.complete()
-        return
-      }
 
       const searchResults = await fetchSearchResults({ limit, skip })
       if (!searchResults?.data) {
@@ -120,11 +102,8 @@
         loaderState.loaded()
       }
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message)
-      } else {
-        console.error(error)
-      }
+      console.error(String(error))
+
       loaderState.error()
       pageNumber -= 1
     }
@@ -136,7 +115,7 @@
     ui.searchQuery
     untrack(() => {
       loaderState.reset()
-      pageNumber = 0
+      pageNumber = -1
       allItems = []
       loadMore()
     })
@@ -211,9 +190,10 @@
     >
       <li class="relative">
         <span
-          class="absolute -left-5 -top-11 text-7xl font-bold -z-10 text-neutral-500/10 dark:text-neutral-900/40"
-          >1</span
+          class="absolute -left-5 -top-8 text-6xl font-bold -z-10 text-neutral-500/10 dark:text-neutral-900/40"
         >
+          1
+        </span>
         Open the quick add form with the add button (
         <svg
           class="inline p-1 rounded-md size-7 bg-zinc-300 text-zinc-800 dark:bg-zinc-600 dark:text-zinc-100"
@@ -238,13 +218,13 @@
       </li>
       <li class="relative">
         <span
-          class="absolute -left-7 -top-11 text-7xl font-bold -z-10 text-neutral-500/10 dark:text-neutral-900/40"
+          class="absolute -left-6 -top-8 text-6xl font-bold -z-10 text-neutral-500/10 dark:text-neutral-900/40"
           >2</span
         > Drag-and-drop a URL onto the page.
       </li>
       <li class="relative">
         <span
-          class="absolute -left-7 -top-9 text-7xl font-bold -z-10 text-neutral-500/10 dark:text-neutral-900/40"
+          class="absolute -left-6 -top-8 text-6xl font-bold -z-10 text-neutral-500/10 dark:text-neutral-900/40"
           >3</span
         >
         With a URL in your clipboard, paste onto the page with <KeyboardIndicator

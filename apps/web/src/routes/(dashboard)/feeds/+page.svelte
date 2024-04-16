@@ -29,7 +29,7 @@
     allItems = data.feedEntries?.data
   })
 
-  let pageNumber = $state(1)
+  let pageNumber = $state(0)
   let allItems = $state<LoadFeedEntry[]>(data.feedEntries?.data)
   let rootElement = $state<HTMLElement>()
   const limitLoadCount = 20
@@ -199,20 +199,12 @@
       }
       if (ui.searchQuery) {
         body.where = {
-          OR: [
-            {
-              title: {
-                contains: `%${ui.searchQuery}%`,
-                mode: "insensitive",
-              },
-            },
-            {
-              content: {
-                contains: `%${ui.searchQuery}%`,
-                mode: "insensitive",
-              },
-            },
-          ],
+          title: {
+            search: ui.searchQuery,
+          },
+          contentSnippet: {
+            search: ui.searchQuery,
+          },
         }
       }
       const { data, count } = await ofetch("/api/v1/search", {
@@ -224,11 +216,7 @@
         count,
       }
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message)
-      } else {
-        console.error(error)
-      }
+      console.error(String(error))
       toast.error(String(error))
     }
   }
@@ -240,11 +228,12 @@
       const limit = limitLoadCount
       const skip = limitLoadCount * pageNumber
 
+      // console.log("loadMore.shuoldSkip?", { allItems: allItems.length, skip })
       // If there are less results than the first page, we are done
-      if (allItems.length !== 0 && allItems.length < skip) {
-        loaderState.complete()
-        return
-      }
+      // if (allItems.length !== 0 && allItems.length < skip) {
+      //   loaderState.complete()
+      //   return
+      // }
 
       const searchResults = await fetchSearchResults({ limit, skip })
       if (!searchResults?.data) {
@@ -262,11 +251,8 @@
         loaderState.loaded()
       }
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message)
-      } else {
-        console.error(error)
-      }
+      console.error(String(error))
+
       loaderState.error()
       pageNumber -= 1
     }
@@ -276,9 +262,12 @@
   // Reset fields and load first results from api
   $effect.pre(() => {
     ui.searchQuery
+    console.log("effect.query changed")
+    // TODO: allow resetting search
     untrack(() => {
+      console.log("effect.loaderState.reset")
       loaderState.reset()
-      pageNumber = 0
+      pageNumber = -1
       allItems = []
       loadMore()
     })
