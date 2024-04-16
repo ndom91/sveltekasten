@@ -26,6 +26,8 @@ jobs:
         run: pnpm install
       - name: Generate prisma client
         run: pnpm --filter sveltekasten-web db:generate
+      - name: Install playwright chromium
+        run: cd apps/web && pnpm exec playwright install chromium
       - name: Run Playwright tests
         run: pnpm --filter sveltekasten-web test:e2e
         env:
