@@ -159,7 +159,7 @@
     <Card.Header class="bg-neutral-100 dark:bg-neutral-900">
       <Card.Title class="flex justify-between items-center w-full">
         <span class="font-normal">API Token</span>
-        <Badge class="text-sm bg-amber-500 dark:bg-amber-300">Todo</Badge>
+        <Badge class="text-sm bg-amber-500 dark:bg-tango">Todo</Badge>
       </Card.Title>
     </Card.Header>
     <Card.Content class="p-4">

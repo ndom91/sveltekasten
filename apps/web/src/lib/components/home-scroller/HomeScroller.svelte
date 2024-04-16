@@ -106,8 +106,9 @@
       <div class="grid place-items-center w-full h-48">
         {#if type === ScrollerTypes.BOOKMARKS}
           <div class="z-10">
-            Go to the <a href="/bookmarks" class="underline underline-offset-4">bookmarks</a> page to
-            find multiple ways to add new bookmarks
+            Go to the <a href="/bookmarks" class="underline text-tango underline-offset-4"
+              >bookmarks</a
+            > page to find multiple ways to add new bookmarks
           </div>
           <img
             src={Browser}
@@ -116,8 +117,9 @@
           />
         {:else if type === ScrollerTypes.FEEDS}
           <div class="z-10">
-            Go to <a href="/settings?tab=feeds" class="underline underline-offset-4">settings</a> to
-            add a new RSS feed to follow
+            Go to <a href="/settings?tab=feeds" class="underline text-tango underline-offset-4"
+              >settings</a
+            > to add a new RSS feed to follow
           </div>
           <img
             src={Bell}
