@@ -20,5 +20,9 @@ vite.config.ts.timestamp-*
 
 tsconfig.tsbuildinfo
 
-haters/
+**/test-results/
+**/playwright-report/
+**/blob-report/
+**/playwright/.cache/
 
+haters/

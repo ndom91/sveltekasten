@@ -1,20 +1,25 @@
 {
   "extends": "./.svelte-kit/tsconfig.json",
   "compilerOptions": {
-    "noUncheckedIndexedAccess": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "useUnknownInCatchVariables": true,
     "skipLibCheck": true,
+    "target": "es2022",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
     "isolatedModules": true,
+
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "forceConsistentCasingInFileNames": true,
+    "useUnknownInCatchVariables": true,
+
+    "module": "NodeNext",
+
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext",
+      "es2022",
     ],
-    "strict": true,
-    "target": "esnext",
-    "module": "esnext"
   }
 }
