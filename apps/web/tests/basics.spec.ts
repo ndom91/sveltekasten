@@ -7,9 +7,9 @@ test('has title "Briefkasten"', async ({ page }) => {
   await expect(page).toHaveTitle(/Briefkasten/)
 })
 
-test("has auth providers", async ({ page }) => {
+test("has auth providers available", async ({ page }) => {
   await page.goto(process.env.PW_URL ?? "http://localhost:3000")
 
   // Expects page to NOT have "No providers found" warning
-  await expect(page.getByRole("heading", { name: "No Auth.js Providers found" })).not.toBeVisible()
+  await expect(page.getByText("No Auth.js Providers found")).not.toBeVisible()
 })
