@@ -6,19 +6,20 @@
   import { useInterface } from "$state/ui.svelte"
   import { BookmarkRow } from "$lib/components/bookmark-row"
   import { InfiniteLoader, loaderState } from "svelte-infinite"
+  import { untrack, onDestroy } from "svelte"
 
   const ui = useInterface()
-  const { data } = $props()
+  const { data = $bindable() }: { data: any } = $props()
 
-  let pageNumber = $state(1)
-  let allItems = $state<LoadBookmarkFlatTags[]>(data.bookmarks!)
+  let pageNumber = $state(0)
+  let allItems = $state<LoadBookmarkFlatTags[]>(data.bookmarks.data!)
   let rootElement = $state<HTMLElement>()
 
-  $effect(() => {
-    allItems = data.bookmarks!
-  })
-
   const limitLoadCount = 20
+
+  $effect(() => {
+    allItems = data.bookmarks.data!
+  })
 
   if (data.error) {
     console.error(String(data.error))
@@ -47,29 +48,16 @@
       }
       if (ui.searchQuery) {
         body.where = {
-          AND: {
-            archived: true,
+          archived: true,
+          title: {
+            search: ui.searchQuery,
           },
-          OR: [
-            {
-              title: {
-                contains: `%${ui.searchQuery}%`,
-                mode: "insensitive",
-              },
-            },
-            {
-              url: {
-                contains: `%${ui.searchQuery}%`,
-                mode: "insensitive",
-              },
-            },
-            {
-              desc: {
-                contains: `%${ui.searchQuery}%`,
-                mode: "insensitive",
-              },
-            },
-          ],
+          url: {
+            search: ui.searchQuery,
+          },
+          desc: {
+            search: ui.searchQuery,
+          },
         }
       }
       const { data, count } = await ofetch("/api/v1/search", {
@@ -81,11 +69,7 @@
         count,
       }
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message)
-      } else {
-        console.error(error)
-      }
+      console.error(String(error))
       toast.error(String(error))
     }
   }
@@ -95,16 +79,13 @@
     try {
       pageNumber += 1
       const limit = limitLoadCount
-      const skip = limitLoadCount * (pageNumber - 1)
-
-      // If there are less results than the first page, we are done
-      if (allItems.length < skip) {
-        loaderState.complete()
-        return
-      }
+      const skip = limitLoadCount * pageNumber
 
       const searchResults = await fetchSearchResults({ limit, skip })
-      if (!searchResults?.data) return
+      if (!searchResults?.data) {
+        pageNumber -= 1
+        return
+      }
 
       if (searchResults.data.length) {
         allItems.push(...(searchResults.data as any[]))
@@ -116,12 +97,10 @@
         loaderState.loaded()
       }
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message)
-      } else {
-        console.error(error)
-      }
+      console.error(String(error))
+
       loaderState.error()
+      pageNumber -= 1
     }
   }
 
@@ -159,6 +138,25 @@
       window.open(targetLink, "_target")
     }
   }
+
+  // Handle search input changes
+  // Reset and execute first search for new query
+  $effect.pre(() => {
+    ui.searchQuery
+    untrack(() => {
+      loaderState.reset()
+      pageNumber = -1
+      allItems = []
+      loadMore()
+    })
+  })
+
+  // Reset state on unmount
+  onDestroy(() => {
+    if (ui.searchQuery) {
+      ui.searchQuery = ""
+    }
+  })
 </script>
 
 <svelte:head>
@@ -172,11 +170,11 @@
 <main
   class="align-start overflow-y-scroll flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2"
 >
-  {#if allItems.length}
+  {#if data.bookmarks?.count}
     <div class="h-full">
       <InfiniteLoader triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
-        {#each allItems as bookmark}
-          <BookmarkRow {bookmark} />
+        {#each allItems as item, i (item.id)}
+          <BookmarkRow bind:bookmark={allItems[i]} />
         {/each}
       </InfiniteLoader>
     </div>

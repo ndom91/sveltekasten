@@ -61,8 +61,10 @@ export const load: PageServerLoad = async (event) => {
 
     return {
       session,
-      bookmarks,
-      count,
+      bookmarks: {
+        data: bookmarks,
+        count,
+      },
     }
   } catch (error) {
     if (error instanceof Error) {
@@ -70,6 +72,13 @@ export const load: PageServerLoad = async (event) => {
     } else {
       console.error(error)
     }
-    return { feedEntries: [], count: 0, error }
+    return {
+      bookmarks: {
+        data: [],
+        count: 0,
+      },
+      session,
+      error,
+    }
   }
 }
