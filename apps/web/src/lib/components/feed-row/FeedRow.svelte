@@ -159,7 +159,12 @@
           alt="URL Favicon"
           class="rounded-full size-4"
         />
-        <a target="_blank" href={feedEntry.link} class="line-clamp-1 text-clip text-zinc-500">
+        <a
+          target="_blank"
+          href={feedEntry.link}
+          onclick={() => handleMarkAsUnread()}
+          class="line-clamp-1 text-clip text-zinc-500"
+        >
           {feedEntry.link}
         </a>
       {/if}
