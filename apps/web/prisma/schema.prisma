@@ -1,13 +1,12 @@
 datasource db {
   provider   = "postgres"
   url        = env("DATABASE_URL")
-  extensions = [pg_trgm]
+  extensions = []
 }
 
 generator client {
   provider        = "prisma-client-js"
-   // previewFeatures = ["fullTextSearch"]
-  previewFeatures = ["postgresqlExtensions"]
+  previewFeatures = ["postgresqlExtensions", "fullTextSearch"]
 }
 
 generator zod {
@@ -35,9 +34,9 @@ model Bookmark {
 
   @@unique([url, userId])
   @@index([userId])
-  @@index([title(ops: raw("gin_trgm_ops"))], type: Gin, name: "Bookmark_title_idx")
-  @@index([desc(ops: raw("gin_trgm_ops"))], type: Gin, name: "Bookmark_desc_idx")
-  @@index([url(ops: raw("gin_trgm_ops"))], type: Gin, name: "Bookmark_url_idx")
+  // @@index([title(ops: raw("gin_trgm_ops"))], type: Gin, name: "Bookmark_title_idx")
+  // @@index([desc(ops: raw("gin_trgm_ops"))], type: Gin, name: "Bookmark_desc_idx")
+  // @@index([url(ops: raw("gin_trgm_ops"))], type: Gin, name: "Bookmark_url_idx")
 }
 
 model TagsOnBookmarks {
@@ -175,8 +174,6 @@ model FeedEntry {
   @@index([guid])
   @@index([userId])
   @@index([feedId])
-  @@index([title(ops: raw("gin_trgm_ops"))], type: Gin, name: "FeedEntry_title_idx")
-  @@index([content(ops: raw("gin_trgm_ops"))], type: Gin, name: "FeedEntry_content_idx")
 }
 
 model FeedEntryMedia {
