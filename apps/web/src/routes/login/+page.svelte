@@ -67,7 +67,7 @@
                     ? `/${decodeURIComponent($page.data.redirectTo).slice(1)}`
                     : `/`,
                 }}
-                className="flex justify-center items-center px-4 mt-2 space-x-2 w-full h-12 text-base font-light text-white rounded transition focus:ring-2 focus:ring-offset-2 focus:outline-none bg-zinc-800 hover:bg-zinc-900 focus:ring-zinc-800"
+                class="flex justify-center items-center px-4 mt-2 space-x-2 w-full h-12 text-base font-light text-white rounded transition focus:ring-2 focus:ring-offset-2 focus:outline-none bg-zinc-800 hover:bg-zinc-900 focus:ring-zinc-800"
               >
                 Continue
               </SignIn>
@@ -88,7 +88,7 @@
                   ? `/${decodeURIComponent($page.data.redirectTo).slice(1)}`
                   : `/`,
               }}
-              className="w-full *:w-full"
+              class="w-full *:w-full"
             >
               <div
                 slot="submitButton"
