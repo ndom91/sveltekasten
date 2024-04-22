@@ -181,7 +181,9 @@
   {:else}
     <EmptyState showArrow={false} />
     <div class="w-full text-center text-muted-foreground">
-      Try archiving a <a class="underline underline-offset-4" href="/bookmarks">bookmark</a>
+      Try archiving a <a class="underline underline-offset-4 text-tango" href="/bookmarks"
+        >bookmark</a
+      >
     </div>
   {/if}
 </main>

@@ -71,6 +71,10 @@ const config = {
           DEFAULT: "hsl(var(--card) / <alpha-value>)",
           foreground: "hsl(var(--card-foreground) / <alpha-value>)",
         },
+        tango: "#FF5B19",
+        charcoal: "#161616",
+        platinum: "#E5E3D2",
+        powderBlue: "#AECACD",
       },
       borderRadius: {
         lg: "var(--radius)",
