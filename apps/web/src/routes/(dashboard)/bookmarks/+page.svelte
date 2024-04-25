@@ -63,7 +63,7 @@
           desc: {
             search: ui.searchQuery,
           },
-        }
+        } as { archived: boolean } & Record<string, any>
       }
       const { data, count } = await ofetch("/api/v1/search", {
         method: "POST",
