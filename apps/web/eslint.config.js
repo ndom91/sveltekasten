@@ -1,33 +1,40 @@
-import js from "@eslint/js"
-import ts from "typescript-eslint"
-import svelte from "eslint-plugin-svelte"
-import prettier from "eslint-config-prettier"
-import globals from "globals"
+import antfu from "@antfu/eslint-config"
 
-/** @type {import('eslint').Linter.FlatConfig[]} */
-export default [
-  js.configs.recommended,
-  ...ts.configs.recommended,
-  ...svelte.configs["flat/recommended"],
-  prettier,
-  ...svelte.configs["flat/prettier"],
-  {
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-      },
-    },
+export default antfu({
+  svelte: true,
+  stylistic: true,
+  stylistic: {
+    indent: 2, // 4, or 'tab'
+    quotes: "double", // or 'double'
   },
-  {
-    files: ["**/*.svelte"],
-    languageOptions: {
-      parserOptions: {
-        parser: ts.parser,
-      },
-    },
+
+  // TypeScript and Vue are auto-detected, you can also explicitly enable them:
+  // typescript: true,
+  typescript: {
+    tsconfigPath: "tsconfig.json",
   },
-  {
-    ignores: ["build/", ".svelte-kit/", "package/"],
+
+  // `.eslintignore` is no longer supported in Flat config, use `ignores` instead
+  ignores: [
+    "**/fixtures",
+    // ...globs
+  ],
+  formatters: {
+    /**
+     * Format CSS, LESS, SCSS files, also the `<style>` blocks in Vue
+     * By default uses Prettier
+     */
+    css: true,
+    /**
+     * Format HTML files
+     * By default uses Prettier
+     */
+    html: true,
+    /**
+     * Format Markdown files
+     * Supports Prettier and dprint
+     * By default uses Prettier
+     */
+    markdown: "prettier",
   },
-]
+})
