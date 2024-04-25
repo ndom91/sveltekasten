@@ -18,7 +18,7 @@
 
   const ui = useInterface()
 
-  const { data }: { data: LayoutData } = $props();
+  const { data, children }: { data: LayoutData } = $props();
   // Set current user preferences to store
   ui.aiFeaturesPreferences = data.session?.user?.settings.ai ?? defaultAISettings
 
@@ -168,7 +168,7 @@
   toastOptions={{ style: "background-color: #11111175; padding: 12px; color: #fff; backdrop-filter: blur(8px);" }}
 />
 
-<slot />
+{@render children()}
 
 <div
   role="region"

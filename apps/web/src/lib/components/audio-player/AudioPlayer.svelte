@@ -42,7 +42,7 @@
     bind:this={audio}
     class="hidden"
     {autoplay}
-  />
+  ></audio>
   <button onclick={() => (paused = !paused)} class="outline-none">
     {#if !paused}
       <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"

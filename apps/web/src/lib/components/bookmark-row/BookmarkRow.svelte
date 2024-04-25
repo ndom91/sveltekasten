@@ -47,8 +47,8 @@
   data-id={bookmark.id}
   role="row"
   class="grid relative gap-4 p-4 mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none grid-cols-[15rem_1fr] dark:focus:bg-zinc-900 focus:border-zinc-500 focus:bg-zinc-100"
-  on:mouseleave={closeButtonGroup}
-  on:mouseenter={openButtonGroup}
+  onmouseleave={closeButtonGroup}
+  onmouseenter={openButtonGroup}
 >
   {#await import("./DeleteDialog.svelte") then { default: DeleteDialog }}
     <svelte:component this={DeleteDialog} bind:open={isDeleteDialogOpen} bookmarkId={bookmark.id} />

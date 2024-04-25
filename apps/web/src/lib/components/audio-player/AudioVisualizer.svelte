@@ -21,7 +21,7 @@
   <div
     class={`rounded-lg move${i + 1} max-h-[52px] transition-transform ease-in-out duration-100 bg-red-400 w-2`}
     style={`animation-play-state: ${paused ? "paused" : "running"}`}
-  />
+  ></div>
 {/each}
 
 <style>

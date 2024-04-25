@@ -65,7 +65,7 @@
     </div>
     <div
       class="my-4 mx-auto w-full rounded-full border-b border-neutral-200 dark:border-neutral-800"
-    />
+    ></div>
     <nav class="flex flex-col gap-2 items-start mt-6">
       <Tooltip.Root>
         <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
@@ -373,7 +373,7 @@
   <div class="flex flex-col justify-center items-start p-4 w-full">
     <div
       class="my-4 mx-auto w-full rounded-full border-b border-neutral-200 dark:border-neutral-800"
-    />
+    ></div>
     <div class="flex justify-between items-center w-full">
       <AvatarMenu />
 

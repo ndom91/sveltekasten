@@ -177,7 +177,7 @@
             "flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
             !isEditMode ? "cursor-default text-muted" : "bg-zinc-100 dark:bg-zinc-950",
           )}
-        />
+        ></textarea>
         {#if $errors.description}<span class="text-xs text-red-400">{$errors.title}</span>{/if}
       </div>
       <div class="flex flex-col gap-2">
@@ -224,7 +224,7 @@
       {#if ui.metadataSidebarData.bookmark.image}
         <div
           class={cn("w-full rounded-full border-b-2 border-zinc-100 px-8 dark:border-zinc-800")}
-        />
+        ></div>
         <div class="flex flex-col gap-2 items-start mb-2">
           <h2>Cover Photo</h2>
           <img
@@ -234,7 +234,9 @@
           />
         </div>
       {/if}
-      <div class={cn("w-full rounded-full border-b-2 border-zinc-100 px-8 dark:border-zinc-800")} />
+      <div
+        class={cn("w-full rounded-full border-b-2 border-zinc-100 px-8 dark:border-zinc-800")}
+      ></div>
       <div class="flex flex-col flex-grow gap-2 items-start mb-2">
         <h2>Metadata</h2>
         <div class="flex justify-between w-full text-sm">

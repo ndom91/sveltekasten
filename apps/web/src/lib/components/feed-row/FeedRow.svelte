@@ -128,11 +128,11 @@
     !isFeedVisible && "hidden",
     hideUnread && "hidden",
   )}
-  on:mouseleave={closeButtonGroup}
-  on:mouseenter={openButtonGroup}
+  onmouseleave={closeButtonGroup}
+  onmouseenter={openButtonGroup}
 >
   {#if feedEntry.unread}
-    <div class="absolute top-2 left-2 bg-emerald-400 rounded-full duration-1000 size-4" />
+    <div class="absolute top-2 left-2 bg-emerald-400 rounded-full duration-1000 size-4"></div>
   {/if}
   <img
     src={itemImage}
