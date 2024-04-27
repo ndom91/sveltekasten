@@ -40,7 +40,7 @@
 </script>
 
 <AlertDialog.Root bind:open closeOnOutsideClick closeOnEscape>
-  <AlertDialog.Content>
+  <AlertDialog.Content class="!shadow-sm">
     <AlertDialog.Header>
       <AlertDialog.Title>Create</AlertDialog.Title>
       <AlertDialog.Description>
