@@ -1,4 +1,5 @@
 import antfu from "@antfu/eslint-config"
+// Rules: https://eslint-config.antfu.me/rules
 
 export default antfu({
   stylistic: {
