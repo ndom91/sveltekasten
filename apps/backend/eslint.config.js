@@ -1,7 +1,6 @@
 import antfu from "@antfu/eslint-config"
 
 export default antfu({
-  svelte: true,
   stylistic: {
     semi: false,
     indent: 2,
@@ -14,7 +13,6 @@ export default antfu({
   formatters: {
     css: true,
     html: true,
-    markdown: "prettier",
   },
 }, {
   rules: {
