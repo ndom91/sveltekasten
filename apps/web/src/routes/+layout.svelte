@@ -76,6 +76,7 @@
     }
   }
 
+  // Set partykit script content
   let scriptTag: HTMLScriptElement
   onMount(() => {
     // eslint-disable-next-line svelte/valid-compile
