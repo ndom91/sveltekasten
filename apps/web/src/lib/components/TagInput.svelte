@@ -6,6 +6,7 @@
 </script>
 
 <script lang="ts" generics="T extends Record<string, unknown>">
+  // TODO: Refactor using reactive set/map
   import { Badge } from "$lib/components/ui/badge"
   import { Combobox } from "bits-ui"
   import { flyAndScale } from "$lib/utils/style"

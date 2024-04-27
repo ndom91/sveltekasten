@@ -1,22 +1,23 @@
 <script lang="ts">
   import { Toaster } from "svelte-french-toast"
   // import { Toaster } from "$lib/components/ui/sonner"
-  import { partytownSnippet } from "@builder.io/partytown/integration"
-  import type { Snippet } from "svelte"
 
+  import { partytownSnippet } from "@builder.io/partytown/integration"
+  import { type Snippet, onMount } from "svelte"
+
+  import DragAdd from "./DragAdd.svelte"
+  import type { LayoutData } from "./$types"
   import { page } from "$app/stores"
   import { dev } from "$app/environment"
   import { goto, onNavigate } from "$app/navigation"
-  import { useInterface, defaultAISettings } from "$state/ui.svelte"
+  import { defaultAISettings, useInterface } from "$state/ui.svelte"
   import KeyboardShortcutsHelp from "$lib/components/KeyboardShortcutsHelp.svelte"
-  import DragAdd from "./DragAdd.svelte"
-  import type { LayoutData } from './$types';
 
   import "$lib/styles/global.css"
 
   const ui = useInterface()
 
-  const { data, children }: { data: LayoutData, children: Snippet } = $props();
+  const { data, children }: { data: LayoutData, children: Snippet } = $props()
 
   // Set current user preferences to store
   ui.aiFeaturesPreferences = data.session?.user?.settings.ai ?? defaultAISettings
@@ -24,7 +25,8 @@
   // Global View transition
   onNavigate((navigation) => {
     // @ts-expect-error New method, only available in Chromium
-    if (!document.startViewTransition) return
+    if (!document.startViewTransition)
+      return
 
     return new Promise((resolve) => {
       // @ts-expect-error New method, only available in Chromium
@@ -38,7 +40,8 @@
   let showKeyboardShortcuts = $state(false)
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.repeat || e.target instanceof HTMLInputElement) return
+    if (e.repeat || e.target instanceof HTMLInputElement)
+      return
     if ((e.ctrlKey || e.metaKey) && e.key === "/") {
       e.preventDefault()
       showKeyboardShortcuts = !showKeyboardShortcuts
@@ -72,18 +75,26 @@
       goto("/settings")
     }
   }
+
+  let scriptTag: HTMLScriptElement
+  onMount(() => {
+    // eslint-disable-next-line svelte/valid-compile
+    if (!dev && $page.url.hostname === "dev.briefkastenhq.com")
+      scriptTag.textContent = partytownSnippet()
+  })
 </script>
 
 <svelte:head>
   <title>Briefkasten</title>
   <meta name="description" content="RSS Feeds, Bookmarks and more!" />
-  {#if !dev && $page.url.hostname === 'dev.briefkastenhq.com'}
+  <script bind:this={scriptTag}></script>
+  <!-- eslint-disable-next-line svelte/valid-compile -->
+  {#if !dev && $page.url.hostname === "dev.briefkastenhq.com"}
     <script>
       partytown = {
-        forward: ["plausible"],
+      forward: ["plausible"],
       }
     </script>
-    {@html "<script>" + partytownSnippet() + "</script>"}
 
     <script
       type="text/partytown"

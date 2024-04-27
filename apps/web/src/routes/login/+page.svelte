@@ -31,7 +31,7 @@
   <div
     aria-label="Slate cover background"
     class="absolute left-0 top-0 z-10 flex h-[275%] w-[150%] translate-x-[-70%] translate-y-[-28%] rotate-[22deg] items-center bg-zinc-900 md:translate-y-[-15%] md:rotate-[11deg]"
-  />
+  ></div>
   <div class="h-dvh z-20 flex w-full items-center justify-center md:ml-[15%] md:w-[22rem]">
     <div class="flex flex-col justify-center items-center w-80 text-xl">
       <h2 class="flex items-center mb-4 space-x-2 text-3xl font-light text-zinc-600">
@@ -74,9 +74,9 @@
             </form>
 
             <div class="flex gap-2 items-center my-4">
-              <div class="flex-1 bg-black h-[1px]" />
+              <div class="flex-1 bg-black h-[1px]"></div>
               <span class="text-xs leading-4 uppercase">or</span>
-              <div class="flex-1 bg-black h-[1px]" />
+              <div class="flex-1 bg-black h-[1px]"></div>
             </div>
           {/if}
           {#each $page.data.providers as provider}
