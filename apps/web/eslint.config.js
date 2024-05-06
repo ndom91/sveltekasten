@@ -2,6 +2,7 @@ import antfu from "@antfu/eslint-config"
 // Rules: https://eslint-config.antfu.me/rules
 
 export default antfu({
+  lessOpinionated: true,
   svelte: true,
   stylistic: {
     semi: false,
@@ -21,5 +22,6 @@ export default antfu({
   rules: {
     "no-console": ["off", "never"],
     "node/prefer-global/process": ["off", "never"],
+    "style/brace-style": ["1tbs", "warn"],
   },
 })
