@@ -84,7 +84,7 @@
   >
     <Input class="w-60" placeholder="Name" id="name" name="name" type="text" />
     <Input class="w-96" placeholder="Description" id="description" name="description" type="text" />
-    <Button variant="secondary" type="submit" class="w-24 focus:">Save</Button>
+    <Button variant="secondary" type="submit" class="w-24">Save</Button>
   </form>
   <Table.Root {...$tableAttrs}>
     <Table.Header>

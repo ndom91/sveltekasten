@@ -29,7 +29,7 @@
         variant="outline"
         role="combobox"
         aria-expanded={open}
-        class="justify-between w-[300px]"
+        class="justify-between w-[200px]"
       >
         Categories
         <svg
@@ -50,12 +50,12 @@
         </svg>
       </Button>
     </Popover.Trigger>
-    <Popover.Content class="p-0 w-[300px]">
+    <Popover.Content class="p-0 w-[200px]">
       <Command.Root>
         <Command.Input placeholder="Search.." />
         <Command.Empty>No results</Command.Empty>
         <Command.Group>
-          {#each $page.data.categories.data as item}
+          {#each $page.data.categories as item}
             <Command.Item
               value={item.name}
               onSelect={() => {
@@ -63,12 +63,7 @@
               }}
             >
               <Checkbox id={item.id} bind:checked={item.visible} />
-              <img
-                src={`https://icons.duckduckgo.com/ip9/${new URL(item.url).hostname}.ico`}
-                alt="URL Favicon"
-                class="m-2 rounded-full size-4"
-              />
-              <span class="truncate">{item.name}</span>
+              <span class="ml-2 truncate">{item.name}</span>
             </Command.Item>
           {/each}
         </Command.Group>
