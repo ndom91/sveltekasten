@@ -13,10 +13,17 @@ export const handleActionResults = (
   callback?: (data: any | unknown) => any,
 ) => {
   return function form_enhance() {
-    return async ({ result }: { result: ActionResult<{ message: string }> }) => {
+    return async ({
+      result,
+      formElement,
+    }: {
+      formElement: HTMLFormElement
+      result: ActionResult<{ message: string }>
+    }) => {
       dev && console.log(result)
       if (result.type === "success") {
         toast.success(result?.data?.message ?? "Success")
+        formElement.reset()
       } else if (result.type === "error") {
         toast.error(`Error: ${result.error.message}`, { icon: "🚫" })
         dev && console.log(result)
