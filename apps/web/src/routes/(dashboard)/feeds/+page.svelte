@@ -4,17 +4,16 @@
   import { ofetch } from "ofetch"
   import { InfiniteLoader, loaderState } from "svelte-infinite"
   import { dev } from "$app/environment"
-  // import { page } from "$app/stores"
   import { Navbar } from "$lib/components/navbar"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { FeedRow } from "$lib/components/feed-row"
   import Blob from "$lib/assets/blob1.png"
+  import { registerTtsWorker, handleGenerateSpeech } from "./tts.svelte.ts"
+  import { registerSummarizationWorker, handleSummarizeText } from "./summarization.svelte.ts"
 
-  import { TTSLocation, useInterface } from "$state/ui.svelte"
+  import { useInterface } from "$state/ui.svelte"
   import { invalidateAll } from "$app/navigation"
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
-  import ttsWorkerUrl from "$lib/transformers/tts-worker?url"
-  import summaryWorkerUrl from "$lib/transformers/summary-worker?url"
 
   const ui = useInterface()
   const { data } = $props()
@@ -34,146 +33,12 @@
     allItems = data.feedEntries?.data as LoadFeedEntry[]
   })
 
+  registerTtsWorker()
+  registerSummarizationWorker()
+
   // Reload feed when coming back to tab
   const visibility = documentVisibilityStore()
   let prevVisibility: DocumentVisibilityState = "visible"
-
-  // TTS Model
-  let progressItems = $state<TODO>([])
-  let disabledTtsButton = $state(false)
-  let ttsWorker = $state<Worker>()
-
-  $effect(() => {
-    if (
-      !ui.aiFeaturesPreferences.tts.enabled ||
-      ui.aiFeaturesPreferences.tts.location !== TTSLocation.Browser
-    ) {
-      return
-    }
-    if (!ttsWorker) {
-      ttsWorker = new Worker(new URL(ttsWorkerUrl, import.meta.url), {
-        type: "module",
-      })
-    }
-
-    const onMessageReceived = (e: TODO) => {
-      switch (e.data.status) {
-        case "initiate":
-          // Model file start load: add a new progress item to the list.
-          progressItems.push(e.data)
-          break
-
-        case "progress":
-          // Model file progress: update one of the progress items.
-          progressItems = progressItems.map((item: TODO) => {
-            if (item.file === e.data.file) {
-              return { ...item, progress: e.data.progress }
-            }
-
-            return item
-          })
-          break
-
-        case "done":
-          // Model file loaded: remove the progress item from the list.
-          progressItems = progressItems.filter((item: TODO) => item.file !== e.data.file)
-          break
-
-        case "ready":
-          dev && console.log("pipeline ready")
-          // Pipeline ready: the worker is ready to accept messages.
-          // ready = true
-          break
-
-        case "complete":
-          disabledTtsButton = false
-
-          const blobUrl = URL.createObjectURL(e.data.output)
-          dev && console.log(`Audio Set: ${blobUrl}`)
-          ui.textToSpeechAudioBlob = blobUrl
-          ui.textToSpeechLoading = false
-          dev && console.timeEnd("audio.generate")
-          break
-      }
-    }
-
-    ttsWorker?.addEventListener("message", onMessageReceived)
-
-    return () => ttsWorker?.removeEventListener("message", onMessageReceived)
-  })
-
-  const handleGenerateSpeech = async (text: string) => {
-    if (!ui.aiFeaturesPreferences.tts.enabled) {
-      return
-    }
-    if (ui.aiFeaturesPreferences.tts.location.toUpperCase() === TTSLocation.Server) {
-      const blobData = await ofetch("/api/v1/tts", {
-        method: "POST",
-        body: {
-          speaker: ui.aiFeaturesPreferences.tts.speaker,
-          text,
-        },
-        responseType: "blob",
-      })
-      const blobUrl = URL.createObjectURL(blobData)
-      ui.textToSpeechAudioBlob = blobUrl
-      return
-    }
-
-    if (
-      !ttsWorker ||
-      !ui.aiFeaturesPreferences.tts.enabled ||
-      ui.aiFeaturesPreferences.tts.location !== TTSLocation.Browser
-    ) {
-      return
-    }
-
-    dev && console.time("audio.generate")
-    disabledTtsButton = true
-    ui.textToSpeechLoading = true
-    ttsWorker.postMessage({
-      text,
-    })
-  }
-
-  // Summary Worker
-  let summaryWorker = $state<Worker>()
-
-  $effect(() => {
-    if (!summaryWorker && ui.aiFeaturesPreferences.summarization.enabled) {
-      summaryWorker = new Worker(new URL(summaryWorkerUrl, import.meta.url), {
-        type: "module",
-      })
-    }
-
-    const onMessageReceived = (e: TODO) => {
-      switch (e.data.status) {
-        case "complete":
-          // TODO: UI to display summary
-          ui.summarizationLoading = false
-          toast.success(e.data.output, { duration: 10000, icon: "" })
-          console.log("Summary:", e.data.output)
-          dev && console.timeEnd("summary.generate")
-          break
-      }
-    }
-
-    summaryWorker?.addEventListener("message", onMessageReceived)
-
-    return () => summaryWorker?.removeEventListener("message", onMessageReceived)
-  })
-
-  const handleSummarizeText = (text: string) => {
-    if (!summaryWorker || !ui.aiFeaturesPreferences.summarization.enabled) {
-      return
-    }
-    dev && console.time("summary.generate")
-    disabledTtsButton = true
-    ui.summarizationLoading = true
-    summaryWorker.postMessage({
-      text,
-    })
-  }
 
   // Page visibility auto refresh
   $effect(() => {
