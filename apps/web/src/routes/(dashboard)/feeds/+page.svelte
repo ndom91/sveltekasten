@@ -3,11 +3,11 @@
   import toast from "svelte-french-toast"
   import { ofetch } from "ofetch"
   import { InfiniteLoader, loaderState } from "svelte-infinite"
-  import { dev } from "$app/environment"
   import { Navbar } from "$lib/components/navbar"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { FeedRow } from "$lib/components/feed-row"
   import Blob from "$lib/assets/blob1.png"
+  import FilterBar from "./FilterBar.svelte"
   import { registerTtsWorker, handleGenerateSpeech } from "./tts.svelte.ts"
   import { registerSummarizationWorker, handleSummarizeText } from "./summarization.svelte.ts"
 
@@ -207,6 +207,7 @@
   class="align-start overflow-y-scroll flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2"
   bind:this={rootElement}
 >
+  <FilterBar />
   {#if data.feedEntries?.count}
     <InfiniteLoader triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
       {#each allItems as feedEntry (feedEntry.id)}

@@ -38,6 +38,7 @@ declare global {
   type LoadFeedEntry = Prisma.FeedEntryGetPayload<{
     include: { feed: true; feedMedia: true }
   }>
+  type LoadFeed = Prisma.FeedGetPayload<{}> & { visible: boolean }
 
   namespace App {
     interface Locals {
