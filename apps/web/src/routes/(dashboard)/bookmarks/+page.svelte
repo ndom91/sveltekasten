@@ -4,6 +4,7 @@
 
   import { ofetch } from "ofetch"
   import { Navbar } from "$lib/components/navbar"
+  import FilterBar from "./FilterBar.svelte"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
   import { useInterface } from "$state/ui.svelte"
@@ -177,6 +178,7 @@
   class="align-start overflow-y-scroll flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2"
   bind:this={rootElement}
 >
+  <FilterBar />
   {#if data.bookmarks?.count}
     <InfiniteLoader triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
       {#each allItems as item, i (item.id)}

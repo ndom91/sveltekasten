@@ -8,6 +8,8 @@
 
   let open = $state(false)
 
+  $inspect($page.data)
+
   // We want to refocus the trigger button when the user selects
   // an item from the list so users can continue navigating the
   // rest of the form with the keyboard.
@@ -29,7 +31,7 @@
         aria-expanded={open}
         class="justify-between w-[300px]"
       >
-        Feeds
+        Categories
         <svg
           class="ml-2 w-4 h-4 opacity-50 shrink-0"
           data-slot="icon"
@@ -53,7 +55,7 @@
         <Command.Input placeholder="Search.." />
         <Command.Empty>No results</Command.Empty>
         <Command.Group>
-          {#each $page.data.feeds.data as item}
+          {#each $page.data.categories.data as item}
             <Command.Item
               value={item.name}
               onSelect={() => {
