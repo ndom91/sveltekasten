@@ -21,6 +21,8 @@
         return "bg-gray-600 hover:bg-gray-800 text-white"
     }
   }
+  const redirectTo = $state.snapshot($page.data.redirectTo)
+  const providers = $state.snapshot($page.data.providers)
 </script>
 
 <div class="flex overflow-hidden relative w-full h-full">
@@ -51,7 +53,7 @@
       </h2>
       <div class="flex flex-col gap-2 p-6 m-8 w-full bg-white rounded shadow-lg">
         {#if !$page.data.session?.user}
-          {#if $page.data.providers.includes({ id: "email", name: "Email" })}
+          {#if providers.includes({ id: "email", name: "Email" })}
             <form>
               <input
                 class="block flex-1 p-3 w-full font-normal rounded-md border border-gray-200 transition sm:text-sm placeholder:font-light placeholder:text-zinc-400 focus:border-zinc-500 focus:ring-zinc-500"
@@ -79,14 +81,12 @@
               <div class="flex-1 bg-black h-[1px]"></div>
             </div>
           {/if}
-          {#each $page.data.providers as provider}
+          {#each providers as provider}
             <SignIn
               provider={provider.id}
               signInPage="signin"
               options={{
-                redirectTo: $page.data.redirectTo
-                  ? `/${decodeURIComponent($page.data.redirectTo).slice(1)}`
-                  : `/`,
+                redirectTo: redirectTo ? `/${decodeURIComponent(redirectTo).slice(1)}` : `/`,
               }}
               class="w-full *:w-full"
             >

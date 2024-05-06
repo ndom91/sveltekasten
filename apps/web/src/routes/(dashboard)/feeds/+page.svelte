@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { untrack, onDestroy } from "svelte"
-  import { dev } from "$app/environment"
-  import { page } from "$app/stores"
+  import { onDestroy, untrack } from "svelte"
   import toast from "svelte-french-toast"
   import { ofetch } from "ofetch"
+  import { InfiniteLoader, loaderState } from "svelte-infinite"
+  import { dev } from "$app/environment"
+  // import { page } from "$app/stores"
   import { Navbar } from "$lib/components/navbar"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { FeedRow } from "$lib/components/feed-row"
   import Blob from "$lib/assets/blob1.png"
 
-  import { useInterface, TTSLocation } from "$state/ui.svelte"
-  import { InfiniteLoader, loaderState } from "svelte-infinite"
+  import { TTSLocation, useInterface } from "$state/ui.svelte"
   import { invalidateAll } from "$app/navigation"
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
   import ttsWorkerUrl from "$lib/transformers/tts-worker?url"
@@ -24,15 +24,15 @@
     console.error(data.error)
   }
 
-  // Reset feed items on load invalidation
-  $effect(() => {
-    allItems = data.feedEntries?.data
-  })
-
   let pageNumber = $state(0)
-  let allItems = $state<LoadFeedEntry[]>(data.feedEntries?.data)
+  let allItems = $state<LoadFeedEntry[]>(data.feedEntries?.data as LoadFeedEntry[])
   let rootElement = $state<HTMLElement>()
   const limitLoadCount = 20
+
+  // Reset feed items on load invalidation
+  $effect(() => {
+    allItems = data.feedEntries?.data as LoadFeedEntry[]
+  })
 
   // Reload feed when coming back to tab
   const visibility = documentVisibilityStore()
@@ -47,8 +47,9 @@
     if (
       !ui.aiFeaturesPreferences.tts.enabled ||
       ui.aiFeaturesPreferences.tts.location !== TTSLocation.Browser
-    )
+    ) {
       return
+    }
     if (!ttsWorker) {
       ttsWorker = new Worker(new URL(ttsWorkerUrl, import.meta.url), {
         type: "module",
@@ -68,6 +69,7 @@
             if (item.file === e.data.file) {
               return { ...item, progress: e.data.progress }
             }
+
             return item
           })
           break
@@ -101,7 +103,9 @@
   })
 
   const handleGenerateSpeech = async (text: string) => {
-    if (!ui.aiFeaturesPreferences.tts.enabled) return
+    if (!ui.aiFeaturesPreferences.tts.enabled) {
+      return
+    }
     if (ui.aiFeaturesPreferences.tts.location.toUpperCase() === TTSLocation.Server) {
       const blobData = await ofetch("/api/v1/tts", {
         method: "POST",
@@ -160,7 +164,9 @@
   })
 
   const handleSummarizeText = (text: string) => {
-    if (!summaryWorker || !ui.aiFeaturesPreferences.summarization.enabled) return
+    if (!summaryWorker || !ui.aiFeaturesPreferences.summarization.enabled) {
+      return
+    }
     dev && console.time("summary.generate")
     disabledTtsButton = true
     ui.summarizationLoading = true
@@ -261,6 +267,7 @@
   // Handle search input changes
   // Reset fields and load first results from api
   $effect.pre(() => {
+    // eslint-disable-next-line no-unused-expressions
     ui.searchQuery
     console.log("effect.query changed")
     // TODO: allow resetting search
@@ -275,7 +282,9 @@
 
   // Handle keyboard navigation of items
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.target instanceof HTMLInputElement) return
+    if (e.target instanceof HTMLInputElement) {
+      return
+    }
     if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "j" || e.key === "k") {
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
@@ -314,6 +323,7 @@
     if (ui.textToSpeechAudioBlob) {
       ui.textToSpeechAudioBlob = ""
     }
+
     if (ui.searchQuery) {
       ui.searchQuery = ""
     }
