@@ -63,7 +63,9 @@
       </DropdownMenu.Item>
       <DropdownMenu.Separator class="bg-neutral-100 dark:bg-neutral-800" />
       <DropdownMenu.Item class="justify-start hover:cursor-pointer">
-        <SignOut signOutPage="signout">Sign Out</SignOut>
+        <SignOut signOutPage="signout" class="w-full *:text-left *:w-full">
+          <div slot="submitButton" class="w-full">Sign Out</div>
+        </SignOut>
       </DropdownMenu.Item>
     </DropdownMenu.Group>
   </DropdownMenu.Content>
