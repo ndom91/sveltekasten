@@ -55,7 +55,6 @@
   const { form, errors, constraints, enhance, submitting, delayed } = superformInstance
 
   const selectedCategory = $derived.by(() => {
-    console.log("SELECTED_CATEGORY.$FORM.CAT", $form.category)
     if ($form.category) {
       const category = ui.metadataSidebarData?.categories.find((cat) => cat.id === $form.category)
       return {
@@ -66,7 +65,6 @@
       return undefined
     }
   })
-  $inspect(selectedCategory)
 
   let selectOpen = $state(false)
 </script>
