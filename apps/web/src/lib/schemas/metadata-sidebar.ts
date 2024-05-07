@@ -6,14 +6,15 @@ export const formSchema = z.object({
   url: z.string({ required_error: "A URL is required" }).url().max(100),
   description: z.string().max(500).optional(),
   image: z.string().url().optional(),
-  category: z.object({
-    id: z.string().cuid(),
-    name: z.string(),
-    description: z.string().optional(),
-    userId: z.string().min(2).max(50),
-    createdAt: z.date(),
-    updatedAt: z.date(),
-  }),
+  category: z.string().max(500).cuid().optional(),
+  // category: z.object({
+  //   id: z.string().cuid(),
+  //   name: z.string(),
+  //   description: z.string().optional(),
+  //   userId: z.string().min(2).max(50),
+  //   createdAt: z.date(),
+  //   updatedAt: z.date(),
+  // }),
   tags: z.array(
     z.object({
       id: z.string().cuid(),

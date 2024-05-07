@@ -52,7 +52,15 @@ export const actions: Actions = {
           desc: form.data.description,
           url: form.data.url,
           image: form.data.image,
-          categoryId: form.data.category.id,
+          category: form.data.category
+            ? {
+              connect: {
+                id: form.data.category,
+              },
+            }
+            : {
+              disconnect: true,
+            },
           tags: {
             deleteMany: {},
             connectOrCreate: form.data.tags.map((tag: Tag) => ({

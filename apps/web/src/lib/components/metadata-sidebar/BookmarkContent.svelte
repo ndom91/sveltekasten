@@ -7,6 +7,7 @@
   import toast from "svelte-french-toast"
   import { invalidateAll } from "$app/navigation"
 
+  import { buttonVariants } from "$lib/components/ui/button"
   import { cn } from "$lib/utils/style"
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
   import { useInterface } from "$state/ui.svelte"
@@ -15,7 +16,9 @@
   import { Label } from "$lib/components/ui/label"
   import { Button } from "$lib/components/ui/button"
   import * as Select from "$lib/components/ui/select"
+  import * as Command from "$lib/components/ui/command"
   import * as Tooltip from "$lib/components/ui/tooltip"
+  import * as Popover from "$lib/components/ui/popover"
   import TagInput from "$lib/components/TagInput.svelte"
 
   const ui = useInterface()
@@ -28,9 +31,10 @@
     title: ui.metadataSidebarData.bookmark?.title!,
     description: ui.metadataSidebarData.bookmark?.desc!,
     image: ui.metadataSidebarData.bookmark?.image!,
-    category: ui.metadataSidebarData.bookmark?.category!,
+    category: ui.metadataSidebarData.bookmark?.category?.id,
     tags: ui.metadataSidebarData.bookmark?.tags!,
   }
+
   const superformInstance = superForm(defaults(defaultData, zodClient(metadataSchema)), {
     resetForm: false,
     dataType: "json",
@@ -49,6 +53,22 @@
     },
   })
   const { form, errors, constraints, enhance, submitting, delayed } = superformInstance
+
+  const selectedCategory = $derived.by(() => {
+    console.log("SELECTED_CATEGORY.$FORM.CAT", $form.category)
+    if ($form.category) {
+      const category = ui.metadataSidebarData?.categories.find((cat) => cat.id === $form.category)
+      return {
+        value: $form.category,
+        label: category.name,
+      }
+    } else {
+      return undefined
+    }
+  })
+  $inspect(selectedCategory)
+
+  let selectOpen = $state(false)
 </script>
 
 <form
@@ -181,36 +201,71 @@
         {#if $errors.description}<span class="text-xs text-red-400">{$errors.title}</span>{/if}
       </div>
       <div class="flex flex-col gap-2">
-        <Label for="category">Category</Label>
-        <Select.Root
-          disabled={!isEditMode}
-          items={ui.metadataSidebarData?.categories?.map((cat) => ({
-            value: cat.id,
-            label: cat.name,
-          }))}
-          selected={{
-            value: $form.category?.id,
-            label: $form.category?.name,
-          }}
-          onSelectedChange={(e) =>
-            ($form.category = ui.metadataSidebarData.categories?.find(
-              (cat) => cat.id === e?.value,
-            )!)}
-        >
-          <Select.Trigger
-            class="w-full disabled:cursor-default enabled:bg-zinc-100 dark:enabled:bg-zinc-950"
+        <Popover.Root class="relative" bind:open={selectOpen} let:ids>
+          <Label>Category</Label>
+          <Popover.Trigger
+            class={cn(
+              buttonVariants({ variant: "outline" }),
+              "w-full justify-between bg-transparent",
+              !$form.category && "text-muted-foreground",
+              !isEditMode ? "cursor-default pointer-events-none text-muted" : "bg-zinc-100 dark:bg-zinc-950",
+            )}
+            role="combobox"
           >
-            <Select.Value placeholder="Category" />
-          </Select.Trigger>
-          <Select.Input />
-          <Select.Content>
-            {#if ui.metadataSidebarData.categories}
-              {#each ui.metadataSidebarData.categories as category (category.id)}
-                <Select.Item value={category.id}>{category.name}</Select.Item>
-              {/each}
-            {/if}
-          </Select.Content>
-        </Select.Root>
+            {ui.metadataSidebarData.categories.find((c) => c.id === $form.category)?.name ?? "Select category"}
+            <svg
+              class="ml-2 w-4 h-4 opacity-50 shrink-0"
+              data-slot="icon"
+              fill="none"
+              stroke-width="1.5"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
+              ></path>
+            </svg>
+          </Popover.Trigger>
+          <Popover.Content class="p-0 w-[230px]">
+            <Command.Root>
+              <Command.Input autofocus placeholder="Search categories..." class="h-9" />
+              <Command.Empty>No categories.</Command.Empty>
+              <Command.Group>
+                {#each ui.metadataSidebarData.categories as category}
+                  <Command.Item
+                    value={category.name}
+                    class="justify-between w-full cursor-pointer"
+                    onSelect={() => {
+                      // Toggle selected on/off
+                      $form.category = $form.category === category.id ? undefined : category.id
+                    }}
+                  >
+                    <svg
+                      class={cn(
+                        "size-4",
+                        category.id !== $form.category && "text-transparent",
+                      )}
+                      data-slot="icon"
+                      fill="none"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"></path>
+                    </svg>
+                    <span>{category.name}</span>
+                  </Command.Item>
+                {/each}
+              </Command.Group>
+            </Command.Root>
+          </Popover.Content>
+        </Popover.Root>
       </div>
       <div class="flex flex-col gap-2">
         <Label for="category">Tags</Label>
