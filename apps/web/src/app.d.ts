@@ -40,6 +40,14 @@ declare global {
   }>
   type LoadFeed = Prisma.FeedGetPayload<{}> & { visible: boolean }
 
+  type BookmarkContext = {
+    bookmarks: BookmarkFlatTags[]
+    add: (bookmark: BookmarkFlatTags | BookmarkFlatTags[]) => void
+    remove: (bookmarkId: string) => void
+    update: (bookmark: BookmarkFlatTags) => void
+    find: (bookmarkId: string) => BookmarkFlatTags | undefined
+  }
+
   namespace App {
     interface Locals {
       providers: Provider[]

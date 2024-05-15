@@ -7,10 +7,19 @@
   import { invalidateAll } from "$app/navigation"
   import { Image } from "$lib/components/image"
   import BookmarkActions from "./BookmarkActions.svelte"
+  import { getContext } from "svelte"
+
+  const bookmarkStore = getContext<BookmarkContext>("bookmarks")
 
   const ui = useInterface()
 
-  const { bookmark = $bindable() }: { bookmark: LoadBookmarkFlatTags } = $props()
+  const { bookmarkId = $bindable() }: { bookmarkId: string } = $props()
+
+  let bookmark = $state(bookmarkStore.find(bookmarkId)!)
+
+  $effect(() => {
+    bookmark = bookmarkStore?.find(bookmarkId)!
+  })
 
   let isDeleteDialogOpen = $state(false)
   let isOptionsOpen = $state(false)

@@ -22,12 +22,14 @@
   import TagInput from "$lib/components/TagInput.svelte"
   import { getContext } from "svelte"
 
-  const bookmarkStore = getContext<BookmarkContext>("bookmarks")
+  const bookmarkStore = getContext("bookmarks")
+  console.log("sidebar.bkContext", bookmarkStore)
 
   const ui = useInterface()
 
   const isEditMode = $derived(ui.metadataSidebarEditMode === true)
   const bookmark = bookmarkStore.find(ui.metadataSidebarData.bookmark?.id!)
+  console.log("sidebar.foundBookmark", bookmark)
 
   const defaultData = {
     id: ui.metadataSidebarData.bookmark?.id!,
@@ -45,7 +47,6 @@
     validators: zodClient(metadataSchema),
     onUpdated: ({ form }) => {
       if (form.valid) {
-        console.log('ON UPDATED.SUBMIT')
         toast.success("Bookmark Updated")
         ui.toggleMetadataSidebarEditMode()
         invalidateAll()
@@ -192,7 +193,7 @@
         {#if $errors.description}<span class="text-xs text-red-400">{$errors.title}</span>{/if}
       </div>
       <div class="flex flex-col gap-2">
-        <Popover.Root bind:open={selectOpen}>
+        <Popover.Root class="relative" bind:open={selectOpen} let:ids>
           <Label>Category</Label>
           <Popover.Trigger
             class={cn(
@@ -205,7 +206,7 @@
             )}
             role="combobox"
           >
-            {ui.metadataSidebarData.categories?.find((c) => c.id === $form.category)?.name ??
+            {ui.metadataSidebarData.categories.find((c) => c.id === $form.category)?.name ??
               "Select category"}
             <svg
               class="ml-2 w-4 h-4 opacity-50 shrink-0"
@@ -229,33 +230,31 @@
               <Command.Input autofocus placeholder="Search categories..." class="h-9" />
               <Command.Empty>No categories.</Command.Empty>
               <Command.Group>
-                {#if ui.metadataSidebarData.categories?.length}
-                  {#each ui.metadataSidebarData.categories as category}
-                    <Command.Item
-                      value={category.name}
-                      class="justify-between w-full cursor-pointer"
-                      onSelect={() => {
-                        // Toggle selected on/off
-                        $form.category = $form.category === category.id ? undefined : category.id
-                      }}
+                {#each ui.metadataSidebarData.categories as category}
+                  <Command.Item
+                    value={category.name}
+                    class="justify-between w-full cursor-pointer"
+                    onSelect={() => {
+                      // Toggle selected on/off
+                      $form.category = $form.category === category.id ? undefined : category.id
+                    }}
+                  >
+                    <svg
+                      class={cn("size-4", category.id !== $form.category && "text-transparent")}
+                      data-slot="icon"
+                      fill="none"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
                     >
-                      <svg
-                        class={cn("size-4", category.id !== $form.category && "text-transparent")}
-                        data-slot="icon"
-                        fill="none"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true"
-                      >
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"
-                        ></path>
-                      </svg>
-                      <span>{category.name}</span>
-                    </Command.Item>
-                  {/each}
-                {/if}
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"
+                      ></path>
+                    </svg>
+                    <span>{category.name}</span>
+                  </Command.Item>
+                {/each}
               </Command.Group>
             </Command.Root>
           </Popover.Content>

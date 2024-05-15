@@ -12,12 +12,17 @@
   import { goto, onNavigate } from "$app/navigation"
   import { defaultAISettings, useInterface } from "$state/ui.svelte"
   import KeyboardShortcutsHelp from "$lib/components/KeyboardShortcutsHelp.svelte"
+  import { useBookmarks } from "$state/bookmarks.svelte"
+
+  import { setContext } from "svelte"
+  const bookmarkStore = useBookmarks()
+  setContext("bookmarks", bookmarkStore)
 
   import "$lib/styles/global.css"
 
   const ui = useInterface()
 
-  const { data, children }: { data: LayoutData, children: Snippet } = $props()
+  const { data, children }: { data: LayoutData; children: Snippet } = $props()
 
   // Set current user preferences to store
   ui.aiFeaturesPreferences = data.session?.user?.settings.ai ?? defaultAISettings
@@ -25,8 +30,7 @@
   // Global View transition
   onNavigate((navigation) => {
     // @ts-expect-error New method, only available in Chromium
-    if (!document.startViewTransition)
-      return
+    if (!document.startViewTransition) return
 
     return new Promise((resolve) => {
       // @ts-expect-error New method, only available in Chromium
@@ -40,8 +44,7 @@
   let showKeyboardShortcuts = $state(false)
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.repeat || e.target instanceof HTMLInputElement)
-      return
+    if (e.repeat || e.target instanceof HTMLInputElement) return
     if ((e.ctrlKey || e.metaKey) && e.key === "/") {
       e.preventDefault()
       showKeyboardShortcuts = !showKeyboardShortcuts
@@ -93,7 +96,7 @@
   {#if !dev && $page.url.hostname === "dev.briefkastenhq.com"}
     <script>
       partytown = {
-      forward: ["plausible"],
+        forward: ["plausible"],
       }
     </script>
 
@@ -114,7 +117,9 @@
 
 <Toaster
   position="bottom-right"
-  toastOptions={{ style: "background-color: #11111175; padding: 12px; color: #fff; backdrop-filter: blur(8px);" }}
+  toastOptions={{
+    style: "background-color: #11111185; padding: 12px; color: #fff; backdrop-filter: blur(8px);",
+  }}
 />
 
 {@render children()}
