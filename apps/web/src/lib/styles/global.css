@@ -126,6 +126,11 @@
   }
 }
 
+dialog[open],
+div[data-state="open"] {
+  animation: var(--animation-fade-in) forwards;
+}
+
 /* 2024 Reset */
 @supports (field-sizing: content) {
   textarea {

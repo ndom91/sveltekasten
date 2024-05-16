@@ -661,6 +661,260 @@ export const FeedEntryMediaSelectSchema: z.ZodType<Prisma.FeedEntryMediaSelect> 
   user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
 }).strict()
 
+// CREATE MANY BOOKMARK AND RETURN OUTPUT TYPE
+//------------------------------------------------------
+
+export const CreateManyBookmarkAndReturnOutputTypeIncludeSchema: z.ZodType<Prisma.CreateManyBookmarkAndReturnOutputTypeInclude> = z.object({
+  category: z.union([z.boolean(),z.lazy(() => CategoryArgsSchema)]).optional(),
+  user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+}).strict()
+
+export const CreateManyBookmarkAndReturnOutputTypeArgsSchema: z.ZodType<Prisma.CreateManyBookmarkAndReturnOutputTypeDefaultArgs> = z.object({
+  select: z.lazy(() => CreateManyBookmarkAndReturnOutputTypeSelectSchema).optional(),
+  include: z.lazy(() => CreateManyBookmarkAndReturnOutputTypeIncludeSchema).optional(),
+}).strict();
+
+export const CreateManyBookmarkAndReturnOutputTypeSelectSchema: z.ZodType<Prisma.CreateManyBookmarkAndReturnOutputTypeSelect> = z.object({
+  id: z.boolean().optional(),
+  title: z.boolean().optional(),
+  url: z.boolean().optional(),
+  image: z.boolean().optional(),
+  imageBlur: z.boolean().optional(),
+  desc: z.boolean().optional(),
+  categoryId: z.boolean().optional(),
+  metadata: z.boolean().optional(),
+  archived: z.boolean().optional(),
+  userId: z.boolean().optional(),
+  createdAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
+  category: z.union([z.boolean(),z.lazy(() => CategoryArgsSchema)]).optional(),
+  user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+}).strict()
+
+// CREATE MANY TAGS ON BOOKMARKS AND RETURN OUTPUT TYPE
+//------------------------------------------------------
+
+export const CreateManyTagsOnBookmarksAndReturnOutputTypeIncludeSchema: z.ZodType<Prisma.CreateManyTagsOnBookmarksAndReturnOutputTypeInclude> = z.object({
+  bookmark: z.union([z.boolean(),z.lazy(() => BookmarkArgsSchema)]).optional(),
+  tag: z.union([z.boolean(),z.lazy(() => TagArgsSchema)]).optional(),
+}).strict()
+
+export const CreateManyTagsOnBookmarksAndReturnOutputTypeArgsSchema: z.ZodType<Prisma.CreateManyTagsOnBookmarksAndReturnOutputTypeDefaultArgs> = z.object({
+  select: z.lazy(() => CreateManyTagsOnBookmarksAndReturnOutputTypeSelectSchema).optional(),
+  include: z.lazy(() => CreateManyTagsOnBookmarksAndReturnOutputTypeIncludeSchema).optional(),
+}).strict();
+
+export const CreateManyTagsOnBookmarksAndReturnOutputTypeSelectSchema: z.ZodType<Prisma.CreateManyTagsOnBookmarksAndReturnOutputTypeSelect> = z.object({
+  bookmarkId: z.boolean().optional(),
+  tagId: z.boolean().optional(),
+  bookmark: z.union([z.boolean(),z.lazy(() => BookmarkArgsSchema)]).optional(),
+  tag: z.union([z.boolean(),z.lazy(() => TagArgsSchema)]).optional(),
+}).strict()
+
+// CREATE MANY TAG AND RETURN OUTPUT TYPE
+//------------------------------------------------------
+
+export const CreateManyTagAndReturnOutputTypeIncludeSchema: z.ZodType<Prisma.CreateManyTagAndReturnOutputTypeInclude> = z.object({
+  user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+}).strict()
+
+export const CreateManyTagAndReturnOutputTypeArgsSchema: z.ZodType<Prisma.CreateManyTagAndReturnOutputTypeDefaultArgs> = z.object({
+  select: z.lazy(() => CreateManyTagAndReturnOutputTypeSelectSchema).optional(),
+  include: z.lazy(() => CreateManyTagAndReturnOutputTypeIncludeSchema).optional(),
+}).strict();
+
+export const CreateManyTagAndReturnOutputTypeSelectSchema: z.ZodType<Prisma.CreateManyTagAndReturnOutputTypeSelect> = z.object({
+  id: z.boolean().optional(),
+  name: z.boolean().optional(),
+  userId: z.boolean().optional(),
+  createdAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
+  user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+}).strict()
+
+// CREATE MANY CATEGORY AND RETURN OUTPUT TYPE
+//------------------------------------------------------
+
+export const CreateManyCategoryAndReturnOutputTypeIncludeSchema: z.ZodType<Prisma.CreateManyCategoryAndReturnOutputTypeInclude> = z.object({
+  user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+}).strict()
+
+export const CreateManyCategoryAndReturnOutputTypeArgsSchema: z.ZodType<Prisma.CreateManyCategoryAndReturnOutputTypeDefaultArgs> = z.object({
+  select: z.lazy(() => CreateManyCategoryAndReturnOutputTypeSelectSchema).optional(),
+  include: z.lazy(() => CreateManyCategoryAndReturnOutputTypeIncludeSchema).optional(),
+}).strict();
+
+export const CreateManyCategoryAndReturnOutputTypeSelectSchema: z.ZodType<Prisma.CreateManyCategoryAndReturnOutputTypeSelect> = z.object({
+  id: z.boolean().optional(),
+  name: z.boolean().optional(),
+  description: z.boolean().optional(),
+  userId: z.boolean().optional(),
+  createdAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
+  user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+}).strict()
+
+// CREATE MANY ACCOUNT AND RETURN OUTPUT TYPE
+//------------------------------------------------------
+
+export const CreateManyAccountAndReturnOutputTypeIncludeSchema: z.ZodType<Prisma.CreateManyAccountAndReturnOutputTypeInclude> = z.object({
+  user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+}).strict()
+
+export const CreateManyAccountAndReturnOutputTypeArgsSchema: z.ZodType<Prisma.CreateManyAccountAndReturnOutputTypeDefaultArgs> = z.object({
+  select: z.lazy(() => CreateManyAccountAndReturnOutputTypeSelectSchema).optional(),
+  include: z.lazy(() => CreateManyAccountAndReturnOutputTypeIncludeSchema).optional(),
+}).strict();
+
+export const CreateManyAccountAndReturnOutputTypeSelectSchema: z.ZodType<Prisma.CreateManyAccountAndReturnOutputTypeSelect> = z.object({
+  id: z.boolean().optional(),
+  userId: z.boolean().optional(),
+  type: z.boolean().optional(),
+  provider: z.boolean().optional(),
+  providerAccountId: z.boolean().optional(),
+  refresh_token: z.boolean().optional(),
+  access_token: z.boolean().optional(),
+  expires_at: z.boolean().optional(),
+  token_type: z.boolean().optional(),
+  scope: z.boolean().optional(),
+  id_token: z.boolean().optional(),
+  session_state: z.boolean().optional(),
+  createdAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
+  user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+}).strict()
+
+// CREATE MANY SESSION AND RETURN OUTPUT TYPE
+//------------------------------------------------------
+
+export const CreateManySessionAndReturnOutputTypeIncludeSchema: z.ZodType<Prisma.CreateManySessionAndReturnOutputTypeInclude> = z.object({
+  user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+}).strict()
+
+export const CreateManySessionAndReturnOutputTypeArgsSchema: z.ZodType<Prisma.CreateManySessionAndReturnOutputTypeDefaultArgs> = z.object({
+  select: z.lazy(() => CreateManySessionAndReturnOutputTypeSelectSchema).optional(),
+  include: z.lazy(() => CreateManySessionAndReturnOutputTypeIncludeSchema).optional(),
+}).strict();
+
+export const CreateManySessionAndReturnOutputTypeSelectSchema: z.ZodType<Prisma.CreateManySessionAndReturnOutputTypeSelect> = z.object({
+  id: z.boolean().optional(),
+  sessionToken: z.boolean().optional(),
+  userId: z.boolean().optional(),
+  expires: z.boolean().optional(),
+  user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+}).strict()
+
+// CREATE MANY USER AND RETURN OUTPUT TYPE
+//------------------------------------------------------
+
+export const CreateManyUserAndReturnOutputTypeSelectSchema: z.ZodType<Prisma.CreateManyUserAndReturnOutputTypeSelect> = z.object({
+  id: z.boolean().optional(),
+  name: z.boolean().optional(),
+  email: z.boolean().optional(),
+  emailVerified: z.boolean().optional(),
+  image: z.boolean().optional(),
+  settings: z.boolean().optional(),
+  createdAt: z.boolean().optional(),
+}).strict()
+
+// CREATE MANY VERIFICATION TOKEN AND RETURN OUTPUT TYPE
+//------------------------------------------------------
+
+export const CreateManyVerificationTokenAndReturnOutputTypeSelectSchema: z.ZodType<Prisma.CreateManyVerificationTokenAndReturnOutputTypeSelect> = z.object({
+  identifier: z.boolean().optional(),
+  token: z.boolean().optional(),
+  expires: z.boolean().optional(),
+}).strict()
+
+// CREATE MANY FEED AND RETURN OUTPUT TYPE
+//------------------------------------------------------
+
+export const CreateManyFeedAndReturnOutputTypeIncludeSchema: z.ZodType<Prisma.CreateManyFeedAndReturnOutputTypeInclude> = z.object({
+  user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+}).strict()
+
+export const CreateManyFeedAndReturnOutputTypeArgsSchema: z.ZodType<Prisma.CreateManyFeedAndReturnOutputTypeDefaultArgs> = z.object({
+  select: z.lazy(() => CreateManyFeedAndReturnOutputTypeSelectSchema).optional(),
+  include: z.lazy(() => CreateManyFeedAndReturnOutputTypeIncludeSchema).optional(),
+}).strict();
+
+export const CreateManyFeedAndReturnOutputTypeSelectSchema: z.ZodType<Prisma.CreateManyFeedAndReturnOutputTypeSelect> = z.object({
+  id: z.boolean().optional(),
+  name: z.boolean().optional(),
+  url: z.boolean().optional(),
+  description: z.boolean().optional(),
+  language: z.boolean().optional(),
+  copyright: z.boolean().optional(),
+  userId: z.boolean().optional(),
+  lastFetched: z.boolean().optional(),
+  createdAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
+  user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+}).strict()
+
+// CREATE MANY FEED ENTRY AND RETURN OUTPUT TYPE
+//------------------------------------------------------
+
+export const CreateManyFeedEntryAndReturnOutputTypeIncludeSchema: z.ZodType<Prisma.CreateManyFeedEntryAndReturnOutputTypeInclude> = z.object({
+  feed: z.union([z.boolean(),z.lazy(() => FeedArgsSchema)]).optional(),
+  user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+}).strict()
+
+export const CreateManyFeedEntryAndReturnOutputTypeArgsSchema: z.ZodType<Prisma.CreateManyFeedEntryAndReturnOutputTypeDefaultArgs> = z.object({
+  select: z.lazy(() => CreateManyFeedEntryAndReturnOutputTypeSelectSchema).optional(),
+  include: z.lazy(() => CreateManyFeedEntryAndReturnOutputTypeIncludeSchema).optional(),
+}).strict();
+
+export const CreateManyFeedEntryAndReturnOutputTypeSelectSchema: z.ZodType<Prisma.CreateManyFeedEntryAndReturnOutputTypeSelect> = z.object({
+  id: z.boolean().optional(),
+  guid: z.boolean().optional(),
+  title: z.boolean().optional(),
+  link: z.boolean().optional(),
+  content: z.boolean().optional(),
+  contentSnippet: z.boolean().optional(),
+  author: z.boolean().optional(),
+  ingested: z.boolean().optional(),
+  published: z.boolean().optional(),
+  unread: z.boolean().optional(),
+  categories: z.boolean().optional(),
+  feedId: z.boolean().optional(),
+  userId: z.boolean().optional(),
+  createdAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
+  feed: z.union([z.boolean(),z.lazy(() => FeedArgsSchema)]).optional(),
+  user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+}).strict()
+
+// CREATE MANY FEED ENTRY MEDIA AND RETURN OUTPUT TYPE
+//------------------------------------------------------
+
+export const CreateManyFeedEntryMediaAndReturnOutputTypeIncludeSchema: z.ZodType<Prisma.CreateManyFeedEntryMediaAndReturnOutputTypeInclude> = z.object({
+  feedEntry: z.union([z.boolean(),z.lazy(() => FeedEntryArgsSchema)]).optional(),
+  user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+}).strict()
+
+export const CreateManyFeedEntryMediaAndReturnOutputTypeArgsSchema: z.ZodType<Prisma.CreateManyFeedEntryMediaAndReturnOutputTypeDefaultArgs> = z.object({
+  select: z.lazy(() => CreateManyFeedEntryMediaAndReturnOutputTypeSelectSchema).optional(),
+  include: z.lazy(() => CreateManyFeedEntryMediaAndReturnOutputTypeIncludeSchema).optional(),
+}).strict();
+
+export const CreateManyFeedEntryMediaAndReturnOutputTypeSelectSchema: z.ZodType<Prisma.CreateManyFeedEntryMediaAndReturnOutputTypeSelect> = z.object({
+  id: z.boolean().optional(),
+  href: z.boolean().optional(),
+  title: z.boolean().optional(),
+  medium: z.boolean().optional(),
+  height: z.boolean().optional(),
+  width: z.boolean().optional(),
+  description: z.boolean().optional(),
+  credit: z.boolean().optional(),
+  feedEntryId: z.boolean().optional(),
+  userId: z.boolean().optional(),
+  createdAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
+  feedEntry: z.union([z.boolean(),z.lazy(() => FeedEntryArgsSchema)]).optional(),
+  user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+}).strict()
+
 
 /////////////////////////////////////////
 // INPUT TYPES
@@ -7386,6 +7640,11 @@ export const BookmarkCreateManyArgsSchema: z.ZodType<Prisma.BookmarkCreateManyAr
   skipDuplicates: z.boolean().optional(),
 }).strict() as z.ZodType<Prisma.BookmarkCreateManyArgs>;
 
+export const BookmarkAndReturnCreateManyArgsSchema: z.ZodType<Prisma.BookmarkAndReturnCreateManyArgs> = z.object({
+  data: z.union([ BookmarkCreateManyInputSchema,BookmarkCreateManyInputSchema.array() ]),
+  skipDuplicates: z.boolean().optional(),
+}).strict() as z.ZodType<Prisma.BookmarkAndReturnCreateManyArgs>;
+
 export const BookmarkDeleteArgsSchema: z.ZodType<Prisma.BookmarkDeleteArgs> = z.object({
   select: BookmarkSelectSchema.optional(),
   include: BookmarkIncludeSchema.optional(),
@@ -7426,6 +7685,11 @@ export const TagsOnBookmarksCreateManyArgsSchema: z.ZodType<Prisma.TagsOnBookmar
   data: z.union([ TagsOnBookmarksCreateManyInputSchema,TagsOnBookmarksCreateManyInputSchema.array() ]),
   skipDuplicates: z.boolean().optional(),
 }).strict() as z.ZodType<Prisma.TagsOnBookmarksCreateManyArgs>;
+
+export const TagsOnBookmarksAndReturnCreateManyArgsSchema: z.ZodType<Prisma.TagsOnBookmarksAndReturnCreateManyArgs> = z.object({
+  data: z.union([ TagsOnBookmarksCreateManyInputSchema,TagsOnBookmarksCreateManyInputSchema.array() ]),
+  skipDuplicates: z.boolean().optional(),
+}).strict() as z.ZodType<Prisma.TagsOnBookmarksAndReturnCreateManyArgs>;
 
 export const TagsOnBookmarksDeleteArgsSchema: z.ZodType<Prisma.TagsOnBookmarksDeleteArgs> = z.object({
   select: TagsOnBookmarksSelectSchema.optional(),
@@ -7468,6 +7732,11 @@ export const TagCreateManyArgsSchema: z.ZodType<Prisma.TagCreateManyArgs> = z.ob
   skipDuplicates: z.boolean().optional(),
 }).strict() as z.ZodType<Prisma.TagCreateManyArgs>;
 
+export const TagAndReturnCreateManyArgsSchema: z.ZodType<Prisma.TagAndReturnCreateManyArgs> = z.object({
+  data: z.union([ TagCreateManyInputSchema,TagCreateManyInputSchema.array() ]),
+  skipDuplicates: z.boolean().optional(),
+}).strict() as z.ZodType<Prisma.TagAndReturnCreateManyArgs>;
+
 export const TagDeleteArgsSchema: z.ZodType<Prisma.TagDeleteArgs> = z.object({
   select: TagSelectSchema.optional(),
   include: TagIncludeSchema.optional(),
@@ -7508,6 +7777,11 @@ export const CategoryCreateManyArgsSchema: z.ZodType<Prisma.CategoryCreateManyAr
   data: z.union([ CategoryCreateManyInputSchema,CategoryCreateManyInputSchema.array() ]),
   skipDuplicates: z.boolean().optional(),
 }).strict() as z.ZodType<Prisma.CategoryCreateManyArgs>;
+
+export const CategoryAndReturnCreateManyArgsSchema: z.ZodType<Prisma.CategoryAndReturnCreateManyArgs> = z.object({
+  data: z.union([ CategoryCreateManyInputSchema,CategoryCreateManyInputSchema.array() ]),
+  skipDuplicates: z.boolean().optional(),
+}).strict() as z.ZodType<Prisma.CategoryAndReturnCreateManyArgs>;
 
 export const CategoryDeleteArgsSchema: z.ZodType<Prisma.CategoryDeleteArgs> = z.object({
   select: CategorySelectSchema.optional(),
@@ -7550,6 +7824,11 @@ export const AccountCreateManyArgsSchema: z.ZodType<Prisma.AccountCreateManyArgs
   skipDuplicates: z.boolean().optional(),
 }).strict() as z.ZodType<Prisma.AccountCreateManyArgs>;
 
+export const AccountAndReturnCreateManyArgsSchema: z.ZodType<Prisma.AccountAndReturnCreateManyArgs> = z.object({
+  data: z.union([ AccountCreateManyInputSchema,AccountCreateManyInputSchema.array() ]),
+  skipDuplicates: z.boolean().optional(),
+}).strict() as z.ZodType<Prisma.AccountAndReturnCreateManyArgs>;
+
 export const AccountDeleteArgsSchema: z.ZodType<Prisma.AccountDeleteArgs> = z.object({
   select: AccountSelectSchema.optional(),
   include: AccountIncludeSchema.optional(),
@@ -7590,6 +7869,11 @@ export const SessionCreateManyArgsSchema: z.ZodType<Prisma.SessionCreateManyArgs
   data: z.union([ SessionCreateManyInputSchema,SessionCreateManyInputSchema.array() ]),
   skipDuplicates: z.boolean().optional(),
 }).strict() as z.ZodType<Prisma.SessionCreateManyArgs>;
+
+export const SessionAndReturnCreateManyArgsSchema: z.ZodType<Prisma.SessionAndReturnCreateManyArgs> = z.object({
+  data: z.union([ SessionCreateManyInputSchema,SessionCreateManyInputSchema.array() ]),
+  skipDuplicates: z.boolean().optional(),
+}).strict() as z.ZodType<Prisma.SessionAndReturnCreateManyArgs>;
 
 export const SessionDeleteArgsSchema: z.ZodType<Prisma.SessionDeleteArgs> = z.object({
   select: SessionSelectSchema.optional(),
@@ -7632,6 +7916,11 @@ export const UserCreateManyArgsSchema: z.ZodType<Prisma.UserCreateManyArgs> = z.
   skipDuplicates: z.boolean().optional(),
 }).strict() as z.ZodType<Prisma.UserCreateManyArgs>;
 
+export const UserAndReturnCreateManyArgsSchema: z.ZodType<Prisma.UserAndReturnCreateManyArgs> = z.object({
+  data: z.union([ UserCreateManyInputSchema,UserCreateManyInputSchema.array() ]),
+  skipDuplicates: z.boolean().optional(),
+}).strict() as z.ZodType<Prisma.UserAndReturnCreateManyArgs>;
+
 export const UserDeleteArgsSchema: z.ZodType<Prisma.UserDeleteArgs> = z.object({
   select: UserSelectSchema.optional(),
   include: UserIncludeSchema.optional(),
@@ -7671,6 +7960,11 @@ export const VerificationTokenCreateManyArgsSchema: z.ZodType<Prisma.Verificatio
   skipDuplicates: z.boolean().optional(),
 }).strict() as z.ZodType<Prisma.VerificationTokenCreateManyArgs>;
 
+export const VerificationTokenAndReturnCreateManyArgsSchema: z.ZodType<Prisma.VerificationTokenAndReturnCreateManyArgs> = z.object({
+  data: z.union([ VerificationTokenCreateManyInputSchema,VerificationTokenCreateManyInputSchema.array() ]),
+  skipDuplicates: z.boolean().optional(),
+}).strict() as z.ZodType<Prisma.VerificationTokenAndReturnCreateManyArgs>;
+
 export const VerificationTokenDeleteArgsSchema: z.ZodType<Prisma.VerificationTokenDeleteArgs> = z.object({
   select: VerificationTokenSelectSchema.optional(),
   where: VerificationTokenWhereUniqueInputSchema,
@@ -7709,6 +8003,11 @@ export const FeedCreateManyArgsSchema: z.ZodType<Prisma.FeedCreateManyArgs> = z.
   data: z.union([ FeedCreateManyInputSchema,FeedCreateManyInputSchema.array() ]),
   skipDuplicates: z.boolean().optional(),
 }).strict() as z.ZodType<Prisma.FeedCreateManyArgs>;
+
+export const FeedAndReturnCreateManyArgsSchema: z.ZodType<Prisma.FeedAndReturnCreateManyArgs> = z.object({
+  data: z.union([ FeedCreateManyInputSchema,FeedCreateManyInputSchema.array() ]),
+  skipDuplicates: z.boolean().optional(),
+}).strict() as z.ZodType<Prisma.FeedAndReturnCreateManyArgs>;
 
 export const FeedDeleteArgsSchema: z.ZodType<Prisma.FeedDeleteArgs> = z.object({
   select: FeedSelectSchema.optional(),
@@ -7751,6 +8050,11 @@ export const FeedEntryCreateManyArgsSchema: z.ZodType<Prisma.FeedEntryCreateMany
   skipDuplicates: z.boolean().optional(),
 }).strict() as z.ZodType<Prisma.FeedEntryCreateManyArgs>;
 
+export const FeedEntryAndReturnCreateManyArgsSchema: z.ZodType<Prisma.FeedEntryAndReturnCreateManyArgs> = z.object({
+  data: z.union([ FeedEntryCreateManyInputSchema,FeedEntryCreateManyInputSchema.array() ]),
+  skipDuplicates: z.boolean().optional(),
+}).strict() as z.ZodType<Prisma.FeedEntryAndReturnCreateManyArgs>;
+
 export const FeedEntryDeleteArgsSchema: z.ZodType<Prisma.FeedEntryDeleteArgs> = z.object({
   select: FeedEntrySelectSchema.optional(),
   include: FeedEntryIncludeSchema.optional(),
@@ -7791,6 +8095,11 @@ export const FeedEntryMediaCreateManyArgsSchema: z.ZodType<Prisma.FeedEntryMedia
   data: z.union([ FeedEntryMediaCreateManyInputSchema,FeedEntryMediaCreateManyInputSchema.array() ]),
   skipDuplicates: z.boolean().optional(),
 }).strict() as z.ZodType<Prisma.FeedEntryMediaCreateManyArgs>;
+
+export const FeedEntryMediaAndReturnCreateManyArgsSchema: z.ZodType<Prisma.FeedEntryMediaAndReturnCreateManyArgs> = z.object({
+  data: z.union([ FeedEntryMediaCreateManyInputSchema,FeedEntryMediaCreateManyInputSchema.array() ]),
+  skipDuplicates: z.boolean().optional(),
+}).strict() as z.ZodType<Prisma.FeedEntryMediaAndReturnCreateManyArgs>;
 
 export const FeedEntryMediaDeleteArgsSchema: z.ZodType<Prisma.FeedEntryMediaDeleteArgs> = z.object({
   select: FeedEntryMediaSelectSchema.optional(),
