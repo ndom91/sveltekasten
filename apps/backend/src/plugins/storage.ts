@@ -1,13 +1,17 @@
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
 type UploadImageArgs = {
-  image: Buffer
-  url: URL
-  userId: string
-}
+  image: Buffer;
+  url: string;
+  userId: string;
+};
 
-if (!process.env.BUCKET_ACCESS_KEY || !process.env.BUCKET_SECRET_KEY || !process.env.BUCKET_URL) {
-  throw new Error("Object store credentials missing!")
+if (
+  !process.env.BUCKET_ACCESS_KEY ||
+  !process.env.BUCKET_SECRET_KEY ||
+  !process.env.BUCKET_URL
+) {
+  throw new Error("Object store credentials missing!");
 }
 
 export const client = new S3Client({
@@ -17,17 +21,17 @@ export const client = new S3Client({
     accessKeyId: process.env.BUCKET_ACCESS_KEY,
     secretAccessKey: process.env.BUCKET_SECRET_KEY,
   },
-})
+});
 
 export const uploadImage = async ({ image, url, userId }: UploadImageArgs) => {
-  const urlObj = new URL(url)
-  const cleanUrl = `${urlObj.hostname}${urlObj.pathname.replace(/\/$/, "")}`
+  const urlObj = new URL(url);
+  const cleanFilename = `${urlObj.hostname}${urlObj.pathname.replace(/\/$/, "").replaceAll("/", "_")}`;
 
-  const key = `${userId}/${cleanUrl.replaceAll("/", "_")}.png`
+  const imagePath = `${userId}/${cleanFilename}.png`;
   const putCommand = new PutObjectCommand({
     ACL: "public-read",
     Bucket: process.env.BUCKET_NAME ?? "briefkasten-dev",
-    Key: key,
+    Key: imagePath,
     Metadata: {
       userId,
       url: url.toString(),
@@ -35,11 +39,10 @@ export const uploadImage = async ({ image, url, userId }: UploadImageArgs) => {
     Body: image,
     ContentType: "image/png",
     ContentLength: image.length,
-  })
+  });
 
-  await client.send(putCommand)
+  await client.send(putCommand);
 
-  // https://dev-img.briefkastenhq.com/cls57rev90000iw28cg9fl2nr%2Fcloudflare.com.png
-  const imageUrl = `${process.env.BUCKET_PUBLIC_URL}/${key}`
-  return imageUrl
-}
+  // i.e. https://dev-img.briefkastenhq.com/cls57rev90000iw28cg9fl2nr%2Fcloudflare.com.png
+  return `${process.env.BUCKET_PUBLIC_URL}/${imagePath}`;
+};

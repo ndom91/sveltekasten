@@ -1,8 +1,8 @@
-import { db } from "../../plugins/prisma.js"
-import Parser from "rss-parser"
-import { getLogger } from "../../plugins/logger.js"
+import { db } from "../../plugins/prisma.js";
+import Parser from "rss-parser";
+import { getLogger } from "../../plugins/logger.js";
 
-const wLogger = getLogger({ prefix: "create-feed" })
+const logger = getLogger({ prefix: "create-feed" });
 
 const parser = new Parser({
   defaultRSS: 2.0,
@@ -10,18 +10,18 @@ const parser = new Parser({
     feed: ["language", "copyright"],
     item: [["media:content", "media", { keepArray: true }]],
   },
-})
+});
 
 export type CreateFeedData = {
-  userId: string
-  feedUrl: string
-}
+  userId: string;
+  feedUrl: string;
+};
 
 export const createFeed = async (data: CreateFeedData) => {
-  const response = await fetch(data.feedUrl)
-  const xml = await response.text()
-  const feed = await parser.parseString(xml)
-  wLogger.info(`Inserting feed: ${feed.link}`)
+  const response = await fetch(data.feedUrl);
+  const xml = await response.text();
+  const feed = await parser.parseString(xml);
+  logger.info(`Inserting feed: ${feed.link}`);
 
   await db.feed.create({
     data: {
@@ -39,11 +39,11 @@ export const createFeed = async (data: CreateFeedData) => {
       feedEntries: {
         create: feed.items
           .sort((a, b) => {
-            if (!a.isoDate || !b.isoDate) return -1
+            if (!a.isoDate || !b.isoDate) return -1;
             if (new Date(a.isoDate) > new Date(b.isoDate)) {
-              return -1
+              return -1;
             }
-            return 1
+            return 1;
           })
           // Only add the latest 10 entries to database
           .slice(0, 10)
@@ -55,7 +55,11 @@ export const createFeed = async (data: CreateFeedData) => {
             content: item.content,
             contentSnippet: item.contentSnippet,
             ingested: new Date().toISOString(),
-            published: item.isoDate ? item.isoDate : item.pubDate ? new Date(item.pubDate) : null,
+            published: item.isoDate
+              ? item.isoDate
+              : item.pubDate
+                ? new Date(item.pubDate)
+                : null,
             categories: item.categories
               ?.map((c: string) => c.replaceAll("\n", "").trim())
               .filter((c: string) => !c.includes("|"))
@@ -66,24 +70,26 @@ export const createFeed = async (data: CreateFeedData) => {
               },
             },
             feedMedia: {
-              create: item.media?.map((media: Record<string, Record<string, unknown>>) => ({
-                href: media["$"]?.url,
-                title: media["media:tite"]?.[0],
-                description: media["media:description"]?.[0],
-                credit: media["media:credit"]?.[0],
-                medium: media["$"]?.medium,
-                height: Number(media["$"]?.height),
-                width: Number(media["$"]?.width),
-                user: {
-                  connect: {
-                    id: data.userId,
+              create: item.media?.map(
+                (media: Record<string, Record<string, unknown>>) => ({
+                  href: media["$"]?.url,
+                  title: media["media:tite"]?.[0],
+                  description: media["media:description"]?.[0],
+                  credit: media["media:credit"]?.[0],
+                  medium: media["$"]?.medium,
+                  height: Number(media["$"]?.height),
+                  width: Number(media["$"]?.width),
+                  user: {
+                    connect: {
+                      id: data.userId,
+                    },
                   },
-                },
-              })),
+                }),
+              ),
             },
           })),
       },
     },
-  })
-  wLogger.info(`Feed Create Success ${feed.link}`)
-}
+  });
+  logger.info(`Feed Create Success ${feed.link}`);
+};
