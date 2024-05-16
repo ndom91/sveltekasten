@@ -1,6 +1,6 @@
 import { Cron } from "croner"
-import { db } from "../plugins/prisma.js"
 import { format } from "@formkit/tempo"
+import { db } from "../plugins/prisma.js"
 import { updateFeed } from "../lib/update-feed.js"
 import { getLogger } from "../plugins/logger.js"
 import type { Feed } from "../lib/types/index.js"
@@ -32,10 +32,14 @@ export const updateJob = Cron(
       })
       if (!feeds.length) {
         logger.info("No feeds to refresh")
-        logger.info(`Next run: ${format(cron.nextRun() ?? "", { date: "medium", time: "long" })}`)
+        logger.info(
+          `Next run: ${format(cron.nextRun() ?? "", { date: "medium", time: "long" })}`,
+        )
         return
       }
-      logger.info(`Found ${feeds.length} feeds to refresh ${feeds.map((f) => f.url)}`)
+      logger.info(
+        `Found ${feeds.length} feeds to refresh ${feeds.map(f => f.url)}`,
+      )
 
       await Promise.all(
         feeds.map(async (feed) => {
@@ -52,7 +56,9 @@ export const updateJob = Cron(
             },
           })
           logger.info(`Feed updated`)
-          logger.info(`Next run: ${format(cron.nextRun() ?? "", { date: "medium", time: "long" })}`)
+          logger.info(
+            `Next run: ${format(cron.nextRun() ?? "", { date: "medium", time: "long" })}`,
+          )
         }),
       )
     } catch (error) {

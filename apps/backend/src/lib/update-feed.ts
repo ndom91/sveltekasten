@@ -1,9 +1,9 @@
-import { db } from "../plugins/prisma.js";
-import Parser from "rss-parser";
-import { getLogger } from "../plugins/logger.js";
-import type { Feed } from "./types/index.js";
+import Parser from "rss-parser"
+import { db } from "../plugins/prisma.js"
+import { getLogger } from "../plugins/logger.js"
+import type { Feed } from "./types/index.js"
 
-const logger = getLogger({ prefix: "update-feed" });
+const logger = getLogger({ prefix: "update-feed" })
 
 const parser = new Parser({
   defaultRSS: 2.0,
@@ -11,20 +11,20 @@ const parser = new Parser({
     feed: ["language", "copyright"],
     item: [["media:content", "media", { keepArray: true }]],
   },
-});
+})
 
 const updateFeed = async (feed: Feed) => {
-  const response = await fetch(feed.url);
-  const xml = await response.text();
-  const { items } = await parser.parseString(xml);
+  const response = await fetch(feed.url)
+  const xml = await response.text()
+  const { items } = await parser.parseString(xml)
 
   // Get GUIDs of all items parsed from feed
-  const itemGuids = items.map((item) => item.guid ?? "").filter(Boolean);
+  const itemGuids = items.map(item => item.guid ?? "").filter(Boolean)
 
   // If no items in parsed feed, return
   if (!itemGuids.length) {
-    logger.info(`No items in parsed feed: ${feed.url}`);
-    return;
+    logger.info(`No items in parsed feed: ${feed.url}`)
+    return
   }
 
   // Find pre-existing feed entries
@@ -39,24 +39,24 @@ const updateFeed = async (feed: Feed) => {
       feedId: feed.id,
       userId: feed.userId,
     },
-  });
+  })
 
   // Diff pre-existing feed entries and new feed parsed items
   const newItems = items.filter(
-    (item) => !matchedFeedEntries.some((entry) => entry.guid === item.guid),
-  );
-  logger.info(`New Items: ${newItems.map((item) => item.title)}`);
+    item => !matchedFeedEntries.some(entry => entry.guid === item.guid),
+  )
+  logger.info(`New Items: ${newItems.map(item => item.title)}`)
 
   // If no new items, return
   if (!newItems.length) {
-    logger.info(`No new items to update in parsed feed: ${feed.url}`);
-    return;
+    logger.info(`No new items to update in parsed feed: ${feed.url}`)
+    return
   }
 
   // If we have new items to insert, insert their FeedEntry and FeedEntryMedia
   await Promise.all(
     newItems.map((item) => {
-      logger.info(`Inserting ${item.link}`);
+      logger.info(`Inserting ${item.link}`)
       return db.feedEntry.create({
         data: {
           title: item.title ?? "",
@@ -88,13 +88,13 @@ const updateFeed = async (feed: Feed) => {
           feedMedia: {
             create: item.media?.map(
               (media: Record<string, Record<string, unknown>>) => ({
-                href: media["$"]?.url,
+                href: media.$?.url,
                 title: media["media:tite"]?.[0],
                 description: media["media:description"]?.[0],
                 credit: media["media:credit"]?.[0],
-                medium: media["$"]?.medium,
-                height: Number(media["$"]?.height),
-                width: Number(media["$"]?.width),
+                medium: media.$?.medium,
+                height: Number(media.$?.height),
+                width: Number(media.$?.width),
                 user: {
                   connect: {
                     id: feed.userId,
@@ -104,9 +104,9 @@ const updateFeed = async (feed: Feed) => {
             ),
           },
         },
-      });
+      })
     }),
-  );
-};
+  )
+}
 
-export { updateFeed };
+export { updateFeed }

@@ -2,7 +2,12 @@ import { z } from "zod"
 import { zValidator } from "@hono/zod-validator"
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
-const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"]
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+]
 
 const bookmarkImageSchema = z.object({
   data: z.array(
@@ -25,7 +30,10 @@ const bookmarkImageSchema = z.object({
   ),
 })
 
-const cookieName = process.env.NODE_ENV !== "production" ? "authjs.session-token" : "__Secure-authjs.session-token"
+const cookieName
+  = process.env.NODE_ENV !== "production"
+    ? "authjs.session-token"
+    : "__Secure-authjs.session-token"
 
 const bookmarkCookieSchema = z.object({
   [cookieName]: z.string({
@@ -33,5 +41,11 @@ const bookmarkCookieSchema = z.object({
   }),
 })
 
-export const bookmarkImageCookieValidator = zValidator("cookie", bookmarkCookieSchema)
-export const bookmarkImageBodyValidator = zValidator("json", bookmarkImageSchema)
+export const bookmarkImageCookieValidator = zValidator(
+  "cookie",
+  bookmarkCookieSchema,
+)
+export const bookmarkImageBodyValidator = zValidator(
+  "json",
+  bookmarkImageSchema,
+)
