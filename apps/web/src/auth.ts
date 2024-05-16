@@ -1,7 +1,7 @@
 import { db } from "$lib/prisma"
 import { env } from "$env/dynamic/private"
 import { PrismaAdapter } from "@auth/prisma-adapter"
-import { SvelteKitAuth, type User } from "@auth/sveltekit"
+import { SvelteKitAuth, type JWT, type User } from "@auth/sveltekit"
 import type { Provider } from "@auth/sveltekit/providers"
 
 const providers: Provider[] = []
@@ -20,6 +20,7 @@ if (env.AUTH_GOOGLE_ID && env.AUTH_GOOGLE_SECRET) {
   providers.push(
     Google.default({
       allowDangerousEmailAccountLinking: true,
+      authorization: { params: { access_type: "offline", prompt: "consent" } },
     }),
   )
 }
@@ -66,7 +67,7 @@ export const providerMap = providers.map((provider) => {
 })
 
 export const { signIn, signOut, handle } = SvelteKitAuth({
-  debug: false,
+  debug: true,
   trustHost: true,
   adapter: PrismaAdapter(db),
   providers,
@@ -77,8 +78,13 @@ export const { signIn, signOut, handle } = SvelteKitAuth({
     signIn: "/login",
   },
   callbacks: {
-    async jwt({ token, profile, account, user, trigger, ...rest }) {
-      console.log("authjs.callback.jwt", { token, profile, account, rest })
+    async jwt({ token, profile, account, user, trigger }) {
+      console.log("jwt.body", { token, profile, account, user, trigger })
+      console.log("jwt.expires", {
+        now: Date.now(),
+        expires_at: (token.expires_at as number) * 1000,
+        isTokenStillValid: Date.now() < (token.expires_at as number) * 1000,
+      })
       if (account) {
         // Initial user profile
         const userProfile: User = {
@@ -101,41 +107,55 @@ export const { signIn, signOut, handle } = SvelteKitAuth({
           providerId: account.provider,
           profile: userProfile,
         }
-      } else if (Date.now() < token.expires_at * 1000) {
+      } else if (Date.now() < (token.expires_at as number) * 1000) {
         // Token is still valid
         return token
       } else {
         // Token expired
+        // @ts-expect-error unsure about this one atm
         return await refreshAccessToken(token)
       }
     },
     async session({ session, token }) {
-      console.log("authjs.callback.session", { session, token })
       if (token.profile) {
-        session.user = token.profile
+        // @ts-expect-error skipping 'emailVerified' on purpose
+        session.user = token.profile as User
       }
 
-      session.error = token.error ?? undefined
+      session.error = token.error as "RefreshAccessTokenError" | undefined
       // session.accessToken = token.access_token
       return session
     },
   },
 })
 
-async function refreshAccessToken(token: Record<string, string>) {
+async function refreshAccessToken(token: JWT) {
   let url = ""
+  let clientId = ""
+  let clientSecret = ""
+
   if (token.providerId === "github") {
     url = "https://github.com/login/oauth/access_token"
-  } else if (token.provider === "google") {
+    clientId = process.env.AUTH_GITHUB_ID!
+    clientSecret = process.env.AUTH_GITHUB_SECRET!
+  } else if (token.providerId === "google") {
     url = "https://oauth2.googleapis.com/token"
+    clientId = process.env.AUTH_GOOGLE_ID!
+    clientSecret = process.env.AUTH_GOOGLE_SECRET!
   }
 
   try {
+    console.log("refresh.body", {
+      client_id: clientId,
+      client_secret: clientSecret,
+      grant_type: "refresh_token",
+      refresh_token: token.refresh_token!,
+    })
     const response = await fetch(url, {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({
-        client_id: process.env.AUTH_GITHUB_ID!,
-        client_secret: process.env.AUTH_GITHUB_SECRET!,
+        client_id: clientId,
+        client_secret: clientSecret,
         grant_type: "refresh_token",
         refresh_token: token.refresh_token!,
       }),
@@ -143,6 +163,7 @@ async function refreshAccessToken(token: Record<string, string>) {
     })
 
     const tokens = await response.json()
+    console.log("refresh.res", tokens)
 
     if (!response.ok) throw tokens
 

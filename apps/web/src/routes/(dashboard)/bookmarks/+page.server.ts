@@ -29,6 +29,9 @@ export const actions: Actions = {
         userId: session.user.id,
       },
     })
+
+    // TODO: Delete from Object Storage
+
     return { type: "success", message: "Deleted Bookmark" }
   },
   saveMetadata: async ({ request, locals }) => {

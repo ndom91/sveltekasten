@@ -16,9 +16,10 @@ declare module "@auth/sveltekit" {
     error?: "RefreshAccessTokenError"
   }
   interface JWT {
-    access_token: string
-    expires_at: number
-    refresh_token: string
+    access_token?: string
+    expires_at?: number
+    refresh_token?: string
+    providerId?: string
     error?: "RefreshAccessTokenError"
   }
 }
