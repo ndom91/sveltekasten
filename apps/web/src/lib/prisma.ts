@@ -2,7 +2,7 @@ import { PrismaClient, Prisma } from "@prisma/client"
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
 
-const prisma =
+export const db =
   globalForPrisma.prisma ||
   new PrismaClient().$extends({
     name: "findManyAndCount",
@@ -12,7 +12,7 @@ const prisma =
           this: Model,
           args: Prisma.Exact<Args, Prisma.Args<Model, "findMany">>,
         ): Promise<[Prisma.Result<Model, Args, "findMany">, number]> {
-          return prisma.$transaction([
+          return db.$transaction([
             (this as any).findMany(args),
             (this as any).count({ where: (args as any).where }),
           ]) as any
@@ -21,6 +21,4 @@ const prisma =
     },
   })
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma
-
-export { prisma as db }
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = db

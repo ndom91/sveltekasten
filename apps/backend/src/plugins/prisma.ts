@@ -5,7 +5,9 @@ import { getLogger } from "./logger.js";
 const logger = getLogger({ prefix: "db" });
 
 process.on("exit", async () => {
-  logger.debug("Cleaning up database connection");
+  // Note: might not be necessary, hook might be built into Prisma now-a-days.
+  // needs more research.
+  logger.info("Cleaning up database connection");
   await prisma.$disconnect();
 });
 
