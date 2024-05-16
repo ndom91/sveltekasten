@@ -1,15 +1,15 @@
 <script lang="ts">
   import { blur } from "svelte/transition"
+  import pDebounce from "p-debounce"
+  import { toast } from "svelte-sonner"
   import { Button } from "$lib/components/ui/button"
   import * as Popover from "$lib/components/ui/popover"
   import * as Tooltip from "$lib/components/ui/tooltip"
-  import { QuickAddForm } from "$lib/components/navbar"
+  import { Breadcrumbs, QuickAddForm } from "$lib/components/navbar"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
-  import { Breadcrumbs } from "$lib/components/navbar"
   import { useInterface } from "$state/ui.svelte"
   import { invalidate } from "$app/navigation"
   import { flyAndScale } from "$lib/utils/style"
-  import pDebounce from "p-debounce"
   import { AudioPlayer } from "$lib/components/audio-player"
 
   const { simple = false } = $props()
@@ -17,7 +17,11 @@
   let searchInputEl = $state<HTMLInputElement>()
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.repeat || event.target instanceof HTMLInputElement) return
+    if (event.repeat || event.target instanceof HTMLInputElement) {
+      return
+    }
+
+    toast.success("Quick Add Bookmark opened")
     if (event.altKey && event.key === "n") {
       event.preventDefault()
       ui.toggleQuickAdd()
@@ -63,7 +67,7 @@
           onkeyup={pDebounce(handleSearchInput, 500)}
           spellcheck="false"
           aria-label="Search"
-          class={"flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 pl-10 pr-10 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"}
+          class="flex py-2 px-3 pr-10 pl-10 w-full h-10 text-sm bg-transparent rounded-md border focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-input ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring"
         />
         <svg
           class="absolute top-3 left-3 size-4"

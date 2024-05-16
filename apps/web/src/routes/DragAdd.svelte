@@ -1,6 +1,6 @@
 <script lang="ts">
   import { z } from "zod"
-  import toast from "svelte-french-toast"
+  import { toast } from "svelte-sonner"
   import ConfirmAddDialog from "./ConfirmAddDialog.svelte"
   import { cn } from "$/lib/utils/style"
 
@@ -21,7 +21,9 @@
     e.preventDefault()
     e.stopPropagation()
 
-    if (e.relatedTarget) return
+    if (e.relatedTarget) {
+      return
+    }
     isDragOver = true
   }
 
@@ -36,8 +38,12 @@
       const parsedHostname = new URL(parsedUrl).hostname
 
       // Ignore invalid URLs and URLs from the same domain
-      if (!parsedHostname) return
-      if (parsedHostname === location.hostname) return
+      if (!parsedHostname) {
+        return
+      }
+      if (parsedHostname === location.hostname) {
+        return
+      }
 
       url = parsedUrl
       showConfirmAddDialog = true
@@ -45,7 +51,9 @@
   }
 
   const handlePaste = (e: ClipboardEvent) => {
-    if (e.target instanceof HTMLInputElement) return
+    if (e.target instanceof HTMLInputElement) {
+      return
+    }
     const text = e.clipboardData?.getData("text/plain")
     const parsedUrl = parseData(text)
     if (parsedUrl) {
@@ -56,7 +64,9 @@
 
   // Allow closing dropover backdrop with ESC
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.repeat || e.target instanceof HTMLInputElement) return
+    if (e.repeat || e.target instanceof HTMLInputElement) {
+      return
+    }
     if (e.key === "Escape" && showConfirmAddDialog) {
       e.preventDefault()
       showConfirmAddDialog = false

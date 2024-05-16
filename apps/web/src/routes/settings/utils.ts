@@ -1,6 +1,13 @@
-import toast from "svelte-french-toast"
+import { toast } from "svelte-sonner"
 import { ofetch } from "ofetch"
-import { type ParsedBookmark } from "./components/UserSection.svelte"
+
+export interface ParsedBookmark {
+  title: string
+  url: string
+  createdAt: string
+  userId?: string
+  tags?: Record<string, string>
+}
 
 export const bookmarkTypes = {
   CHROME: "CHROME",
@@ -26,7 +33,7 @@ export const exportBookmarks = (bookmarks: LoadBookmarkFlatTags[]) => {
 <DL><p>`
 
   bookmarks.forEach((bookmark) => {
-    output += `\n<DT><A HREF="${bookmark.url}" PRIVATE="0" ADD_DATE="${(new Date(bookmark.createdAt).getTime() / 1000).toFixed(0)}" LAST_MODIFIED="${(new Date(bookmark.updatedAt).getTime() / 1000).toFixed(0)}" ${bookmark.tags.length ? 'TAGS="' + bookmark.tags.map((tag) => tag.name).join(",") + '"' : ""}> ${bookmark.title} </A>`
+    output += `\n<DT><A HREF="${bookmark.url}" PRIVATE="0" ADD_DATE="${(new Date(bookmark.createdAt).getTime() / 1000).toFixed(0)}" LAST_MODIFIED="${(new Date(bookmark.updatedAt).getTime() / 1000).toFixed(0)}" ${bookmark.tags.length ? `TAGS="${bookmark.tags.map(tag => tag.name).join(",")}"` : ""}> ${bookmark.title} </A>`
   })
 
   output += `\n</DL><p>\n</DL><p>`
@@ -43,7 +50,9 @@ export const exportBookmarks = (bookmarks: LoadBookmarkFlatTags[]) => {
 export const parseImportFile = (file: string) => {
   const domParser = new DOMParser()
   const doc = domParser.parseFromString(file, "text/html")
-  if (!doc) throw new Error("Could not parse file")
+  if (!doc) {
+    throw new Error("Could not parse file")
+  }
 
   if (doc?.querySelector("title")?.textContent?.includes("Pocket")) {
     return {
@@ -68,6 +77,7 @@ export const importBookmarks = async (bookmarks: ParsedBookmark[], userId: strin
           createdAt: importedBookmarks.createdAt,
           userId,
         }
+
         if (importedBookmarks.tags.length) {
           bookmark.tags = importedBookmarks.tags.map((tag: string) => ({
             create: {

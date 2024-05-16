@@ -182,12 +182,6 @@ p {
   @apply !relative !aspect-video !max-w-screen-md;
 }
 
-/* svelte-french-toast icon */
-.toaster .wrapper .base > div:not(.message) {
-  font-size: 14px !important;
-  min-width: 16px !important;
-}
-
 ::view-transition {
   pointer-events: none;
 }

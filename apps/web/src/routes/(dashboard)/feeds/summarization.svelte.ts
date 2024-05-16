@@ -1,5 +1,5 @@
+import { toast } from "svelte-sonner"
 import { useInterface } from "$state/ui.svelte"
-import toast from "svelte-french-toast"
 import { dev } from "$app/environment"
 import summaryWorkerUrl from "$lib/transformers/summary-worker?url"
 
@@ -21,7 +21,7 @@ export const registerSummarizationWorker = () => {
           ui.summarizationLoading = false
 
           // TODO: UI to display summary
-          toast.success(e.data.output, { duration: 10000, icon: "" })
+          toast.success(e.data.output, { duration: 10000 })
           console.log("Summary:", e.data.output)
 
           dev && console.timeEnd("summary.generate")

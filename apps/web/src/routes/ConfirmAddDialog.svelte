@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { page } from "$app/stores"
   import { ofetch } from "ofetch"
-  import toast from "svelte-french-toast"
+  import { toast } from "svelte-sonner"
+  import { page } from "$app/stores"
   import { invalidate } from "$app/navigation"
   import { buttonVariants } from "$lib/components/ui/button"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"

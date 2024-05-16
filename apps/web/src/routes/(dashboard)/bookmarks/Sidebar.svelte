@@ -1,26 +1,25 @@
 <script lang="ts">
-  import { page } from "$app/stores"
-  import { dev } from "$app/environment"
   import { zodClient } from "sveltekit-superforms/adapters"
   import SuperDebug, { defaults, superForm } from "sveltekit-superforms"
   import { format } from "@formkit/tempo"
-  import toast from "svelte-french-toast"
+  import { toast } from "svelte-sonner"
+  import { getContext } from "svelte"
+  import { page } from "$app/stores"
+  import { dev } from "$app/environment"
   import { invalidateAll } from "$app/navigation"
 
-  import { buttonVariants } from "$lib/components/ui/button"
+  import { Button, buttonVariants } from "$lib/components/ui/button"
   import { cn } from "$lib/utils/style"
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
   import { useInterface } from "$state/ui.svelte"
   import { formSchema as metadataSchema } from "$schemas/metadata-sidebar"
 
   import { Label } from "$lib/components/ui/label"
-  import { Button } from "$lib/components/ui/button"
   // import * as Select from "$lib/components/ui/select"
   import * as Command from "$lib/components/ui/command"
   import * as Tooltip from "$lib/components/ui/tooltip"
   import * as Popover from "$lib/components/ui/popover"
   import TagInput from "$lib/components/TagInput.svelte"
-  import { getContext } from "svelte"
 
   const bookmarkStore = getContext("bookmarks")
   console.log("sidebar.bkContext", bookmarkStore)

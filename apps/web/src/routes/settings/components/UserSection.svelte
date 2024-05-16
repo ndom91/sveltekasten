@@ -1,17 +1,15 @@
-<script context="module" lang="ts">
-  export type ParsedBookmark = {
-    title: string
-    url: string
-    createdAt: string
-    userId?: string
-    tags?: Record<string, string>
-  }
-</script>
-
 <script lang="ts">
   import { ofetch } from "ofetch"
-  import toast from "svelte-french-toast"
+  import { toast } from "svelte-sonner"
   import { format } from "@formkit/tempo"
+  import {
+    type ParsedBookmark,
+    bookmarkTypes,
+    exportBookmarks,
+    importBookmarks,
+    parseImportFile,
+  } from "../utils"
+  import { parseChromeBookmarks, parsePocketBookmarks } from "../import"
   import { page } from "$app/stores"
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
   import { Button } from "$lib/components/ui/button"
@@ -21,8 +19,6 @@
   import { clipboard } from "$lib/utils/clipboard"
   import { Badge } from "$/lib/components/ui/badge"
   import { TTSLocation, defaultAISettings } from "$state/ui.svelte"
-  import { bookmarkTypes, parseImportFile, importBookmarks, exportBookmarks } from "../utils"
-  import { parseChromeBookmarks, parsePocketBookmarks } from "../import"
   import * as Table from "$lib/components/ui/table"
 
   let exportLoading = $state(false)
@@ -89,15 +85,21 @@
   let parsedBookmarks = $state<ParsedBookmark[]>([])
 
   $effect(() => {
-    if (!importFile?.[0]) return
+    if (!importFile?.[0]) {
+      return
+    }
     const fileReader = new FileReader()
     fileReader.readAsText(importFile[0])
     fileReader.onloadend = (e) => {
       const htmlFile = e?.currentTarget?.result
-      if (!htmlFile) return
+      if (!htmlFile) {
+        return
+      }
 
       const parsedFile = parseImportFile(htmlFile)
-      if (!parsedFile) return
+      if (!parsedFile) {
+        return
+      }
 
       if (parsedFile.type === bookmarkTypes.POCKET) {
         parsedBookmarks = parsePocketBookmarks(parsedFile.doc)
@@ -134,10 +136,10 @@
   const handleSummarizationToggle = () => {
     summarizationEnabled = !summarizationEnabled
     updateUser({
-      ttsEnabled: ttsEnabled,
+      ttsEnabled,
       ttsSpeaker: ttsSpeaker.trim(),
       ttsLocation: ttsLocation.trim(),
-      summarizationEnabled: summarizationEnabled,
+      summarizationEnabled,
       // transcriptionEnabled: transcriptionEnabled,
     })
   }
@@ -145,10 +147,10 @@
   const handleTTSToggle = () => {
     ttsEnabled = !ttsEnabled
     updateUser({
-      ttsEnabled: ttsEnabled,
+      ttsEnabled,
       ttsSpeaker: ttsSpeaker.trim(),
       ttsLocation: ttsLocation.trim(),
-      summarizationEnabled: summarizationEnabled,
+      summarizationEnabled,
       // transcriptionEnabled: transcriptionEnabled,
     })
   }
@@ -292,10 +294,10 @@
                       onSelectedChange={(selected) => {
                         ttsLocation = selected?.value
                         updateUser({
-                          ttsEnabled: ttsEnabled,
+                          ttsEnabled,
                           ttsSpeaker: ttsSpeaker.trim(),
                           ttsLocation: ttsLocation.trim(),
-                          summarizationEnabled: summarizationEnabled,
+                          summarizationEnabled,
                         })
                       }}
                     >
@@ -330,10 +332,10 @@
                       onSelectedChange={(selected) => {
                         ttsSpeaker = selected?.value
                         updateUser({
-                          ttsEnabled: ttsEnabled,
+                          ttsEnabled,
                           ttsSpeaker: ttsSpeaker.trim(),
                           ttsLocation: ttsLocation.trim(),
-                          summarizationEnabled: summarizationEnabled,
+                          summarizationEnabled,
                         })
                       }}
                     >

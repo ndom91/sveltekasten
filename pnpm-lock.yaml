@@ -189,9 +189,6 @@ importers:
       sharp:
         specifier: ^0.33.3
         version: 0.33.3
-      svelte-french-toast:
-        specifier: ^1.2.0
-        version: 1.2.0(svelte@5.0.0-next.123)
       svelte-infinite:
         specifier: ^0.3.1
         version: 0.3.1(svelte@5.0.0-next.123)
@@ -4171,11 +4168,6 @@ packages:
       svelte:
         optional: true
 
-  svelte-french-toast@1.2.0:
-    resolution: {integrity: sha512-5PW+6RFX3xQPbR44CngYAP1Sd9oCq9P2FOox4FZffzJuZI2mHOB7q5gJBVnOiLF5y3moVGZ7u2bYt7+yPAgcEQ==}
-    peerDependencies:
-      svelte: ^3.57.0 || ^4.0.0
-
   svelte-headless-table@0.18.2:
     resolution: {integrity: sha512-dnDTaXW5CNzRUjHVbc/Hb0Zv80zU4VcIUnAja6OuZriXvim1AqcWYQCHPRzBGwqj1m3YEHHNvspSzY0o5HzA0A==}
     peerDependencies:
@@ -4248,11 +4240,6 @@ packages:
     resolution: {integrity: sha512-eKXIjLxB4C7eQWPqKEdxcGfNXm2g/qJ67zmEZK/GigCZMfrTR3m7DPY93R6MX+5uoqM1FRYxl8LZ1oy4URWi2A==}
     peerDependencies:
       svelte: ^4.0.0
-
-  svelte-writable-derived@3.1.0:
-    resolution: {integrity: sha512-cTvaVFNIJ036vSDIyPxJYivKC7ZLtcFOPm1Iq6qWBDo1fOHzfk6ZSbwaKrxhjgy52Rbl5IHzRcWgos6Zqn9/rg==}
-    peerDependencies:
-      svelte: ^3.2.1 || ^4.0.0-next.1
 
   svelte2tsx@0.7.4:
     resolution: {integrity: sha512-zAtbQD7JmeKe0JWdKO6l38t7P6wFP0+YTc0LLFdtzWdHEddcE+/VMvJquQI9NNsnrinUbtS9JF3kosPNeglMcQ==}
@@ -9240,11 +9227,6 @@ snapshots:
     optionalDependencies:
       svelte: 5.0.0-next.123
 
-  svelte-french-toast@1.2.0(svelte@5.0.0-next.123):
-    dependencies:
-      svelte: 5.0.0-next.123
-      svelte-writable-derived: 3.1.0(svelte@5.0.0-next.123)
-
   svelte-headless-table@0.18.2(svelte@5.0.0-next.123):
     dependencies:
       svelte: 5.0.0-next.123
@@ -9287,10 +9269,6 @@ snapshots:
       svelte: 5.0.0-next.123
 
   svelte-subscribe@2.0.1(svelte@5.0.0-next.123):
-    dependencies:
-      svelte: 5.0.0-next.123
-
-  svelte-writable-derived@3.1.0(svelte@5.0.0-next.123):
     dependencies:
       svelte: 5.0.0-next.123
 

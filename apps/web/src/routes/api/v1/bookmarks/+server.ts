@@ -1,10 +1,10 @@
 import z from "zod"
+import { json, text } from "@sveltejs/kit"
+import type { RequestHandler } from "./$types"
 import { db } from "$lib/prisma"
-import { text, json } from "@sveltejs/kit"
 import { BookmarkUncheckedCreateInputSchema } from "$lib/types/zod"
 import { fetchBookmarkMetadata } from "$server/lib/fetchBookmarkMetadata"
 import { WORKER_URL } from "$env/static/private"
-import type { RequestHandler } from "./$types"
 
 // Get more Bookmarks
 export const GET: RequestHandler = async ({ url, locals }) => {
@@ -22,7 +22,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 
     const data = await db.bookmark.findMany({
       take: limit,
-      skip: skip,
+      skip,
       where: { userId: session?.user?.id },
       include: {
         category: true,

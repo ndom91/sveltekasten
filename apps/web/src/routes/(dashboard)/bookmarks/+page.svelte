@@ -1,6 +1,5 @@
 <script lang="ts">
-  import toast from "svelte-french-toast"
-  // import { toast } from "svelte-sonner"
+  import { toast } from "svelte-sonner"
   import { ofetch } from "ofetch"
   import { InfiniteLoader, loaderState } from "svelte-infinite"
   import { getContext, onDestroy, untrack } from "svelte"

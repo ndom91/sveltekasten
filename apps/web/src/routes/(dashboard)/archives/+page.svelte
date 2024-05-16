@@ -1,19 +1,19 @@
 <script lang="ts">
-  import toast from "svelte-french-toast"
+  import { toast } from "svelte-sonner"
   import { ofetch } from "ofetch"
+  import { InfiniteLoader, loaderState } from "svelte-infinite"
+  import { onDestroy, untrack } from "svelte"
   import { Navbar } from "$lib/components/navbar"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { useInterface } from "$state/ui.svelte"
   import { BookmarkRow } from "$lib/components/bookmark-row"
-  import { InfiniteLoader, loaderState } from "svelte-infinite"
-  import { untrack, onDestroy } from "svelte"
 
   const ui = useInterface()
   const { data = $bindable() }: { data: any } = $props()
 
   let pageNumber = $state(0)
   let allItems = $state<LoadBookmarkFlatTags[]>(data.bookmarks.data!)
-  let rootElement = $state<HTMLElement>()
+  const rootElement = $state<HTMLElement>()
 
   const limitLoadCount = 20
 
@@ -105,7 +105,9 @@
   }
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.repeat || e.target instanceof HTMLInputElement) return
+    if (e.repeat || e.target instanceof HTMLInputElement) {
+      return
+    }
     if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "j" || e.key === "k") {
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement

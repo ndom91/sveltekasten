@@ -1,10 +1,10 @@
+import { toast } from "svelte-sonner"
+import type { ActionResult } from "@sveltejs/kit"
 import { dev } from "$app/environment"
 import { applyAction } from "$app/forms"
 import { invalidateAll } from "$app/navigation"
-import toast from "svelte-french-toast"
-import type { ActionResult } from "@sveltejs/kit"
 
-type FormActionMessage = {
+interface FormActionMessage {
   message?: string
 }
 
@@ -33,7 +33,9 @@ export const handleActionResults = (
       }
       await invalidateAll()
       await applyAction(result)
-      if (callback && "data" in result && result?.data) callback(result.data)
+      if (callback && "data" in result && result?.data) {
+        callback(result.data)
+      }
     }
   }
 }

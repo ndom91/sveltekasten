@@ -1,12 +1,11 @@
 <script lang="ts">
-  import { Toaster } from "svelte-french-toast"
-  // import { Toaster } from "$lib/components/ui/sonner"
-
   import { partytownSnippet } from "@builder.io/partytown/integration"
   import { type Snippet, onMount } from "svelte"
-
+  import { setContext } from "svelte"
+  import { Toaster } from "svelte-sonner"
   import DragAdd from "./DragAdd.svelte"
   import type { LayoutData } from "./$types"
+
   import { page } from "$app/stores"
   import { dev } from "$app/environment"
   import { goto, onNavigate } from "$app/navigation"
@@ -14,7 +13,6 @@
   import KeyboardShortcutsHelp from "$lib/components/KeyboardShortcutsHelp.svelte"
   import { useBookmarks } from "$state/bookmarks.svelte"
 
-  import { setContext } from "svelte"
   const bookmarkStore = useBookmarks()
   setContext("bookmarks", bookmarkStore)
 
@@ -30,7 +28,9 @@
   // Global View transition
   onNavigate((navigation) => {
     // @ts-expect-error New method, only available in Chromium
-    if (!document.startViewTransition) return
+    if (!document.startViewTransition) {
+      return
+    }
 
     return new Promise((resolve) => {
       // @ts-expect-error New method, only available in Chromium
@@ -44,7 +44,9 @@
   let showKeyboardShortcuts = $state(false)
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.repeat || e.target instanceof HTMLInputElement) return
+    if (e.repeat || e.target instanceof HTMLInputElement) {
+      return
+    }
     if ((e.ctrlKey || e.metaKey) && e.key === "/") {
       e.preventDefault()
       showKeyboardShortcuts = !showKeyboardShortcuts
@@ -83,8 +85,9 @@
   let scriptTag: HTMLScriptElement
   onMount(() => {
     // eslint-disable-next-line svelte/valid-compile
-    if (!dev && $page.url.hostname === "dev.briefkastenhq.com")
+    if (!dev && $page.url.hostname === "dev.briefkastenhq.com") {
       scriptTag.textContent = partytownSnippet()
+    }
   })
 </script>
 
@@ -116,9 +119,10 @@
 {/if}
 
 <Toaster
-  position="bottom-right"
+  class="toaster group"
   toastOptions={{
-    style: "background-color: #11111185; padding: 12px; color: #fff; backdrop-filter: blur(8px);",
+    class:
+      "bg-white/20 backdrop-blur-md dark:bg-neutral-700/20 dark:text-white dark:border-gray-400/10 border border-gray-200/70",
   }}
 />
 
