@@ -57,13 +57,13 @@ export const actions: Actions = {
           image: form.data.image,
           category: form.data.category
             ? {
-              connect: {
-                id: form.data.category,
-              },
-            }
+                connect: {
+                  id: form.data.category,
+                },
+              }
             : {
-              disconnect: true,
-            },
+                disconnect: true,
+              },
           tags: {
             deleteMany: {},
             connectOrCreate: form.data.tags.map((tag: Tag) => ({
@@ -133,21 +133,21 @@ export const actions: Actions = {
           },
           tags: tags
             ? {
-              create: tags.map((tag: Tag) => ({
-                tag: {
-                  connect: {
-                    id: tag.id,
+                create: tags.map((tag: Tag) => ({
+                  tag: {
+                    connect: {
+                      id: tag.id,
+                    },
                   },
-                },
-              })),
-            }
+                })),
+              }
             : {},
           category: categoryId
             ? {
-              connect: {
-                id: categoryId,
-              },
-            }
+                connect: {
+                  id: categoryId,
+                },
+              }
             : {},
         },
       })
