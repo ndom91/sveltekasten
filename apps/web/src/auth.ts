@@ -1,8 +1,8 @@
-import { db } from "$lib/prisma"
-import { env } from "$env/dynamic/private"
 import { PrismaAdapter } from "@auth/prisma-adapter"
-import { SvelteKitAuth, type JWT, type User } from "@auth/sveltekit"
+import { type JWT, SvelteKitAuth, type User } from "@auth/sveltekit"
 import type { Provider } from "@auth/sveltekit/providers"
+import { env } from "$env/dynamic/private"
+import { db } from "$lib/prisma"
 
 const providers: Provider[] = []
 
@@ -63,7 +63,7 @@ if (env.AUTH_SENDGRID_KEY) {
 
 export const providerMap = providers.map((provider) => {
   // @ts-expect-error id exists
-  return { id: provider.id, name: provider.name }
+  return { id: provider.id as string, name: provider.name }
 })
 
 export const { signIn, signOut, handle } = SvelteKitAuth({
@@ -79,12 +79,6 @@ export const { signIn, signOut, handle } = SvelteKitAuth({
   },
   callbacks: {
     async jwt({ token, profile, account, user, trigger }) {
-      console.log("jwt.body", { token, profile, account, user, trigger })
-      console.log("jwt.expires", {
-        now: Date.now(),
-        expires_at: (token.expires_at as number) * 1000,
-        isTokenStillValid: Date.now() < (token.expires_at as number) * 1000,
-      })
       if (account) {
         // Initial user profile
         const userProfile: User = {
@@ -145,12 +139,6 @@ async function refreshAccessToken(token: JWT) {
   }
 
   try {
-    console.log("refresh.body", {
-      client_id: clientId,
-      client_secret: clientSecret,
-      grant_type: "refresh_token",
-      refresh_token: token.refresh_token!,
-    })
     const response = await fetch(url, {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({
@@ -162,15 +150,16 @@ async function refreshAccessToken(token: JWT) {
       method: "POST",
     })
 
-    const tokens = await response.json()
-    console.log("refresh.res", tokens)
+    const tokens = (await response.json()) as Record<string, unknown>
 
-    if (!response.ok) throw tokens
+    if (!response.ok) {
+      throw new Error(JSON.stringify(tokens))
+    }
 
     return {
       ...token,
       access_token: tokens.access_token,
-      expires_at: Math.floor(Date.now() / 1000 + tokens.expires_in),
+      expires_at: Math.floor(Date.now() / 1000 + (tokens.expires_in as number)),
       refresh_token: tokens.refresh_token ?? token.refresh_token,
     }
   } catch (error) {

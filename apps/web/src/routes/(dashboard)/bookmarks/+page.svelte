@@ -1,18 +1,18 @@
 <script lang="ts">
-  import { page } from "$app/stores"
   import toast from "svelte-french-toast"
   // import { toast } from "svelte-sonner"
-
   import { ofetch } from "ofetch"
-  import { Navbar } from "$lib/components/navbar"
+  import { InfiniteLoader, loaderState } from "svelte-infinite"
+  import { getContext, onDestroy, untrack } from "svelte"
   import FilterBar from "./FilterBar.svelte"
+  import { page } from "$app/stores"
+
+  import { Navbar } from "$lib/components/navbar"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
   import { useInterface } from "$state/ui.svelte"
   import { BookmarkRow } from "$lib/components/bookmark-row"
-  import { InfiniteLoader, loaderState } from "svelte-infinite"
   import { Logger, loggerLevels } from "$lib/utils/logger"
-  import { getContext, untrack, onDestroy } from "svelte"
 
   const ui = useInterface()
   const bookmarkStore = getContext<BookmarkContext>("bookmarks")
@@ -128,7 +128,9 @@
 
   // Handle keyboard navigation of items
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.repeat || e.target instanceof HTMLInputElement) return
+    if (e.repeat || e.target instanceof HTMLInputElement) {
+      return
+    }
     if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "j" || e.key === "k") {
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
