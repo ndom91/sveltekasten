@@ -25,7 +25,7 @@
   const { data, children }: { data: LayoutData; children: Snippet } = $props()
 
   // Set current user preferences to store
-  ui.aiFeaturesPreferences = data.session?.user?.settings.ai ?? defaultAISettings
+  ui.aiFeaturesPreferences = data.session?.user?.settings?.ai ?? defaultAISettings
 
   // Global View transition
   onNavigate((navigation) => {

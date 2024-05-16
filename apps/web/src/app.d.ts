@@ -6,15 +6,20 @@ import type { AIFeaturesPreferences } from "./state/ui.svelte"
 
 declare module "@auth/sveltekit" {
   interface User {
-    userId: string
-    settings: {
-      ai: AIFeaturesPreferences
+    id: string
+    settings?: {
+      ai?: AIFeaturesPreferences
     }
   }
   interface Session {
-    settings: {
-      ai: AIFeaturesPreferences
-    }
+    user: User
+    error?: "RefreshAccessTokenError"
+  }
+  interface JWT {
+    access_token: string
+    expires_at: number
+    refresh_token: string
+    error?: "RefreshAccessTokenError"
   }
 }
 
