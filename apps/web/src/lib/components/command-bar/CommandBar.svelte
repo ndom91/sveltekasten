@@ -1,16 +1,18 @@
 <script lang="ts">
+  import { toggleMode } from "mode-watcher"
   import * as Command from "$lib/components/ui/command"
   import { goto } from "$app/navigation"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
   import { useInterface } from "$state/ui.svelte"
-  import { toggleMode } from "mode-watcher"
 
   const ui = useInterface()
 
   let isCommandOpen = false
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.repeat || event.target instanceof HTMLInputElement) return
+    if (event.repeat || event.target instanceof HTMLInputElement) {
+      return
+    }
     if ((event.ctrlKey || event.metaKey) && event.code === "KeyK") {
       event.preventDefault()
       isCommandOpen = !isCommandOpen

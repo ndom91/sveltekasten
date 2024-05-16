@@ -16,16 +16,16 @@ export function useBookmarks(initial?: Bookmark[]) {
   }
 
   function remove(bookmarkId: string) {
-    bookmarks = bookmarks?.filter((bookmark) => bookmark.id !== bookmarkId)
+    bookmarks = bookmarks?.filter(bookmark => bookmark.id !== bookmarkId)
   }
 
   function update(bookmark: Bookmark) {
-    bookmarks = bookmarks?.map((b) => (b.id === bookmark.id ? bookmark : b))
+    bookmarks = bookmarks?.map(b => (b.id === bookmark.id ? bookmark : b))
   }
 
   function find(bookmarkId: string) {
     if (bookmarks?.length) {
-      return bookmarks?.find((bookmark) => bookmark.id === bookmarkId)
+      return bookmarks?.find(bookmark => bookmark.id === bookmarkId)
     }
   }
 

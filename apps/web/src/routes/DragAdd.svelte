@@ -87,7 +87,7 @@
   onkeydown={handleKeyDown}
   onpaste={handlePaste}
   ondragenter={handleDragEnter}
-  ondragover={(e) => e.preventDefault()}
+  ondragover={e => e.preventDefault()}
 />
 
 <ConfirmAddDialog {url} bind:open={showConfirmAddDialog} />
@@ -104,7 +104,7 @@
     role="region"
     aria-hidden="true"
     class="grid place-items-center p-12 m-12 w-full h-full rounded-lg border-4 border-black border-opacity-75 border-dashed dark:border-white"
-    ondragover={(e) => e.preventDefault()}
+    ondragover={e => e.preventDefault()}
     ondrop={handleDrop}
   >
     <span class="text-3xl">Drop Here</span>

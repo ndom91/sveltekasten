@@ -33,7 +33,7 @@
     ttsSpeaker: string
     ttsLocation: string
     summarizationEnabled: boolean
-    // transcriptionEnabled: boolean
+  // transcriptionEnabled: boolean
   }
 
   const updateUser = async (userSettings: UpdateUserSettingsArgs) => {
@@ -51,7 +51,7 @@
               summarization: {
                 enabled: userSettings.summarizationEnabled,
               },
-              // transcription: {
+            // transcription: {
               //   enabled: userSettings.transcriptionEnabled,
               // },
             },
@@ -75,7 +75,7 @@
     "en-US-SteffanNeural",
   ]
 
-  const ttsLocationItems = Object.values(TTSLocation).map((location) => ({
+  const ttsLocationItems = Object.values(TTSLocation).map(location => ({
     value: location,
     label: location,
   }))
@@ -140,7 +140,7 @@
       ttsSpeaker: ttsSpeaker.trim(),
       ttsLocation: ttsLocation.trim(),
       summarizationEnabled,
-      // transcriptionEnabled: transcriptionEnabled,
+    // transcriptionEnabled: transcriptionEnabled,
     })
   }
 
@@ -151,7 +151,7 @@
       ttsSpeaker: ttsSpeaker.trim(),
       ttsLocation: ttsLocation.trim(),
       summarizationEnabled,
-      // transcriptionEnabled: transcriptionEnabled,
+    // transcriptionEnabled: transcriptionEnabled,
     })
   }
 </script>
@@ -222,7 +222,7 @@
           >
           library from
           <a class="underline underline-offset-4" href="https://huggingface.co" target="_blank"
-            >Huggingface</a
+          >Huggingface</a
           >, meaning
           <b>the models are downloaded locally and run in your browser</b> when selecting "Read Aloud"
           on an RSS feed ite, for example.
@@ -267,7 +267,7 @@
                   </div>
                   <p class="text-neutral-500">
                     In the browser, our text-to-speech (TTS) feature is using the <code
-                      >Xenova/speecht5_tts</code
+                    >Xenova/speecht5_tts</code
                     > model and takes about ~10s on average to generate good quality voice audio for
                     each sentence of text. Therefore, this option is really only good for experimentation
                     at this point.
@@ -285,7 +285,7 @@
                     <label
                       for="ttsLocation"
                       class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 data-invalid:text-destructive text-neutral-800 dark:text-neutral-50"
-                      >Method</label
+                    >Method</label
                     >
                     <Select.Root
                       name="ttsLocation"
@@ -323,7 +323,7 @@
                     </label>
                     <Select.Root
                       name="ttsSpeaker"
-                      items={speakers.map((speaker) => ({
+                      items={speakers.map(speaker => ({
                         value: speaker,
                         label: speaker,
                       }))}

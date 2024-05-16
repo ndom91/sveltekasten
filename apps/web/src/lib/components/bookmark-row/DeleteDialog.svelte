@@ -1,10 +1,10 @@
 <script lang="ts">
+  import type { ActionData } from "./$types"
   import { page } from "$app/stores"
   import { enhance } from "$app/forms"
   import { handleActionResults } from "$lib/utils/form-action"
   import { buttonVariants } from "$lib/components/ui/button"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
-  import type { ActionData } from "./$types"
 
   let {
     open = $bindable(),

@@ -1,6 +1,6 @@
-import { db } from "$lib/prisma"
 import { fail, redirect } from "@sveltejs/kit"
 import type { PageServerLoad } from "./$types"
+import { db } from "$lib/prisma"
 import type { Feed } from "$lib/types/zod"
 
 export const load: PageServerLoad = async ({ locals, url, depends }) => {
@@ -21,7 +21,7 @@ export const load: PageServerLoad = async ({ locals, url, depends }) => {
 
     const [feedEntryData, feedEntryCount] = await db.feedEntry.findManyAndCount({
       take: limit,
-      skip: skip,
+      skip,
       where: { userId: session?.user?.id },
       include: {
         feed: true,

@@ -15,8 +15,8 @@
     xl: "size-6",
   }
 
-  const { class: className, size = Sizes.base }: { class?: string; size?: keyof typeof Sizes } =
-    $props()
+  const { class: className, size = Sizes.base }: { class?: string, size?: keyof typeof Sizes }
+    = $props()
 </script>
 
 <div class={cn("min-h-2 grid place-items-center rounded-lg", className)}>

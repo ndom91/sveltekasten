@@ -1,15 +1,15 @@
 <script lang="ts">
+  import { ModeWatcher, mode, toggleMode } from "mode-watcher"
+  import { SignOut } from "@auth/sveltekit/components"
   import { page } from "$app/stores"
   import KeyboardShortcutsHelp from "$lib/components/KeyboardShortcutsHelp.svelte"
   import * as Avatar from "$lib/components/ui/avatar"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import { Skeleton } from "$lib/components/ui/skeleton"
-  import { ModeWatcher, mode, toggleMode } from "mode-watcher"
   import { version } from "$app/environment"
-  import { SignOut } from "@auth/sveltekit/components"
   import { flyAndScale } from "$lib/utils/style"
 
-  let isDarkMode = $derived($mode === "dark")
+  const isDarkMode = $derived($mode === "dark")
   let showKeyboardShortcuts = $state(false)
 
   const toggleKeyboardShorcuts = () => {
@@ -24,8 +24,8 @@
   >
     <Avatar.Root>
       <Avatar.Image
-        src={$page.data.session?.user?.image ||
-          `https://unavatar.io/${$page.data.session?.user?.email}?fallback=https://source.boringavatars.com/marble/120/${$page.data.session?.user?.email}?colors=264653r,2a9d8f,e9c46a,f4a261,e76f51`}
+        src={$page.data.session?.user?.image
+        || `https://unavatar.io/${$page.data.session?.user?.email}?fallback=https://source.boringavatars.com/marble/120/${$page.data.session?.user?.email}?colors=264653r,2a9d8f,e9c46a,f4a261,e76f51`}
         class="rounded"
         alt="User Avatar"
       />

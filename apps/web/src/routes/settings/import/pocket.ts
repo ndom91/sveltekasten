@@ -1,10 +1,10 @@
 import { capitalize } from "$lib/utils"
 
 export const parsePocketBookmarks = (doc: Document) => {
-  const dataElements = doc.querySelectorAll("body ul > li") as NodeListOf<
-    HTMLElement | HTMLDListElement
-  >
-  if (!dataElements) return []
+  const dataElements = doc.querySelectorAll("body ul > li")
+  if (!dataElements) {
+    return []
+  }
 
   return Array.from(dataElements)
     .map((element) => {
@@ -24,7 +24,7 @@ export const parsePocketBookmarks = (doc: Document) => {
         return {
           title,
           url,
-          createdAt: parseInt(date) ? new Date(parseInt(date) * 1000).toISOString() : 0,
+          createdAt: Number.parseInt(date) ? new Date(Number.parseInt(date) * 1000).toISOString() : 0,
           tags,
         }
       }

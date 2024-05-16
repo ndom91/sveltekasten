@@ -1,7 +1,6 @@
 <script lang="ts">
   import { blur } from "svelte/transition"
   import pDebounce from "p-debounce"
-  import { toast } from "svelte-sonner"
   import { Button } from "$lib/components/ui/button"
   import * as Popover from "$lib/components/ui/popover"
   import * as Tooltip from "$lib/components/ui/tooltip"
@@ -21,7 +20,6 @@
       return
     }
 
-    toast.success("Quick Add Bookmark opened")
     if (event.altKey && event.key === "n") {
       event.preventDefault()
       ui.toggleQuickAdd()

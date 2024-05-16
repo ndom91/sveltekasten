@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { cn } from "$lib/utils/style"
   import * as Thumbhash from "thumbhash"
+  import { cn } from "$lib/utils/style"
 
   const base64ToBinary = (base64: string) => {
     return new Uint8Array(
       atob(base64)
         .split("")
-        .map((x) => x.charCodeAt(0)),
+        .map(x => x.charCodeAt(0)),
     )
   }
 
@@ -26,7 +26,9 @@
   let loaded = $state(false)
 
   const placeholderURL = $derived.by(() => {
-    if (!thumbhash) return ""
+    if (!thumbhash) {
+      return ""
+    }
 
     return Thumbhash.thumbHashToDataURL(base64ToBinary(thumbhash))
   })

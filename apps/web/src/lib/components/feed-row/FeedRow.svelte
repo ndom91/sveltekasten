@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { page } from "$app/stores"
   import { ofetch } from "ofetch"
-  import { cn } from "$lib/utils/style"
   import { format } from "@formkit/tempo"
-  import { Badge } from "$lib/components/ui/badge"
   import dompurify from "isomorphic-dompurify"
   import FeedActions from "./FeedActions.svelte"
+  import { Badge } from "$lib/components/ui/badge"
+  import { cn } from "$lib/utils/style"
+  import { page } from "$app/stores"
   import { useInterface } from "$state/ui.svelte"
   import type { Feed, FeedEntry, FeedEntryMedia } from "$lib/types/zod"
 
@@ -38,7 +38,9 @@
   }
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.repeat || e.target instanceof HTMLInputElement) return
+    if (e.repeat || e.target instanceof HTMLInputElement) {
+      return
+    }
     if (e.key === "\\" && e.target === card) {
       e.preventDefault()
       handleToggleCardOpen()
@@ -60,7 +62,7 @@
   const handleSetTextToSpeechContent = async () => {
     ui.textToSpeechAudioBlob = ""
     // Hack to quickly get text content from HTML String
-    let tmp = document.createElement("div")
+    const tmp = document.createElement("div")
     tmp.innerHTML = feedEntry.content!
     handleGenerateSpeech(tmp.textContent!)
   }
@@ -109,11 +111,11 @@
     return false
   })
 
-  const itemImage =
-    feedEntry.feedMedia?.[0]?.href ??
-    `https://picsum.photos/seed/${encodeURIComponent(
-      feedEntry.title.replaceAll(" ", "").substring(0, 5).toLowerCase(),
-    )}/240/153.webp`
+  const itemImage
+    = feedEntry.feedMedia?.[0]?.href
+      ?? `https://picsum.photos/seed/${encodeURIComponent(
+        feedEntry.title.replaceAll(" ", "").substring(0, 5).toLowerCase(),
+      )}/240/153.webp`
 </script>
 
 <svelte:window onkeydown={handleKeyDown} />

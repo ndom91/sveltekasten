@@ -1,8 +1,8 @@
 <script lang="ts">
-  import * as Tooltip from "$lib/components/ui/tooltip"
   import { ofetch } from "ofetch"
-  import { Button } from "$lib/components/ui/button"
   import { format } from "@formkit/tempo"
+  import * as Tooltip from "$lib/components/ui/tooltip"
+  import { Button } from "$lib/components/ui/button"
   import { invalidateAll } from "$app/navigation"
 
   const { item }: { item: LoadFeedEntry } = $props()
@@ -55,8 +55,8 @@
     </Tooltip.Content>
   </Tooltip.Root>
   <img
-    src={item.feedMedia?.[0]?.href ??
-      `https://picsum.photos/seed/${encodeURIComponent(
+    src={item.feedMedia?.[0]?.href
+    ?? `https://picsum.photos/seed/${encodeURIComponent(
         item.title.replaceAll(" ", "").substring(0, 5).toLowerCase(),
       )}/240/153.webp`}
     alt={item.title}

@@ -1,8 +1,8 @@
 import { randomUUID } from "node:crypto"
 import WebSocket from "ws"
 
-const EDGE_SPEECH_URL =
-  "wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1"
+const EDGE_SPEECH_URL
+  = "wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1"
 const EDGE_API_TOKEN = "6A5AA1D4EAFF4E9FB37E23D68491D6F4"
 
 const configContent = JSON.stringify({
@@ -20,12 +20,12 @@ const genHeader = (connectId: string) => {
   const date = new Date().toString()
   const configHeader = {
     "Content-Type": "application/json; charset=utf-8",
-    Path: "speech.config",
+    "Path": "speech.config",
     "X-Timestamp": date,
   }
   const contentHeader = {
     "Content-Type": "application/ssml+xml",
-    Path: "ssml",
+    "Path": "ssml",
     "X-RequestId": connectId,
     "X-Timestamp": date,
   }
@@ -67,10 +67,12 @@ export const createEdgeSpeech = async ({
     const onMessage = async (event: MessageEvent<any>) => {
       if (typeof event.data === "string") {
         const { headers } = getHeadersAndData(event.data)
-        switch (headers["Path"]) {
+        switch (headers.Path) {
           case "turn.end": {
             ws.close()
-            if (!audioData.byteLength) return
+            if (!audioData.byteLength) {
+              return
+            }
             const res = new Response(audioData)
             resolve(res)
             break
@@ -140,12 +142,16 @@ const voiceTemplate = (input: string, { voice }: Pick<SsmlOptions, "voice">) =>
   `<voice name="${voice}">${input}</voice>`
 
 const styleTemplate = (input: string, { style }: Pick<SsmlOptions, "style">) => {
-  if (!style) return input
+  if (!style) {
+    return input
+  }
   return `<mstts:express-as style="${style}">${input}</mstts:express-as>`
 }
 
 const prosodyTemplate = (input: string, { pitch, rate }: Pick<SsmlOptions, "pitch" | "rate">) => {
-  if (!pitch && !rate) return input
+  if (!pitch && !rate) {
+    return input
+  }
   return `<prosody pitch="${Math.floor((pitch || 1) * 100)}%" rate="${Math.floor(
     (rate || 1) * 100,
   )}%">${input}</prosody>`

@@ -1,6 +1,6 @@
-import { db } from "$lib/prisma"
-import { text, json } from "@sveltejs/kit"
+import { json, text } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
+import { db } from "$lib/prisma"
 
 export const PUT: RequestHandler = async ({ request, locals }) => {
   try {

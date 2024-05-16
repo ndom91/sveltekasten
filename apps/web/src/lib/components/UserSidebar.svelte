@@ -4,15 +4,16 @@
   import { Button } from "$lib/components/ui/button"
   import { AvatarMenu } from "$lib/components/navbar"
   import Logo from "$lib/assets/Logo.svelte"
-  import { cn } from "$lib/utils/style"
+  import { cn, flyAndScale } from "$lib/utils/style"
   import { useInterface } from "$state/ui.svelte"
-  import { flyAndScale } from "$lib/utils/style"
 
   const ui = useInterface()
   let userSidebarElement = $state<HTMLElement>()!
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.repeat || event.target instanceof HTMLInputElement) return
+    if (event.repeat || event.target instanceof HTMLInputElement) {
+      return
+    }
     if (event.code === "BracketLeft") {
       ui.toggleUserSidebar()
     }
@@ -125,8 +126,8 @@
             data-sveltekit-preload-data="hover"
             class={cn(
               "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
-              $page.url.pathname === "/bookmarks" &&
-                "ring-2 ring-neutral-300 dark:ring-neutral-800",
+              $page.url.pathname === "/bookmarks"
+              && "ring-2 ring-neutral-300 dark:ring-neutral-800",
             )}
             href="/bookmarks"
           >
@@ -274,8 +275,8 @@
             data-sveltekit-preload-data="hover"
             class={cn(
               "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
-              $page.url.pathname === "/categories" &&
-                "ring-2 ring-neutral-300 dark:ring-neutral-800",
+              $page.url.pathname === "/categories"
+              && "ring-2 ring-neutral-300 dark:ring-neutral-800",
             )}
             href="/categories"
           >

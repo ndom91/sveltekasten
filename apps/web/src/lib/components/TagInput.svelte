@@ -7,13 +7,13 @@
 
 <script lang="ts" generics="T extends Record<string, unknown>">
   // TODO: Refactor using reactive set/map
-  import { Badge } from "$lib/components/ui/badge"
   import { Combobox } from "bits-ui"
+  import { type FormPathLeaves, type SuperForm, formFieldProxy } from "sveltekit-superforms"
+  import { Badge } from "$lib/components/ui/badge"
   import { flyAndScale } from "$lib/utils/style"
-  import { formFieldProxy, type SuperForm, type FormPathLeaves } from "sveltekit-superforms"
   import type { Tag as RawTag } from "$lib/types/zod"
 
-  let {
+  const {
     form,
     tags = [],
     disabled = false,
@@ -28,18 +28,18 @@
   let inputValue = $state("")
   const { form: formInstance } = form
   let selectedValues = $state<Tag[]>(
-    ($formInstance.tags as RawTag[])?.map((tag) => ({ value: tag.id, label: tag.name })) ?? [],
+    ($formInstance.tags as RawTag[])?.map(tag => ({ value: tag.id, label: tag.name })) ?? [],
   )
 
   const tagValues = $derived(tags.map((tag: RawTag) => ({ value: tag.id, label: tag.name })))
 
-  let filteredTags = $derived(
+  const filteredTags = $derived(
     inputValue
-      ? tagValues.filter((tag) => tag.label.toLowerCase().includes(inputValue.toLowerCase()))
+      ? tagValues.filter(tag => tag.label.toLowerCase().includes(inputValue.toLowerCase()))
       : tagValues,
   )
 
-  let { value, errors } = formFieldProxy(form, field)
+  const { value, errors } = formFieldProxy(form, field)
 </script>
 
 <Combobox.Root
@@ -51,10 +51,10 @@
   onSelectedChange={(selectedTags) => {
     // TODO: Cleanup hacky combobox tag input changeHandler
     if (selectedTags) {
-      $value =
-        selectedTags
+      $value
+        = selectedTags
           ?.map((t) => {
-            return tags.find((tag) => tag.id === t.value)
+            return tags.find(tag => tag.id === t.value)
           })
           .filter(Boolean) ?? []
       selectedValues = selectedTags

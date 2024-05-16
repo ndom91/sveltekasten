@@ -1,8 +1,7 @@
 import "@auth/sveltekit"
-import { Prisma } from "@prisma/client"
-import type { BookmarkFlatTags } from "$lib/types"
-import type { Tag, Bookmark, Tag, Category, JsonValueType } from "$lib/types/zod"
+import type { Prisma } from "@prisma/client"
 import type { AIFeaturesPreferences } from "./state/ui.svelte"
+import type { BookmarkFlatTags } from "$lib/types"
 
 declare module "@auth/sveltekit" {
   interface User {
@@ -24,7 +23,7 @@ declare module "@auth/sveltekit" {
   }
 }
 
-type Provider = {
+interface Provider {
   id: string
   name: string
 }
@@ -38,15 +37,15 @@ declare global {
   type bk = Prisma.BookmarkGetPayload<{}>
 
   type LoadBookmark = Prisma.BookmarkGetPayload<{
-    include: { category: true; tags: { include: { tag: true } } }
+    include: { category: true, tags: { include: { tag: true } } }
   }>
   type LoadBookmarkFlatTags = BookmarkFlatTags
   type LoadFeedEntry = Prisma.FeedEntryGetPayload<{
-    include: { feed: true; feedMedia: true }
+    include: { feed: true, feedMedia: true }
   }>
   type LoadFeed = Prisma.FeedGetPayload<{}> & { visible: boolean }
 
-  type BookmarkContext = {
+  interface BookmarkContext {
     bookmarks: BookmarkFlatTags[]
     add: (bookmark: BookmarkFlatTags | BookmarkFlatTags[]) => void
     remove: (bookmarkId: string) => void
@@ -72,5 +71,5 @@ interface ViewTransition {
 }
 
 interface Document {
-  startViewTransition(updateCallback: () => Promise<void>): ViewTransition
+  startViewTransition: (updateCallback: () => Promise<void>) => ViewTransition
 }

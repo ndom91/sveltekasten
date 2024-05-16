@@ -33,7 +33,7 @@ export const exportBookmarks = (bookmarks: LoadBookmarkFlatTags[]) => {
 <DL><p>`
 
   bookmarks.forEach((bookmark) => {
-    output += `\n<DT><A HREF="${bookmark.url}" PRIVATE="0" ADD_DATE="${(new Date(bookmark.createdAt).getTime() / 1000).toFixed(0)}" LAST_MODIFIED="${(new Date(bookmark.updatedAt).getTime() / 1000).toFixed(0)}" ${bookmark.tags.length ? `TAGS="${bookmark.tags.map((tag) => tag.name).join(",")}"` : ""}> ${bookmark.title} </A>`
+    output += `\n<DT><A HREF="${bookmark.url}" PRIVATE="0" ADD_DATE="${(new Date(bookmark.createdAt).getTime() / 1000).toFixed(0)}" LAST_MODIFIED="${(new Date(bookmark.updatedAt).getTime() / 1000).toFixed(0)}" ${bookmark.tags.length ? `TAGS="${bookmark.tags.map(tag => tag.name).join(",")}"` : ""}> ${bookmark.title} </A>`
   })
 
   output += `\n</DL><p>\n</DL><p>`

@@ -1,6 +1,6 @@
-import { db } from "$lib/prisma"
 import { fail, redirect } from "@sveltejs/kit"
 import type { PageServerLoad } from "./$types"
+import { db } from "$lib/prisma"
 
 export const load: PageServerLoad = async ({ locals, url }) => {
   const session = await locals?.auth()

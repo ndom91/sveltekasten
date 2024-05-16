@@ -1,6 +1,6 @@
 import { text } from "@sveltejs/kit"
-import { createEdgeSpeech } from "$lib/server/generate-tts"
 import type { RequestHandler } from "./$types"
+import { createEdgeSpeech } from "$lib/server/generate-tts"
 
 export const POST: RequestHandler = async ({ request, locals }) => {
   try {

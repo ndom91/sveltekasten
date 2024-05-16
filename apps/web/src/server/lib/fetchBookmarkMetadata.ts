@@ -1,5 +1,4 @@
 import { ofetch } from "ofetch"
-import { getThumbhash } from "$server/lib/thumbhash"
 
 import metascraper from "metascraper"
 import metascraperDescription from "metascraper-description"
@@ -15,6 +14,7 @@ import metascraperFeed from "metascraper-feed"
 import metascraperDate from "metascraper-date"
 import metascraperUrl from "metascraper-url"
 import metascraperReadability from "metascraper-readability"
+import { getThumbhash } from "$server/lib/thumbhash"
 
 const metascraperClient = metascraper([
   metascraperDescription(),
@@ -34,7 +34,7 @@ const metascraperClient = metascraper([
 
 export const fetchBookmarkMetadata = async (url: string) => {
   const bookmarkPageText = await ofetch(url)
-  const metadata = await metascraperClient({ html: bookmarkPageText, url: url })
+  const metadata = await metascraperClient({ html: bookmarkPageText, url })
   const imageUrl = metadata.image ? metadata.image : (metadata.logo as string)
 
   // Continue bookmark saving when sharp or anything chokes on an image

@@ -1,10 +1,12 @@
+import { type Readable, readable } from "svelte/store"
 import { browser } from "$app/environment"
-import { readable, type Readable } from "svelte/store"
 
 const defaultDocument = browser ? document : undefined
 
 function getCurrentDocumentVisibility(document = defaultDocument): DocumentVisibilityState {
-  if (!document) return "visible"
+  if (!document) {
+    return "visible"
+  }
 
   return document.visibilityState
 }

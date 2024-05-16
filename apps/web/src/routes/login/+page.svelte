@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { page } from "$app/stores"
-  import LoginPattern from "$lib/assets/LoginPattern.svelte"
-  import ProviderIcons from "./ProviderIcons.svelte"
   import { twJoin } from "tailwind-merge"
   import { SignIn } from "@auth/sveltekit/components"
+  import ProviderIcons from "./ProviderIcons.svelte"
+  import { page } from "$app/stores"
+  import LoginPattern from "$lib/assets/LoginPattern.svelte"
 
   const providerButtonStyles = (provider: string): string => {
     switch (provider) {

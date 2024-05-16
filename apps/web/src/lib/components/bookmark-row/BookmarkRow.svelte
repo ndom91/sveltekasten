@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { page } from "$app/stores"
   import { ofetch } from "ofetch"
   import { format } from "@formkit/tempo"
+  import { getContext } from "svelte"
+  import BookmarkActions from "./BookmarkActions.svelte"
+  import { page } from "$app/stores"
   import { Badge } from "$lib/components/ui/badge"
   import { useInterface } from "$state/ui.svelte"
   import { invalidateAll } from "$app/navigation"
   import { Image } from "$lib/components/image"
-  import BookmarkActions from "./BookmarkActions.svelte"
-  import { getContext } from "svelte"
 
   const bookmarkStore = getContext<BookmarkContext>("bookmarks")
 

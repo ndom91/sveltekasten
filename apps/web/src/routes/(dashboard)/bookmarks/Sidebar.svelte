@@ -205,8 +205,8 @@
             )}
             role="combobox"
           >
-            {ui.metadataSidebarData.categories.find((c) => c.id === $form.category)?.name ??
-              "Select category"}
+            {ui.metadataSidebarData.categories.find(c => c.id === $form.category)?.name
+            ?? "Select category"}
             <svg
               class="ml-2 w-4 h-4 opacity-50 shrink-0"
               data-slot="icon"

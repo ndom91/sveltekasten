@@ -1,7 +1,5 @@
-import { providerMap } from "../../auth"
-import type { PageServerLoad } from "./$types"
-import { signIn } from "../../auth"
-import type { Actions } from "./$types"
+import { providerMap, signIn } from "../../auth"
+import type { Actions, PageServerLoad } from "./$types"
 
 export const load: PageServerLoad = ({ url }) => {
   const redirectTo = url.searchParams.get("redirectTo")

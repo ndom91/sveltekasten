@@ -6,9 +6,13 @@
 
   let interval: number
   $effect(() => {
-    if (interval) return
+    if (interval) {
+      return
+    }
     interval = setInterval(() => {
-      if (paused) return
+      if (paused) {
+        return
+      }
       bars.forEach((_, i) => {
         bars[i] = Math.random() * 0.8 + 0.2
       })

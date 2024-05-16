@@ -1,15 +1,17 @@
 <script lang="ts">
+  import BookmarkContent from "./BookmarkContent.svelte"
+  import FeedContent from "./FeedContent.svelte"
   import { cn } from "$lib/utils/style"
   import { page } from "$app/stores"
   import { useInterface } from "$state/ui.svelte"
-  import BookmarkContent from "./BookmarkContent.svelte"
-  import FeedContent from "./FeedContent.svelte"
 
   const ui = useInterface()
   let metadataSidebarElement = $state<HTMLElement>()!
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.repeat || event.target instanceof HTMLInputElement) return
+    if (event.repeat || event.target instanceof HTMLInputElement) {
+      return
+    }
     if (event.code === "BracketRight") {
       event.preventDefault()
       ui.toggleMetadataSidebar()

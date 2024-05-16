@@ -7,7 +7,7 @@ export const TTSLocation = {
 
 type TTSLocation = keyof typeof TTSLocation
 
-type AIFeaturesPreferences = {
+interface AIFeaturesPreferences {
   tts: {
     enabled: boolean
     location: TTSLocation
@@ -21,7 +21,7 @@ type AIFeaturesPreferences = {
   }
 }
 
-type MetadataSidebarData = {
+interface MetadataSidebarData {
   bookmark?: LoadBookmarkFlatTags
   // categories?: (Category & { description: string | undefined })[]
   categories?: Category[]

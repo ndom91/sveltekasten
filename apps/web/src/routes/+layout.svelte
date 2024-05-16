@@ -20,7 +20,7 @@
 
   const ui = useInterface()
 
-  const { data, children }: { data: LayoutData; children: Snippet } = $props()
+  const { data, children }: { data: LayoutData, children: Snippet } = $props()
 
   // Set current user preferences to store
   ui.aiFeaturesPreferences = data.session?.user?.settings?.ai ?? defaultAISettings
@@ -99,7 +99,7 @@
   {#if !dev && $page.url.hostname === "dev.briefkastenhq.com"}
     <script>
       partytown = {
-        forward: ["plausible"],
+      forward: ["plausible"],
       }
     </script>
 

@@ -1,8 +1,8 @@
 <script>
+  import { ModeWatcher } from "mode-watcher"
   import { page } from "$app/stores"
   import Logo from "$lib/assets/Logo.svelte"
   import { Button } from "$lib/components/ui/button"
-  import { ModeWatcher } from "mode-watcher"
 </script>
 
 <ModeWatcher />
@@ -21,7 +21,7 @@
   <div class="flex flex-col gap-8 justify-center items-center mt-12 w-full max-w-screen-md">
     <img src="/img/confused-travolta.gif" alt="Lost Travolta" class="w-full" />
     <span class="text-xl font-normal"
-      >Uh oh, something's gone wrong
+    >Uh oh, something's gone wrong
       {#if $page.error?.message}
         - {$page.error?.message}
       {/if}

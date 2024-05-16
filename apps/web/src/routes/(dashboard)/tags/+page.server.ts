@@ -1,8 +1,8 @@
-import { db } from "$lib/prisma"
 import { fail, redirect } from "@sveltejs/kit"
 import { Prisma } from "@prisma/client"
-import { TagCreateInputSchema } from "$lib/types/zod"
 import type { Actions, PageServerLoad } from "./$types"
+import { TagCreateInputSchema } from "$lib/types/zod"
+import { db } from "$lib/prisma"
 
 export const load: PageServerLoad = async ({ url, locals }) => {
   const session = await locals.auth()

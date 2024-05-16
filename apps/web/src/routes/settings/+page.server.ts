@@ -1,6 +1,6 @@
 import { fail, redirect } from "@sveltejs/kit"
+import type { Actions, PageServerLoad } from "./$types"
 import { db } from "$lib/prisma"
-import type { PageServerLoad, Actions } from "./$types"
 import { WORKER_URL } from "$env/static/private"
 
 export const actions: Actions = {
@@ -109,7 +109,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
     })
 
     const bookmarksFlatTags = bookmarkData.map((bookmark) => {
-      return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) }
+      return { ...bookmark, tags: bookmark.tags.map(tag => tag.tag) }
     })
 
     const user = await db.user.findUnique({

@@ -1,6 +1,6 @@
-import { db } from "$lib/prisma"
 import { fail, redirect } from "@sveltejs/kit"
 import type { Actions, PageServerLoad } from "./$types"
+import { db } from "$lib/prisma"
 
 export const actions: Actions = {
   deleteBookmark: async ({ request, locals }) => {
@@ -43,7 +43,7 @@ export const load: PageServerLoad = async (event) => {
 
     const [data, count] = await db.bookmark.findManyAndCount({
       take: limit + skip,
-      skip: skip,
+      skip,
       where: {
         userId: session?.user?.id,
         archived: true,
@@ -56,7 +56,7 @@ export const load: PageServerLoad = async (event) => {
     })
 
     const bookmarks = data.map((bookmark) => {
-      return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) }
+      return { ...bookmark, tags: bookmark.tags.map(tag => tag.tag) }
     }) as LoadBookmarkFlatTags[]
 
     return {

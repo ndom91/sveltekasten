@@ -1,6 +1,6 @@
-import { db } from "$lib/prisma"
-import { text, json } from "@sveltejs/kit"
+import { json, text } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
+import { db } from "$lib/prisma"
 
 // Get FeedEntries
 export const GET: RequestHandler = async ({ url, locals }) => {
@@ -18,7 +18,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 
     const data = await db.feedEntry.findMany({
       take: limit,
-      skip: skip,
+      skip,
       where: { userId: session?.user?.id },
       include: {
         feed: true,

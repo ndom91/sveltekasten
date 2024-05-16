@@ -1,8 +1,7 @@
-import { dev } from "$app/environment"
 import { sequence } from "@sveltejs/kit/hooks"
-import { handle as handleAuth } from "./auth"
-import { providerMap } from "./auth"
 import type { Handle } from "@sveltejs/kit"
+import { handle as handleAuth, providerMap } from "./auth"
+import { dev } from "$app/environment"
 
 const logger: Handle = async ({ event, resolve }) => {
   if (!dev) {
@@ -22,8 +21,8 @@ const logger: Handle = async ({ event, resolve }) => {
 
 const handleLoginProviders: Handle = async ({ event, resolve }) => {
   if (event.route.id === "/login") {
-    event.locals.providers = providerMap.map((provider) => ({
-      id: provider.id as string,
+    event.locals.providers = providerMap.map(provider => ({
+      id: provider.id,
       name: provider.name,
     }))
   }

@@ -1,15 +1,15 @@
 <script lang="ts">
   import { page } from "$app/stores"
 
-  let crumbs: Array<{ label: string; href: string }> = []
+  let crumbs: Array<{ label: string, href: string }> = []
 
   $: {
     // Remove zero-length tokens.
-    const tokens = $page.url.pathname.split("/").filter((t) => t !== "")
+    const tokens = $page.url.pathname.split("/").filter(t => t !== "")
 
     let tokenPath = ""
     crumbs = tokens.map((t) => {
-      tokenPath += "/" + t
+      tokenPath += `/${t}`
       t = t.charAt(0).toUpperCase() + t.slice(1)
       return { label: t, href: tokenPath }
     })

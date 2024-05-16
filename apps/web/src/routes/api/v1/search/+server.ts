@@ -1,8 +1,8 @@
-import { db } from "$lib/prisma"
-import { text, json } from "@sveltejs/kit"
+import { json, text } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
+import { db } from "$lib/prisma"
 
-type RequestBody = {
+interface RequestBody {
   where: Record<string, unknown>
   include: Record<string, unknown>
   orderBy: Record<string, Record<string, string>>
@@ -33,7 +33,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
     const [data, count] = await db[type].findManyAndCount({
       take: limit,
-      skip: skip,
+      skip,
       where: {
         ...where,
         userId: session?.user?.id,
@@ -45,7 +45,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     if (type === "bookmark") {
       returnData = data.map((bookmark) => {
         // @ts-expect-error dynamic model in query above breaks infered type
-        return { ...bookmark, tags: bookmark.tags?.map((tag) => tag.tag) }
+        return { ...bookmark, tags: bookmark.tags?.map(tag => tag.tag) }
       }) as LoadBookmarkFlatTags[]
     } else {
       returnData = data

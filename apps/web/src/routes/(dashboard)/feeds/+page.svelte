@@ -156,8 +156,8 @@
       const currentActiveElementIndex = allItems.findIndex(
         (item: LoadFeedEntry) => item.id === currentActiveElement.dataset.id,
       )
-      const nextIndex =
-        e.key === "ArrowDown" || e.key === "j"
+      const nextIndex
+        = e.key === "ArrowDown" || e.key === "j"
           ? currentActiveElementIndex + 1
           : currentActiveElementIndex - 1
       const nextElement = document.querySelector(

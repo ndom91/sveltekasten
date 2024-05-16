@@ -1,6 +1,6 @@
+import { ofetch } from "ofetch"
 import { TTSLocation, useInterface } from "$state/ui.svelte"
 import ttsWorkerUrl from "$lib/transformers/tts-worker?url"
-import { ofetch } from "ofetch"
 import { dev } from "$app/environment"
 
 const ui = useInterface()
@@ -10,8 +10,8 @@ let ttsWorker = $state<Worker>()
 export const registerTtsWorker = () => {
   $effect(() => {
     if (
-      !ui.aiFeaturesPreferences.tts.enabled ||
-      ui.aiFeaturesPreferences.tts.location !== TTSLocation.Browser
+      !ui.aiFeaturesPreferences.tts.enabled
+      || ui.aiFeaturesPreferences.tts.location !== TTSLocation.Browser
     ) {
       return
     }
@@ -85,9 +85,9 @@ export const handleGenerateSpeech = async (text: string) => {
   }
 
   if (
-    !ttsWorker ||
-    !ui.aiFeaturesPreferences.tts.enabled ||
-    ui.aiFeaturesPreferences.tts.location !== TTSLocation.Browser
+    !ttsWorker
+    || !ui.aiFeaturesPreferences.tts.enabled
+    || ui.aiFeaturesPreferences.tts.location !== TTSLocation.Browser
   ) {
     return
   }

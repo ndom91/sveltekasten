@@ -1,13 +1,12 @@
+import { fail, redirect } from "@sveltejs/kit"
+import { message, superValidate } from "sveltekit-superforms"
+import { zod } from "sveltekit-superforms/adapters"
+import type { Actions, PageServerLoad } from "./$types"
 import { db } from "$lib/prisma"
-import { redirect } from "@sveltejs/kit"
-import { fail } from "@sveltejs/kit"
 import { formSchema as quickAddSchema } from "$schemas/quick-add"
 import { formSchema as metadataSchema } from "$schemas/metadata-sidebar"
-import { superValidate, message } from "sveltekit-superforms"
-import { zod } from "sveltekit-superforms/adapters"
 import { fetchBookmarkMetadata } from "$server/lib/fetchBookmarkMetadata"
 import { WORKER_URL } from "$env/static/private"
-import type { Actions, PageServerLoad } from "./$types"
 import type { Tag } from "$lib/types/zod"
 
 export const actions: Actions = {
@@ -121,10 +120,10 @@ export const actions: Actions = {
       const bookmark = await db.bookmark.create({
         data: {
           url,
-          title: title,
+          title,
           image: bookmarkMetadata.imageUrl,
           imageBlur: bookmarkMetadata.imageBlur,
-          desc: description ? description : bookmarkMetadata.metadata.description,
+          desc: description || bookmarkMetadata.metadata.description,
           metadata: bookmarkMetadata.metadata,
           user: {
             connect: {
@@ -164,7 +163,7 @@ export const actions: Actions = {
       }
 
       return message(form, {
-        bookmark: bookmark,
+        bookmark,
         text: "Bookmark Added!",
       })
     } catch (error) {
@@ -199,7 +198,7 @@ export const load: PageServerLoad = async (event) => {
 
     const [data, count] = await db.bookmark.findManyAndCount({
       take: limit + skip,
-      skip: skip,
+      skip,
       where: {
         userId: session?.user?.id,
         archived: false,
@@ -212,7 +211,7 @@ export const load: PageServerLoad = async (event) => {
     })
 
     const bookmarks = data.map((bookmark) => {
-      return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) }
+      return { ...bookmark, tags: bookmark.tags.map(tag => tag.tag) }
     }) as LoadBookmarkFlatTags[]
 
     return {

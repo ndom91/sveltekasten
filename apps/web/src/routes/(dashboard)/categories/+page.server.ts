@@ -1,8 +1,8 @@
-import { db } from "$lib/prisma"
 import { fail, redirect } from "@sveltejs/kit"
 import Prisma from "@prisma/client"
-import { CategoryCreateInputSchema } from "$lib/types/zod"
 import type { Actions, PageServerLoad } from "./$types"
+import { CategoryCreateInputSchema } from "$lib/types/zod"
+import { db } from "$lib/prisma"
 
 export const load: PageServerLoad = async ({ locals, url }) => {
   const session = await locals.auth()
@@ -31,7 +31,7 @@ export const actions: Actions = {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
     const formData = Object.fromEntries(await request.formData())
-    const { name, description } = formData as { name: string; description: string }
+    const { name, description } = formData as { name: string, description: string }
 
     try {
       CategoryCreateInputSchema.parse(formData)

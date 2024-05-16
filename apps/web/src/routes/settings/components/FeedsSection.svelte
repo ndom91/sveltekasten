@@ -1,17 +1,16 @@
 <script lang="ts">
+  import { format } from "@formkit/tempo"
+  import { writable } from "svelte/store"
+  import { Render, Subscribe, createRender, createTable } from "svelte-headless-table"
+  import { addSortBy } from "svelte-headless-table/plugins"
+  import DeleteDialog from "./DeleteDialog.svelte"
+  import DataTableActions from "./feed-data-table-actions.svelte"
   import { page } from "$app/stores"
-  import { Button } from "$lib/components/ui/button"
+  import { Button, buttonVariants } from "$lib/components/ui/button"
   import * as Table from "$lib/components/ui/table"
   import { enhance } from "$app/forms"
   import { handleActionResults } from "$lib/utils/form-action"
   import * as Card from "$lib/components/ui/card"
-  import { buttonVariants } from "$lib/components/ui/button"
-  import DeleteDialog from "./DeleteDialog.svelte"
-  import { format } from "@formkit/tempo"
-  import { writable } from "svelte/store"
-  import { createTable, createRender, Render, Subscribe } from "svelte-headless-table"
-  import { addSortBy } from "svelte-headless-table/plugins"
-  import DataTableActions from "./feed-data-table-actions.svelte"
   import type { Feed } from "$lib/types/zod"
 
   let isDeleteDialogOpen = $state(false)
@@ -77,7 +76,7 @@
       // @ts-expect-error string is allowed
       accessor: "actions",
       header: "",
-      cell: (data) =>
+      cell: data =>
         createRender(DataTableActions, {
           // @ts-expect-error
           id: data.row.original.id,
@@ -116,21 +115,21 @@
                             class="ml-2 fill-neutral-800 size-4 dark:fill-white"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 256 256"
-                            ><rect width="256" height="256" fill="none" /><polyline
-                              points="80 176 128 224 176 176"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="16"
-                            /><polyline
-                              points="80 80 128 32 176 80"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="16"
-                            /></svg
+                          ><rect width="256" height="256" fill="none" /><polyline
+                            points="80 176 128 224 176 176"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="16"
+                          /><polyline
+                            points="80 80 128 32 176 80"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="16"
+                          /></svg
                           >
                         </Button>
                       {:else}

@@ -45,7 +45,7 @@
 >
   <div class="flex flex-col gap-2 align-start">
     <Label class="flex justify-between items-end" for="title"
-      >Title<small class="text-neutral-400 dark:text-neutral-600">required</small></Label
+    >Title<small class="text-neutral-400 dark:text-neutral-600">required</small></Label
     >
     <input
       type="text"
@@ -84,7 +84,7 @@
     <Label for="category">Category</Label>
     <Select.Root
       name="categoryId"
-      onSelectedChange={(e) => ($categoryProxy = e?.value)}
+      onSelectedChange={e => ($categoryProxy = e?.value)}
       items={$page.data?.categories?.map((cat: { id: string, name: string }) => ({
         value: cat.id,
         label: cat.name,
