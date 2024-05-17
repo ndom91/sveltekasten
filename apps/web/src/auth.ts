@@ -96,7 +96,7 @@ export const { signIn, signOut, handle } = SvelteKitAuth({
         return {
           ...token,
           access_token: account.access_token,
-          expires_at: Math.floor(Date.now() / 1000 + (account.expires_in ?? 60 * 60 * 24 * 30)),
+          expires_at: account.expires_at ?? Math.floor(Date.now() / 1000 + (account.expires_in ?? 60 * 60 * 24 * 30)),
           refresh_token: account.refresh_token,
           providerId: account.provider,
           profile: userProfile,
@@ -105,6 +105,9 @@ export const { signIn, signOut, handle } = SvelteKitAuth({
         // Token is still valid
         return token
       } else {
+        if (!token.refresh_token) {
+          throw new Error("Missing refresh token")
+        }
         // Token expired
         // @ts-expect-error unsure about this one atm
         return await refreshAccessToken(token)
