@@ -16,7 +16,7 @@ export default antfu(
         "ts/no-unsafe-argument": ["off", "never"],
         "ts/no-unsafe-assignment": ["off", "never"],
         "ts/no-unsafe-member-access": ["off", "never"],
-          "ts/no-use-before-define": ["off", "warn"],
+        "ts/no-use-before-define": ["off", "warn"],
       },
     },
     ignores: ["**/fixtures"],

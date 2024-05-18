@@ -21,12 +21,10 @@ type LoggerLevel = (typeof loggerLevels)[keyof typeof loggerLevels]
 
 export class Logger {
   #logLevel: LoggerLevel
-  #prefix: string
 
   constructor(data: { level?: LoggerLevel, prefix?: string } = {}) {
-    const { level = loggerLevels.LOG, prefix = "General" } = data
+    const { level = loggerLevels.LOG } = data
     this.#logLevel = level
-    this.#prefix = prefix
   }
 
   printf(level: keyof typeof loggerLevels, ...msgs: string[]) {
