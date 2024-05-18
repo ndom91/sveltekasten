@@ -1,8 +1,8 @@
 import Parser from "rss-parser"
+import debugFactory from "../../lib/log.js"
 import { db } from "../../plugins/prisma.js"
-import { getLogger } from "../../plugins/logger.js"
 
-const logger = getLogger({ prefix: "create-feed" })
+const debug = debugFactory("backend:create-feed")
 
 const parser = new Parser({
   defaultRSS: 2.0,
@@ -21,7 +21,7 @@ export const createFeed = async (data: CreateFeedData) => {
   const response = await fetch(data.feedUrl)
   const xml = await response.text()
   const feed = await parser.parseString(xml)
-  logger.info(`Inserting feed: ${feed.link}`)
+  debug.info(`Inserting feed: ${feed.link}`)
 
   await db.feed.create({
     data: {
@@ -93,5 +93,5 @@ export const createFeed = async (data: CreateFeedData) => {
       },
     },
   })
-  logger.info(`Feed Create Success ${feed.link}`)
+  debug.info(`Feed Create Success ${feed.link}`)
 }

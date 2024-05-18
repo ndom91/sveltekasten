@@ -5,7 +5,7 @@
   "type": "module",
   "author": "ndom91 <yo@ndo.dev>",
   "scripts": {
-    "dev": "tsx watch --env-file=.env src/index.ts",
+    "dev": "DEBUG=backend:* tsx watch --env-file=.env src/index.ts",
     "dev:bun": "bun --bun --watch run src/index.ts",
     "build:bun": "bun clean && tsc",
     "build": "pnpm clean && tsc",
@@ -32,13 +32,14 @@
     "rss-parser": "^3.13.0",
     "sharp": "^0.33.3",
     "thumbhash": "^0.1.1",
-    "winston": "^3.13.0",
     "zod": "^3.22.4",
     "zod-prisma-types": "^3.1.6"
   },
   "devDependencies": {
+    "@types/debug": "^4.1.12",
     "@types/node": "^20.12.7",
     "@types/xml2js": "^0.4.14",
+    "debug": "^4.3.4",
     "prisma": "5.12.1",
     "tsx": "^4.7.2"
   }

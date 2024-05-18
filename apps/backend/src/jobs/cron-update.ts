@@ -1,11 +1,11 @@
 import { Cron } from "croner"
 import { format } from "@formkit/tempo"
+import debugFactory from "../lib/log.js"
 import { db } from "../plugins/prisma.js"
 import { updateFeed } from "../lib/update-feed.js"
-import { getLogger } from "../plugins/logger.js"
-import type { Feed } from "../lib/types/index.js"
+import type { Feed } from "../lib/types/zod/index.js"
 
-const logger = getLogger({ prefix: "cron" })
+const debug = debugFactory("backend:cron")
 
 // Run every 10 min
 export const updateJob = Cron(
@@ -19,7 +19,7 @@ export const updateJob = Cron(
   async (cron: Cron) => {
     // TODO: Think of some way to dedupe feed updates across multiple
     //       users effectively.
-    logger.info("Refreshing feeds")
+    debug.info("Refreshing feeds")
     try {
       const oneHourAgo = new Date()
       oneHourAgo.setHours(oneHourAgo.getHours() - 1)
@@ -31,19 +31,19 @@ export const updateJob = Cron(
         },
       })
       if (!feeds.length) {
-        logger.info("No feeds to refresh")
-        logger.info(
+        debug.info("No feeds to refresh")
+        debug.info(
           `Next run: ${format(cron.nextRun() ?? "", { date: "medium", time: "long" })}`,
         )
         return
       }
-      logger.info(
-        `Found ${feeds.length} feeds to refresh ${feeds.map(f => f.url)}`,
+      debug.info(
+        `Found ${feeds.length} feeds to refresh ${feeds.map(f => f.url).join(",")}`,
       )
 
       await Promise.all(
         feeds.map(async (feed) => {
-          logger.info(`Updating feed - ${feed.url}`)
+          debug.info(`Updating feed - ${feed.url}`)
           await updateFeed(feed)
 
           // After successfully updating all new FeedEntry items, bump feed.lastFetched
@@ -55,14 +55,14 @@ export const updateJob = Cron(
               lastFetched: new Date().toISOString(),
             },
           })
-          logger.info(`Feed updated`)
-          logger.info(
+          debug.info(`Feed updated`)
+          debug.info(
             `Next run: ${format(cron.nextRun() ?? "", { date: "medium", time: "long" })}`,
           )
         }),
       )
     } catch (error) {
-      logger.error(error)
+      console.error(error)
     }
   },
 )

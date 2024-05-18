@@ -11,6 +11,13 @@ export default antfu(
     },
     typescript: {
       tsconfigPath: "tsconfig.json",
+      overrides: {
+        "ts/no-unsafe-call": ["off", "never"],
+        "ts/no-unsafe-argument": ["off", "never"],
+        "ts/no-unsafe-assignment": ["off", "never"],
+        "ts/no-unsafe-member-access": ["off", "never"],
+          "ts/no-use-before-define": ["off", "warn"],
+      },
     },
     ignores: ["**/fixtures"],
     formatters: {
@@ -20,6 +27,7 @@ export default antfu(
   },
   {
     rules: {
+      "prefer-regex-literals": ["off", "never"],
       "no-console": ["off", "never"],
       "node/prefer-global/process": ["off", "never"],
       "style/brace-style": ["warn", "1tbs"],

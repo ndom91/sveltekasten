@@ -1,9 +1,9 @@
 import Parser from "rss-parser"
 import { db } from "../plugins/prisma.js"
-import { getLogger } from "../plugins/logger.js"
-import type { Feed } from "./types/index.js"
+import debugFactory from "./log.js"
+import type { Feed } from "./types/zod/index.js"
 
-const logger = getLogger({ prefix: "update-feed" })
+const debug = debugFactory("backend:update-feed")
 
 const parser = new Parser({
   defaultRSS: 2.0,
@@ -23,7 +23,7 @@ const updateFeed = async (feed: Feed) => {
 
   // If no items in parsed feed, return
   if (!itemGuids.length) {
-    logger.info(`No items in parsed feed: ${feed.url}`)
+    debug(`No items in parsed feed: ${feed.url}`)
     return
   }
 
@@ -45,18 +45,18 @@ const updateFeed = async (feed: Feed) => {
   const newItems = items.filter(
     item => !matchedFeedEntries.some(entry => entry.guid === item.guid),
   )
-  logger.info(`New Items: ${newItems.map(item => item.title)}`)
+  debug(`New Items: ${newItems.map(item => item.title).join(",")}`)
 
   // If no new items, return
   if (!newItems.length) {
-    logger.info(`No new items to update in parsed feed: ${feed.url}`)
+    debug.info(`No new items to update in parsed feed: ${feed.url}`)
     return
   }
 
   // If we have new items to insert, insert their FeedEntry and FeedEntryMedia
   await Promise.all(
     newItems.map((item) => {
-      logger.info(`Inserting ${item.link}`)
+      debug.info(`Inserting ${item.link}`)
       return db.feedEntry.create({
         data: {
           title: item.title ?? "",

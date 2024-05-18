@@ -1,8 +1,5 @@
 import { hkdf } from "@panva/hkdf"
 import { jwtDecrypt } from "jose"
-import { getLogger } from "../plugins/logger.js"
-
-const logger = getLogger({ prefix: "jwt" })
 
 export interface DefaultJWT extends Record<string, unknown> {
   name?: string | null
@@ -30,7 +27,7 @@ async function getDerivedEncryptionKey(
     "sha256",
     keyMaterial,
     salt,
-    `Auth.js Generated Encryption Key (${salt})`,
+    `Auth.js Generated Encryption Key (${salt as string})`,
     64,
   )
 }
@@ -68,7 +65,7 @@ export async function verifyJwt(token: string) {
       salt,
     })
   } catch (e) {
-    logger.error(e)
+    console.error(e)
     throw new Error("Invalid token")
   }
 }

@@ -1,32 +1,32 @@
 import process from "node:process"
 import fastq from "fastq"
-import type { queueAsPromised } from "fastq"
+import debugFactory from "../lib/log.js"
 import type { actions } from "../lib/constants.js"
 import { feedWorker, screenshotWorker } from "../jobs/queue-worker/index.js"
-import { getLogger } from "./logger.js"
 
-const logger = getLogger({ prefix: "queue" })
+const debug = debugFactory("backend:queue")
 
 export interface Task {
-  action: keyof typeof actions
   data: Record<string, unknown>
+  action: keyof typeof actions
 }
 
 const QUEUE_WORKERS = process.env.QUEUE_WORKERS
   ? Number.parseInt(process.env.QUEUE_WORKERS)
   : 1
 
-export const screenshotQueue: queueAsPromised<Task> = fastq.promise(
+export const screenshotQueue = fastq.promise(
   screenshotWorker,
   QUEUE_WORKERS,
 )
-export const feedQueue: queueAsPromised<Task> = fastq.promise(
+export const feedQueue = fastq.promise(
   feedWorker,
   QUEUE_WORKERS,
 )
 
+// eslint-disable-next-line ts/no-misused-promises
 process.on("exit", async () => {
-  logger.debug("Cleaning up queue workers")
+  debug("Cleaning up queue workers")
   await feedQueue.kill()
   await screenshotQueue.kill()
 })
