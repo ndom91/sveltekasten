@@ -31,7 +31,7 @@
 
 <div
   class={cn(
-    "absolute right-4 top-10 flex rounded-xl bg-zinc-200/30 p-2 text-white delay-100 duration-300 ease-in-out dark:bg-zinc-800/30 backdrop-blur-md",
+    "absolute right-4 top-10 flex rounded-xl bg-zinc-200/30 p-2 text-white delay-100 duration-300 ease-in-out dark:bg-zinc-900/50 backdrop-blur-[6px] shadow-[0_4px_20px_rgba(0,_0,_0,_0.1)] border dark:border-gray-600/10 border-gray-300/40",
     isOptionsOpen ? "opacity-100" : "opacity-0",
   )}
 >
@@ -47,51 +47,52 @@
           class="size-5 text-zinc-900 dark:text-zinc-100"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 256 256"
-        ><rect width="256" height="256" fill="none" /><path
-          d="M128,88a32,32,0,0,1,32-32h64a8,8,0,0,1,8,8V192a8,8,0,0,1-8,8H160a32,32,0,0,0-32,32"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="16"
-        /><path
-          d="M24,192a8,8,0,0,0,8,8H96a32,32,0,0,1,32,32V88A32,32,0,0,0,96,56H32a8,8,0,0,0-8,8Z"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="16"
-        /><line
-          x1="160"
-          y1="96"
-          x2="200"
-          y2="96"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="16"
-        /><line
-          x1="160"
-          y1="128"
-          x2="200"
-          y2="128"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="16"
-        /><line
-          x1="160"
-          y1="160"
-          x2="200"
-          y2="160"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="16"
-        /></svg
+        >
+          <rect width="256" height="256" fill="none" /><path
+            d="M128,88a32,32,0,0,1,32-32h64a8,8,0,0,1,8,8V192a8,8,0,0,1-8,8H160a32,32,0,0,0-32,32"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          /><path
+            d="M24,192a8,8,0,0,0,8,8H96a32,32,0,0,1,32,32V88A32,32,0,0,0,96,56H32a8,8,0,0,0-8,8Z"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          /><line
+            x1="160"
+            y1="96"
+            x2="200"
+            y2="96"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          /><line
+            x1="160"
+            y1="128"
+            x2="200"
+            y2="128"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          /><line
+            x1="160"
+            y1="160"
+            x2="200"
+            y2="160"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          /></svg
         >
       </Button>
     </Tooltip.Trigger>
@@ -148,49 +149,49 @@
           {#if ui.summarizationLoading}
             <LoadingIndicator class="dark:text-white" />
           {:else}
-            <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"
-            ><rect width="256" height="256" fill="none" /><line
-              x1="112"
-              y1="112"
-              x2="176"
-              y2="112"
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="16"
-            /><line
-              x1="112"
-              y1="144"
-              x2="176"
-              y2="144"
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="16"
-            /><rect
-              x="40"
-              y="40"
-              width="176"
-              height="176"
-              rx="8"
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="16"
-            /><line
-              x1="80"
-              y1="40"
-              x2="80"
-              y2="216"
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="16"
-            /></svg
+            <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+              <rect width="256" height="256" fill="none" /><line
+                x1="112"
+                y1="112"
+                x2="176"
+                y2="112"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="16"
+              /><line
+                x1="112"
+                y1="144"
+                x2="176"
+                y2="144"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="16"
+              /><rect
+                x="40"
+                y="40"
+                width="176"
+                height="176"
+                rx="8"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="16"
+              /><line
+                x1="80"
+                y1="40"
+                x2="80"
+                y2="216"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="16"
+              /></svg
             >
           {/if}
         </Button>
@@ -217,34 +218,35 @@
               class="size-5 text-zinc-900 dark:text-zinc-100"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 256 256"
-            ><rect width="256" height="256" fill="none" /><path
-              d="M80,168H32a8,8,0,0,1-8-8V96a8,8,0,0,1,8-8H80l72-56V224Z"
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="16"
-            /><line
-              x1="192"
-              y1="104"
-              x2="192"
-              y2="152"
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="16"
-            /><line
-              x1="224"
-              y1="88"
-              x2="224"
-              y2="168"
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="16"
-            /></svg
+            >
+              <rect width="256" height="256" fill="none" /><path
+                d="M80,168H32a8,8,0,0,1-8-8V96a8,8,0,0,1,8-8H80l72-56V224Z"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="16"
+              /><line
+                x1="192"
+                y1="104"
+                x2="192"
+                y2="152"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="16"
+              /><line
+                x1="224"
+                y1="88"
+                x2="224"
+                y2="168"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="16"
+              /></svg
             >
           {/if}
         </Button>
@@ -261,31 +263,32 @@
           class="size-5 text-zinc-900 dark:text-zinc-100"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 256 256"
-        ><rect width="256" height="256" fill="none" /><polyline
-          points="216 104 215.99 40.01 152 40"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="16"
-        /><line
-          x1="136"
-          y1="120"
-          x2="216"
-          y2="40"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="16"
-        /><path
-          d="M184,136v72a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V80a8,8,0,0,1,8-8h72"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="16"
-        /></svg
+        >
+          <rect width="256" height="256" fill="none" /><polyline
+            points="216 104 215.99 40.01 152 40"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          /><line
+            x1="136"
+            y1="120"
+            x2="216"
+            y2="40"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          /><path
+            d="M184,136v72a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V80a8,8,0,0,1,8-8h72"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          /></svg
         >
       </Button>
     </Tooltip.Trigger>

@@ -23,7 +23,7 @@
 
 <div
   class={cn(
-    "absolute right-4 top-10 flex rounded-xl bg-zinc-200/30 p-2 text-white delay-100 duration-300 ease-in-out dark:bg-zinc-800/30 backdrop-blur-md",
+    "absolute right-4 top-10 flex rounded-xl bg-zinc-200/30 p-2 text-white delay-100 duration-300 ease-in-out dark:bg-zinc-900/50 backdrop-blur-[6px] shadow-[0_4px_20px_rgba(0,_0,_0,_0.1)] border dark:border-gray-600/10 border-gray-300/40",
     isOptionsOpen ? "opacity-100" : "opacity-0",
   )}
 >
