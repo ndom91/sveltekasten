@@ -10,7 +10,7 @@ import feed from "./routes/feed/index.js"
 import root from "./routes/root.js"
 
 const app = new Hono<{ Bindings: HttpBindings }>({ strict: false }).basePath(
-  "/api/v0",
+  "/worker/v1",
 )
 app.use(logger())
 app.use(prettyJSON())

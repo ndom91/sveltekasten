@@ -12,8 +12,8 @@ api.get("/", async (c) => {
     const queueList = feedQueue.getQueue()
 
     return c.json({ queueList })
-  } catch (e) {
-    return c.json({ error: e }, 500)
+  } catch (error) {
+    return c.json({ error }, 500)
   }
 })
 
@@ -38,7 +38,7 @@ api.post("/", feedBodySchema, async (c) => {
     return c.text("ok")
   } catch (error) {
     console.error(error)
-    return c.json(error)
+    return c.json({ error }, 500)
   }
 })
 

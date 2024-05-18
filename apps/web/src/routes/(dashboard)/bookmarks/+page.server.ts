@@ -180,7 +180,6 @@ export const actions: Actions = {
 export const load: PageServerLoad = async (event) => {
   event.depends("app:bookmarks")
   const session = await event.locals?.auth()
-  console.log("bookmark.load.session", { session })
 
   if (!session && event.url.pathname !== "/login") {
     const fromUrl = event.url.pathname + event.url.search
