@@ -2,7 +2,7 @@
   import { toast } from "svelte-sonner"
   import { ofetch } from "ofetch"
   import { InfiniteLoader, loaderState } from "svelte-infinite"
-  import { onDestroy, untrack } from "svelte"
+  import { onDestroy } from "svelte"
   import { watch } from "runed"
   import { Navbar } from "$lib/components/navbar"
   import EmptyState from "$lib/components/EmptyState.svelte"

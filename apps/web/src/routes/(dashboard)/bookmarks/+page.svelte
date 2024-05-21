@@ -2,7 +2,7 @@
   import { toast } from "svelte-sonner"
   import { ofetch } from "ofetch"
   import { InfiniteLoader, loaderState } from "svelte-infinite"
-  import { getContext, onDestroy, untrack } from "svelte"
+  import { getContext, onDestroy } from "svelte"
   import { watch } from "runed"
   import FilterBar from "./FilterBar.svelte"
   import { page } from "$app/stores"
@@ -120,7 +120,6 @@
     () => {
       loaderState.reset()
       pageNumber = -1
-      // allItems = []
       bookmarkStore.bookmarks = []
       loadMore()
     },
@@ -131,10 +130,10 @@
     if (e.repeat || e.target instanceof HTMLInputElement) {
       return
     }
+    // Navigate up / down list of items
     if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "j" || e.key === "k") {
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
-      // const currentActiveElementIndex = allItems.findIndex(
       const currentActiveElementIndex = bookmarkStore.bookmarks.findIndex(
         (item) => item.id === currentActiveElement.dataset.id,
       )
@@ -143,7 +142,6 @@
           ? currentActiveElementIndex + 1
           : currentActiveElementIndex - 1
       const nextElement = document.querySelector(
-        // `[data-id="${allItems[nextIndex]?.id}"]`,
         `[data-id="${bookmarkStore.bookmarks[nextIndex]?.id}"]`,
       ) as HTMLElement
 
@@ -151,17 +149,17 @@
         nextElement.focus()
       }
     }
+
+    // Open item in same tab
     if (e.key === "o") {
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
-      // const currentActiveElementIndex = allItems.findIndex(
       const currentActiveElementIndex = bookmarkStore.bookmarks.findIndex(
         (item) => item.id === currentActiveElement.dataset.id,
       )
-      // const targetLink = allItems[currentActiveElementIndex]?.url
       const targetLink = bookmarkStore.bookmarks[currentActiveElementIndex]?.url
       if (!targetLink) {
-        toast.error("No item selected", { icon: "🚫" })
+        toast.error("No item selected")
         return
       }
       window.open(targetLink, "_target")
@@ -231,14 +229,17 @@
       <li class="relative">
         <span
           class="absolute -left-6 -top-8 text-6xl font-bold -z-10 text-neutral-500/10 dark:text-neutral-900/40"
-          >2</span
-        > Drag-and-drop a URL onto the page.
+        >
+          2
+        </span>
+        Drag-and-drop a URL onto the page.
       </li>
       <li class="relative">
         <span
           class="absolute -left-6 -top-8 text-6xl font-bold -z-10 text-neutral-500/10 dark:text-neutral-900/40"
-          >3</span
         >
+          3
+        </span>
         With a URL in your clipboard, paste onto the page with <KeyboardIndicator
           class="text-sm"
           key="Ctrl V"

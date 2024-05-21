@@ -29,6 +29,7 @@ export default antfu(
   },
   {
     rules: {
+      "svelte/valid-compile": ["off", "never"],
       "prefer-regex-literals": ["off", "never"],
       "no-console": ["off", "never"],
       "node/prefer-global/process": ["off", "never"],
