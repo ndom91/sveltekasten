@@ -209,7 +209,7 @@ export const load: PageServerLoad = async (event) => {
       orderBy: { createdAt: "desc" },
     })
 
-    const bookmarks = data.map((bookmark) => {
+    const bookmarks = data.map((bookmark: LoadBookmark) => {
       return { ...bookmark, tags: bookmark.tags.map(tag => tag.tag) }
     }) as LoadBookmarkFlatTags[]
 

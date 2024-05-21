@@ -3,6 +3,7 @@
   import { ofetch } from "ofetch"
   import { InfiniteLoader, loaderState } from "svelte-infinite"
   import { onDestroy, untrack } from "svelte"
+  import { watch } from "runed"
   import { Navbar } from "$lib/components/navbar"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { useInterface } from "$state/ui.svelte"
@@ -44,19 +45,19 @@
         },
         where: {
           archived: true,
-        },
+        } as Record<string, unknown>,
       }
       if (ui.searchQuery) {
         body.where = {
           archived: true,
           title: {
-            search: ui.searchQuery,
+            search: ui.searchQuery.split(" ").join(" & "),
           },
           url: {
-            search: ui.searchQuery,
+            search: ui.searchQuery.split(" ").join(" & "),
           },
           desc: {
-            search: ui.searchQuery,
+            search: ui.searchQuery.split(" ").join(" & "),
           },
         }
       }
@@ -112,10 +113,10 @@
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
       const currentActiveElementIndex = allItems.findIndex(
-        item => item.id === currentActiveElement.dataset.id,
+        (item) => item.id === currentActiveElement.dataset.id,
       )
-      const nextIndex
-        = e.key === "ArrowDown" || e.key === "j"
+      const nextIndex =
+        e.key === "ArrowDown" || e.key === "j"
           ? currentActiveElementIndex + 1
           : currentActiveElementIndex - 1
       const nextElement = document.querySelector(
@@ -130,11 +131,11 @@
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
       const currentActiveElementIndex = allItems.findIndex(
-        item => item.id === currentActiveElement.dataset.id,
+        (item) => item.id === currentActiveElement.dataset.id,
       )
       const targetLink = allItems[currentActiveElementIndex]?.url
       if (!targetLink) {
-        toast.error("No item selected", { icon: "🚫" })
+        toast.error("No item selected")
         return
       }
       window.open(targetLink, "_target")
@@ -143,15 +144,15 @@
 
   // Handle search input changes
   // Reset and execute first search for new query
-  $effect.pre(() => {
-    ui.searchQuery
-    untrack(() => {
+  watch.pre(
+    () => ui.searchQuery,
+    () => {
       loaderState.reset()
       pageNumber = -1
       allItems = []
       loadMore()
-    })
-  })
+    },
+  )
 
   // Reset state on unmount
   onDestroy(() => {

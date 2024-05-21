@@ -3,6 +3,7 @@
   import { ofetch } from "ofetch"
   import { InfiniteLoader, loaderState } from "svelte-infinite"
   import { getContext, onDestroy, untrack } from "svelte"
+  import { watch } from "runed"
   import FilterBar from "./FilterBar.svelte"
   import { page } from "$app/stores"
 
@@ -56,13 +57,13 @@
         body.where = {
           archived: false,
           title: {
-            search: ui.searchQuery,
+            search: ui.searchQuery.split(" ").join(" & "),
           },
           url: {
-            search: ui.searchQuery,
+            search: ui.searchQuery.split(" ").join(" & "),
           },
           desc: {
-            search: ui.searchQuery,
+            search: ui.searchQuery.split(" ").join(" & "),
           },
         } as { archived: boolean } & Record<string, any>
       }
@@ -114,16 +115,16 @@
 
   // Handle search input changes
   // Reset and execute first search for new query
-  $effect.pre(() => {
-    ui.searchQuery
-    untrack(() => {
+  watch.pre(
+    () => ui.searchQuery,
+    () => {
       loaderState.reset()
       pageNumber = -1
       // allItems = []
       bookmarkStore.bookmarks = []
       loadMore()
-    })
-  })
+    },
+  )
 
   // Handle keyboard navigation of items
   const handleKeyDown = (e: KeyboardEvent) => {
@@ -135,10 +136,10 @@
       const currentActiveElement = e.target as HTMLElement
       // const currentActiveElementIndex = allItems.findIndex(
       const currentActiveElementIndex = bookmarkStore.bookmarks.findIndex(
-        item => item.id === currentActiveElement.dataset.id,
+        (item) => item.id === currentActiveElement.dataset.id,
       )
-      const nextIndex
-        = e.key === "ArrowDown" || e.key === "j"
+      const nextIndex =
+        e.key === "ArrowDown" || e.key === "j"
           ? currentActiveElementIndex + 1
           : currentActiveElementIndex - 1
       const nextElement = document.querySelector(
@@ -155,7 +156,7 @@
       const currentActiveElement = e.target as HTMLElement
       // const currentActiveElementIndex = allItems.findIndex(
       const currentActiveElementIndex = bookmarkStore.bookmarks.findIndex(
-        item => item.id === currentActiveElement.dataset.id,
+        (item) => item.id === currentActiveElement.dataset.id,
       )
       // const targetLink = allItems[currentActiveElementIndex]?.url
       const targetLink = bookmarkStore.bookmarks[currentActiveElementIndex]?.url
@@ -230,13 +231,13 @@
       <li class="relative">
         <span
           class="absolute -left-6 -top-8 text-6xl font-bold -z-10 text-neutral-500/10 dark:text-neutral-900/40"
-        >2</span
+          >2</span
         > Drag-and-drop a URL onto the page.
       </li>
       <li class="relative">
         <span
           class="absolute -left-6 -top-8 text-6xl font-bold -z-10 text-neutral-500/10 dark:text-neutral-900/40"
-        >3</span
+          >3</span
         >
         With a URL in your clipboard, paste onto the page with <KeyboardIndicator
           class="text-sm"

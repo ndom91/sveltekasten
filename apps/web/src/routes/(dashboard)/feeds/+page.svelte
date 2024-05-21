@@ -3,6 +3,7 @@
   import { toast } from "svelte-sonner"
   import { ofetch } from "ofetch"
   import { InfiniteLoader, loaderState } from "svelte-infinite"
+  import { watch } from "runed"
   import FilterBar from "./FilterBar.svelte"
   import { handleGenerateSpeech, registerTtsWorker } from "./tts.svelte"
   import { handleSummarizeText, registerSummarizationWorker } from "./summarization.svelte"
@@ -71,10 +72,10 @@
       if (ui.searchQuery) {
         body.where = {
           title: {
-            search: ui.searchQuery,
+            search: ui.searchQuery.split(" ").join(" & "),
           },
           contentSnippet: {
-            search: ui.searchQuery,
+            search: ui.searchQuery.split(" ").join(" & "),
           },
         }
       }
@@ -131,19 +132,16 @@
 
   // Handle search input changes
   // Reset fields and load first results from api
-  $effect.pre(() => {
-    // eslint-disable-next-line no-unused-expressions
-    ui.searchQuery
-    console.log("effect.query changed")
-    // TODO: allow resetting search
-    untrack(() => {
+  watch.pre(
+    () => ui.searchQuery,
+    () => {
       console.log("effect.loaderState.reset")
       loaderState.reset()
       pageNumber = -1
       allItems = []
       loadMore()
-    })
-  })
+    },
+  )
 
   // Handle keyboard navigation of items
   const handleKeyDown = (e: KeyboardEvent) => {
@@ -156,8 +154,8 @@
       const currentActiveElementIndex = allItems.findIndex(
         (item: LoadFeedEntry) => item.id === currentActiveElement.dataset.id,
       )
-      const nextIndex
-        = e.key === "ArrowDown" || e.key === "j"
+      const nextIndex =
+        e.key === "ArrowDown" || e.key === "j"
           ? currentActiveElementIndex + 1
           : currentActiveElementIndex - 1
       const nextElement = document.querySelector(

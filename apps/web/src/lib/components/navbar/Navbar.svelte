@@ -1,6 +1,6 @@
 <script lang="ts">
   import { blur } from "svelte/transition"
-  import pDebounce from "p-debounce"
+  import { useDebounce } from "runed"
   import { Button } from "$lib/components/ui/button"
   import * as Popover from "$lib/components/ui/popover"
   import * as Tooltip from "$lib/components/ui/tooltip"
@@ -62,7 +62,7 @@
           name="search"
           bind:this={searchInputEl}
           value={ui.searchQuery}
-          onkeyup={pDebounce(handleSearchInput, 500)}
+          onkeyup={useDebounce(handleSearchInput, 500)}
           spellcheck="false"
           aria-label="Search"
           class="flex py-2 px-3 pr-10 pl-10 w-full h-10 text-sm bg-transparent rounded-md border focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-input ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring"

@@ -12,13 +12,13 @@ interface RequestBody {
 }
 
 export const POST: RequestHandler = async ({ request, locals }) => {
+  let returnData
   try {
     const session = await locals.auth()
     if (!session?.user?.id) {
       return new Response(null, { status: 401, statusText: "Unauthorized" })
     }
 
-    let returnData
     const {
       include,
       orderBy,
@@ -27,10 +27,12 @@ export const POST: RequestHandler = async ({ request, locals }) => {
       limit = 20,
       skip = 0,
     } = (await request.json()) as RequestBody
+
     if (!type) {
       return new Response(null, { status: 401, statusText: "Missing 'type' parameter" })
     }
 
+    // @ts-expect-error Method exists on all valid 'type's
     const [data, count] = await db[type].findManyAndCount({
       take: limit,
       skip,
@@ -43,8 +45,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     })
 
     if (type === "bookmark") {
-      returnData = data.map((bookmark) => {
-        // @ts-expect-error dynamic model in query above breaks infered type
+      returnData = data.map((bookmark: LoadBookmark) => {
         return { ...bookmark, tags: bookmark.tags?.map(tag => tag.tag) }
       }) as LoadBookmarkFlatTags[]
     } else {
