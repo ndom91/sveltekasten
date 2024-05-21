@@ -4,12 +4,27 @@
   let { element = $bindable() }: { element: HTMLElement } = $props()
 </script>
 
-<dialog bind:this={element} class="z-20 mt-4 rounded-lg shadow-sm md:mt-8 lg:mt-16 backdrop-blur bg-neutral-200 dark:bg-neutral-800">
+<dialog
+  bind:this={element}
+  class="z-20 mt-4 rounded-lg shadow-sm md:mt-8 lg:mt-16 bg-neutral-200 dark:bg-neutral-800"
+>
   <div class="flex flex-col gap-4 p-8">
     <div class="flex justify-between">
       <h2 class="text-2xl font-bold">Keyboard Shortcuts</h2>
-      <button class="grid place-items-center rounded-full ring-white transition outline-none hover:ring-2 focus:ring-2 size-7" onclick={() => element.close()}>
-        <svg class="rounded-full size-5" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <button
+        class="grid place-items-center rounded-full ring-white transition outline-none hover:ring-2 focus:ring-2 size-7"
+        onclick={() => element.close()}
+      >
+        <svg
+          class="rounded-full size-5"
+          data-slot="icon"
+          fill="none"
+          stroke-width="1.5"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
         </svg>
       </button>
@@ -138,10 +153,7 @@
 
 <style>
   dialog {
-    /* UPDATE: --open / syncs styles with dialog state */
     --open: 0;
-
-    /* READ: --closed / exposed for styling convenience */
     --closed: calc(1 - var(--open));
 
     transform: translateY(calc(var(--closed) * -50%));
@@ -153,6 +165,10 @@
 
       transition: all var(--duration) var(--ease-spring-3) allow-discrete;
       opacity: var(--open);
+    }
+
+    &::backdrop {
+      backdrop-filter: blur(4px) brightness(0.5);
     }
 
     &[open] {
