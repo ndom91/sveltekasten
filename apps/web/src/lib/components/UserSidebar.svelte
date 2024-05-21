@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { watch } from "runed"
   import { page } from "$app/stores"
   import * as Tooltip from "$lib/components/ui/tooltip"
   import { Button } from "$lib/components/ui/button"
@@ -22,19 +23,18 @@
   const mutate = () => {
     if (ui.userSidebarOpen) {
       userSidebarElement.style.minWidth = "210px"
-      userSidebarElement.style.width = "210px"
     } else {
       userSidebarElement.style.minWidth = "72px"
-      userSidebarElement.style.width = "72px"
     }
   }
 
-  $effect(() => {
-    // Hack to get effect to run on sidebar toggle
-    ui.userSidebarOpen
-    // @ts-expect-error
-    document.startViewTransition ? document.startViewTransition(() => mutate()) : mutate()
-  })
+  watch.pre(
+    () => ui.userSidebarOpen,
+    () => {
+      // @ts-expect-error
+      document.startViewTransition ? document.startViewTransition(() => mutate()) : mutate()
+    },
+  )
 </script>
 
 <svelte:window onkeydown={handleKeyDown} />
@@ -126,8 +126,8 @@
             data-sveltekit-preload-data="hover"
             class={cn(
               "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
-              $page.url.pathname === "/bookmarks"
-              && "ring-2 ring-neutral-300 dark:ring-neutral-800",
+              $page.url.pathname === "/bookmarks" &&
+                "ring-2 ring-neutral-300 dark:ring-neutral-800",
             )}
             href="/bookmarks"
           >
@@ -275,8 +275,8 @@
             data-sveltekit-preload-data="hover"
             class={cn(
               "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
-              $page.url.pathname === "/categories"
-              && "ring-2 ring-neutral-300 dark:ring-neutral-800",
+              $page.url.pathname === "/categories" &&
+                "ring-2 ring-neutral-300 dark:ring-neutral-800",
             )}
             href="/categories"
           >
