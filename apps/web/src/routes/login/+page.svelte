@@ -23,6 +23,7 @@
   }
   const redirectTo = $state.snapshot($page.data.redirectTo)
   const providers = $state.snapshot($page.data.providers)
+  $inspect(providers)
 </script>
 
 <div class="flex overflow-hidden relative w-full h-full">
@@ -32,76 +33,90 @@
   />
   <div
     aria-label="Slate cover background"
-    class="absolute left-0 top-0 z-10 flex h-[275%] w-[150%] translate-x-[-70%] translate-y-[-28%] rotate-[22deg] items-center bg-zinc-900 md:translate-y-[-15%] md:rotate-[11deg]"
+    class="absolute left-0 top-0 z-10 flex h-[275%] w-[150%] translate-x-[-70%] translate-y-[-28%] rotate-[22deg] items-center bg-zinc-950 md:translate-y-[-15%] md:rotate-[11deg]"
   ></div>
   <div class="h-dvh z-20 flex w-full items-center justify-center md:ml-[15%] md:w-[22rem]">
     <div class="flex flex-col justify-center items-center w-80 text-xl">
       <h2 class="flex items-center mb-4 space-x-2 text-3xl font-light text-zinc-600">
         <svg
-          xmlns="http://www.w3.org/2000/svg"
+          class="text-white rounded-md size-12"
+          width="250"
+          height="250"
+          viewBox="0 0 250 250"
           fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          class="p-2 text-white rounded-full size-12 bg-zinc-800"
-          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+          <rect width="250" height="250" rx="8" fill="#1E1E1E" />
+          <path
+            d="M90.4679 198.601H56.8679V51.6012H82.4879C100.968 51.6012 114.898 55.0312 124.278 61.8912C133.658 68.6112 138.348 78.1312 138.348 90.4512C138.348 104.451 132.468 114.741 120.708 121.321C137.788 127.761 146.328 139.871 146.328 157.651C146.328 170.251 141.708 180.261 132.468 187.681C123.228 194.961 109.228 198.601 90.4679 198.601ZM90.4679 192.301C97.0479 192.301 103.068 191.811 108.528 190.831C113.988 189.711 119.168 187.961 124.068 185.581C129.108 183.061 133.028 179.421 135.828 174.661C138.628 169.901 140.028 164.231 140.028 157.651C140.028 142.671 132.818 132.521 118.398 127.201L105.798 122.581L117.558 115.861C127.218 110.541 132.048 102.071 132.048 90.4512C132.048 68.7512 115.528 57.9012 82.4879 57.9012H63.1679V192.301H90.4679Z"
+            fill="white"
+          />
+          <rect x="122.032" width="125.968" height="248.466" fill="#1E1E1E" />
+          <path
+            d="M151.084 198H117.484V51H143.104C161.584 51 175.514 54.43 184.894 61.29C194.274 68.01 198.964 77.53 198.964 89.85C198.964 103.85 193.084 114.14 181.324 120.72C198.404 127.16 206.944 139.27 206.944 157.05C206.944 169.65 202.324 179.66 193.084 187.08C183.844 194.36 169.844 198 151.084 198ZM151.084 191.7C157.664 191.7 163.684 191.21 169.144 190.23C174.604 189.11 179.784 187.36 184.684 184.98C189.724 182.46 193.644 178.82 196.444 174.06C199.244 169.3 200.644 163.63 200.644 157.05C200.644 142.07 193.434 131.92 179.014 126.6L166.414 121.98L178.174 115.26C187.834 109.94 192.664 101.47 192.664 89.85C192.664 68.15 176.144 57.3 143.104 57.3H123.784V191.7H151.084Z"
+            fill="white"
+          />
         </svg>
-        <span class="text-4xl font-medium text-white">Briefkasten</span>
+        <span class="text-4xl font-medium text-white">Briefbox</span>
       </h2>
       <div class="flex flex-col gap-2 p-6 m-8 w-full bg-white rounded shadow-lg">
         {#if !$page.data.session?.user}
-          {#if providers.includes({ id: "email", name: "Email" })}
-            <form>
-              <input
-                class="block flex-1 p-3 w-full font-normal rounded-md border border-gray-200 transition sm:text-sm placeholder:font-light placeholder:text-zinc-400 focus:border-zinc-500 focus:ring-zinc-500"
-                type="email"
-                autoComplete="username"
-                placeholder="user@company.com"
-              />
-              <SignIn
-                provider="email"
-                signInPage="signin"
-                options={{
-                  redirectTo: $page.data.redirectTo
-                    ? `/${decodeURIComponent($page.data.redirectTo).slice(1)}`
-                    : `/`,
-                }}
-                class="flex justify-center items-center px-4 mt-2 space-x-2 w-full h-12 text-base font-light text-white rounded transition focus:ring-2 focus:ring-offset-2 focus:outline-none bg-zinc-800 hover:bg-zinc-900 focus:ring-zinc-800"
+          {#if providers.find((p: any) => p.id === "sendgrid")}
+            <SignIn
+              provider="sendgrid"
+              signInPage="signin"
+              options={{
+                redirectTo: $page.data.redirectTo
+                  ? `/${decodeURIComponent($page.data.redirectTo).slice(1)}`
+                  : `/`,
+              }}
+              class="flex flex-col justify-center items-stretch space-y-2 w-full focus:outline-none [&>button]:transition focus:[&>button]:outline-none focus:[&>button]:ring-2 focus:[&>button]:ring-offset-2 focus:[&>button]:ring-zinc-300 [&>button]:rounded-sm"
+            >
+              <div slot="email">
+                <input
+                  id="sendgrid"
+                  type="email"
+                  name="email"
+                  placeholder="user@company.com"
+                  class="flex py-2 px-3 w-full text-sm bg-transparent rounded-sm border transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none border-input ring-offset-background placeholder:text-muted-foreground focus-visible:ring-zinc-300"
+                  required
+                />
+              </div>
+              <div
+                slot="submitButton"
+                class="flex overflow-hidden justify-center items-center px-4 space-x-2 w-full h-12 text-base font-light text-white rounded-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 bg-zinc-700 ring-offset-background focus-visible:ring-zinc-300"
               >
-                Continue
-              </SignIn>
-            </form>
+                Signin with Email
+              </div>
+            </SignIn>
 
             <div class="flex gap-2 items-center my-4">
-              <div class="flex-1 bg-black h-[1px]"></div>
-              <span class="text-xs leading-4 uppercase">or</span>
-              <div class="flex-1 bg-black h-[1px]"></div>
+              <div class="flex-1 bg-zinc-300 h-[1px]"></div>
+              <span class="text-xs leading-4 uppercase text-zinc-500">or</span>
+              <div class="flex-1 bg-zinc-300 h-[1px]"></div>
             </div>
           {/if}
-          {#each providers as provider}
+          {#each providers.filter((p: any) => p.id !== "sendgrid") as provider}
             <SignIn
               provider={provider.id}
               signInPage="signin"
               options={{
                 redirectTo: redirectTo ? `/${decodeURIComponent(redirectTo).slice(1)}` : `/`,
               }}
-              class="w-full *:w-full"
+              class="space-y-2 w-full *:w-full [&>button]:transition focus:[&>button]:outline-none focus:[&>button]:ring-2 focus:[&>button]:ring-offset-2 focus:[&>button]:ring-zinc-300 [&>button]:rounded-sm"
             >
               <div
                 slot="submitButton"
                 class={twJoin(
-                  "mt-2 flex h-12 w-full items-center space-x-2 rounded px-4 text-base font-light transition focus:outline-none focus:ring-2 focus:ring-zinc-800 focus:ring-offset-2 group",
+                  "flex h-12 w-full items-center space-x-2 rounded px-4 text-base font-light transition focus:outline-none focus:ring-2 focus:ring-offset-2 group overflow-hidden focus-visible:ring-zinc-300",
                   providerButtonStyles(provider.id),
                 )}
               >
                 <div
-                  class="inline-flex relative items-center w-full transition -translate-x-0 group-hover:-translate-x-6"
+                  class="inline-flex relative items-center w-full transition -translate-x-0 group-hover:-translate-x-6 group-focus-visible:-translate-x-6"
                 >
                   <div
-                    class="absolute opacity-100 transition translate-x-0 group-hover:opacity-0 group-hover:-translate-x-6"
+                    class="absolute opacity-100 transition translate-x-0 group-hover:opacity-0 group-hover:-translate-x-6 group-focus-visible:-translate-x-6"
                   >
                     <ProviderIcons provider={provider.id} />
                   </div>
@@ -109,7 +124,7 @@
                     Signin with {provider.name}
                   </span>
                   <div
-                    class="absolute right-0 opacity-0 transition translate-x-12 group-hover:opacity-100 group-hover:translate-x-6"
+                    class="absolute right-0 opacity-0 transition translate-x-12 group-hover:opacity-100 group-hover:translate-x-6 group-focus-visible:translate-x-6"
                   >
                     <svg
                       width="15"

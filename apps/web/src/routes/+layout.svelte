@@ -42,7 +42,7 @@
 
 <svelte:head>
   <title>Briefkasten</title>
-  <meta name="description" content="RSS Feeds, Bookmarks and more!" />
+  <meta name="description" content="RSS Feeds, Bookmarks, and more!" />
 </svelte:head>
 
 <Scripts />
