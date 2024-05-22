@@ -7,6 +7,9 @@ import { chromium } from "playwright-chromium"
 import { uploadImage } from "../../plugins/storage.js"
 import { db } from "../../plugins/prisma.js"
 import { getThumbhash } from "../../lib/image.js"
+import debugFactory from "../../lib/log.js"
+
+const debug = debugFactory("backend:create-screenshot")
 
 interface UpdateImageUrlArgs {
   image: Buffer
@@ -34,7 +37,7 @@ export const createScreenshot = async (data: CreateScreenshot) => {
     console.error("Cannot take screenshot, missing object store credentials")
     return
   }
-  console.log("createScreenshot.data", data)
+  debug("Creating Screenshot For:", data)
   const { url, userId } = data
 
   // Visit URL and take screenshot with playwright-core
@@ -60,7 +63,6 @@ const updateImageUrl = async ({
   // Generate thumbhash b64 string from image
   const imageBlur = await getThumbhash(image)
 
-  // bookmarks.user_userId is a unique constraint
   await db.bookmark.update({
     data: {
       image: imageUrl,
