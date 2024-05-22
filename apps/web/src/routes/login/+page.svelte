@@ -8,9 +8,9 @@
   const providerButtonStyles = (provider: string): string => {
     switch (provider) {
       case "github":
-        return "bg-zinc-700 hover:bg-zinc-800 text-white"
+        return "bg-zinc-700 text-white"
       case "google":
-        return "bg-white hover:bg-gray-100 focus:ring-blue-700 text-blue-600 border border-gray-200 hover:border-gray-100"
+        return "bg-white focus:ring-blue-700 text-blue-600 border border-gray-200"
       case "azure-ad":
         return "bg-blue-700 hover:bg-blue-900 focus:ring-blue-700 text-white"
       case "authentik":
