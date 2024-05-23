@@ -19,7 +19,7 @@
   }
 </script>
 
-<section class="p-4 md:px-8">
+<section class="p-4 border-l-4 md:px-8 border-l-transparent">
   <Popover.Root bind:open let:ids>
     <Popover.Trigger asChild let:builder>
       <Button
