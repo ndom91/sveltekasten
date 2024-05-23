@@ -2,7 +2,7 @@
   const { provider }: { provider: string } = $props()
 </script>
 
-<div class="">
+<div class="*:size-5">
   {#if provider === "github"}
     <svg
       width="15"

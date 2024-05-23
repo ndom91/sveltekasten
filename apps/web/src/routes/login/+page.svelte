@@ -78,19 +78,19 @@
                   type="email"
                   name="email"
                   placeholder="user@company.com"
-                  class="flex py-2 px-3 w-full text-sm bg-transparent rounded-sm border transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none border-neutral-300 ring-offset-background placeholder:text-neutral-400 focus-visible:ring-zinc-300"
+                  class="flex py-2 px-3 w-full text-sm bg-transparent rounded-sm border ring-offset-white transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none border-neutral-300 placeholder:text-neutral-400 text-neutral-900 focus-visible:ring-zinc-300"
                   required
                 />
               </div>
               <div
                 slot="submitButton"
-                class="flex overflow-hidden justify-center items-center px-4 space-x-2 w-full h-12 text-base font-light text-white rounded-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 bg-zinc-700 ring-offset-background focus-visible:ring-zinc-300"
+                class="flex overflow-hidden justify-center items-center px-4 space-x-2 w-full h-10 text-sm font-light text-white rounded-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 bg-zinc-700 ring-offset-background focus-visible:ring-zinc-300"
               >
                 Continue
               </div>
             </SignIn>
 
-            <div class="flex gap-2 items-center my-4">
+            <div class="flex gap-2 items-center my-2">
               <div class="flex-1 bg-zinc-300 h-[1px]"></div>
               <span class="text-xs leading-4 uppercase text-zinc-500">or</span>
               <div class="flex-1 bg-zinc-300 h-[1px]"></div>
@@ -103,12 +103,12 @@
               options={{
                 redirectTo: redirectTo ? `/${decodeURIComponent(redirectTo).slice(1)}` : `/`,
               }}
-              class="space-y-2 w-full *:w-full [&>button]:transition focus:[&>button]:outline-none focus:[&>button]:ring-2 focus:[&>button]:ring-offset-2 focus:[&>button]:ring-zinc-300 [&>button]:rounded-sm"
+              class="w-full *:w-full [&>button]:transition focus:[&>button]:outline-none focus:[&>button]:ring-2 focus:[&>button]:ring-offset-2 focus:[&>button]:ring-zinc-300 [&>button]:rounded-sm"
             >
               <div
                 slot="submitButton"
                 class={twJoin(
-                  "flex h-12 w-full items-center space-x-2 rounded px-4 text-base font-light transition focus:outline-none focus:ring-2 focus:ring-offset-2 group overflow-hidden focus-visible:ring-zinc-300",
+                  "flex h-10 w-full items-center space-x-2 rounded px-4 text-base font-light transition focus:outline-none focus:ring-2 focus:ring-offset-2 group overflow-hidden focus-visible:ring-zinc-300",
                   providerButtonStyles(provider.id),
                 )}
               >
@@ -120,8 +120,8 @@
                   >
                     <ProviderIcons provider={provider.id} />
                   </div>
-                  <span class="flex justify-center w-full">
-                    Signin with {provider.name}
+                  <span class="flex justify-center w-full text-sm">
+                    Continue with {provider.name}
                   </span>
                   <div
                     class="absolute right-0 opacity-0 transition translate-x-12 group-hover:opacity-100 group-hover:translate-x-6 group-focus-visible:translate-x-6"

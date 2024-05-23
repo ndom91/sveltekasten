@@ -108,15 +108,49 @@
   }
 }
 
-@font-face {
-  font-family: "ManRope";
-  src: url("/fonts/manrope-variable.woff2") format("woff2-variations");
-  font-style: normal;
-  font-weight: 100 900;
-  font-stretch: 75% 125%;
-}
-
 @layer base {
+  @font-face {
+    font-family: "GT America";
+    font-style: normal;
+    font-weight: 800;
+    src: url("/fonts/GT-America-Standard-Black.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "GT America";
+    font-style: normal;
+    font-weight: 700;
+    src: url("/fonts/GT-America-Standard-Bold.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "GT America";
+    font-style: normal;
+    font-weight: 500;
+    src: url("/fonts/GT-America-Standard-Medium.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "GT America";
+    font-style: normal;
+    font-weight: 400;
+    src: url("/fonts/GT-America-Standard-Regular.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "GT America";
+    font-style: normal;
+    font-weight: 300;
+    src: url("/fonts/GT-America-Standard-Light.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "GT America";
+    font-style: normal;
+    font-weight: 200;
+    src: url("/fonts/GT-America-Standard-Thin.woff2") format("woff2");
+  }
+
   * {
     @apply border-border;
   }
