@@ -2,7 +2,7 @@
   import { toggleMode } from "mode-watcher"
   import * as Command from "$lib/components/ui/command"
   import { goto } from "$app/navigation"
-  import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
+  import Kbd from "$lib/components/KeyboardIndicator.svelte"
   import { useInterface } from "$state/ui.svelte"
 
   function findNextItem(currentElement: Element | HTMLElement, direction: "k" | "j"): HTMLElement | undefined {
@@ -58,6 +58,13 @@
     }
   }
 
+  const navigateTo = async (path: string) => {
+    element?.close()
+
+    await new Promise(resolve => setTimeout(resolve, 200))
+    await goto(path)
+  }
+
   const openQuickAdd = () => {
     element?.close()
     ui.toggleQuickAdd()
@@ -81,26 +88,26 @@
       </Command.Group>
       <Command.Separator />
       <Command.Group heading="Pages" class="text-base">
-        <Command.Item onSelect={() => goto("/")} class="flex justify-between text-base">
-          Dashboard <KeyboardIndicator class="text-xs" key="Shift + 1" />
+        <Command.Item onSelect={() => navigateTo("/")} class="flex justify-between text-base">
+          Dashboard <Kbd class="text-xs" key="Shift + 1" />
         </Command.Item>
-        <Command.Item onSelect={() => goto("/bookmarks")} class="flex justify-between text-base">
-          Bookmarks <KeyboardIndicator class="text-xs" key="Shift + 2" />
+        <Command.Item onSelect={() => navigateTo("/bookmarks")} class="flex justify-between text-base">
+          Bookmarks <Kbd class="text-xs" key="Shift + 2" />
         </Command.Item>
-        <Command.Item onSelect={() => goto("/feeds")} class="flex justify-between text-base">
-          Feeds <KeyboardIndicator class="text-xs" key="Shift + 3" />
+        <Command.Item onSelect={() => navigateTo("/feeds")} class="flex justify-between text-base">
+          Feeds <Kbd class="text-xs" key="Shift + 3" />
         </Command.Item>
-        <Command.Item onSelect={() => goto("/archives")} class="flex justify-between text-base">
-          Archive <KeyboardIndicator class="text-xs" key="Shift + 4" />
+        <Command.Item onSelect={() => navigateTo("/archives")} class="flex justify-between text-base">
+          Archive <Kbd class="text-xs" key="Shift + 4" />
         </Command.Item>
-        <Command.Item onSelect={() => goto("/categories")} class="flex justify-between text-base">
-          Categories <KeyboardIndicator class="text-xs" key="Shift + 5" />
+        <Command.Item onSelect={() => navigateTo("/categories")} class="flex justify-between text-base">
+          Categories <Kbd class="text-xs" key="Shift + 5" />
         </Command.Item>
-        <Command.Item onSelect={() => goto("/tags")} class="flex justify-between text-base">
-          Tags <KeyboardIndicator class="text-xs" key="Shift + 6" />
+        <Command.Item onSelect={() => navigateTo("/tags")} class="flex justify-between text-base">
+          Tags <Kbd class="text-xs" key="Shift + 6" />
         </Command.Item>
-        <Command.Item onSelect={() => goto("/settings")} class="flex justify-between text-base">
-          Settings <KeyboardIndicator class="text-xs" key="Shift + 7" />
+        <Command.Item onSelect={() => navigateTo("/settings")} class="flex justify-between text-base">
+          Settings <Kbd class="text-xs" key="Shift + 7" />
         </Command.Item>
       </Command.Group>
     </Command.List>
