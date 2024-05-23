@@ -10,7 +10,7 @@
       case "github":
         return "bg-zinc-700 text-white"
       case "google":
-        return "bg-white focus:ring-blue-700 text-blue-600 border border-gray-200"
+        return "bg-white focus:ring-blue-700 text-blue-600 border border-gray-300"
       case "azure-ad":
         return "bg-blue-700 hover:bg-blue-900 focus:ring-blue-700 text-white"
       case "authentik":
@@ -57,7 +57,7 @@
             fill="white"
           />
         </svg>
-        <span class="text-4xl font-medium text-white">Briefbox</span>
+        <span class="text-4xl font-medium text-white">BriefButler</span>
       </h2>
       <div class="flex flex-col gap-2 p-6 m-8 w-full bg-white rounded shadow-lg">
         {#if !$page.data.session?.user}
@@ -78,7 +78,7 @@
                   type="email"
                   name="email"
                   placeholder="user@company.com"
-                  class="flex py-2 px-3 w-full text-sm bg-transparent rounded-sm border transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none border-input ring-offset-background placeholder:text-muted-foreground focus-visible:ring-zinc-300"
+                  class="flex py-2 px-3 w-full text-sm bg-transparent rounded-sm border transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none border-neutral-300 ring-offset-background placeholder:text-neutral-400 focus-visible:ring-zinc-300"
                   required
                 />
               </div>
@@ -86,7 +86,7 @@
                 slot="submitButton"
                 class="flex overflow-hidden justify-center items-center px-4 space-x-2 w-full h-12 text-base font-light text-white rounded-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 bg-zinc-700 ring-offset-background focus-visible:ring-zinc-300"
               >
-                Signin with Email
+                Continue
               </div>
             </SignIn>
 
