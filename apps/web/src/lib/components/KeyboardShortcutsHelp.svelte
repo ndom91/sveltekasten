@@ -1,7 +1,7 @@
 <script lang="ts">
   import Kbd from "$lib/components/KeyboardIndicator.svelte"
 
-  let { element = $bindable() }: { element: HTMLElement } = $props()
+  let { element = $bindable() }: { element: HTMLDialogElement } = $props()
 </script>
 
 <dialog
@@ -35,51 +35,51 @@
           <td colspan="2">
             <div class="text-lg dark:text-zinc-100">Global</div>
           </td>
-          <td colspan="2" class="pl-2">
+          <td colspan="2">
             <div class="text-lg dark:text-zinc-100">Navigation</div>
           </td>
         </tr>
         <tr>
           <td>Show Shortcut Help</td>
           <td><Kbd key="Ctrl/Cmd" /> <span class="text-xs">+</span> <Kbd key="?" /></td>
-          <td class="pl-2">Navigate to Dashboard</td>
+          <td>Navigate to Dashboard</td>
           <td><Kbd key="Shift" /> <span class="text-xs">+</span> <Kbd key="1" /></td>
         </tr>
         <tr>
           <td>Toggle Right Sidebar</td>
           <td><Kbd key="]" /></td>
-          <td class="pl-2">Navigate to Bookmarks</td>
+          <td>Navigate to Bookmarks</td>
           <td><Kbd key="Shift" /> <span class="text-xs">+</span> <Kbd key="2" /></td>
         </tr>
         <tr>
           <td>Toggle Left Sidebar</td>
           <td><Kbd key="[" /></td>
-          <td class="pl-2">Navigate to Feeds</td>
+          <td>Navigate to Feeds</td>
           <td><Kbd key="Shift" /> <span class="text-xs">+</span> <Kbd key="3" /></td>
         </tr>
         <tr>
           <td>Focus search input</td>
           <td><Kbd key="/" /></td>
-          <td class="pl-2">Navigate to Archives</td>
+          <td>Navigate to Archives</td>
           <td><Kbd key="Shift" /> <span class="text-xs">+</span> <Kbd key="4" /></td>
         </tr>
         <tr>
           <td>Open "Quick Add" Dialog</td>
           <td><Kbd key="Alt" /> <span class="text-xs">+</span> <Kbd key="N" /></td>
-          <td class="pl-2">Navigate to Categories</td>
+          <td>Navigate to Categories</td>
           <td><Kbd key="Shift" /> <span class="text-xs">+</span> <Kbd key="5" /></td>
         </tr>
         <tr>
           <td>Open Command Dialog</td>
           <td><Kbd key="Ctrl/Cmd" /> <span class="text-xs">+</span> <Kbd key="K" /></td>
-          <td class="pl-2">Navigate to Tags</td>
+          <td>Navigate to Tags</td>
           <td><Kbd key="Shift" /> <span class="text-xs">+</span> <Kbd key="6" /></td>
         </tr>
         <tr>
           <td colspan="2" class="font-black">
             <div class="text-lg dark:text-zinc-100">Items Lists</div>
           </td>
-          <td class="pl-2">Navigate to Settings</td>
+          <td>Navigate to Settings</td>
           <td><Kbd key="Shift" /> <span class="text-xs">+</span> <Kbd key="7" /></td>
         </tr>
         <tr>
@@ -152,34 +152,124 @@
 </dialog>
 
 <style>
+  :root {
+    --duration: 0.3;
+    --speed: calc(var(--duration) * 1s);
+    --bounce-out: linear(
+      0 0%,
+      0.5583 3.72%,
+      0.9549 7.72%,
+      1.0968 9.86%,
+      1.2039 12.13%,
+      1.2783 14.57%,
+      1.3213 17.23%,
+      1.3317 18.7%,
+      1.3345 20.27%,
+      1.3296 21.97%,
+      1.3171 23.83%,
+      1.2806 27.25%,
+      1.1551 36.58%,
+      1.096 41.71%,
+      1.0465 47.53%,
+      1.014 53.68%,
+      0.997 59.87%,
+      0.9899 67.32%,
+      1 100%
+    );
+    --easing: linear(
+      0 0%,
+      0.0027 3.64%,
+      0.0106 7.29%,
+      0.0425 14.58%,
+      0.0957 21.87%,
+      0.1701 29.16%,
+      0.2477 35.19%,
+      0.3401 41.23%,
+      0.5982 55.18%,
+      0.7044 61.56%,
+      0.7987 68.28%,
+      0.875 75%,
+      0.9297 81.25%,
+      0.9687 87.5%,
+      0.9922 93.75%,
+      1 100%
+    );
+  }
   dialog {
-    --open: 0;
-    --closed: calc(1 - var(--open));
+    --present: 0;
+    --scale: 0.95;
+    --blur: 10;
+    --translate: 12;
+    outline: none;
+    view-transition-name: dialog;
+    scale: calc(var(--scale) + ((1 - var(--scale)) * var(--present)));
+    opacity: var(--present);
+    filter: blur(calc((var(--blur) * (1 - var(--present))) * 1px));
+    translate: 0 calc(calc(var(--translate) * 1lh) * (1 - var(--present)));
+    width: 90ch;
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.08),
+      0px 1px 1px rgba(0, 0, 0, 0.02),
+      0px 4px 8px -4px rgba(0, 0, 0, 0.04),
+      0px 16px 24px -8px rgba(0, 0, 0, 0.06);
+    padding: 1rem;
+    font-size: 14px;
+    display: grid;
+    transition:
+      display var(--speed) var(--easing) allow-discrete,
+      scale var(--speed) var(--easing),
+      opacity var(--speed) var(--easing),
+      filter var(--speed) var(--easing),
+      translate calc(var(--speed) * calc(1 + var(--present))) var(--move, var(--easing));
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.08),
+      0px 1px 1px rgba(0, 0, 0, 0.02),
+      0px 4px 8px -4px rgba(0, 0, 0, 0.04),
+      0px 16px 24px -8px rgba(0, 0, 0, 0.06);
+  }
 
-    transform: translateY(calc(var(--closed) * -50%));
-
-    &,
-    &::backdrop {
-      /* This works like a conditional statement */
-      --duration: calc((var(--open) * 750ms) + (var(--closed) * 0.25s));
-
-      transition: all var(--duration) var(--ease-spring-3) allow-discrete;
-      opacity: var(--open);
+  dialog[open] {
+    --present: 1 !important;
+    --move: var(--bounce-out);
+  }
+  @starting-style {
+    dialog[open] {
+      --present: 0;
     }
+  }
 
-    &::backdrop {
-      backdrop-filter: blur(4px) brightness(0.5);
+  /* Backdrop */
+  dialog::backdrop {
+    --present: 0;
+    background-color: color-mix(in lch, canvas, transparent 80%);
+    backdrop-filter: blur(4px);
+    opacity: calc(var(--present) * 1);
+    transition:
+      overlay var(--speed) var(--easing) allow-discrete,
+      opacity var(--speed) var(--easing);
+  }
+  dialog[open]::backdrop {
+    --present: 1;
+  }
+  @starting-style {
+    dialog[open]::backdrop {
+      --present: 0;
     }
+  }
 
-    &[open] {
-      --open: 1;
-    }
+  ::view-transition-new(dialog) {
+    animation: reveal 1s;
+    clip-path: inset(0 0 0 0);
+    z-index: 2;
+  }
+  ::view-transition-old(dialog) {
+    z-index: -1;
+    animation: none;
+  }
 
-    @starting-style {
-      --open: 1;
-      &[open] {
-        --open: 0;
-      }
+  @keyframes reveal {
+    from {
+      clip-path: inset(0 100% 0 0);
     }
   }
 </style>
