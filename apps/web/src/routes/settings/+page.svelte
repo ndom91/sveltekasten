@@ -17,7 +17,7 @@
 </script>
 
 <svelte:head>
-  <title>Briefkasten | Settings</title>
+  <title>BriefButler | Settings</title>
   <meta name="description" content="RSS Feeds, Bookmarks and more!" />
 </svelte:head>
 

@@ -174,7 +174,7 @@
       )
       const targetLink = allItems[currentActiveElementIndex]?.link
       if (!targetLink) {
-        toast.error("No item selected", { icon: "🚫" })
+        toast.error("No item selected")
         return
       }
       window.open(targetLink, "_target")
@@ -194,7 +194,7 @@
 </script>
 
 <svelte:head>
-  <title>Briefkasten | Feeds</title>
+  <title>BriefButler | Feeds</title>
   <meta name="description" content="RSS Feeds, Bookmarks and more!" />
 </svelte:head>
 

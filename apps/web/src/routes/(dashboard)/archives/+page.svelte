@@ -163,7 +163,7 @@
 </script>
 
 <svelte:head>
-  <title>Briefkasten | Bookmarks</title>
+  <title>BriefButler | Bookmarks</title>
   <meta name="description" content="RSS Feeds, Bookmarks and more!" />
 </svelte:head>
 

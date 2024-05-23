@@ -61,7 +61,7 @@
           ui.userSidebarOpen ? "opacity-100" : "opacity-0 duration-0 pointer-events-none w-0",
         )}
       >
-        Briefkasten
+        BriefButler
       </span>
     </div>
     <div
