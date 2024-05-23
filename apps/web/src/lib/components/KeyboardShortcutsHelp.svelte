@@ -6,13 +6,13 @@
 
 <dialog
   bind:this={element}
-  class="z-20 mt-4 rounded-lg shadow-sm md:mt-8 lg:mt-16 bg-neutral-200 dark:bg-neutral-800"
+  class="z-20 translate-y-[50%] bg-white rounded-lg shadow-sm md:mt-8 lg:mt-16 dark:bg-zinc-900"
 >
-  <div class="flex flex-col gap-4 p-8">
+  <div class="flex flex-col gap-4 p-1">
     <div class="flex justify-between">
       <h2 class="text-2xl font-bold">Keyboard Shortcuts</h2>
       <button
-        class="grid place-items-center rounded-full ring-white transition outline-none hover:ring-2 focus:ring-2 size-7"
+        class="flex justify-center items-center rounded-full transition outline-none hover:ring-2 focus:ring-2 ring-neutral-300 size-7 dark:ring-neutral-600"
         onclick={() => element.close()}
       >
         <svg
@@ -41,46 +41,46 @@
         </tr>
         <tr>
           <td>Show Shortcut Help</td>
-          <td><Kbd key="Ctrl/Cmd" /> <span class="text-xs">+</span> <Kbd key="?" /></td>
+          <td><Kbd class="text-xs" key="Ctrl/Cmd + ?" /></td>
           <td>Navigate to Dashboard</td>
-          <td><Kbd key="Shift" /> <span class="text-xs">+</span> <Kbd key="1" /></td>
+          <td><Kbd class="text-xs" key="Shift + 1" /></td>
         </tr>
         <tr>
           <td>Toggle Right Sidebar</td>
-          <td><Kbd key="]" /></td>
+          <td><Kbd class="text-xs" key="]" /></td>
           <td>Navigate to Bookmarks</td>
-          <td><Kbd key="Shift" /> <span class="text-xs">+</span> <Kbd key="2" /></td>
+          <td><Kbd class="text-xs" key="Shift + 2" /></td>
         </tr>
         <tr>
           <td>Toggle Left Sidebar</td>
-          <td><Kbd key="[" /></td>
+          <td><Kbd class="text-xs" key="[" /></td>
           <td>Navigate to Feeds</td>
-          <td><Kbd key="Shift" /> <span class="text-xs">+</span> <Kbd key="3" /></td>
+          <td><Kbd class="text-xs" key="Shift + 3" /></td>
         </tr>
         <tr>
           <td>Focus search input</td>
-          <td><Kbd key="/" /></td>
+          <td><Kbd class="text-xs" key="/" /></td>
           <td>Navigate to Archives</td>
-          <td><Kbd key="Shift" /> <span class="text-xs">+</span> <Kbd key="4" /></td>
+          <td><Kbd class="text-xs" key="Shift + 4" /></td>
         </tr>
         <tr>
           <td>Open "Quick Add" Dialog</td>
-          <td><Kbd key="Alt" /> <span class="text-xs">+</span> <Kbd key="N" /></td>
+          <td><Kbd class="text-xs" key="Alt + N" /></td>
           <td>Navigate to Categories</td>
-          <td><Kbd key="Shift" /> <span class="text-xs">+</span> <Kbd key="5" /></td>
+          <td><Kbd class="text-xs" key="Shift + 5" /></td>
         </tr>
         <tr>
           <td>Open Command Dialog</td>
-          <td><Kbd key="Ctrl/Cmd" /> <span class="text-xs">+</span> <Kbd key="K" /></td>
+          <td><Kbd class="text-xs" key="Ctrl/Cmd + K" /></td>
           <td>Navigate to Tags</td>
-          <td><Kbd key="Shift" /> <span class="text-xs">+</span> <Kbd key="6" /></td>
+          <td><Kbd class="text-xs" key="Shift + 6" /></td>
         </tr>
         <tr>
           <td colspan="2" class="font-black">
             <div class="text-lg dark:text-zinc-100">Items Lists</div>
           </td>
           <td>Navigate to Settings</td>
-          <td><Kbd key="Shift" /> <span class="text-xs">+</span> <Kbd key="7" /></td>
+          <td><Kbd class="text-xs" key="Shift + 7" /></td>
         </tr>
         <tr>
           <td>Focus element in list down</td>
@@ -206,7 +206,7 @@
     opacity: var(--present);
     filter: blur(calc((var(--blur) * (1 - var(--present))) * 1px));
     translate: 0 calc(calc(var(--translate) * 1lh) * (1 - var(--present)));
-    width: 90ch;
+    width: 80ch;
     box-shadow:
       0 0 0 1px rgba(0, 0, 0, 0.08),
       0px 1px 1px rgba(0, 0, 0, 0.02),
@@ -214,7 +214,6 @@
       0px 16px 24px -8px rgba(0, 0, 0, 0.06);
     padding: 1rem;
     font-size: 14px;
-    display: grid;
     transition:
       display var(--speed) var(--easing) allow-discrete,
       scale var(--speed) var(--easing),
@@ -229,7 +228,7 @@
   }
 
   dialog[open] {
-    --present: 1 !important;
+    --present: 1;
     --move: var(--bounce-out);
   }
   @starting-style {

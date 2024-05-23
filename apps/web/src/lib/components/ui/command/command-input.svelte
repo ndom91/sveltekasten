@@ -5,15 +5,15 @@
 
   type $$Props = CommandPrimitive.InputProps & { type?: string }
 
-  let className: string | undefined | null = undefined
+  let className: string | undefined | null
   export { className as class }
   export let value: string = ""
   export let type: string = ""
 </script>
 
-<div class="flex items-center border-b px-2" data-cmdk-input-wrapper="">
+<div class="flex items-center px-2 border-b" data-cmdk-input-wrapper="">
   {#if type === "command-input"}
-    <Logo class="!size-7 mr-2 !overflow-visible text-zinc-800 dark:text-zinc-50" />
+    <Logo class="!size-7 mr-2" />
   {/if}
   <CommandPrimitive.Input
     class={cn(
