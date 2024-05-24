@@ -26,7 +26,7 @@
   <Tooltip.Root>
     <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
       <Button
-        class="absolute top-4 right-4 p-2 rounded-full border opacity-0 transition duration-200 ease-in-out group-hover:opacity-100 focus:ring-2 focus:ring-offset-0 focus:opacity-100 focus:outline-none bg-neutral-50 border-neutral-100 dark:bg-neutral-900 dark:border-neutral-800 focus:dark:ring-neutral-700"
+        class="absolute top-4 right-4 p-2 rounded-full border opacity-0 transition duration-200 ease-in-out group-hover:opacity-100 focus:ring-2 focus:ring-offset-0 focus:opacity-100 focus:outline-none bg-neutral-50 border-neutral-100 dark:bg-neutral-900 dark:border-neutral-800 focus:dark:ring-neutral-700  duration-300 ease-in-out dark:bg-zinc-900/50 backdrop-blur-[6px] shadow-[0_4px_20px_rgba(0,_0,_0,_0.1)] border dark:border-gray-600/10 border-gray-300/40"
         builders={[tooltipBuilder]}
         variant="ghost"
         size="icon"
@@ -55,10 +55,8 @@
     </Tooltip.Content>
   </Tooltip.Root>
   <img
-    src={item.feedMedia?.[0]?.href
-    ?? `https://picsum.photos/seed/${encodeURIComponent(
-        item.title.replaceAll(" ", "").substring(0, 5).toLowerCase(),
-      )}/240/153.webp`}
+    src={item.feedMedia?.[0]?.href ??
+      `https://picsum.photos/seed/${encodeURIComponent(item.title.replaceAll(" ", "").substring(0, 5).toLowerCase())}/240/153.webp`}
     alt={item.title}
     class="object-cover object-center mb-1 rounded-sm aspect-video"
   />
