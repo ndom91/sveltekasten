@@ -1,7 +1,11 @@
 <script lang="ts">
   import { twJoin } from "tailwind-merge"
   import { SignIn } from "@auth/sveltekit/components"
+  import { toast } from "svelte-sonner"
+  import { tick } from "svelte"
   import ProviderIcons from "./ProviderIcons.svelte"
+  import { goto } from "$app/navigation"
+  import { browser } from "$app/environment"
   import { page } from "$app/stores"
   import LoginPattern from "$lib/assets/LoginPattern.svelte"
 
@@ -23,7 +27,18 @@
   }
   const redirectTo = $state.snapshot($page.data.redirectTo)
   const providers = $state.snapshot($page.data.providers)
-  $inspect(providers)
+
+  if (browser && $page.url.searchParams.get("verifyEmail")) {
+    tick().then(() => {
+      toast.success("Email sent, please check your inbox!", {
+        position: "top-left",
+        classes: {
+          toast: "bg-neutral-700/20 text-white border-gray-400/10",
+        },
+      })
+      goto("?")
+    })
+  }
 </script>
 
 <div class="flex overflow-hidden relative w-full h-full">

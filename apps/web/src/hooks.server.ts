@@ -36,6 +36,13 @@ const logger: Handle = async ({ event, resolve }) => {
   return response
 }
 
+const handleEmailVerifyRedirect: Handle = ({ event, resolve }) => {
+  if (event.url.pathname === "/auth/verify-request") {
+    return new Response("", { status: 302, headers: { Location: "/login?verifyEmail=true" } })
+  }
+  return resolve(event)
+}
+
 const handleLoginProviders: Handle = async ({ event, resolve }) => {
   if (event.route.id === "/login") {
     event.locals.providers = providerMap.map(provider => ({
@@ -46,4 +53,4 @@ const handleLoginProviders: Handle = async ({ event, resolve }) => {
   return resolve(event)
 }
 
-export const handle = sequence(logger, handleAuth, handleLoginProviders)
+export const handle = sequence(logger, handleEmailVerifyRedirect, handleAuth, handleLoginProviders)
