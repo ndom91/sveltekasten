@@ -45,7 +45,6 @@ model User {
   settings      Json?            @default("{}")
   createdAt     DateTime         @default(now())
   accounts      Account[]
-  sessions      Session[]
   bookmarks     Bookmark[]
   tags          Tag[]
   feeds         Feed[]
