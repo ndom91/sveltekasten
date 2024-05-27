@@ -1,12 +1,21 @@
 ###########################
 #     BASE CONTAINER      #
 ###########################
-FROM node:lts-bookworm-slim AS base
+FROM cgr.dev/chainguard/wolfi-base AS base
+
+RUN mkdir /pnpm
+
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 
-# Enable pnpm
-RUN corepack enable
+RUN apk update && apk add --no-cache \
+  pnpm \
+  nodejs-20 \
+  openssl
+
+# Dump default nonroot user and create node:node
+RUN deluser nonroot && rm -rf /home/nonroot \
+  && addgroup -g 65532 node && adduser -D node -G node -u 65532
 
 ###########################
 #    BUILDER CONTAINER    #
@@ -18,9 +27,13 @@ WORKDIR /app
 RUN mkdir -p /prod/web \
   && mkdir -p /prod/backend
  
-# Install openssl for prisma
-RUN apt-get update -qq \
-  && apt-get install -y openssl git
+RUN apk add --no-cache \
+  git \
+  python-3.12 \
+  make \
+  npm \
+  playwright \
+  chromium
 
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
@@ -38,10 +51,9 @@ RUN pnpm run -r build \
 FROM base AS web
 
 ENV NODE_ENV production
- 
-# Install openssl for prisma
-RUN apt-get update -qq \
-  && apt-get install -y openssl
+
+# Remove cache and apk binary
+RUN rm -rf /var/cache/apk/* && rm /sbin/apk
 
 COPY --chown=node:node --from=build /prod/web /prod/web
 
@@ -49,6 +61,7 @@ COPY --chown=node:node --from=build /prod/web /prod/web
 RUN cd /prod/web \
   && pnpm dlx prisma generate
 
+USER node
 WORKDIR /prod/web
 EXPOSE ${PORT:-3000}
 CMD [ "pnpm", "start" ]
@@ -60,17 +73,21 @@ FROM base AS backend
 
 ENV NODE_ENV production
 
-# Install openssl for prisma
-RUN apt-get update -qq \
-  && apt-get install -y openssl
+RUN apk add --no-cache \
+  playwright \
+  chromium
+
+# Remove cache and apk binary
+RUN rm -rf /var/cache/apk/* && rm /sbin/apk
 
 COPY --chown=node:node --from=build /prod/backend /prod/backend
 
 # Generate prisma client and install playwright chromium + deps
 RUN cd /prod/backend \
   && pnpm dlx prisma generate \
-  && pnpm exec playwright install --with-deps chromium
+  && pnpm exec playwright install chromium
 
+USER node
 WORKDIR /prod/backend
 EXPOSE ${PORT:-8000}
 CMD [ "pnpm", "start" ]
