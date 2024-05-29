@@ -14,7 +14,18 @@ const parser = new Parser({
 })
 
 const updateFeed = async (feed: Feed) => {
-  const response = await fetch(feed.url)
+  const response = await fetch(feed.url, {
+    headers: {
+      "If-Modified-Since": feed.lastFetched?.toISOString() ?? "",
+      "User-Agent": "BriefButler/1.0 (+https://github.com/ndom91/briefkastenhq)",
+      "Accept-Encoding": "gzip",
+    },
+  })
+
+  if (response.status === 304) {
+    debug(`Feed not modified since last fetch - ${feed.url}`)
+    return
+  }
   const xml = await response.text()
   const { items } = await parser.parseString(xml)
 
