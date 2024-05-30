@@ -25,7 +25,7 @@ RUN apt-get update -qq \
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 # Generate prisma client
-RUN cd apps/backend && pnpm exec prisma generate && pnpm exec prisma generate
+RUN cd apps/backend && pnpm exec prisma generate
 RUN cd apps/web && pnpm exec prisma generate
 
 RUN pnpm run -r build \
