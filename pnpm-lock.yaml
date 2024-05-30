@@ -56,6 +56,9 @@ importers:
       croner:
         specifier: ^8.0.2
         version: 8.0.2
+      debug:
+        specifier: ^4.3.4
+        version: 4.3.4
       fastq:
         specifier: ^1.17.1
         version: 1.17.1
@@ -93,9 +96,6 @@ importers:
       '@types/xml2js':
         specifier: ^0.4.14
         version: 0.4.14
-      debug:
-        specifier: ^4.3.4
-        version: 4.3.4
       prisma:
         specifier: 5.12.1
         version: 5.12.1

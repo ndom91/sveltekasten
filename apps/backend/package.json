@@ -26,6 +26,7 @@
     "@prisma/client": "5.12.1",
     "@rowanmanning/feed-parser": "^0.5.5",
     "croner": "^8.0.2",
+    "debug": "^4.3.4",
     "fastq": "^1.17.1",
     "hono": "^4.2.4",
     "jose": "^5.2.4",
@@ -40,7 +41,6 @@
     "@types/debug": "^4.1.12",
     "@types/node": "^20.12.7",
     "@types/xml2js": "^0.4.14",
-    "debug": "^4.3.4",
     "prisma": "5.12.1",
     "tsx": "^4.7.2"
   }
