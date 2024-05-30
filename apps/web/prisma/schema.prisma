@@ -165,11 +165,6 @@ model FeedEntryMedia {
   id          String    @id @default(cuid())
   href        String
   title       String?
-  medium      String?
-  height      Int?
-  width       Int?
-  description String?
-  credit      String?
   feedEntry   FeedEntry @relation(fields: [feedEntryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   feedEntryId String
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
