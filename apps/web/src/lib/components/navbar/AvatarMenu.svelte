@@ -10,10 +10,10 @@
   import { flyAndScale } from "$lib/utils/style"
 
   const isDarkMode = $derived($mode === "dark")
-  let showKeyboardShortcuts = $state(false)
+  let shortcutDialog = $state<HTMLDialogElement>()
 
   const toggleKeyboardShorcuts = () => {
-    showKeyboardShortcuts = !showKeyboardShortcuts
+    shortcutDialog?.showModal()
   }
 </script>
 
@@ -70,6 +70,4 @@
   </DropdownMenu.Content>
 </DropdownMenu.Root>
 
-{#if showKeyboardShortcuts}
-  <KeyboardShortcutsHelp bind:open={showKeyboardShortcuts} />
-{/if}
+<KeyboardShortcutsHelp bind:element={shortcutDialog} />

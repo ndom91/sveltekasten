@@ -1,7 +1,7 @@
 <script lang="ts">
   import Kbd from "$lib/components/KeyboardIndicator.svelte"
 
-  let { element = $bindable() }: { element: HTMLDialogElement } = $props()
+  let { element = $bindable() }: { element?: HTMLDialogElement } = $props()
 </script>
 
 <dialog
