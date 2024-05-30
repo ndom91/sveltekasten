@@ -1,16 +1,8 @@
-import Parser from "rss-parser"
+import parser from "@rowanmanning/feed-parser"
 import debugFactory from "../../lib/log.js"
 import { db } from "../../plugins/prisma.js"
 
 const debug = debugFactory("backend:create-feed")
-
-const parser = new Parser({
-  defaultRSS: 2.0,
-  customFields: {
-    feed: ["language", "copyright"],
-    item: [["media:content", "media", { keepArray: true }]],
-  },
-})
 
 export interface CreateFeedData {
   userId: string
@@ -20,12 +12,12 @@ export interface CreateFeedData {
 export const createFeed = async (data: CreateFeedData) => {
   const response = await fetch(data.feedUrl)
   const xml = await response.text()
-  const feed = await parser.parseString(xml)
-  debug.info(`Inserting feed: ${feed.link}`)
+  const feed = parser(xml)
+  debug.info(`Inserting feed: ${feed.self}`)
 
   await db.feed.create({
     data: {
-      name: feed.title ? feed.title : feed.link ?? "",
+      name: feed.title ?? feed.url ?? "",
       url: data.feedUrl,
       description: feed.description,
       language: feed.language,
@@ -39,10 +31,10 @@ export const createFeed = async (data: CreateFeedData) => {
       feedEntries: {
         create: feed.items
           .sort((a, b) => {
-            if (!a.isoDate || !b.isoDate) {
+            if (!a.published || !b.published) {
               return -1
             }
-            if (new Date(a.isoDate) > new Date(b.isoDate)) {
+            if (a.published > b.published) {
               return -1
             }
             return 1
@@ -51,42 +43,29 @@ export const createFeed = async (data: CreateFeedData) => {
           .slice(0, 10)
           .map(item => ({
             title: item.title ?? "",
-            guid: item.guid,
-            link: item.link ?? "",
-            author: item.creator,
-            content: item.content,
-            contentSnippet: item.contentSnippet,
+            guid: item.id,
+            link: item.url ?? "",
+            author: item.authors?.[0]?.name,
+            content: item.content ?? item.description,
+            contentSnippet: item.description,
             ingested: new Date().toISOString(),
-            published: item.isoDate
-              ? item.isoDate
-              : item.pubDate
-                ? new Date(item.pubDate)
-                : null,
-            categories: item.categories
-              ?.map((c: string) => c.replaceAll("\n", "").trim())
-              .filter((c: string) => !c.includes("|"))
-              .filter(Boolean),
+            published: item.published,
+            categories: item.categories.map(category => category.label).filter(Boolean) as string[],
             user: {
               connect: {
                 id: data.userId,
               },
             },
             feedMedia: {
-              create: item.media?.map(
-                (media: Record<string, Record<string, unknown>>) => ({
-                  href: media.$?.url,
-                  title: media["media:tite"]?.[0],
-                  description: media["media:description"]?.[0],
-                  credit: media["media:credit"]?.[0],
-                  medium: media.$?.medium,
-                  height: Number(media.$?.height),
-                  width: Number(media.$?.width),
-                  user: {
-                    connect: {
-                      id: data.userId,
-                    },
+              create: item.media?.filter(media => media.type === "image" && !!media.title && !!media.url).map(media => ({
+                href: media.url,
+                title: media.title,
+                user: {
+                  connect: {
+                    id: data.userId,
                   },
-                }),
+                },
+              }),
               ),
             },
           })),
