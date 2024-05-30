@@ -24,6 +24,7 @@
     "@hono/zod-validator": "^0.2.1",
     "@panva/hkdf": "^1.1.1",
     "@prisma/client": "5.12.1",
+    "@rowanmanning/feed-parser": "^0.5.5",
     "croner": "^8.0.2",
     "fastq": "^1.17.1",
     "hono": "^4.2.4",
