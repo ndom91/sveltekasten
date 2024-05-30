@@ -72,5 +72,5 @@ export const createFeed = async (data: CreateFeedData) => {
       },
     },
   })
-  debug.info(`Feed Create Success ${feed.link}`)
+  debug.info(`Feed Create Success ${feed.url}`)
 }
