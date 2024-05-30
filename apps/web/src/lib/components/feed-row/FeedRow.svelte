@@ -1,5 +1,6 @@
 <script lang="ts">
   import { ofetch } from "ofetch"
+  import { watch } from "runed"
   import { format } from "@formkit/tempo"
   import dompurify from "isomorphic-dompurify"
   import FeedActions from "./FeedActions.svelte"
@@ -94,12 +95,13 @@
     }
   }
 
-  $effect(() => {
-    // Hack to get effect to run on cardOpen change
-    cardOpen
-    // @ts-expect-error
-    document.startViewTransition ? document.startViewTransition(() => mutate()) : mutate()
-  })
+  watch.pre(
+    () => cardOpen,
+    () => {
+      // @ts-expect-error
+      document.startViewTransition ? document.startViewTransition(() => mutate()) : mutate()
+    },
+  )
 
   const isFeedVisible = $derived(
     !!$page.data.feeds.data.find((feed: Feed) => feed.id === feedEntry.feed.id).visible,
@@ -111,11 +113,11 @@
     return false
   })
 
-  const itemImage
-    = feedEntry.feedMedia?.[0]?.href
-      ?? `https://picsum.photos/seed/${encodeURIComponent(
-        feedEntry.title.replaceAll(" ", "").substring(0, 5).toLowerCase(),
-      )}/240/153.webp`
+  const itemImage =
+    feedEntry.feedMedia?.[0]?.href ??
+    `https://picsum.photos/seed/${encodeURIComponent(
+      feedEntry.title.replaceAll(" ", "").substring(0, 5).toLowerCase(),
+    )}/240/153.webp`
 </script>
 
 <svelte:window onkeydown={handleKeyDown} />

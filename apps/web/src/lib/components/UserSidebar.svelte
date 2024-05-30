@@ -35,7 +35,7 @@
     },
   )
 
-  let windowWidth: number = $state(0)
+  let windowWidth: number = $state(1000)
 </script>
 
 <svelte:window onkeydown={handleKeyDown} bind:innerWidth={windowWidth} />
