@@ -317,7 +317,6 @@
 <div class="flex flex-col justify-center items-start self-end p-4 w-full">
   <div class="flex justify-between items-center w-full">
     <AvatarMenu />
-
     <span
       class={cn(
         "transition-all mx-auto text-md truncate",
