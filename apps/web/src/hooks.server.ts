@@ -29,6 +29,9 @@ const logger: Handle = async ({ event, resolve }) => {
 
   const statusColor = getStatusColor(`${response.status}`)
 
+  const requestIp = event.getClientAddress()
+  console.log("req", requestIp)
+
   console.log(
     `${statusColor}${response.status}\x1B[0m ${event.request.method} \x1B[1m${event.url.pathname}\x1B[0m (\x1B[90m${Date.now() - start_time}ms\x1B[0m)`,
   )

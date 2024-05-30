@@ -38,6 +38,25 @@
     isOptionsOpen = false
   }
 
+  const handleMarkAsUnread = async (target: boolean | null = null) => {
+    feedEntry = {
+      ...feedEntry,
+      unread: target ?? !feedEntry.unread,
+    }
+    await ofetch(`/api/v1/feeds`, {
+      method: "PUT",
+      body: { feedEntry },
+    })
+  }
+
+  const handleToggleCardOpen = () => {
+    cardOpen = !cardOpen
+
+    if (feedEntry.unread === true) {
+      handleMarkAsUnread(false)
+    }
+  }
+
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.repeat || e.target instanceof HTMLInputElement) {
       return
@@ -52,14 +71,6 @@
     }
   }
 
-  const handleToggleCardOpen = () => {
-    cardOpen = !cardOpen
-
-    if (feedEntry.unread === true) {
-      handleMarkAsUnread(false)
-    }
-  }
-
   const handleSetTextToSpeechContent = async () => {
     ui.textToSpeechAudioBlob = ""
     // Hack to quickly get text content from HTML String
@@ -70,17 +81,6 @@
 
   const handleStartTextSummarization = () => {
     handleSummarizeText(feedEntry.content ?? "")
-  }
-
-  const handleMarkAsUnread = async (target: boolean | null = null) => {
-    feedEntry = {
-      ...feedEntry,
-      unread: target ?? !feedEntry.unread,
-    }
-    await ofetch(`/api/v1/feeds`, {
-      method: "PUT",
-      body: { feedEntry },
-    })
   }
 
   const mutate = () => {
@@ -128,7 +128,7 @@
   bind:this={card}
   tabindex="0"
   class={cn(
-    "grid relative gap-4 p-4 mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none grid-cols-[10rem_1fr] dark:focus:bg-zinc-900 focus:border-zinc-500 focus:bg-zinc-100",
+    "grid relative gap-4 p-4 mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none grid-cols-1 md:grid-cols-[10rem_1fr] dark:focus:bg-zinc-900 focus:border-zinc-500 focus:bg-zinc-100",
     !isFeedVisible && "hidden",
     hideUnread && "hidden",
   )}
@@ -141,10 +141,13 @@
   <img
     src={itemImage}
     alt="Feed Item Hero"
-    class="object-cover object-center w-48 h-24 rounded-md border border-neutral-100 dark:border-neutral-800"
+    class="hidden object-cover object-center w-48 h-24 rounded-md border md:block border-neutral-100 dark:border-neutral-800"
   />
-  <div class="flex flex-col justify-between">
-    <span class="w-auto text-xl font-semibold line-clamp-1 min-h-[28px]" title={feedEntry.title}>
+  <div class="flex flex-col justify-between w-full">
+    <span
+      class="w-auto text-xl font-semibold line-clamp-2 min-h-[28px] md:line-clamp-1"
+      title={feedEntry.title}
+    >
       {feedEntry.title}
     </span>
     <div

@@ -27,7 +27,7 @@
         variant="outline"
         role="combobox"
         aria-expanded={open}
-        class="justify-between w-[300px]"
+        class="justify-between w-full md:w-[300px]"
       >
         Feeds
         <svg
@@ -48,7 +48,7 @@
         </svg>
       </Button>
     </Popover.Trigger>
-    <Popover.Content class="p-0 w-[300px]">
+    <Popover.Content class="p-0 w-[calc(100vw-2.2rem)] md:w-[300px]">
       <Command.Root>
         <Command.Input placeholder="Search.." />
         <Command.Empty>No results</Command.Empty>
