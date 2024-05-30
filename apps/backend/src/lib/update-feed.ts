@@ -1,18 +1,9 @@
-// import Parser from "rss-parser"
 import parser from "@rowanmanning/feed-parser"
 import { db } from "../plugins/prisma.js"
 import debugFactory from "./log.js"
 import type { Feed } from "./types/zod/index.js"
 
 const debug = debugFactory("backend:update-feed")
-
-// const parser = new Parser({
-//  defaultRSS: 2.0,
-//  customFields: {
-//    feed: ["language", "copyright"],
-//    item: [["media:content", "media", { keepArray: true }]],
-//  },
-// })
 
 const updateFeed = async (feed: Feed) => {
   const response = await fetch(feed.url, {
@@ -56,8 +47,6 @@ const updateFeed = async (feed: Feed) => {
     return
   }
 
-  console.log("newItems", JSON.stringify(newItems, null, 2))
-
   // If we have new items to insert, insert their FeedEntry and FeedEntryMedia
   await Promise.all(
     newItems.map((item) => {
@@ -84,14 +73,9 @@ const updateFeed = async (feed: Feed) => {
             },
           },
           feedMedia: {
-            create: item.media?.map(media => ({
+            create: item.media?.filter(media => media.type === "image" && !!media.title && !!media.url).map(media => ({
               href: media.url,
               title: media.title,
-              // description: media["media:description"]?.[0],
-              // credit: media["media:credit"]?.[0],
-              medium: media.mimeType,
-              // height: Number(media.$?.height),
-              // width: Number(media.$?.width),
               user: {
                 connect: {
                   id: feed.userId,
