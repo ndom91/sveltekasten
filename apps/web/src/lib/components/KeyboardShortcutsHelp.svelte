@@ -8,12 +8,12 @@
   bind:this={element}
   class="z-20 translate-y-[50%] bg-white rounded-lg shadow-sm md:mt-8 lg:mt-16 dark:bg-zinc-900"
 >
-  <div class="flex flex-col gap-4 p-1">
+  <div class="flex flex-col gap-4 p-2">
     <div class="flex justify-between">
       <h2 class="text-2xl font-bold">Keyboard Shortcuts</h2>
       <button
         class="flex justify-center items-center rounded-full transition outline-none hover:ring-2 focus:ring-2 ring-neutral-300 size-7 dark:ring-neutral-600"
-        onclick={() => element.close()}
+        onclick={() => element?.close()}
       >
         <svg
           class="rounded-full size-5"
@@ -31,7 +31,7 @@
     </div>
     <table class="table-auto">
       <tbody class="*:h-10">
-        <tr class="font-black">
+        <tr class="font-semibold">
           <td colspan="2">
             <div class="text-lg dark:text-zinc-100">Global</div>
           </td>
@@ -76,7 +76,7 @@
           <td><Kbd class="text-xs" key="Shift + 6" /></td>
         </tr>
         <tr>
-          <td colspan="2" class="font-black">
+          <td colspan="2" class="font-semibold">
             <div class="text-lg dark:text-zinc-100">Items Lists</div>
           </td>
           <td>Navigate to Settings</td>
