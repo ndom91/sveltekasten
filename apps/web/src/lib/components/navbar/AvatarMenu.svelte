@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ModeWatcher, mode, toggleMode } from "mode-watcher"
+  import { mode, toggleMode } from "mode-watcher"
   import { SignOut } from "@auth/sveltekit/components"
   import { page } from "$app/stores"
   import KeyboardShortcutsHelp from "$lib/components/KeyboardShortcutsHelp.svelte"
@@ -17,15 +17,14 @@
   }
 </script>
 
-<ModeWatcher />
 <DropdownMenu.Root>
   <DropdownMenu.Trigger
     class="rounded-full transition duration-300 outline-none focus:ring-2 focus:outline-none dark:focus:ring-zinc-500 focus:ring-zinc-200"
   >
     <Avatar.Root>
       <Avatar.Image
-        src={$page.data.session?.user?.image
-        || `https://unavatar.io/${$page.data.session?.user?.email}?fallback=https://source.boringavatars.com/marble/120/${$page.data.session?.user?.email}?colors=264653r,2a9d8f,e9c46a,f4a261,e76f51`}
+        src={$page.data.session?.user?.image ||
+          `https://unavatar.io/${$page.data.session?.user?.email}?fallback=https://source.boringavatars.com/marble/120/${$page.data.session?.user?.email}?colors=264653r,2a9d8f,e9c46a,f4a261,e76f51`}
         class="rounded"
         alt="User Avatar"
       />

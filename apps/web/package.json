@@ -83,6 +83,7 @@
     "tailwind-merge": "^2.3.0",
     "tailwind-variants": "^0.2.1",
     "thumbhash": "^0.1.1",
+    "vaul-svelte": "^0.3.1",
     "ws": "^8.17.0",
     "zod": "^3.23.8",
     "zod-prisma-types": "^3.1.6"

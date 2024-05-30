@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { ModeWatcher } from "mode-watcher"
   import { blur } from "svelte/transition"
   import { useDebounce } from "runed"
   import { Button } from "$lib/components/ui/button"
@@ -45,10 +46,9 @@
 <nav
   class="flex justify-between items-center p-4 mx-auto w-full border-b h-[73px] border-b-zinc-100 dark:border-b-zinc-900"
 >
-  <div>
-    <Breadcrumbs />
-  </div>
-  <div class="flex gap-4 justify-end items-center">
+  <ModeWatcher />
+  <Breadcrumbs />
+  <div class="flex gap-2 justify-end items-center md:gap-4">
     {#if !simple}
       {#if ui.textToSpeechAudioBlob && ui.aiFeaturesPreferences.tts.enabled}
         <AudioPlayer src={ui.textToSpeechAudioBlob} />
@@ -65,7 +65,7 @@
           onkeyup={useDebounce(handleSearchInput, 500)}
           spellcheck="false"
           aria-label="Search"
-          class="flex py-2 px-3 pr-10 pl-10 w-full h-10 text-sm bg-transparent rounded-md border focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-input ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring"
+          class="flex py-2 px-3 pl-10 w-full h-10 text-sm bg-transparent rounded-md border md:pr-10 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-input ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring"
         />
         <svg
           class="absolute top-3 left-3 size-4"
@@ -83,7 +83,7 @@
             d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
           ></path>
         </svg>
-        <KeyboardIndicator key="/" class="absolute top-2 right-3 text-xs" />
+        <KeyboardIndicator key="/" class="hidden absolute top-2 right-3 text-xs md:block" />
       </div>
       <Popover.Root bind:open={ui.quickAddOpen}>
         <Tooltip.Root>
@@ -94,6 +94,7 @@
             >
               <!-- TODO: Fix quick-add button tooltip; Re-add builder to btn -->
               <Button
+                builders={[tooltipBuilder]}
                 onclick={() => ui.toggleQuickAdd()}
                 variant="outline"
                 id="quickAddButton"
