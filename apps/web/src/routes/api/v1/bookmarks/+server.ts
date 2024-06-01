@@ -102,7 +102,7 @@ export const POST: RequestHandler = async ({ request, locals, fetch }) => {
       }),
     )
 
-    const upsertResponse = await db.bookmark.createMany({
+    const upsertResponse = await db.bookmark.createManyAndReturn({
       data: bookmarkData,
       skipDuplicates: true,
     })
