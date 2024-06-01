@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { Drawer } from "vaul-svelte"
   import { Button } from "$lib/components/ui/button"
   import Logo from "$lib/assets/Logo.svelte"
@@ -6,10 +6,19 @@
   import { useInterface } from "$state/ui.svelte"
 
   const ui = useInterface()
+
+  let drawerOpen = $state(false)
+
+  const toggleDrawer = () => {
+    drawerOpen = !drawerOpen
+  }
 </script>
 
-<Drawer.Root direction="left" shouldScaleBackground>
-  <Drawer.Trigger class="flex fixed top-3 left-3 z-20 justify-center items-center size-12">
+<Drawer.Root direction="left" shouldScaleBackground bind:open={drawerOpen}>
+  <button
+    onclick={() => (drawerOpen = !drawerOpen)}
+    class="flex fixed top-3 left-3 z-20 justify-center items-center size-12"
+  >
     <svg
       class="size-6"
       data-slot="icon"
@@ -26,7 +35,7 @@
         d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
       ></path>
     </svg>
-  </Drawer.Trigger>
+  </button>
   <Drawer.Portal>
     <Drawer.Overlay class="fixed inset-0 transition bg-black/40" />
     <Drawer.Content
@@ -44,7 +53,7 @@
           </Button>
           <span class="mx-auto text-xl font-light opacity-100 transition-all"> BriefButler </span>
         </div>
-        <SidebarContent open={true} />
+        <SidebarContent open={true} {toggleDrawer} />
       </div>
       <div class="flex-shrink-0 self-center mx-2 mb-8 w-1.5 h-12 rounded-full bg-zinc-300"></div>
     </Drawer.Content>

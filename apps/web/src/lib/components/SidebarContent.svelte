@@ -5,10 +5,16 @@
   import { AvatarMenu } from "$lib/components/navbar"
   import { cn, flyAndScale } from "$lib/utils/style"
   import { useInterface } from "$state/ui.svelte"
+  import { goto } from "$app/navigation"
 
   const ui = useInterface()
 
-  const { open = false }: { open?: boolean } = $props()
+  const { open = false, toggleDrawer }: { open?: boolean; toggleDrawer?: () => void } = $props()
+
+  const toggleAndNavigate = (target: string) => {
+    toggleDrawer?.()
+    goto(target)
+  }
 </script>
 
 <div class="flex-grow p-4">
@@ -23,7 +29,7 @@
             "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
             $page.url.pathname === "/" && "ring-2 ring-neutral-300 dark:ring-neutral-800",
           )}
-          href="/"
+          onclickcapture={() => toggleAndNavigate("/")}
         >
           <svg
             class="size-6"
@@ -73,7 +79,7 @@
             "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
             $page.url.pathname === "/bookmarks" && "ring-2 ring-neutral-300 dark:ring-neutral-800",
           )}
-          href="/bookmarks"
+          onclickcapture={() => toggleAndNavigate("/bookmarks")}
         >
           <svg
             class="size-6"
@@ -122,7 +128,7 @@
             "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
             $page.url.pathname === "/feeds" && "ring-2 ring-neutral-300 dark:ring-neutral-800",
           )}
-          href="/feeds"
+          onclickcapture={() => toggleAndNavigate("/feeds")}
         >
           <svg
             class="size-6"
@@ -172,7 +178,7 @@
             "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
             $page.url.pathname === "/archives" && "ring-2 ring-neutral-300 dark:ring-neutral-800",
           )}
-          href="/archives"
+          onclickcapture={() => toggleAndNavigate("/archives")}
         >
           <svg
             class="size-6"
@@ -221,7 +227,7 @@
             "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
             $page.url.pathname === "/categories" && "ring-2 ring-neutral-300 dark:ring-neutral-800",
           )}
-          href="/categories"
+          onclickcapture={() => toggleAndNavigate("/categories")}
         >
           <svg
             class="size-6"
@@ -266,12 +272,12 @@
         <Button
           variant="ghost"
           builders={[tooltipBuilder]}
+          data-sveltekit-preload-data="hover"
           class={cn(
             "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
             $page.url.pathname === "/tags" && "ring-2 ring-neutral-300 dark:ring-neutral-800",
           )}
-          data-sveltekit-preload-data="hover"
-          href="/tags"
+          onclickcapture={() => toggleAndNavigate("/tags")}
         >
           <svg
             class="size-6"
