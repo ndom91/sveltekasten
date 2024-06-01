@@ -16,9 +16,9 @@
 </script>
 
 <section
-  class="relative flex flex-col mx-4 max-w-full rounded-lg dark:bg-neutral-900 bg-neutral-100 overflow-hidden after:pointer-events-none after:absolute after:bottom-0 after:right-0 after:h-96 after:w-24 after:shadow-[inset_-100px_0px_65px_-65px_#ddd] dark:after:shadow-[inset_-100px_0px_45px_-65px_#141414]"
+  class="flex relative flex-col mx-4 max-w-full rounded-lg bg-neutral-100 dark:bg-neutral-900"
 >
-  <div class="flex z-10 flex-grow justify-between mx-4 mt-3 mr-8">
+  <div class="flex z-10 flex-grow justify-between mx-4 mt-3">
     <h2 class="text-xl font-thin">
       {type === ScrollerTypes.FEEDS ? `Unread Feed Items (${count})` : capitalize(type)}
     </h2>
@@ -89,12 +89,12 @@
             stroke-width="16"
           />
         </svg>
-        <span class="text-neutral-700 dark:text-neutral-400">See more</span>
+        <span class="text-neutral-700 truncate dark:text-neutral-400">See more</span>
       </a>
     {/if}
   </div>
   <div
-    class="flex overflow-x-scroll gap-4 py-4 px-4 scroll-px-4 scroll-smooth snap-x snap-mandatory"
+    class="flex overflow-x-scroll gap-4 py-4 px-4 scroll-px-4 scroll-smooth snap-x snap-mandatory after:pointer-events-none after:absolute after:bottom-0 after:right-0 after:h-full after:w-24 after:shadow-[inset_-100px_0px_65px_-65px_#ddd] dark:after:shadow-[inset_-100px_0px_45px_-65px_#141414] after:rounded-r-lg"
   >
     {#each items as item (item.id)}
       {#if type === ScrollerTypes.BOOKMARKS}

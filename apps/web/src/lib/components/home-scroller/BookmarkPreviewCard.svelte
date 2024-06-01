@@ -5,7 +5,7 @@
 </script>
 
 <div
-  class="flex flex-col gap-2 p-4 rounded-md snap-start max-w-72 bg-neutral-200 dark:bg-neutral-800"
+  class="flex flex-col gap-2 p-4 rounded-md h-fit snap-start max-w-72 bg-neutral-200 dark:bg-neutral-800"
 >
   <img
     src={item.image}

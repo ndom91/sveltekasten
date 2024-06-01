@@ -24,7 +24,7 @@
 
 <Navbar simple />
 <main
-  class="h-full overflow-y-scroll align-start flex max-h-[calc(100vh_-_80px)] max-w-[100vw] md:max-w-[calc(100vw_-_72px)] flex-col justify-start gap-6"
+  class="overflow-y-scroll align-start flex max-w-[100vw] md:max-w-[calc(100vw_-_72px)] flex-col justify-start gap-6"
 >
   <div class="flex justify-start px-4 pt-4 w-full">
     <h2 class="text-xl font-thin">Latest Items</h2>

@@ -60,7 +60,7 @@
     alt={item.title}
     class="object-cover object-center mb-1 rounded-sm aspect-video"
   />
-  <div class="flex flex-col gap-1 w-64">
+  <div class="flex overflow-hidden flex-col gap-1 w-64">
     <div class="flex justify-between">
       <img
         src={`https://icons.duckduckgo.com/ip9/${new URL(item.link).hostname}.ico`}
