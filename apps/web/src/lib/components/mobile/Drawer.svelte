@@ -14,7 +14,7 @@
   }
 </script>
 
-<Drawer.Root direction="left" shouldScaleBackground bind:open={drawerOpen}>
+<Drawer.Root direction="left" bind:open={drawerOpen}>
   <button
     onclick={() => (drawerOpen = !drawerOpen)}
     class="flex fixed top-3 left-3 z-20 justify-center items-center size-12"

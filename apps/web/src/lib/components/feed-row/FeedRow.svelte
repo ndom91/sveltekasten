@@ -114,11 +114,11 @@
     return false
   })
 
-  const itemImage =
-    feedEntry.feedMedia?.[0]?.href ??
-    `https://picsum.photos/seed/${encodeURIComponent(
-      feedEntry.title.replaceAll(" ", "").substring(0, 5).toLowerCase(),
-    )}/240/153.webp`
+  const itemImage
+    = feedEntry.feedMedia?.[0]?.href
+      ?? `https://picsum.photos/seed/${encodeURIComponent(
+        feedEntry.title.replaceAll(" ", "").substring(0, 5).toLowerCase(),
+      )}/240/153.webp`
 
   let windowWidth: number = $state(1000)
 </script>
@@ -131,7 +131,7 @@
   bind:this={card}
   tabindex="0"
   class={cn(
-    "grid relative gap-4 p-4 mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none grid-cols-1 md:grid-cols-[10rem_1fr] dark:focus:bg-zinc-900 focus:border-zinc-500 focus:bg-zinc-100",
+    "grid relative gap-4 mx-2 p-4 md:mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none grid-cols-1 md:grid-cols-[10rem_1fr] dark:focus:bg-zinc-900 focus:border-zinc-500 focus:bg-zinc-100",
     !isFeedVisible && "hidden",
     hideUnread && "hidden",
   )}
@@ -146,7 +146,7 @@
     alt="Feed Item Hero"
     class="hidden object-cover object-center w-48 h-24 rounded-md border md:block border-neutral-100 dark:border-neutral-800"
   />
-  <div class="flex flex-col justify-between w-full">
+  <div class="flex flex-col justify-between pr-6 w-full md:pr-0">
     <span
       class="pr-4 w-auto text-xl font-semibold md:pr-0 line-clamp-2 min-h-[28px] md:line-clamp-1"
       title={feedEntry.title}
