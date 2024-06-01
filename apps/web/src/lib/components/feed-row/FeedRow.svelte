@@ -4,6 +4,7 @@
   import { format } from "@formkit/tempo"
   import dompurify from "isomorphic-dompurify"
   import FeedActions from "./FeedActions.svelte"
+  import MobileFeedActions from "./MobileFeedActions.svelte"
   import { Badge } from "$lib/components/ui/badge"
   import { cn } from "$lib/utils/style"
   import { page } from "$app/stores"
@@ -118,9 +119,11 @@
     `https://picsum.photos/seed/${encodeURIComponent(
       feedEntry.title.replaceAll(" ", "").substring(0, 5).toLowerCase(),
     )}/240/153.webp`
+
+  let windowWidth: number = $state(1000)
 </script>
 
-<svelte:window onkeydown={handleKeyDown} />
+<svelte:window onkeydown={handleKeyDown} bind:innerWidth={windowWidth} />
 
 <div
   data-id={feedEntry.id}
@@ -145,7 +148,7 @@
   />
   <div class="flex flex-col justify-between w-full">
     <span
-      class="w-auto text-xl font-semibold line-clamp-2 min-h-[28px] md:line-clamp-1"
+      class="pr-4 w-auto text-xl font-semibold md:pr-0 line-clamp-2 min-h-[28px] md:line-clamp-1"
       title={feedEntry.title}
     >
       {feedEntry.title}
@@ -189,12 +192,22 @@
       {/if}
     </span>
   </div>
-  <FeedActions
-    url={feedEntry.link ?? ""}
-    {isOptionsOpen}
-    {handleToggleCardOpen}
-    {handleMarkAsUnread}
-    {handleSetTextToSpeechContent}
-    {handleStartTextSummarization}
-  />
+  {#if windowWidth < 768}
+    <MobileFeedActions
+      url={feedEntry.link ?? ""}
+      {handleToggleCardOpen}
+      {handleMarkAsUnread}
+      {handleSetTextToSpeechContent}
+      {handleStartTextSummarization}
+    />
+  {:else}
+    <FeedActions
+      url={feedEntry.link ?? ""}
+      {isOptionsOpen}
+      {handleToggleCardOpen}
+      {handleMarkAsUnread}
+      {handleSetTextToSpeechContent}
+      {handleStartTextSummarization}
+    />
+  {/if}
 </div>

@@ -9,15 +9,13 @@
   const DISABLED_PATHS = ["/categories", "/tags", "/settings", "/"]
 
   const metadataEnabled = $derived(() => !DISABLED_PATHS.includes($page.url.pathname))
+  // data-vaul-drawer-wrapper
 </script>
 
 <div class="flex overflow-hidden h-full">
   <CommandBar />
   <Sidebar />
-  <div
-    data-vaul-drawer-wrapper
-    class="flex flex-col min-h-full transition duration-300 translate-x-0 flex-grow-[9]"
-  >
+  <div class="flex flex-col min-h-full transition duration-300 translate-x-0 flex-grow-[9]">
     {@render children()}
   </div>
   {#if metadataEnabled()}

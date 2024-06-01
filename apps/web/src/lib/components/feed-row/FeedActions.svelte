@@ -9,7 +9,7 @@
 
   const ui = useInterface()
 
-  const enableSummary = $page.data.session?.user?.settings.ai?.summarization.enabled ?? false
+  const enableSummary = $page.data.session?.user?.settings?.ai?.summarization.enabled ?? false
   const enableTTS = ui.aiFeaturesPreferences.tts.enabled
 
   const {
@@ -23,7 +23,7 @@
     isOptionsOpen: boolean
     url: string
     handleToggleCardOpen: () => void
-    handleMarkAsUnread: (target?: boolean) => void
+    handleMarkAsUnread: (targetState?: boolean) => void
     handleSetTextToSpeechContent: () => void
     handleStartTextSummarization: () => void
   } = $props()
