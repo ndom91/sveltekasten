@@ -1,17 +1,27 @@
 <script lang="ts">
+  import { watch } from "runed"
+  import { tick } from "svelte"
   import AudioVisualizer from "./AudioVisualizer.svelte"
+  import { useInterface } from "$state/ui.svelte"
   import { cn } from "$/lib/utils/style"
 
   const { src }: { src: string } = $props()
 
-  const autoplay = $state(true)
-  let volume = $state(100)
-  let progress = $state(0)
+  const ui = useInterface()
+
   let paused = $state(false)
-  let duration = $state(0)
   let currentTime = $state(0)
   let playbackRate = $state(1)
-  let audio = $state<HTMLAudioElement>()
+  let ended = $state(false)
+
+  watch(
+    () => ended,
+    () => {
+      if (ended) {
+        ui.textToSpeechAudioBlob = ""
+      }
+    },
+  )
 
   const togglePlaybackRate = () => {
     if (playbackRate === 1) {
@@ -26,30 +36,45 @@
   }
 
   let windowWidth: number = $state(1000)
+
+  const seek = (dur: number) => {
+    paused = true
+    tick()
+      .then(() => {
+        currentTime = currentTime + dur
+      })
+      .then(() => {
+        paused = false
+      })
+  }
 </script>
 
 <svelte:window bind:innerWidth={windowWidth} />
 
 <div
   class={cn(
-    windowWidth < 768
-      ? "fixed flex gap-4 items-center bg-neutral-900 py-4 px-5 bottom-6 z-30 rounded-md shadow-md -translate-x-1/2 left-1/2"
-      : "flex relative gap-2 items-center py-2 px-3 rounded-md group bg-neutral-900",
+    "flex relative  items-stretch bg-neutral-900 rounded-md",
+    windowWidth < 768 ? "fixed bottom-6 z-30 shadow-md -translate-x-1/2 left-1/2" : "",
   )}
 >
   <audio
     {src}
     bind:currentTime
+    bind:ended
     bind:playbackRate
-    bind:duration
     bind:paused
-    bind:this={audio}
     class="hidden"
-    {autoplay}
+    autoplay={true}
   ></audio>
-  <button onclick={() => (paused = !paused)} class="outline-none">
+  <button
+    onclick={() => (paused = !paused)}
+    class={cn(
+      "outline-none rounded-l-md flex justify-center items-center",
+      windowWidth < 768 ? "w-16 bg-zinc-200 dark:bg-red-300/30" : "gap-2 py-2 px-3",
+    )}
+  >
     {#if !paused}
-      <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+      <svg class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
         <rect width="256" height="256" fill="none" /><rect
           x="152"
           y="40"
@@ -75,7 +100,7 @@
         /></svg
       >
     {:else}
-      <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+      <svg class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
         <rect width="256" height="256" fill="none" /><path
           d="M72,39.88V216.12a8,8,0,0,0,12.15,6.69l144.08-88.12a7.82,7.82,0,0,0,0-13.38L84.15,33.19A8,8,0,0,0,72,39.88Z"
           fill="none"
@@ -87,124 +112,125 @@
       >
     {/if}
   </button>
-  <button class="flex items-center" title="Skip backward 20s" onclick={() => (currentTime -= 20)}>
-    <svg class="size-5 scale-x-[-1]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
-      <rect width="256" height="256" fill="none" /><polyline
-        points="128 80 128 128 168 152"
-        fill="none"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="16"
-      /><polyline
-        points="184 104 224 104 224 64"
-        fill="none"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="16"
-      /><path
-        d="M188.4,192a88,88,0,1,1,1.83-126.23C202,77.69,211.72,88.93,224,104"
-        fill="none"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="16"
-      /></svg
-    >
-  </button>
-  <div class="flex gap-1 h-10">
-    <AudioVisualizer {paused} />
-  </div>
-  <input
-    type="range"
-    min="0"
-    max="100"
-    bind:value={progress}
-    class="hidden absolute right-2 z-10 w-44 opacity-0 transition duration-300 group-hover:opacity-100 hover:cursor-pointer drop-shadow-3xl accent-neutral-300 dark:accent-neutral-500"
-  />
-  <input type="range" min="0" max="100" bind:value={volume} class="hidden" />
-  <button class="flex items-center" title="Skip forward 20s" onclick={() => (currentTime += 20)}>
-    <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
-      <rect width="256" height="256" fill="none" /><polyline
-        points="128 80 128 128 168 152"
-        fill="none"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="16"
-      /><polyline
-        points="184 104 224 104 224 64"
-        fill="none"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="16"
-      /><path
-        d="M188.4,192a88,88,0,1,1,1.83-126.23C202,77.69,211.72,88.93,224,104"
-        fill="none"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="16"
-      /></svg
-    >
-  </button>
-  <button
-    class="flex flex-col justify-end items-center"
-    title="Skip forward 20s"
-    onclick={togglePlaybackRate}
+  <div
+    class={cn(
+      "flex relative items-center bg-neutral-900 rounded-r-md",
+      windowWidth < 768 ? "gap-6 py-4 px-5" : "gap-3 py-2 px-3",
+    )}
   >
-    <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
-      <rect width="256" height="256" fill="none" /><path
-        d="M24,184V161.13C24,103.65,70.15,56.2,127.63,56A104,104,0,0,1,232,160v24a8,8,0,0,1-8,8H32A8,8,0,0,1,24,184Z"
-        fill="none"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="16"
-      /><line
-        x1="128"
-        y1="56"
-        x2="128"
-        y2="88"
-        fill="none"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="16"
-      /><line
-        x1="104"
-        y1="192"
-        x2="168"
-        y2="104"
-        fill="none"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="16"
-      /><line
-        x1="200"
-        y1="144"
-        x2="230.78"
-        y2="144"
-        fill="none"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="16"
-      /><line
-        x1="25.39"
-        y1="144"
-        x2="56"
-        y2="144"
-        fill="none"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="16"
-      /></svg
+    <button class="flex flex-col items-center" title="Skip backward 20s" onclick={() => seek(-20)}>
+      <svg class="size-5 scale-x-[-1]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+        <rect width="256" height="256" fill="none" /><polyline
+          points="128 80 128 128 168 152"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="16"
+        /><polyline
+          points="184 104 224 104 224 64"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="16"
+        /><path
+          d="M188.4,192a88,88,0,1,1,1.83-126.23C202,77.69,211.72,88.93,224,104"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="16"
+        /></svg
+      >
+      <div class="text-[0.65rem]">20s</div>
+    </button>
+    <div class="flex gap-1 h-10">
+      <AudioVisualizer {paused} />
+    </div>
+    <button class="flex flex-col items-center" title="Skip forward 20s" onclick={() => seek(20)}>
+      <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+        <rect width="256" height="256" fill="none" /><polyline
+          points="128 80 128 128 168 152"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="16"
+        /><polyline
+          points="184 104 224 104 224 64"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="16"
+        /><path
+          d="M188.4,192a88,88,0,1,1,1.83-126.23C202,77.69,211.72,88.93,224,104"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="16"
+        /></svg
+      >
+      <div class="text-[0.65rem]">20s</div>
+    </button>
+    <button
+      class="flex flex-col justify-end items-center"
+      title="Skip forward 20s"
+      onclick={togglePlaybackRate}
     >
-    <div class="text-xs">{playbackRate.toFixed(1)}</div>
-  </button>
+      <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+        <rect width="256" height="256" fill="none" /><path
+          d="M24,184V161.13C24,103.65,70.15,56.2,127.63,56A104,104,0,0,1,232,160v24a8,8,0,0,1-8,8H32A8,8,0,0,1,24,184Z"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="16"
+        /><line
+          x1="128"
+          y1="56"
+          x2="128"
+          y2="88"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="16"
+        /><line
+          x1="104"
+          y1="192"
+          x2="168"
+          y2="104"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="16"
+        /><line
+          x1="200"
+          y1="144"
+          x2="230.78"
+          y2="144"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="16"
+        /><line
+          x1="25.39"
+          y1="144"
+          x2="56"
+          y2="144"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="16"
+        /></svg
+      >
+      <div class="text-[0.65rem]">{playbackRate.toFixed(1)}</div>
+    </button>
+  </div>
 </div>
