@@ -19,9 +19,9 @@
     </div>
   </nav>
   <div class="flex flex-col gap-8 justify-center items-center mt-12 w-full max-w-screen-md">
-    <img src="/img/confused-travolta.gif" alt="Lost Travolta" class="w-full" />
+    <img src="/img/confused-travolta.gif" alt="Lost Travolta" class="px-4 w-full" />
     <span class="text-xl font-normal"
-    >Uh oh, something's gone wrong
+      >Uh oh, something's gone wrong
       {#if $page.error?.message}
         - {$page.error?.message}
       {/if}

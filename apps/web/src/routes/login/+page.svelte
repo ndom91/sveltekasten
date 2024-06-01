@@ -48,7 +48,7 @@
   />
   <div
     aria-label="Slate cover background"
-    class="absolute left-0 top-0 z-10 flex h-[275%] w-[150%] translate-x-[-70%] translate-y-[-28%] rotate-[22deg] items-center bg-zinc-950 md:translate-y-[-15%] md:rotate-[11deg]"
+    class="absolute left-0 top-0 z-10 flex h-[275%] w-[150%] translate-x-[-70%] translate-y-[-28%] rotate-[30deg] items-center bg-zinc-950 md:translate-y-[-15%] md:rotate-[11deg]"
   ></div>
   <div class="h-dvh z-20 flex w-full items-center justify-center md:ml-[15%] md:w-[22rem]">
     <div class="flex flex-col justify-center items-center w-80 text-xl">
