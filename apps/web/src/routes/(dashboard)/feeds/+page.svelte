@@ -103,13 +103,6 @@
       const limit = limitLoadCount
       const skip = limitLoadCount * pageNumber
 
-      // console.log("loadMore.shuoldSkip?", { allItems: allItems.length, skip })
-      // If there are less results than the first page, we are done
-      // if (allItems.length !== 0 && allItems.length < skip) {
-      //   loaderState.complete()
-      //   return
-      // }
-
       const searchResults = await fetchSearchResults({ limit, skip })
       if (!searchResults?.data) {
         pageNumber -= 1
@@ -118,13 +111,19 @@
 
       if (searchResults.data.length) {
         console.log("GOT RESULTS", searchResults.data.length)
-        allItems.push(...(searchResults.data as any[]))
+
+        allItems = [
+          ...allItems,
+          ...searchResults.data,
+        ]
         console.log("ALLITEMS", allItems.length)
       }
 
       if (allItems.length >= searchResults.count) {
+        console.log("LOADMORE.COMPLETE")
         loaderState.complete()
       } else {
+        console.log("LOADMORE.LOADED")
         loaderState.loaded()
       }
     } catch (error) {
@@ -133,6 +132,7 @@
       loaderState.error()
       pageNumber -= 1
     }
+    console.log("LOADMORE.END")
   }
 
   // Handle search input changes
@@ -144,7 +144,9 @@
       loaderState.reset()
       pageNumber = -1
       allItems = []
-      loadMore()
+      if (!loaderState.isFirstLoad) {
+        loadMore()
+      }
     },
   )
 
@@ -197,9 +199,7 @@
     }
   })
 
-  const onScrollHandler = (e: any) => {
-    console.log("SCROLLING", e)
-  }
+  let innerHeight = $state(800)
 </script>
 
 <svelte:head>
@@ -207,7 +207,7 @@
   <meta name="description" content="RSS Feeds, Bookmarks and more!" />
 </svelte:head>
 
-<svelte:window onkeydown={handleKeyDown} bind:innerWidth={windowWidth} onscroll={onScrollHandler} />
+<svelte:window onkeydown={handleKeyDown} bind:innerHeight={innerHeight} bind:innerWidth={windowWidth} />
 
 <Navbar />
 <main

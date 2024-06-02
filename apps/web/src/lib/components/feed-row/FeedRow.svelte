@@ -5,6 +5,7 @@
   import dompurify from "isomorphic-dompurify"
   import FeedActions from "./FeedActions.svelte"
   import MobileFeedActions from "./MobileFeedActions.svelte"
+  import MediaQuery from "$lib/components/MediaQuery.svelte"
   import { Badge } from "$lib/components/ui/badge"
   import { cn } from "$lib/utils/style"
   import { page } from "$app/stores"
@@ -26,18 +27,10 @@
     handleSummarizeText: (text: string) => void
   } = $props()
 
-  let isOptionsOpen = $state(false)
+  let showFeedActions = $state(false)
   let card = $state<HTMLElement>()
   let cardOpen = $state(false)
   let feedBodyElement = $state<HTMLElement>()!
-
-  const openButtonGroup = () => {
-    isOptionsOpen = true
-  }
-
-  const closeButtonGroup = () => {
-    isOptionsOpen = false
-  }
 
   const handleMarkAsUnread = async (target: boolean | null = null) => {
     feedEntry = {
@@ -119,11 +112,9 @@
       ?? `https://picsum.photos/seed/${encodeURIComponent(
         feedEntry.title.replaceAll(" ", "").substring(0, 5).toLowerCase(),
       )}/240/153.webp`
-
-  let windowWidth: number = $state(1000)
 </script>
 
-<svelte:window onkeydown={handleKeyDown} bind:innerWidth={windowWidth} />
+<svelte:window onkeydown={handleKeyDown} />
 
 <div
   data-id={feedEntry.id}
@@ -135,8 +126,8 @@
     !isFeedVisible && "hidden",
     hideUnread && "hidden",
   )}
-  onmouseleave={closeButtonGroup}
-  onmouseenter={openButtonGroup}
+  onmouseleave={() => showFeedActions = false}
+  onmouseenter={() => showFeedActions = true}
 >
   {#if feedEntry.unread}
     <div class="absolute top-2 left-2 bg-emerald-400 rounded-full duration-1000 size-4"></div>
@@ -199,22 +190,26 @@
       {/if}
     </span>
   </div>
-  {#if windowWidth < 768}
-    <MobileFeedActions
-      url={feedEntry.link ?? ""}
-      {handleToggleCardOpen}
-      {handleMarkAsUnread}
-      {handleSetTextToSpeechContent}
-      {handleStartTextSummarization}
-    />
-  {:else}
-    <FeedActions
-      url={feedEntry.link ?? ""}
-      {isOptionsOpen}
-      {handleToggleCardOpen}
-      {handleMarkAsUnread}
-      {handleSetTextToSpeechContent}
-      {handleStartTextSummarization}
-    />
-  {/if}
+  <MediaQuery query="(max-width: 767px)">
+    {#snippet children(matches: boolean)}
+      {#if matches}
+        <MobileFeedActions
+          url={feedEntry.link ?? ""}
+          {handleToggleCardOpen}
+          {handleMarkAsUnread}
+          {handleSetTextToSpeechContent}
+          {handleStartTextSummarization}
+        />
+        {:else}
+          <FeedActions
+            url={feedEntry.link ?? ""}
+            isOptionsOpen={showFeedActions}
+            {handleToggleCardOpen}
+            {handleMarkAsUnread}
+            {handleSetTextToSpeechContent}
+            {handleStartTextSummarization}
+          />
+      {/if}
+    {/snippet}
+  </MediaQuery>
 </div>
