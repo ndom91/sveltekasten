@@ -53,7 +53,7 @@ export const actions: Actions = {
         return fail(500, { type: "error", error: "Failed to add feed" })
       }
 
-      return { type: "success", message: "Added Feed" }
+      return { type: "success", message: "Adding Feed" }
     } catch (error) {
       console.error(String(error))
 

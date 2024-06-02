@@ -3,6 +3,7 @@
   import { writable } from "svelte/store"
   import { Render, Subscribe, createRender, createTable } from "svelte-headless-table"
   import { addSortBy } from "svelte-headless-table/plugins"
+  import { toast } from "svelte-sonner"
   import DeleteDialog from "./DeleteDialog.svelte"
   import DataTableActions from "./feed-data-table-actions.svelte"
   import { page } from "$app/stores"
@@ -12,6 +13,7 @@
   import { handleActionResults } from "$lib/utils/form-action"
   import * as Card from "$lib/components/ui/card"
   import type { Feed } from "$lib/types/zod"
+  import { invalidateAll } from "$app/navigation"
 
   let isDeleteDialogOpen = $state(false)
   let targetFeed = $state<Feed>()
@@ -19,6 +21,13 @@
   const handleToggleDeleteDialog = (feedId: string) => {
     targetFeed = $page.data.feeds?.data.find((feed: Feed) => feed.id === feedId)
     isDeleteDialogOpen = !isDeleteDialogOpen
+  }
+
+  const checkQueueResults = () => {
+    setTimeout(() => {
+      invalidateAll()
+      toast.success("Feed Added")
+    }, 3000)
   }
 
   const feedsStore = writable($page.data.feeds?.data)
@@ -208,7 +217,7 @@
           placeholder="RSS Feed URL"
           class="flex py-2 px-3 w-96 h-10 text-sm bg-transparent rounded-md border focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-input ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring"
         />
-        <button class={buttonVariants({ variant: "default" })} type="submit"> Add </button>
+        <button onclick={checkQueueResults} class={buttonVariants({ variant: "default" })} type="submit"> Add </button>
       </form>
     </Card.Content>
   </Card.Root>

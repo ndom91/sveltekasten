@@ -25,10 +25,10 @@ export const handleActionResults = (
         toast.success(result?.data?.message ?? "Success")
         formElement.reset()
       } else if (result.type === "error") {
-        toast.error(`Error: ${result.error.message}`, { icon: "🚫" })
+        toast.error(`Error: ${result.error.message}`)
         dev && console.log(result)
       } else {
-        toast.error("Something went wrong. Please try again.", { icon: "🚫" })
+        toast.error("Something went wrong. Please try again.")
         dev && console.log(result)
       }
       await invalidateAll()

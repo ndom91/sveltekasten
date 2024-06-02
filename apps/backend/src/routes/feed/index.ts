@@ -35,7 +35,9 @@ api.post("/", feedBodySchema, async (c) => {
         userId,
       },
     })
-    return c.text("ok")
+    return c.json({
+      feedUrl,
+    })
   } catch (error) {
     console.error(error)
     return c.json({ error }, 500)
