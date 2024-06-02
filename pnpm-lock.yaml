@@ -117,9 +117,6 @@ importers:
       '@formkit/tempo':
         specifier: ^0.1.1
         version: 0.1.1
-      '@oddbird/css-anchor-positioning':
-        specifier: ^0.0.5
-        version: 0.0.5
       '@prisma/client':
         specifier: 5.14.0
         version: 5.14.0(prisma@5.14.0)
@@ -135,9 +132,6 @@ importers:
       cmdk-sv:
         specifier: ^0.0.17
         version: 0.0.17(svelte@5.0.0-next.144)
-      dompurify:
-        specifier: ^3.1.4
-        version: 3.1.4
       formsnap:
         specifier: ^1.0.0
         version: 1.0.0(svelte@5.0.0-next.144)(sveltekit-superforms@2.14.0(@sveltejs/kit@2.5.10(@sveltejs/vite-plugin-svelte@3.1.1(svelte@5.0.0-next.144)(vite@5.2.12(@types/node@20.12.13)))(svelte@5.0.0-next.144)(vite@5.2.12(@types/node@20.12.13)))(@types/json-schema@7.0.15)(esbuild-runner@2.2.2(esbuild@0.20.2))(esbuild@0.20.2)(svelte@5.0.0-next.144))
@@ -199,8 +193,8 @@ importers:
         specifier: ^0.33.4
         version: 0.33.4
       svelte-infinite:
-        specifier: ^0.3.1
-        version: 0.3.1(svelte@5.0.0-next.144)
+        specifier: file:/opt/ndomino/svelte-infinite/
+        version: file:../svelte-infinite(svelte@5.0.0-next.144)
       svelte-sonner:
         specifier: ^0.3.24
         version: 0.3.24(svelte@5.0.0-next.144)
@@ -1048,9 +1042,6 @@ packages:
     resolution: {integrity: sha512-7kZUAaLscfgbwBQRbvdMYaZOWyMEcPTH/tJjnyAWJ/dvvs9Ef+CERx/qJb9GExJpl1qipaDGn7KqHnFGGixd0w==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
 
-  '@oddbird/css-anchor-positioning@0.0.5':
-    resolution: {integrity: sha512-/6hojpY9k3PxW8h235QhfoadB7nbMCTCJ16EXGO7rpJ70lzCb/rU3XwRejdX+JWCncocAzUvuZ6VjyAF86Rq4w==}
-
   '@panva/hkdf@1.1.1':
     resolution: {integrity: sha512-dhPeilub1NuIG0X5Kvhh9lH4iW3ZsHlnzwgwbOlgwQ2wG1IqFzsgHqmKPk3WzsdWAeaxKJxgM0+W433RmN45GA==}
 
@@ -1538,9 +1529,6 @@ packages:
 
   '@types/cookie@0.6.0':
     resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
-
-  '@types/css-tree@2.3.7':
-    resolution: {integrity: sha512-LUlutQBpR2TgqZJdvXCPOx9EME7a4PHSEo2Y2c8POFpj1E9a6V94PUZNwjVdfHWyb8RQZoNHTYOKs980+sOi+g==}
 
   '@types/debug@4.1.12':
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
@@ -2052,10 +2040,6 @@ packages:
 
   css-select@5.1.0:
     resolution: {integrity: sha512-nwoRF1rvRRnnCqqY7updORDsuqKzqYJ28+oSMaJMMgOauh3fvwHqMS7EZpIPqK8GL+g9mKxF1vP/ZjSeNjEVHg==}
-
-  css-tree@2.3.1:
-    resolution: {integrity: sha512-6Fv1DV/TYw//QF5IzQdqsNDjx/wc8TrMBZsqjL9eW01tWb7R7k/mq+/VXfJCl7SoD5emsJop9cOByJZfs8hYIw==}
-    engines: {node: ^10 || ^12.20.0 || ^14.13.0 || >=15.0.0}
 
   css-what@6.1.0:
     resolution: {integrity: sha512-HTUrgRJ7r4dsZKU6GjmpfRK1O76h97Z8MfS1G0FozR+oF2kG6Vfe8JE6zwrkbxigziPHinCJ+gCPjA9EaBDtRw==}
@@ -3026,9 +3010,6 @@ packages:
   mdast-util-to-string@2.0.0:
     resolution: {integrity: sha512-AW4DRS3QbBayY/jJmD8437V1Gombjf8RSOUCMFBuo5iHi58AGEgVCKQ+ezHkZZDpAQS75hcBMpLqjpJTjtUL7w==}
 
-  mdn-data@2.0.30:
-    resolution: {integrity: sha512-GaqWWShW4kv/G9IEucWScBx9G1/vsFZZJUO+tD26M8J8z3Kw5RDQjaoZe03YAClgeS/SWPOcb4nkFBTEi5DUEA==}
-
   memoize-one@6.0.0:
     resolution: {integrity: sha512-rkpe71W0N0c0Xz6QD0eJETuWAJGnJ9afsl1srmwPrI+yBCkge5EycXXbYRyvL29zZVUWQCY7InPRCv3GDXuZNw==}
 
@@ -3998,8 +3979,8 @@ packages:
     peerDependencies:
       svelte: ^3.19.0 || ^4.0.0
 
-  svelte-infinite@0.3.1:
-    resolution: {integrity: sha512-6JT64u5CYijEWjZDtO5chtNX9WI1AGP6vjL323+uXaNmZBMbyHCeDzFKCxZFi2Dfvu5PH5xQZ6MkdoEha93/nA==}
+  svelte-infinite@file:../svelte-infinite:
+    resolution: {directory: ../svelte-infinite, type: directory}
     peerDependencies:
       svelte: ^5.0.0
 
@@ -5521,13 +5502,6 @@ snapshots:
     dependencies:
       semver: 7.6.0
 
-  '@oddbird/css-anchor-positioning@0.0.5':
-    dependencies:
-      '@floating-ui/dom': 1.6.3
-      '@types/css-tree': 2.3.7
-      css-tree: 2.3.1
-      nanoid: 5.0.6
-
   '@panva/hkdf@1.1.1': {}
 
   '@pkgjs/parseargs@0.11.0':
@@ -6151,8 +6125,6 @@ snapshots:
 
   '@types/cookie@0.6.0': {}
 
-  '@types/css-tree@2.3.7': {}
-
   '@types/debug@4.1.12':
     dependencies:
       '@types/ms': 0.7.34
@@ -6750,11 +6722,6 @@ snapshots:
       domhandler: 5.0.3
       domutils: 3.1.0
       nth-check: 2.1.1
-
-  css-tree@2.3.1:
-    dependencies:
-      mdn-data: 2.0.30
-      source-map-js: 1.2.0
 
   css-what@6.1.0: {}
 
@@ -7839,8 +7806,6 @@ snapshots:
 
   mdast-util-to-string@2.0.0: {}
 
-  mdn-data@2.0.30: {}
-
   memoize-one@6.0.0: {}
 
   memoize-weak@1.0.2: {}
@@ -8914,7 +8879,7 @@ snapshots:
     dependencies:
       svelte: 5.0.0-next.144
 
-  svelte-infinite@0.3.1(svelte@5.0.0-next.144):
+  svelte-infinite@file:../svelte-infinite(svelte@5.0.0-next.144):
     dependencies:
       svelte: 5.0.0-next.144
 

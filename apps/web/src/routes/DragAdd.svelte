@@ -85,6 +85,9 @@
 
 <svelte:window
   onkeydown={handleKeyDown}
+/>
+
+<svelte:body
   onpaste={handlePaste}
   ondragenter={handleDragEnter}
   ondragover={e => e.preventDefault()}

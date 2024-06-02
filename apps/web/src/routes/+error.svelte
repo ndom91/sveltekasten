@@ -8,20 +8,20 @@
 <ModeWatcher />
 <div class="flex flex-col justify-center items-center w-full">
   <nav
-    class="flex gap-4 justify-end items-center p-4 mx-auto w-full h-24 border-b border-b-zinc-100 dark:border-b-zinc-900"
+    class="flex gap-4 justify-end items-center p-4 mx-auto w-full h-20 border-b border-b-zinc-100 dark:border-b-zinc-900"
   >
-    <div class="flex gap-4 justify-start items-center mx-auto w-full max-w-7xl text-xl">
-      <Logo class="size-8 text-zinc-800 dark:text-zinc-50" />
-      <span class="">Error</span>
+    <div class="flex gap-2 justify-start items-center mx-auto w-full max-w-7xl text-xl">
+      <Logo class="mr-4 size-8 text-zinc-800 dark:text-zinc-50" />
       <span class="items-center text-red-400">
         {$page.status}
       </span>
+      <span class="">Error</span>
     </div>
   </nav>
-  <div class="flex flex-col gap-8 justify-center items-center mt-12 w-full max-w-screen-md">
-    <img src="/img/confused-travolta.gif" alt="Lost Travolta" class="px-4 w-full" />
-    <span class="text-xl font-normal"
-      >Uh oh, something's gone wrong
+  <div class="flex flex-col gap-8 justify-center items-center px-4 mt-12 w-full max-w-screen-md">
+    <img src="/img/confused-travolta.gif" alt="Lost Travolta" class="w-full" />
+    <span class="text-xl font-normal text-center text-balance">
+      Uh oh, something's gone wrong
       {#if $page.error?.message}
         - {$page.error?.message}
       {/if}

@@ -16,6 +16,8 @@
   import { invalidateAll } from "$app/navigation"
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
 
+  let windowWidth = $state(1000)
+
   const ui = useInterface()
   const { data } = $props()
 
@@ -95,6 +97,7 @@
 
   // Load more items on infinite scroll
   const loadMore = async () => {
+    console.log("LOADMORE")
     try {
       pageNumber += 1
       const limit = limitLoadCount
@@ -114,7 +117,9 @@
       }
 
       if (searchResults.data.length) {
+        console.log("GOT RESULTS", searchResults.data.length)
         allItems.push(...(searchResults.data as any[]))
+        console.log("ALLITEMS", allItems.length)
       }
 
       if (allItems.length >= searchResults.count) {
@@ -154,8 +159,8 @@
       const currentActiveElementIndex = allItems.findIndex(
         (item: LoadFeedEntry) => item.id === currentActiveElement.dataset.id,
       )
-      const nextIndex =
-        e.key === "ArrowDown" || e.key === "j"
+      const nextIndex
+        = e.key === "ArrowDown" || e.key === "j"
           ? currentActiveElementIndex + 1
           : currentActiveElementIndex - 1
       const nextElement = document.querySelector(
@@ -191,6 +196,10 @@
       ui.searchQuery = ""
     }
   })
+
+  const onScrollHandler = (e: any) => {
+    console.log("SCROLLING", e)
+  }
 </script>
 
 <svelte:head>
@@ -198,7 +207,7 @@
   <meta name="description" content="RSS Feeds, Bookmarks and more!" />
 </svelte:head>
 
-<svelte:window onkeydown={handleKeyDown} />
+<svelte:window onkeydown={handleKeyDown} bind:innerWidth={windowWidth} onscroll={onScrollHandler} />
 
 <Navbar />
 <main

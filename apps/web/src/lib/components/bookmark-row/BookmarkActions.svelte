@@ -30,22 +30,33 @@
   <Tooltip.Root>
     <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
       <Button builders={[tooltipBuilder]} variant="ghost" size="icon" href={url} target="_blank">
-        <svg
-          class="size-5 text-zinc-900 dark:text-zinc-100"
-          data-slot="icon"
-          fill="none"
-          stroke-width="1.5"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <path
+        <svg class="size-5 text-zinc-900 dark:text-zinc-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+          <rect width="256" height="256" fill="none" /><polyline
+            points="216 104 215.99 40.01 152 40"
+            fill="none"
+            stroke="currentColor"
             stroke-linecap="round"
             stroke-linejoin="round"
-            d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15m0-3-3-3m0 0-3 3m3-3V15"
-          ></path>
-        </svg>
+            stroke-width="16"
+          /><line
+            x1="136"
+            y1="120"
+            x2="216"
+            y2="40"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          /><path
+            d="M184,136v72a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V80a8,8,0,0,1,8-8h72"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          /></svg
+        >
       </Button>
     </Tooltip.Trigger>
     <Tooltip.Content side="top">

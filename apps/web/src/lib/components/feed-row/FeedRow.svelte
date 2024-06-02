@@ -160,7 +160,14 @@
         cardOpen ? "h-fit" : "h-0",
       )}
     >
-      {@html dompurify.sanitize(feedEntry.content ?? "")}
+      {@html dompurify.sanitize(feedEntry.content ?? "", {
+        USE_PROFILES: { html: true },
+        ALLOW_DATA_ATTR: false,
+        KEEP_CONTENT: false,
+        ALLOW_ARIA_ATTR: false,
+        FORBID_ATTR: ["style"],
+        FORBID_TAGS: ["style"],
+      })}
     </div>
     <div class="flex gap-2 justify-start items-center mt-2 text-sm text-muted">
       {#if feedEntry.link}
