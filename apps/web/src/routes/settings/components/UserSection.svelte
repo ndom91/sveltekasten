@@ -165,7 +165,7 @@
       </Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
-      <div class="flex gap-2 items-center">
+      <div class="flex flex-col gap-2 items-start md:flex-row md:items-center">
         <span>
           For use in the <a
             href="https://docs.briefkastenhq.com"
@@ -280,7 +280,7 @@
                     text-to-speed option.
                   </p>
                 </label>
-                <div class="flex gap-2 justify-start items-center">
+                <div class="flex flex-col gap-2 justify-start items-start md:flex-row md:items-center">
                   <div class="flex flex-col gap-2 w-56">
                     <label
                       for="ttsLocation"

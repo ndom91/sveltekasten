@@ -140,11 +140,11 @@
   watch.pre(
     () => ui.searchQuery,
     () => {
-      console.log("effect.loaderState.reset")
-      loaderState.reset()
-      pageNumber = -1
-      allItems = []
       if (!loaderState.isFirstLoad) {
+        console.log("effect.loaderState.reset")
+        loaderState.reset()
+        pageNumber = -1
+        allItems = []
         loadMore()
       }
     },
