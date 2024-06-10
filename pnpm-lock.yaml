@@ -193,8 +193,8 @@ importers:
         specifier: ^0.33.4
         version: 0.33.4
       svelte-infinite:
-        specifier: file:/opt/ndomino/svelte-infinite/
-        version: file:../svelte-infinite(svelte@5.0.0-next.144)
+        specifier: ^0.3.1
+        version: 0.3.2(svelte@5.0.0-next.144)
       svelte-sonner:
         specifier: ^0.3.24
         version: 0.3.24(svelte@5.0.0-next.144)
@@ -226,18 +226,12 @@ importers:
       '@playwright/test':
         specifier: ^1.40.0
         version: 1.40.0
-      '@sveltejs/adapter-auto':
-        specifier: 3.2.1
-        version: 3.2.1(@sveltejs/kit@2.5.10(@sveltejs/vite-plugin-svelte@3.1.1(svelte@5.0.0-next.144)(vite@5.2.12(@types/node@20.12.13)))(svelte@5.0.0-next.144)(vite@5.2.12(@types/node@20.12.13)))
       '@sveltejs/adapter-node':
         specifier: ^5.0.1
         version: 5.0.1(@sveltejs/kit@2.5.10(@sveltejs/vite-plugin-svelte@3.1.1(svelte@5.0.0-next.144)(vite@5.2.12(@types/node@20.12.13)))(svelte@5.0.0-next.144)(vite@5.2.12(@types/node@20.12.13)))
       '@sveltejs/kit':
         specifier: 2.5.10
         version: 2.5.10(@sveltejs/vite-plugin-svelte@3.1.1(svelte@5.0.0-next.144)(vite@5.2.12(@types/node@20.12.13)))(svelte@5.0.0-next.144)(vite@5.2.12(@types/node@20.12.13))
-      '@sveltejs/package':
-        specifier: 2.3.1
-        version: 2.3.1(svelte@5.0.0-next.144)(typescript@5.4.5)
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.1.1
         version: 3.1.1(svelte@5.0.0-next.144)(vite@5.2.12(@types/node@20.12.13))
@@ -1466,11 +1460,6 @@ packages:
     peerDependencies:
       eslint: '>=8.40.0'
 
-  '@sveltejs/adapter-auto@3.2.1':
-    resolution: {integrity: sha512-/3xx8ZFCD5UBc/7AbyXkFF3HNCzWAp2xncH8HA4doGjoGQEN7PmwiRx4Y9nOzi4mqDqYYUic0gaIAE2khWWU4Q==}
-    peerDependencies:
-      '@sveltejs/kit': ^2.0.0
-
   '@sveltejs/adapter-node@5.0.1':
     resolution: {integrity: sha512-eYdmxdUWMW+dad1JfMsWBPY2vjXz9eE+52A2AQnXPScPJlIxIVk5mmbaEEzrZivLfO2wEcLTZ5vdC03W69x+iA==}
     peerDependencies:
@@ -1484,13 +1473,6 @@ packages:
       '@sveltejs/vite-plugin-svelte': ^3.0.0
       svelte: ^4.0.0 || ^5.0.0-next.0
       vite: ^5.0.3
-
-  '@sveltejs/package@2.3.1':
-    resolution: {integrity: sha512-JvR2J4ost1oCn1CSdqenYRwGX/1RX+7LN+VZ71aPnz3JAlIFaEKQd1pBxlb+OSQTfeugJO0W39gB9voAbBO5ow==}
-    engines: {node: ^16.14 || >=18}
-    hasBin: true
-    peerDependencies:
-      svelte: ^3.44.0 || ^4.0.0 || ^5.0.0-next.1
 
   '@sveltejs/vite-plugin-svelte-inspector@2.1.0':
     resolution: {integrity: sha512-9QX28IymvBlSCqsCll5t0kQVxipsfhFFL+L2t3nTWfXnddYwxBuAEtTtlaVQpRz9c37BhJjltSeY4AJSC03SSg==}
@@ -3979,10 +3961,10 @@ packages:
     peerDependencies:
       svelte: ^3.19.0 || ^4.0.0
 
-  svelte-infinite@file:../svelte-infinite:
-    resolution: {directory: ../svelte-infinite, type: directory}
+  svelte-infinite@0.3.2:
+    resolution: {integrity: sha512-i69pdc1Q+YNdALHrVSoZIbvgKDuZf9UihOhrhGLekSkjNLwr6d57osrNnywKltYwg/n1r84hV8IGnSk7Jo03Qg==}
     peerDependencies:
-      svelte: ^5.0.0
+      svelte: ^5.0.0-0
 
   svelte-keyed@2.0.0:
     resolution: {integrity: sha512-7TeEn+QbJC2OJrHiuM0T8vMBkms3DNpTE+Ir+NtnVBnBMA78aL4f1ft9t0Hn/pBbD/TnIXi4YfjFRAgtN+DZ5g==}
@@ -6030,11 +6012,6 @@ snapshots:
       - supports-color
       - typescript
 
-  '@sveltejs/adapter-auto@3.2.1(@sveltejs/kit@2.5.10(@sveltejs/vite-plugin-svelte@3.1.1(svelte@5.0.0-next.144)(vite@5.2.12(@types/node@20.12.13)))(svelte@5.0.0-next.144)(vite@5.2.12(@types/node@20.12.13)))':
-    dependencies:
-      '@sveltejs/kit': 2.5.10(@sveltejs/vite-plugin-svelte@3.1.1(svelte@5.0.0-next.144)(vite@5.2.12(@types/node@20.12.13)))(svelte@5.0.0-next.144)(vite@5.2.12(@types/node@20.12.13))
-      import-meta-resolve: 4.1.0
-
   '@sveltejs/adapter-node@5.0.1(@sveltejs/kit@2.5.10(@sveltejs/vite-plugin-svelte@3.1.1(svelte@5.0.0-next.144)(vite@5.2.12(@types/node@20.12.13)))(svelte@5.0.0-next.144)(vite@5.2.12(@types/node@20.12.13)))':
     dependencies:
       '@rollup/plugin-commonjs': 25.0.7(rollup@4.13.0)
@@ -6060,17 +6037,6 @@ snapshots:
       svelte: 5.0.0-next.144
       tiny-glob: 0.2.9
       vite: 5.2.12(@types/node@20.12.13)
-
-  '@sveltejs/package@2.3.1(svelte@5.0.0-next.144)(typescript@5.4.5)':
-    dependencies:
-      chokidar: 3.6.0
-      kleur: 4.1.5
-      sade: 1.8.1
-      semver: 7.6.0
-      svelte: 5.0.0-next.144
-      svelte2tsx: 0.7.4(svelte@5.0.0-next.144)(typescript@5.4.5)
-    transitivePeerDependencies:
-      - typescript
 
   '@sveltejs/vite-plugin-svelte-inspector@2.1.0(@sveltejs/vite-plugin-svelte@3.1.1(svelte@5.0.0-next.144)(vite@5.2.12(@types/node@20.12.13)))(svelte@5.0.0-next.144)(vite@5.2.12(@types/node@20.12.13))':
     dependencies:
@@ -8879,7 +8845,7 @@ snapshots:
     dependencies:
       svelte: 5.0.0-next.144
 
-  svelte-infinite@file:../svelte-infinite(svelte@5.0.0-next.144):
+  svelte-infinite@0.3.2(svelte@5.0.0-next.144):
     dependencies:
       svelte: 5.0.0-next.144
 
