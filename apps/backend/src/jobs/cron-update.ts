@@ -17,8 +17,7 @@ export const updateJob = Cron(
     interval: 60,
   },
   async (cron: Cron) => {
-    // TODO: Think of some way to dedupe feed updates across multiple
-    //       users effectively.
+    // TODO: Think of some way to dedupe feed updates across multiple users effectively.
     debug.info("Refreshing feeds")
     try {
       const oneHourAgo = new Date()
@@ -41,7 +40,7 @@ export const updateJob = Cron(
         `Found ${feeds.length} feeds to refresh ${feeds.map(f => f.url).join(",")}`,
       )
 
-      await Promise.all(
+      await Promise.allSettled(
         feeds.map(async (feed) => {
           debug.info(`Updating feed - ${feed.url}`)
           await updateFeed(feed)

@@ -1,4 +1,4 @@
-import parser from "@rowanmanning/feed-parser"
+import { fetchFeed } from "../../lib/feed.js"
 import debugFactory from "../../lib/log.js"
 import { db } from "../../plugins/prisma.js"
 
@@ -12,9 +12,12 @@ export interface CreateFeedData {
 const INITIAL_ITEMS_TO_FETCH = 20
 
 export const createFeed = async (data: CreateFeedData) => {
-  const response = await fetch(data.feedUrl)
-  const xml = await response.text()
-  const feed = parser(xml)
+  const feed = await fetchFeed({ url: data.feedUrl })
+  if (!feed) {
+    debug(`No feed data: ${data.feedUrl}`)
+    return
+  }
+
   debug.info(`Inserting feed: ${feed.self}`)
 
   await db.feed.create({

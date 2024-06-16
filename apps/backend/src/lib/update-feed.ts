@@ -1,25 +1,16 @@
-import parser from "@rowanmanning/feed-parser"
 import { db } from "../plugins/prisma.js"
 import debugFactory from "./log.js"
 import type { Feed } from "./types/zod/index.js"
+import { fetchFeed } from "./feed.js"
 
 const debug = debugFactory("backend:update-feed")
 
-const updateFeed = async (feed: Feed) => {
-  const response = await fetch(feed.url, {
-    headers: {
-      "If-Modified-Since": feed.lastFetched?.toISOString() ?? "",
-      "User-Agent": "BriefButler/1.0 (+https://github.com/ndom91/briefkastenhq)",
-      "Accept-Encoding": "gzip",
-    },
-  })
-
-  if (response.status === 304) {
-    debug(`Feed not modified since last fetch - ${feed.url}`)
+export const updateFeed = async (feed: Feed) => {
+  const parsedFeed = await fetchFeed({ url: feed.url, lastFetched: feed.lastFetched })
+  if (!parsedFeed) {
+    debug(`No feed data: ${feed.url}`)
     return
   }
-  const xml = await response.text()
-  const parsedFeed = parser(xml)
 
   // Find pre-existing feed entries
   const matchedFeedEntries = await db.feedEntry.findMany({
@@ -89,5 +80,3 @@ const updateFeed = async (feed: Feed) => {
     }),
   )
 }
-
-export { updateFeed }
