@@ -135,10 +135,10 @@
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
       const currentActiveElementIndex = bookmarkStore.bookmarks.findIndex(
-        (item) => item.id === currentActiveElement.dataset.id,
+        item => item.id === currentActiveElement.dataset.id,
       )
-      const nextIndex =
-        e.key === "ArrowDown" || e.key === "j"
+      const nextIndex
+        = e.key === "ArrowDown" || e.key === "j"
           ? currentActiveElementIndex + 1
           : currentActiveElementIndex - 1
       const nextElement = document.querySelector(
@@ -155,7 +155,7 @@
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
       const currentActiveElementIndex = bookmarkStore.bookmarks.findIndex(
-        (item) => item.id === currentActiveElement.dataset.id,
+        item => item.id === currentActiveElement.dataset.id,
       )
       const targetLink = bookmarkStore.bookmarks[currentActiveElementIndex]?.url
       if (!targetLink) {

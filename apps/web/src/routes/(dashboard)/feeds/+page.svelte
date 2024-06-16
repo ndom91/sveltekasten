@@ -16,7 +16,7 @@
   import { invalidateAll } from "$app/navigation"
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
 
-  let windowWidth = $state(1000)
+  let innerWidth = $state(1000)
 
   const ui = useInterface()
   const { data } = $props()
@@ -36,6 +36,7 @@
     allItems = data.feedEntries?.data as LoadFeedEntry[]
   })
 
+  $inspect("page", pageNumber)
   registerTtsWorker()
   registerSummarizationWorker()
 
@@ -102,6 +103,7 @@
       pageNumber += 1
       const limit = limitLoadCount
       const skip = limitLoadCount * pageNumber
+      console.log("LOADMORE", { limitLoadCount, pageNumber, limit, skip })
 
       const searchResults = await fetchSearchResults({ limit, skip })
       if (!searchResults?.data) {
@@ -112,10 +114,7 @@
       if (searchResults.data.length) {
         console.log("GOT RESULTS", searchResults.data.length)
 
-        allItems = [
-          ...allItems,
-          ...searchResults.data,
-        ]
+        allItems = [...allItems, ...searchResults.data]
         console.log("ALLITEMS", allItems.length)
       }
 
@@ -134,6 +133,8 @@
     }
     console.log("LOADMORE.END")
   }
+
+  $inspect("loaderState", loaderState)
 
   // Handle search input changes
   // Reset fields and load first results from api
@@ -207,7 +208,7 @@
   <meta name="description" content="RSS Feeds, Bookmarks and more!" />
 </svelte:head>
 
-<svelte:window onkeydown={handleKeyDown} bind:innerHeight={innerHeight} bind:innerWidth={windowWidth} />
+<svelte:window onkeydown={handleKeyDown} bind:innerHeight bind:innerWidth />
 
 <Navbar />
 <main
