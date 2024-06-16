@@ -9,6 +9,8 @@ export interface CreateFeedData {
   feedUrl: string
 }
 
+const INITIAL_ITEMS_TO_FETCH = 20
+
 export const createFeed = async (data: CreateFeedData) => {
   const response = await fetch(data.feedUrl)
   const xml = await response.text()
@@ -39,8 +41,7 @@ export const createFeed = async (data: CreateFeedData) => {
             }
             return 1
           })
-          // Only add the latest 10 entries to database
-          .slice(0, 10)
+          .slice(0, INITIAL_ITEMS_TO_FETCH)
           .map(item => ({
             title: item.title ?? "",
             guid: item.id,
