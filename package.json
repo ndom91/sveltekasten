@@ -26,8 +26,8 @@
     "typescript": "5.4.5",
     "vite": "5.2.12"
   },
-  "packageManager": "pnpm@9.0.4",
-  "engines": {
-    "pnpm": "^9.0.0"
-  }
+	"engines": {
+		"node": ">=20.11"
+	},
+  "packageManager": "pnpm@9.3.0"
 }
