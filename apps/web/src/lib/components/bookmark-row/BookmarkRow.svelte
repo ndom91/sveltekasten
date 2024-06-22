@@ -3,6 +3,8 @@
   import { format } from "@formkit/tempo"
   import { getContext } from "svelte"
   import BookmarkActions from "./BookmarkActions.svelte"
+  import MobileBookmarkActions from "./MobileBookmarkActions.svelte"
+  import MediaQuery from "$lib/components/MediaQuery.svelte"
   import { page } from "$app/stores"
   import { Badge } from "$lib/components/ui/badge"
   import { useInterface } from "$state/ui.svelte"
@@ -24,9 +26,6 @@
   let isDeleteDialogOpen = $state(false)
   let isOptionsOpen = $state(false)
 
-  const handleDeleteDialogOpen = () => {
-    isDeleteDialogOpen = true
-  }
   const handleMetadataSidebarOpen = () => {
     ui.setMetadataSidebarData({
       bookmark,
@@ -36,12 +35,7 @@
     ui.toggleMetadataSidebar(true)
     ui.toggleMetadataSidebarEditMode(false)
   }
-  const openButtonGroup = () => {
-    isOptionsOpen = true
-  }
-  const closeButtonGroup = () => {
-    isOptionsOpen = false
-  }
+
   const handleArchive = async () => {
     await ofetch(`/api/v1/bookmarks`, {
       method: "PUT",
@@ -56,8 +50,8 @@
   data-id={bookmark.id}
   role="row"
   class="grid relative grid-cols-1 gap-4 p-4 mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none md:grid-cols-[15rem_1fr] dark:focus:bg-zinc-900 focus:border-zinc-500 focus:bg-zinc-100"
-  onmouseleave={closeButtonGroup}
-  onmouseenter={openButtonGroup}
+  onmouseleave={() => (isOptionsOpen = false)}
+  onmouseenter={() => (isOptionsOpen = true)}
 >
   {#await import("./DeleteDialog.svelte") then { default: DeleteDialog }}
     <svelte:component this={DeleteDialog} bind:open={isDeleteDialogOpen} bookmarkId={bookmark.id} />
@@ -101,11 +95,24 @@
       {/if}
     </span>
   </div>
-  <BookmarkActions
-    url={bookmark.url ?? ""}
-    {handleMetadataSidebarOpen}
-    {handleDeleteDialogOpen}
-    {isOptionsOpen}
-    {handleArchive}
-  />
+  <MediaQuery query="(max-width: 767px)">
+    {#snippet children(matches)}
+      {#if matches}
+        <MobileBookmarkActions
+          url={bookmark.url ?? ""}
+          {handleMetadataSidebarOpen}
+          handleDeleteDialogOpen={() => (isDeleteDialogOpen = true)}
+          {handleArchive}
+        />
+      {:else}
+        <BookmarkActions
+          url={bookmark.url ?? ""}
+          {handleMetadataSidebarOpen}
+          handleDeleteDialogOpen={() => (isDeleteDialogOpen = true)}
+          {isOptionsOpen}
+          {handleArchive}
+        />
+      {/if}
+    {/snippet}
+  </MediaQuery>
 </div>

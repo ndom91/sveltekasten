@@ -11,7 +11,7 @@
     children,
   }: {
     query: string
-    children: Snippet
+    children: Snippet<[matches?: boolean]>
   } = $props()
 
   onMount(() => {

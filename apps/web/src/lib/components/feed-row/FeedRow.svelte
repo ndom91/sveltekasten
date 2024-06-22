@@ -107,11 +107,11 @@
     return false
   })
 
-  const itemImage
-    = feedEntry.feedMedia?.[0]?.href
-      ?? `https://picsum.photos/seed/${encodeURIComponent(
-        feedEntry.title.replaceAll(" ", "").substring(0, 5).toLowerCase(),
-      )}/240/153.webp`
+  const itemImage =
+    feedEntry.feedMedia?.[0]?.href ??
+    `https://picsum.photos/seed/${encodeURIComponent(
+      feedEntry.title.replaceAll(" ", "").substring(0, 5).toLowerCase(),
+    )}/240/153.webp`
 </script>
 
 <svelte:window onkeydown={handleKeyDown} />
@@ -126,8 +126,8 @@
     !isFeedVisible && "hidden",
     hideUnread && "hidden",
   )}
-  onmouseleave={() => showFeedActions = false}
-  onmouseenter={() => showFeedActions = true}
+  onmouseleave={() => (showFeedActions = false)}
+  onmouseenter={() => (showFeedActions = true)}
 >
   {#if feedEntry.unread}
     <div class="absolute top-2 left-2 bg-emerald-400 rounded-full duration-1000 size-4"></div>
@@ -191,7 +191,7 @@
     </span>
   </div>
   <MediaQuery query="(max-width: 767px)">
-    {#snippet children(matches: boolean)}
+    {#snippet children(matches)}
       {#if matches}
         <MobileFeedActions
           url={feedEntry.link ?? ""}
@@ -200,15 +200,15 @@
           {handleSetTextToSpeechContent}
           {handleStartTextSummarization}
         />
-        {:else}
-          <FeedActions
-            url={feedEntry.link ?? ""}
-            isOptionsOpen={showFeedActions}
-            {handleToggleCardOpen}
-            {handleMarkAsUnread}
-            {handleSetTextToSpeechContent}
-            {handleStartTextSummarization}
-          />
+      {:else}
+        <FeedActions
+          url={feedEntry.link ?? ""}
+          isOptionsOpen={showFeedActions}
+          {handleToggleCardOpen}
+          {handleMarkAsUnread}
+          {handleSetTextToSpeechContent}
+          {handleStartTextSummarization}
+        />
       {/if}
     {/snippet}
   </MediaQuery>
