@@ -1,9 +1,10 @@
 import { randomUUID } from "node:crypto"
 import WebSocket from "ws"
+import { EDGE_AI_KEY } from "$env/static/private"
 
-const EDGE_SPEECH_URL
-  = "wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1"
-const EDGE_API_TOKEN = "6A5AA1D4EAFF4E9FB37E23D68491D6F4"
+const EDGE_SPEECH_URL =
+  "wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1"
+const EDGE_API_TOKEN = EDGE_AI_KEY
 
 const configContent = JSON.stringify({
   context: {
@@ -20,12 +21,12 @@ const genHeader = (connectId: string) => {
   const date = new Date().toString()
   const configHeader = {
     "Content-Type": "application/json; charset=utf-8",
-    "Path": "speech.config",
+    Path: "speech.config",
     "X-Timestamp": date,
   }
   const contentHeader = {
     "Content-Type": "application/ssml+xml",
-    "Path": "ssml",
+    Path: "ssml",
     "X-RequestId": connectId,
     "X-Timestamp": date,
   }
