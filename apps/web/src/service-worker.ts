@@ -3,9 +3,32 @@
 /// <reference lib="esnext" />
 /// <reference lib="webworker" />
 
+import { CacheFirst } from "workbox-strategies"
+import { registerRoute, Route } from "workbox-routing"
+
 declare let self: ServiceWorkerGlobalScope
 
 const manifest = self.__WB_MANIFEST
+
+const fontAssetRoute = new Route(
+  ({ request }) => {
+    return request.destination === "font"
+  },
+  new CacheFirst({
+    cacheName: "font-assets",
+  }),
+)
+const imageAssetRoute = new Route(
+  ({ request }) => {
+    return request.destination === "image"
+  },
+  new CacheFirst({
+    cacheName: "image-assets",
+  }),
+)
+
+registerRoute(fontAssetRoute)
+registerRoute(imageAssetRoute)
 
 self.addEventListener("message", (event) => {
   if (event.data && event.data.type === "SKIP_WAITING") self.skipWaiting()

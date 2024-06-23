@@ -50,7 +50,10 @@
 
   if (browser && "serviceWorker" in navigator) {
     navigator.serviceWorker.register(
+      // @ts-expect-error - its fine, we're not transpiling to cjs
       import.meta.env.MODE === "production" ? "/service-worker.js" : "/dev-sw.js?dev-sw",
+      // @ts-expect-error - its fine, we're not transpiling to cjs
+      { type: import.meta.env.MODE === "production" ? "classic" : "module" },
     )
   }
 </script>
