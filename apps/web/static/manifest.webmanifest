@@ -17,7 +17,19 @@
     "method": "POST",
     "enctype": "multipart/form-data",
     "params": {
-      "url": "url"
+      "title": "name",
+      "text": "description",
+      "url": "url",
+      "files": [
+        {
+          "name": "text",
+          "accept": ["text/plain"]
+        },
+        {
+          "name": "svg",
+          "accept": "image/svg+xml"
+        }
+      ]
     }
   },
   "icons": [
