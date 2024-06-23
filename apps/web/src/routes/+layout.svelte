@@ -8,6 +8,7 @@
   import Scripts from "./Scripts.svelte"
   import Shortcuts from "./GlobalShortcuts.svelte"
   import type { LayoutData } from "./$types"
+  import { browser } from "$app/environment"
 
   import { onNavigate } from "$app/navigation"
   import { defaultAISettings, useInterface } from "$state/ui.svelte"
@@ -42,6 +43,14 @@
       })
     })
   })
+
+  if (browser && navigator.serviceWorker.controller) {
+    console.log("This page is currently controlled by:", navigator.serviceWorker.controller)
+
+    navigator.serviceWorker.onmessage = (event) => {
+      console.log(event.data.msg, event.data.url)
+    }
+  }
 </script>
 
 <svelte:head>
