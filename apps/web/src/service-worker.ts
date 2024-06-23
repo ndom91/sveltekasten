@@ -8,8 +8,6 @@ import { registerRoute, Route } from "workbox-routing"
 
 declare let self: ServiceWorkerGlobalScope
 
-const manifest = self.__WB_MANIFEST
-
 const fontAssetRoute = new Route(
   ({ request }) => {
     return request.destination === "font"
