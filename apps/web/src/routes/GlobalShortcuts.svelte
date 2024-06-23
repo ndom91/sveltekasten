@@ -2,7 +2,7 @@
   import KeyboardShortcutsHelp from "$lib/components/KeyboardShortcutsHelp.svelte"
   import { goto } from "$app/navigation"
 
-  let dialogElement = $state<HTMLDialogElement>()
+  let element = $state<HTMLDialogElement | null>(null)
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.repeat || e.target instanceof HTMLInputElement) {
@@ -10,7 +10,7 @@
     }
     if ((e.ctrlKey || e.metaKey) && e.key === "/") {
       e.preventDefault()
-      dialogElement?.showModal()
+      element?.showModal()
     }
     if (e.shiftKey && e.key === "!") {
       e.preventDefault()
@@ -45,4 +45,4 @@
 
 <svelte:window onkeydown={handleKeyDown} />
 
-<KeyboardShortcutsHelp bind:element={dialogElement} />
+<KeyboardShortcutsHelp bind:dialogElement={element} />

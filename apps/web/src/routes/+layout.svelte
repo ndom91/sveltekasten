@@ -4,7 +4,7 @@
   import { Toaster } from "svelte-sonner"
   import DragAdd from "./DragAdd.svelte"
   import Scripts from "./Scripts.svelte"
-  import Shortcuts from "./Shortcuts.svelte"
+  import Shortcuts from "./GlobalShortcuts.svelte"
   import type { LayoutData } from "./$types"
 
   import { onNavigate } from "$app/navigation"

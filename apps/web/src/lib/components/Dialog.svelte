@@ -4,7 +4,9 @@
   interface Props {
     id: string
     children: Snippet
-    header?: Snippet
+    element: HTMLDialogElement | null
+    footer?: boolean
+    header?: Snippet<[{ cancelAction: () => void }]>
     popoverState?: "auto" | "manual"
     confirmAction?: () => void
     cancelAction?: () => void
@@ -12,11 +14,12 @@
     cancelLabel?: Snippet
   }
 
-  const {
+  let {
     id,
-    popoverState = "auto",
+    footer = true,
+    element = $bindable(),
     confirmAction = () => null,
-    cancelAction = () => null,
+    cancelAction = () => element?.close(),
     children,
     header,
     confirmLabel,
@@ -24,42 +27,37 @@
   }: Props = $props()
 </script>
 
-<dialog {id} popover={popoverState}>
+<dialog
+  {id}
+  bind:this={element}
+  class="z-20 translate-y-[50%] bg-white rounded-lg shadow-sm md:mt-8 lg:mt-16 dark:bg-zinc-900"
+>
   {#if header}
-    <header class="py-2 border-b border-gray-300">
-      {@render header()}
+    <header class="py-2">
+      {@render header({ cancelAction: () => element?.close() })}
     </header>
   {/if}
-  <div class="py-2 border-b border-gray-300">
+  <div class="flex flex-col gap-4 p-2">
     {@render children()}
   </div>
-  <footer class="flex justify-end py-2 space-x-2">
-    <button
-      class="danger-button"
-      popovertarget={id}
-      popovertargetaction="hide"
-      onclick={() => confirmAction()}
-    >
-      {#if confirmLabel}
-        {@render confirmLabel()}
-      {:else}
-        Confirm
-      {/if}
-    </button>
-    <button
-      type="button"
-      class="primary-button"
-      popovertarget={id}
-      popovertargetaction="hide"
-      onclick={() => cancelAction()}
-    >
-      {#if cancelLabel}
-        {@render cancelLabel()}
-      {:else}
-        Cancel
-      {/if}
-    </button>
-  </footer>
+  {#if footer}
+    <footer class="flex justify-end py-2 space-x-2">
+      <button class="danger-button" onclick={() => confirmAction()}>
+        {#if confirmLabel}
+          {@render confirmLabel()}
+        {:else}
+          Confirm
+        {/if}
+      </button>
+      <button type="button" class="primary-button" onclick={() => cancelAction()}>
+        {#if cancelLabel}
+          {@render cancelLabel()}
+        {:else}
+          Cancel
+        {/if}
+      </button>
+    </footer>
+  {/if}
 </dialog>
 
 <style>
