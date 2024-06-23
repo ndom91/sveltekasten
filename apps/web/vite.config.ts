@@ -11,8 +11,6 @@ export default defineConfig({
       strategies: "injectManifest",
       filename: "service-worker.ts",
       srcDir: "src",
-      // registerType: "prompt",
-      // injectRegister: "script-defer",
       manifest: {
         id: "briefbutler-2",
         name: "BriefButler",

@@ -10,12 +10,12 @@ const config = {
     version: {
       name: execSync("git rev-parse HEAD").toString().trim().substring(0, 7),
     },
-    serviceWorker: {
-      register: false,
-    },
-    files: {
-      serviceWorker: "src/service-worker.ts",
-    },
+    // serviceWorker: {
+    //   register: false,
+    // },
+    // files: {
+    //   serviceWorker: "src/service-worker.ts",
+    // },
     alias: {
       $: "src",
       $stores: "src/stores",

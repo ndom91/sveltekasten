@@ -27,7 +27,7 @@ export const actions: Actions = {
       },
     })
 
-    // TODO: Delete from Object Storage
+    // TODO: Delete Image from Object Storage
 
     return { type: "success", message: "Deleted Bookmark" }
   },
