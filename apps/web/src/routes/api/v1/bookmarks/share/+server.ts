@@ -4,6 +4,9 @@ import { saveBookmark } from "$lib/utils/save-bookmark"
 
 export const GET: RequestHandler = async (event) => {
   try {
+    console.log("GET.url", event.url)
+    console.log("GET.request", event.request)
+
     const url = event.url.searchParams.get("url")
     if (!url) throw new Error("No URL provided")
 
