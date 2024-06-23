@@ -88,6 +88,8 @@ export default defineConfig({
         ],
       },
       injectManifest: {
+        swSrc: "src/service-worker.ts",
+        swDest: "svelte-kit/output/client/service-worker2.js",
         globPatterns: ["client/**/*.{js,css,ico,png,svg,webp,woff,woff2}"],
       },
       devOptions: {
