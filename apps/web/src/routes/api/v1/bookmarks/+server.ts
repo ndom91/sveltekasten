@@ -3,7 +3,7 @@ import { json, text } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
 import { db } from "$lib/prisma"
 import { BookmarkUncheckedCreateInputSchema } from "$lib/types/zod"
-import { fetchBookmarkMetadata } from "$server/lib/fetchBookmarkMetadata"
+import { fetchBookmarkMetadata } from "$lib/server/fetchBookmarkMetadata"
 import { PUBLIC_WORKER_URL } from "$env/static/public"
 import { isAuthenticated } from "$lib/auth"
 

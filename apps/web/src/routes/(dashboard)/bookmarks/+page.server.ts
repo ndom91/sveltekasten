@@ -6,7 +6,7 @@ import { db } from "$lib/prisma"
 import { isAuthenticated } from "$lib/auth"
 import { formSchema as quickAddSchema } from "$schemas/quick-add"
 import { formSchema as metadataSchema } from "$schemas/metadata-sidebar"
-import { fetchBookmarkMetadata } from "$server/lib/fetchBookmarkMetadata"
+import { fetchBookmarkMetadata } from "$lib/server/fetchBookmarkMetadata"
 import { PUBLIC_WORKER_URL } from "$env/static/public"
 import type { Tag } from "$lib/types/zod"
 

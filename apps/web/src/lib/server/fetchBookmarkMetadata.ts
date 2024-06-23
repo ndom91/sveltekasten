@@ -14,7 +14,7 @@ import metascraperFeed from "metascraper-feed"
 import metascraperDate from "metascraper-date"
 import metascraperUrl from "metascraper-url"
 import metascraperReadability from "metascraper-readability"
-import { getThumbhash } from "$server/lib/thumbhash"
+import { getThumbhash } from "$lib/server/thumbhash"
 
 const metascraperClient = metascraper([
   metascraperDescription(),

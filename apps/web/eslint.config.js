@@ -13,6 +13,12 @@ export default [
     files: ["**/*.svelte", "**/*.ts"],
     rules: {
       "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/no-unsafe-call": ["off", "never"],
+      "@typescript-eslint/no-unsafe-argument": ["off", "never"],
+      "@typescript-eslint/no-unsafe-assignment": ["off", "never"],
+      "@typescript-eslint/no-unsafe-member-access": ["off", "never"],
+      "@typescript-eslint/no-use-before-define": ["off", "warn"],
+      "@typescript-eslint/no-explicit-any": ["off", "warn"],
     },
   },
   prettier,

@@ -97,7 +97,9 @@ export const { signIn, signOut, handle } = SvelteKitAuth({
         return {
           ...token,
           access_token: account.access_token,
-          expires_at: account.expires_at ?? Math.floor(Date.now() / 1000 + (account.expires_in ?? 60 * 60 * 24 * 30)),
+          expires_at:
+            account.expires_at ??
+            Math.floor(Date.now() / 1000 + (account.expires_in ?? 60 * 60 * 24 * 30)),
           refresh_token: account.refresh_token,
           providerId: account.provider,
           profile: userProfile,

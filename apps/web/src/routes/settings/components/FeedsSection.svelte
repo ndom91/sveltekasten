@@ -1,6 +1,7 @@
 <script lang="ts">
   import { format } from "@formkit/tempo"
   import { writable } from "svelte/store"
+  import { tick } from "svelte"
   import { Render, Subscribe, createRender, createTable } from "svelte-headless-table"
   import { addSortBy } from "svelte-headless-table/plugins"
   import { toast } from "svelte-sonner"
@@ -24,10 +25,13 @@
   }
 
   const checkQueueResults = () => {
-    setTimeout(() => {
-      invalidateAll()
-      toast.success("Feed Added")
-    }, 3000)
+    tick().then(() =>
+      toast.promise(invalidateAll, {
+        loading: "Loading..",
+        success: "Feed Added",
+        error: "Error adding feed, please try again",
+      }),
+    )
   }
 
   const feedsStore = writable($page.data.feeds?.data)
@@ -85,7 +89,7 @@
       // @ts-expect-error string is allowed
       accessor: "actions",
       header: "",
-      cell: data =>
+      cell: (data) =>
         createRender(DataTableActions, {
           // @ts-expect-error
           id: data.row.original.id,
@@ -124,21 +128,21 @@
                             class="ml-2 fill-neutral-800 size-4 dark:fill-white"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 256 256"
-                          ><rect width="256" height="256" fill="none" /><polyline
-                            points="80 176 128 224 176 176"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="16"
-                          /><polyline
-                            points="80 80 128 32 176 80"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="16"
-                          /></svg
+                            ><rect width="256" height="256" fill="none" /><polyline
+                              points="80 176 128 224 176 176"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="16"
+                            /><polyline
+                              points="80 80 128 32 176 80"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="16"
+                            /></svg
                           >
                         </Button>
                       {:else}
@@ -208,7 +212,7 @@
       <form
         action="/settings?/addFeed"
         method="post"
-        use:enhance={handleActionResults()}
+        use:enhance={handleActionResults(checkQueueResults)}
         class="flex gap-2"
       >
         <input
@@ -217,7 +221,7 @@
           placeholder="RSS Feed URL"
           class="flex py-2 px-3 w-96 h-10 text-sm bg-transparent rounded-md border focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-input ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring"
         />
-        <button onclick={checkQueueResults} class={buttonVariants({ variant: "default" })} type="submit"> Add </button>
+        <button class={buttonVariants({ variant: "default" })} type="submit"> Add </button>
       </form>
     </Card.Content>
   </Card.Root>
