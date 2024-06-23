@@ -2,20 +2,11 @@
 /// <reference no-default-lib="true"/>
 /// <reference lib="esnext" />
 /// <reference lib="webworker" />
-//
-// import { cleanupOutdatedCaches, precacheAndRoute } from "workbox-precaching"
-// import { clientsClaim } from "workbox-core"
 
 declare let self: ServiceWorkerGlobalScope
 
-// cleanupOutdatedCaches()
-
-// console.log("manifest", self.__WB_MANIFEST)
-
-// precacheAndRoute(self.__WB_MANIFEST ?? ["/"])
-
-// self.skipWaiting()
-// clientsClaim()
+const manifest = self.__WB_MANIFEST
+console.log("manifest", manifest)
 
 self.addEventListener("message", (event) => {
   if (event.data && event.data.type === "SKIP_WAITING") self.skipWaiting()
