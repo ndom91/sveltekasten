@@ -18,20 +18,18 @@
     "db:push": "pnpm run --filter sveltekasten-web db:push"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.19.1",
     "@eslint/js": "^9.5.0",
     "@types/eslint": "^8.56.10",
     "@types/eslint-config-prettier": "^6.11.3",
     "@types/eslint__js": "^8.42.3",
-    "eslint": "9.3.0",
+    "eslint": "9.5.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-format": "^0.1.1",
     "globals": "^15.6.0",
-    "prettier": "3.2.5",
-    "tslib": "2.6.2",
-    "typescript": "5.4.5",
+    "prettier": "3.3.2",
+    "tslib": "2.6.3",
+    "typescript": "5.5.2",
     "typescript-eslint": "^7.13.1",
-    "vite": "5.2.12"
+    "vite": "5.3.1"
   },
   "engines": {
     "node": ">=20.11"

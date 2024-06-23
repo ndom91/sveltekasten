@@ -36,7 +36,7 @@ self.addEventListener("message", (event) => {
 self.addEventListener("fetch", (event: FetchEvent) => {
   const url = new URL(event.request.url)
 
-  if (event.request.method !== "POST" || !url.pathname.includes("/api/v1/bookmarks/share")) {
+  if (event.request.method !== "GET" || !url.pathname.includes("/api/v1/bookmarks/share")) {
     return
   }
 
