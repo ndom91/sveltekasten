@@ -45,8 +45,9 @@ self.addEventListener("fetch", (event: FetchEvent) => {
 
   event.waitUntil(
     (async function () {
-      const formData = await event.request.formData()
-      const url = formData.get("url") || ""
+      const url = new URL(event.request.url)
+      const targetUrl = url.searchParams.get("url")
+
       // TODO: Get userId
       const userId = "clu6qepua0000scqbkr2t0uks"
 
@@ -57,7 +58,7 @@ self.addEventListener("fetch", (event: FetchEvent) => {
         },
         body: JSON.stringify([
           {
-            url,
+            url: targetUrl,
             userId,
           },
         ]),
