@@ -4,14 +4,7 @@ import { dev } from "$app/environment"
 import { applyAction } from "$app/forms"
 import { invalidateAll } from "$app/navigation"
 
-interface FormActionMessage {
-  message?: string
-}
-
-export const handleActionResults = (
-  _opts?: FormActionMessage,
-  callback?: (data: any | unknown) => any,
-) => {
+export const handleActionResults = (callback?: (data: any | unknown) => any) => {
   return function form_enhance() {
     return async ({
       result,
