@@ -3,14 +3,11 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "vite dev --port 3000",
-    "dev:bun": "bunx --bun vite dev --port 3000",
     "clean": "rm -rf build || true",
-    "build:bun": "bun clean && vite build",
     "build": "pnpm clean && vite build && pnpm copy:partytown",
     "start": "node build/index.js",
-    "start:bun": "bun run build/index.js",
     "preview": "vite preview",
-    "format": "prettier --write",
+    "format": "prettier --write src/**/*.{svelte,ts,json,css,html}",
     "test:e2e": "playwright test",
     "copy:partytown": "pnpm exec partytown copylib build/client/~partytown",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -44,12 +41,8 @@
     "svelte-headless-table": "^0.18.2",
     "tailwindcss": "^3.4.4",
     "typescript-svelte-plugin": "^0.3.39",
-    "workbox-build": "^7.1.1",
     "workbox-core": "^7.1.0",
-    "workbox-precaching": "^7.1.0",
-    "workbox-routing": "^7.1.0",
-    "workbox-strategies": "^7.1.0",
-    "workbox-window": "^7.1.0"
+    "workbox-strategies": "^7.1.0"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.4.1",

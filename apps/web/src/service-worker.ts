@@ -3,27 +3,37 @@
 /// <reference lib="esnext" />
 /// <reference lib="webworker" />
 //
-import { cleanupOutdatedCaches, precacheAndRoute } from "workbox-precaching"
-import { clientsClaim } from "workbox-core"
+// import { cleanupOutdatedCaches, precacheAndRoute } from "workbox-precaching"
+// import { clientsClaim } from "workbox-core"
 
 declare let self: ServiceWorkerGlobalScope
 
-cleanupOutdatedCaches()
+// cleanupOutdatedCaches()
 
-precacheAndRoute(self.__WB_MANIFEST)
+// console.log("manifest", self.__WB_MANIFEST)
 
-self.skipWaiting()
-clientsClaim()
+// precacheAndRoute(self.__WB_MANIFEST ?? ["/"])
+
+// self.skipWaiting()
+// clientsClaim()
 
 self.addEventListener("message", (event) => {
   if (event.data && event.data.type === "SKIP_WAITING") self.skipWaiting()
 })
 
 self.addEventListener("fetch", (event: FetchEvent) => {
+  // Regular requests not related to Web Share Target.
+  if (event.request.method !== "POST") {
+    event.respondWith(fetch(event.request))
+    return
+  }
+
   if (!event.clientId) return
 
-  const url = new URL(event.request.url)
-  if (event.request.method === "POST" && url.pathname === "/api/v1/bookmarks/share") {
+  if (
+    event.request.method === "POST" &&
+    new URL(event.request.url).pathname === "/api/v1/bookmarks/share"
+  ) {
     event.respondWith(
       (async () => {
         const formData = await event.request.formData()

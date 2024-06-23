@@ -304,22 +304,10 @@ importers:
       typescript-svelte-plugin:
         specifier: ^0.3.39
         version: 0.3.39(svelte@5.0.0-next.155)(typescript@5.4.5)
-      workbox-build:
-        specifier: ^7.1.1
-        version: 7.1.1
       workbox-core:
         specifier: ^7.1.0
         version: 7.1.0
-      workbox-precaching:
-        specifier: ^7.1.0
-        version: 7.1.0
-      workbox-routing:
-        specifier: ^7.1.0
-        version: 7.1.0
       workbox-strategies:
-        specifier: ^7.1.0
-        version: 7.1.0
-      workbox-window:
         specifier: ^7.1.0
         version: 7.1.0
 
