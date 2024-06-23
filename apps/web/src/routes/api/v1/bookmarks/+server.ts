@@ -4,17 +4,15 @@ import type { RequestHandler } from "./$types"
 import { db } from "$lib/prisma"
 import { BookmarkUncheckedCreateInputSchema } from "$lib/types/zod"
 import { fetchBookmarkMetadata } from "$server/lib/fetchBookmarkMetadata"
-import { WORKER_URL } from "$env/static/private"
+import { PUBLIC_WORKER_URL } from "$env/static/public"
+import { isAuthenticated } from "$lib/auth"
 
 // Get more Bookmarks
-export const GET: RequestHandler = async ({ url, locals }) => {
+export const GET: RequestHandler = async (event) => {
   try {
-    const session = await locals.auth()
-    if (!session?.user?.id) {
-      return new Response(null, { status: 401, statusText: "Unauthorized" })
-    }
-    const skip = Number(url.searchParams.get("skip") ?? "0")
-    const limit = Number(url.searchParams.get("limit") ?? "10")
+    const session = await isAuthenticated(event)
+    const skip = Number(event.url.searchParams.get("skip") ?? "0")
+    const limit = Number(event.url.searchParams.get("limit") ?? "10")
 
     if (limit > 100) {
       return new Response(null, { status: 401, statusText: "Attempted to load too many items" })
@@ -45,13 +43,10 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 }
 
 // Update Bookmark
-export const PUT: RequestHandler = async ({ request, locals }) => {
+export const PUT: RequestHandler = async (event) => {
   try {
-    const session = await locals.auth()
-    if (!session?.user?.id) {
-      return new Response(null, { status: 401, statusText: "Unauthorized" })
-    }
-    const { id, update } = await request.json()
+    const session = await isAuthenticated(event)
+    const { id, update } = await event.request.json()
 
     const data = await db.bookmark.update({
       data: {
@@ -79,13 +74,10 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
 }
 
 // Create Bookmark(s)
-export const POST: RequestHandler = async ({ request, locals, fetch }) => {
+export const POST: RequestHandler = async (event) => {
   try {
-    const session = await locals.auth()
-    if (!session?.user?.id) {
-      return new Response(null, { status: 401, statusText: "Unauthorized" })
-    }
-    const inputData = await request.json()
+    await isAuthenticated(event)
+    const inputData = await event.request.json()
     const data = z.array(BookmarkUncheckedCreateInputSchema).parse(inputData)
 
     const bookmarkData = await Promise.all(
@@ -108,8 +100,8 @@ export const POST: RequestHandler = async ({ request, locals, fetch }) => {
     })
 
     // Add bookmark to queue for fetching screenshot
-    if (WORKER_URL) {
-      await fetch(`${WORKER_URL}/bookmark`, {
+    if (PUBLIC_WORKER_URL) {
+      await fetch(`${PUBLIC_WORKER_URL}/bookmark`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

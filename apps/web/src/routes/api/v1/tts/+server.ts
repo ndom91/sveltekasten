@@ -1,15 +1,13 @@
 import { text } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
 import { createEdgeSpeech } from "$lib/server/generate-tts"
+import { isAuthenticated } from "$/lib/auth"
 
-export const POST: RequestHandler = async ({ request, locals }) => {
+export const POST: RequestHandler = async (event) => {
   try {
-    const session = await locals.auth()
-    if (!session?.user?.id) {
-      return new Response(null, { status: 401, statusText: "Unauthorized" })
-    }
+    await isAuthenticated(event)
 
-    const { text, speaker } = await request.json()
+    const { text, speaker } = await event.request.json()
 
     const edgeSpeech = await createEdgeSpeech({
       payload: {

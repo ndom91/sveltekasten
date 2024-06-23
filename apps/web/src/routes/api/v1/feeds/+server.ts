@@ -1,16 +1,14 @@
 import { json, text } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
 import { db } from "$lib/prisma"
+import { isAuthenticated } from "$/lib/auth"
 
 // Get FeedEntries
-export const GET: RequestHandler = async ({ url, locals }) => {
+export const GET: RequestHandler = async (event) => {
   try {
-    const session = await locals.auth()
-    if (!session?.user?.id) {
-      return new Response(null, { status: 401, statusText: "Unauthorized" })
-    }
-    const skip = Number(url.searchParams.get("skip") ?? "0")
-    const limit = Number(url.searchParams.get("limit") ?? "10")
+    const session = await isAuthenticated(event)
+    const skip = Number(event.url.searchParams.get("skip") ?? "0")
+    const limit = Number(event.url.searchParams.get("limit") ?? "10")
 
     if (limit > 100) {
       return new Response(null, { status: 401, statusText: "Attempted to load too many items" })
@@ -41,13 +39,10 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 }
 
 // Update FeedEntry
-export const PUT: RequestHandler = async ({ request, locals }) => {
+export const PUT: RequestHandler = async (event) => {
   try {
-    const session = await locals.auth()
-    if (!session?.user?.id) {
-      return new Response(null, { status: 401, statusText: "Unauthorized" })
-    }
-    const { feedEntry } = await request.json()
+    const session = await isAuthenticated(event)
+    const { feedEntry } = await event.request.json()
 
     const data = await db.feedEntry.update({
       data: {

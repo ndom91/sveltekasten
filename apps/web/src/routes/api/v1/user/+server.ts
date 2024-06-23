@@ -1,14 +1,12 @@
 import { json, text } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
 import { db } from "$lib/prisma"
+import { isAuthenticated } from "$/lib/auth"
 
-export const PUT: RequestHandler = async ({ request, locals }) => {
+export const PUT: RequestHandler = async (event) => {
   try {
-    const session = await locals.auth()
-    if (!session?.user?.id) {
-      return new Response(null, { status: 401, statusText: "Unauthorized" })
-    }
-    const { data } = await request.json()
+    const session = await isAuthenticated(event)
+    const { data } = await event.request.json()
 
     const prismaResult = await db.user.update({
       data: {

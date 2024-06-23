@@ -3,19 +3,17 @@ import { message, superValidate } from "sveltekit-superforms"
 import { zod } from "sveltekit-superforms/adapters"
 import type { Actions, PageServerLoad } from "./$types"
 import { db } from "$lib/prisma"
+import { isAuthenticated } from "$lib/auth"
 import { formSchema as quickAddSchema } from "$schemas/quick-add"
 import { formSchema as metadataSchema } from "$schemas/metadata-sidebar"
 import { fetchBookmarkMetadata } from "$server/lib/fetchBookmarkMetadata"
-import { WORKER_URL } from "$env/static/private"
+import { PUBLIC_WORKER_URL } from "$env/static/public"
 import type { Tag } from "$lib/types/zod"
 
 export const actions: Actions = {
-  deleteBookmark: async ({ request, locals }) => {
-    const session = await locals.auth()
-    if (!session?.user?.id) {
-      return fail(401, { type: "error", error: "Unauthenticated" })
-    }
-    const data = await request.formData()
+  deleteBookmark: async (event) => {
+    const session = await isAuthenticated(event)
+    const data = await event.request.formData()
     const bookmarkId = data.get("bookmarkId")?.toString() || ""
 
     if (!bookmarkId) {
@@ -33,16 +31,13 @@ export const actions: Actions = {
 
     return { type: "success", message: "Deleted Bookmark" }
   },
-  saveMetadata: async ({ request, locals }) => {
-    const form = await superValidate(request, zod(metadataSchema), {
+  saveMetadata: async (event) => {
+    const form = await superValidate(event.request, zod(metadataSchema), {
       id: "saveMetadataForm",
     })
 
     try {
-      const session = await locals.auth()
-      if (!session?.user?.id) {
-        return fail(401, { type: "error", error: "Unauthenticated" })
-      }
+      const session = await isAuthenticated(event)
 
       if (!form.valid) {
         return fail(400, { type: "error", message: "Form invalid", metadataForm: form })
@@ -152,8 +147,8 @@ export const actions: Actions = {
       })
 
       // Add bookmark to queue for fetching screenshot
-      if (WORKER_URL) {
-        await event.fetch(`${WORKER_URL}/bookmark`, {
+      if (PUBLIC_WORKER_URL) {
+        await event.fetch(`${PUBLIC_WORKER_URL}/bookmark`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -210,7 +205,7 @@ export const load: PageServerLoad = async (event) => {
     })
 
     const bookmarks = data.map((bookmark: LoadBookmark) => {
-      return { ...bookmark, tags: bookmark.tags.map(tag => tag.tag) }
+      return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) }
     }) as LoadBookmarkFlatTags[]
 
     return {

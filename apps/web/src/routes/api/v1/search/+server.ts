@@ -1,6 +1,7 @@
 import { json, text } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
 import { db } from "$lib/prisma"
+import { isAuthenticated } from "$/lib/auth"
 
 interface RequestBody {
   where: Record<string, unknown>
@@ -11,13 +12,10 @@ interface RequestBody {
   skip: number
 }
 
-export const POST: RequestHandler = async ({ request, locals }) => {
+export const POST: RequestHandler = async (event) => {
   let returnData
   try {
-    const session = await locals.auth()
-    if (!session?.user?.id) {
-      return new Response(null, { status: 401, statusText: "Unauthorized" })
-    }
+    const session = await isAuthenticated(event)
 
     const {
       include,
@@ -26,7 +24,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
       where = {},
       limit = 20,
       skip = 0,
-    } = (await request.json()) as RequestBody
+    } = (await event.request.json()) as RequestBody
 
     if (!type) {
       return new Response(null, { status: 401, statusText: "Missing 'type' parameter" })
@@ -46,7 +44,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
     if (type === "bookmark") {
       returnData = data.map((bookmark: LoadBookmark) => {
-        return { ...bookmark, tags: bookmark.tags?.map(tag => tag.tag) }
+        return { ...bookmark, tags: bookmark.tags?.map((tag) => tag.tag) }
       }) as LoadBookmarkFlatTags[]
     } else {
       returnData = data

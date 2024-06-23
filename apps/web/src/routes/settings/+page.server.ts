@@ -1,15 +1,14 @@
 import { fail, redirect } from "@sveltejs/kit"
 import type { Actions, PageServerLoad } from "./$types"
 import { db } from "$lib/prisma"
-import { WORKER_URL } from "$env/static/private"
+import { PUBLIC_WORKER_URL } from "$env/static/public"
+import { isAuthenticated } from "$/lib/auth"
 
 export const actions: Actions = {
-  deleteFeed: async ({ request, locals }) => {
-    const session = await locals.auth()
-    if (!session?.user?.id) {
-      return fail(401, { type: "error", error: "Unauthenticated" })
-    }
-    const data = await request.formData()
+  deleteFeed: async (event) => {
+    const session = await isAuthenticated(event)
+
+    const data = await event.request.formData()
     const feedId = String(data.get("feedId"))
 
     if (!feedId) {
@@ -24,23 +23,20 @@ export const actions: Actions = {
     })
     return { type: "success", message: "Deleted Feed" }
   },
-  addFeed: async ({ fetch, request, locals }) => {
-    if (!WORKER_URL) {
+  addFeed: async (event) => {
+    if (!PUBLIC_WORKER_URL) {
       return fail(500, { type: "error", error: "Worker URL Not Configured!" })
     }
     try {
-      const session = await locals.auth()
-      if (!session?.user?.id) {
-        return fail(401, { type: "error", error: "Unauthenticated" })
-      }
-      const data = await request.formData()
+      await isAuthenticated(event)
+      const data = await event.request.formData()
       const feedUrl = String(data.get("feedUrl"))
 
       if (!feedUrl) {
         return fail(400, { type: "error", message: "Feed URL Required" })
       }
 
-      const feedRes = await fetch(`${WORKER_URL}/feed`, {
+      const feedRes = await fetch(`${PUBLIC_WORKER_URL}/feed`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,15 +61,12 @@ export const actions: Actions = {
   },
 }
 
-export const load: PageServerLoad = async ({ locals, url }) => {
+export const load: PageServerLoad = async (event) => {
   try {
-    const session = await locals.auth()
-    if (!session && url.pathname !== "/login") {
-      const fromUrl = url.pathname + url.search
+    const session = await isAuthenticated(event)
+    if (!session && event.url.pathname !== "/login") {
+      const fromUrl = event.url.pathname + event.url.search
       redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
-    }
-    if (!session?.user?.id) {
-      return fail(401, { type: "error", error: "Unauthenticated" })
     }
 
     const [feedData, feedCount] = await db.feed.findManyAndCount({
@@ -109,7 +102,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
     })
 
     const bookmarksFlatTags = bookmarkData.map((bookmark) => {
-      return { ...bookmark, tags: bookmark.tags.map(tag => tag.tag) }
+      return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) }
     })
 
     const user = await db.user.findUnique({
