@@ -31,6 +31,7 @@
     "@types/dompurify": "^3.0.5",
     "@types/node": "^20.14.8",
     "@types/ws": "^8.5.10",
+    "@vite-pwa/sveltekit": "^0.5.0",
     "autoprefixer": "^10.4.19",
     "eslint-plugin-svelte": "^2.40.0",
     "open-props": "^1.7.4",
@@ -42,7 +43,13 @@
     "svelte-check": "3.8.1",
     "svelte-headless-table": "^0.18.2",
     "tailwindcss": "^3.4.4",
-    "typescript-svelte-plugin": "^0.3.39"
+    "typescript-svelte-plugin": "^0.3.39",
+    "workbox-build": "^7.1.1",
+    "workbox-core": "^7.1.0",
+    "workbox-precaching": "^7.1.0",
+    "workbox-routing": "^7.1.0",
+    "workbox-strategies": "^7.1.0",
+    "workbox-window": "^7.1.0"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.4.1",

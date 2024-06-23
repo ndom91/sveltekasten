@@ -2,6 +2,8 @@
   import { type Snippet } from "svelte"
   import { setContext } from "svelte"
   import { Toaster } from "svelte-sonner"
+  import { pwaInfo } from "virtual:pwa-info"
+  // import { pwaAssetsHead } from "virtual:pwa-assets/head"
   import DragAdd from "./DragAdd.svelte"
   import Scripts from "./Scripts.svelte"
   import Shortcuts from "./GlobalShortcuts.svelte"
@@ -10,6 +12,8 @@
   import { onNavigate } from "$app/navigation"
   import { defaultAISettings, useInterface } from "$state/ui.svelte"
   import { useBookmarks } from "$state/bookmarks.svelte"
+
+  const webManifestLink = $derived(pwaInfo ? pwaInfo.webManifest.linkTag : "")
 
   const bookmarkStore = useBookmarks()
   setContext("bookmarks", bookmarkStore)
@@ -43,6 +47,13 @@
 <svelte:head>
   <title>BriefButler</title>
   <meta name="description" content="RSS Feeds, Bookmarks, and more!" />
+  <!-- {#if pwaAssetsHead.themeColor}
+    <meta name="theme-color" content={pwaAssetsHead.themeColor.content} />
+  {/if}
+  {#each pwaAssetsHead.links as link}
+    <link {...link} />
+  {/each} -->
+  {@html webManifestLink}
 </svelte:head>
 
 <Scripts />
@@ -60,3 +71,7 @@
 {@render children()}
 
 <DragAdd />
+
+{#await import("$lib/components/ReloadPrompt.svelte") then { default: ReloadPrompt }}
+  <ReloadPrompt />
+{/await}

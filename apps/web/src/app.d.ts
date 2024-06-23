@@ -1,4 +1,7 @@
 import "@auth/sveltekit"
+import "vite-plugin-pwa/pwa-assets"
+import "vite-plugin-pwa/svelte"
+import "vite-plugin-pwa/info"
 import type { Prisma } from "@prisma/client"
 import type { AIFeaturesPreferences } from "./state/ui.svelte"
 import type { BookmarkFlatTags } from "$lib/types"
@@ -23,6 +26,14 @@ declare module "@auth/sveltekit" {
   }
 }
 
+declare module "virtual:pwa-register" {
+  import type { RegisterSWOptions } from "vite-plugin-pwa/types"
+
+  export type { RegisterSWOptions }
+
+  export function registerSW(options?: RegisterSWOptions): (reloadPage?: boolean) => Promise<void>
+}
+
 interface Provider {
   id: string
   name: string
@@ -34,16 +45,16 @@ interface Provider {
 declare global {
   type TODO = any
 
-  type bk = Prisma.BookmarkGetPayload<{}>
+  type bk = Prisma.BookmarkGetPayload<object>
 
   type LoadBookmark = Prisma.BookmarkGetPayload<{
-    include: { category: true, tags: { include: { tag: true } } }
+    include: { category: true; tags: { include: { tag: true } } }
   }>
   type LoadBookmarkFlatTags = BookmarkFlatTags
   type LoadFeedEntry = Prisma.FeedEntryGetPayload<{
-    include: { feed: true, feedMedia: true }
+    include: { feed: true; feedMedia: true }
   }>
-  type LoadFeed = Prisma.FeedGetPayload<{}> & { visible: boolean }
+  type LoadFeed = Prisma.FeedGetPayload<object> & { visible: boolean }
 
   interface BookmarkContext {
     bookmarks: BookmarkFlatTags[]
@@ -52,6 +63,9 @@ declare global {
     update: (bookmark: BookmarkFlatTags) => void
     find: (bookmarkId: string) => BookmarkFlatTags | undefined
   }
+
+  declare const __DATE__: string
+  declare const __RELOAD_SW__: boolean
 
   namespace App {
     interface Locals {
