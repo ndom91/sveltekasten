@@ -1,36 +1,31 @@
-import antfu from "@antfu/eslint-config"
-// Rules: https://eslint-config.antfu.me/rules
+import js from "@eslint/js"
+import ts from "typescript-eslint"
+import prettier from "eslint-config-prettier"
+import globals from "globals"
 
-export default antfu(
+export default ts.config(
+  js.configs.recommended,
+  ...ts.configs.recommendedTypeChecked,
+  // This disables the formatting rules in ESLint that Prettier is going to be responsible for handling.
+  // Make sure it's always the last config, so it gets the chance to override other configs.
+  prettier,
   {
-    lessOpinionated: true,
-    stylistic: {
-      semi: false,
-      indent: 2,
-      quotes: "double",
-    },
-    typescript: {
-      tsconfigPath: "tsconfig.json",
-      overrides: {
-        "ts/no-unsafe-call": ["off", "never"],
-        "ts/no-unsafe-argument": ["off", "never"],
-        "ts/no-unsafe-assignment": ["off", "never"],
-        "ts/no-unsafe-member-access": ["off", "never"],
-        "ts/no-use-before-define": ["off", "warn"],
+    ignores: ["dist", "distServer", "node_modules", "build"],
+  },
+  {
+    languageOptions: {
+      parserOptions: {
+        project: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+      globals: {
+        ...globals.browser,
+        ...globals.node,
       },
     },
-    ignores: ["**/fixtures"],
-    formatters: {
-      css: true,
-      html: true,
-    },
   },
   {
-    rules: {
-      "prefer-regex-literals": ["off", "never"],
-      "no-console": ["off", "never"],
-      "node/prefer-global/process": ["off", "never"],
-      "style/brace-style": ["warn", "1tbs"],
-    },
+    files: ["**/*.{js,jsx,cjs,mjs}"],
+    ...ts.configs.disableTypeChecked
   },
-)
+);

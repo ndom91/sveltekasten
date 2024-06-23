@@ -1,40 +1,39 @@
-import antfu from "@antfu/eslint-config"
-// Rules: https://eslint-config.antfu.me/rules
+import js from "@eslint/js"
+import ts from "typescript-eslint"
+import svelte from "eslint-plugin-svelte"
+import prettier from "eslint-config-prettier"
+import globals from "globals"
 
-export default antfu(
+/** @type {import('eslint').Linter.FlatConfig[]} */
+export default [
+  js.configs.recommended,
+  ...ts.configs.recommended,
+  ...svelte.configs["flat/recommended"],
   {
-    lessOpinionated: true,
-    svelte: true,
-    stylistic: {
-      semi: false,
-      indent: 2,
-      quotes: "double",
+    files: ["**/*.svelte", "**/*.ts"],
+    rules: {
+      "@typescript-eslint/no-unused-vars": "off",
     },
-    typescript: {
-      tsconfigPath: "tsconfig.json",
-      overrides: {
-        "ts/no-unsafe-call": ["off", "never"],
-        "ts/no-unsafe-argument": ["off", "never"],
-        "ts/no-unsafe-assignment": ["off", "never"],
-        "ts/no-unsafe-member-access": ["off", "never"],
-        "ts/no-use-before-define": ["off", "warn"],
+  },
+  prettier,
+  ...svelte.configs["flat/prettier"],
+  {
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
       },
     },
-    ignores: ["**/fixtures"],
-    formatters: {
-      css: true,
-      html: true,
-      markdown: "prettier",
+  },
+  {
+    files: ["**/*.svelte"],
+    languageOptions: {
+      parserOptions: {
+        parser: ts.parser,
+      },
     },
   },
   {
-    rules: {
-      "svelte/no-at-html-tags": "off",
-      "svelte/valid-compile": ["off", "never"],
-      "prefer-regex-literals": ["off", "never"],
-      "no-console": ["off", "never"],
-      "node/prefer-global/process": ["off", "never"],
-      "style/brace-style": ["warn", "1tbs"],
-    },
+    ignores: ["build/", ".svelte-kit/", "dist/"],
   },
-)
+]
