@@ -1,12 +1,16 @@
 {
   "id": "briefbutler-3",
   "name": "BriefButler",
+  "lang": "en_US",
   "short_name": "BriefButler",
   "description": "Bookmarks, RSS Feeds, and more!",
   "orientation": "portrait",
   "theme_color": "#09090b",
   "background_color": "#09090b",
   "display": "standalone",
+  "display_override": [
+    "window-controls-overlay"
+  ],
   "start_url": "/",
   "share_target": {
     "action": "/api/v1/bookmarks/share",
