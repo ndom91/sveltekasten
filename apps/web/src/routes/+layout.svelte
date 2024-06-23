@@ -75,7 +75,3 @@
 {@render children()}
 
 <DragAdd />
-
-{#await import("$lib/components/ReloadPrompt.svelte") then { default: ReloadPrompt }}
-  <ReloadPrompt />
-{/await}

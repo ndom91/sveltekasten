@@ -310,12 +310,6 @@ importers:
       typescript-svelte-plugin:
         specifier: ^0.3.39
         version: 0.3.39(svelte@5.0.0-next.155)(typescript@5.4.5)
-      workbox-core:
-        specifier: ^7.1.0
-        version: 7.1.0
-      workbox-strategies:
-        specifier: ^7.1.0
-        version: 7.1.0
 
 packages:
 

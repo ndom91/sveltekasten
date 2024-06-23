@@ -6,7 +6,6 @@
 declare let self: ServiceWorkerGlobalScope
 
 const manifest = self.__WB_MANIFEST
-console.log("manifest", manifest)
 
 self.addEventListener("message", (event) => {
   if (event.data && event.data.type === "SKIP_WAITING") self.skipWaiting()
@@ -97,8 +96,3 @@ self.addEventListener("fetch", (event: FetchEvent) => {
 //     )
 //   }
 // })
-
-// async function messageClient(clientId) {
-//   const client = await clients.get(clientId)
-//   client.postMessage("Got Share!")
-// }
