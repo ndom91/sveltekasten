@@ -3,7 +3,7 @@
   import { HomeScroller } from "$lib/components/home-scroller"
   import { ScrollerTypes } from "$lib/types"
   import { toast } from "svelte-sonner"
-  import { goto } from "$app/navigation"
+  import { goto, invalidateAll } from "$app/navigation"
   import { page } from "$app/stores"
   import { onMount } from "svelte"
 
@@ -13,6 +13,10 @@
     if (sharedSuccess === "true") {
       toast.success("Link saved!")
       goto("/")
+      // TODO: Hacky cache invalidation; move to sw.onmessage handler when that's working
+      setTimeout(() => {
+        invalidateAll()
+      }, 1000)
     }
   })
 

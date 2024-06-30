@@ -44,6 +44,7 @@
       navigator.serviceWorker.startMessages()
 
       navigator.serviceWorker.onmessage = (event) => {
+        // TODO: invalidate cache once items been added
         toast.success(`sw.message: ${event.data}`)
         console.log("sw.message:", event.data)
       }
