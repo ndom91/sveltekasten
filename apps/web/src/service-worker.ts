@@ -51,8 +51,13 @@ self.addEventListener("fetch", (event: FetchEvent) => {
       // const url = new URL(event.request.url)
       const targetUrl = url.searchParams.get("url")
       console.log("SW.targetUrl", targetUrl)
+      const formData = await event.request.formData()
+      const formDataObj = {}
+      for (const pair of formData.entries()) {
+        formDataObj[pair[0]] = pair[1]
+      }
 
-      const userId = "clu6qepua0000scqbkr2t0ukm"
+      const userId = "clu6qepua0000scqbkr2t0ukl"
 
       await fetch("/api/v1/bookmarks", {
         method: "POST",
@@ -63,6 +68,8 @@ self.addEventListener("fetch", (event: FetchEvent) => {
           {
             rawUrl: url,
             url: targetUrl,
+            formDataObj,
+            formData,
             event,
             eventRequest: event.request,
             userId,
