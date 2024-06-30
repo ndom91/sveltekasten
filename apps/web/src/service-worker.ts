@@ -63,6 +63,7 @@ self.addEventListener("fetch", (event: FetchEvent) => {
         body: JSON.stringify([
           {
             url: targetUrl,
+            event: event.request,
             userId,
           },
         ]),
