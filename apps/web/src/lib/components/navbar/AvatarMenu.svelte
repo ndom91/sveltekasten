@@ -8,27 +8,27 @@
   import { Skeleton } from "$lib/components/ui/skeleton"
   import { version } from "$app/environment"
   import { flyAndScale } from "$lib/utils/style"
-  import { onMount } from "svelte"
+  import { onMount, type SvelteComponent } from "svelte"
 
   const isDarkMode = $derived($mode === "dark")
   let element = $state<HTMLDialogElement | null>(null)
-  let installPrompt: Event | null = null
-  let installButton: HTMLButtonElement | null = null
+  let installPrompt: Event | null = $state(null)
+  let installButton: SvelteComponent | null = $state(null)
 
   const toggleKeyboardShorcuts = () => {
     element?.showModal()
   }
 
   onMount(() => {
-    installButton = document.querySelector("#install")
-
     window.addEventListener("beforeinstallprompt", (event) => {
+      console.log("beforeinstallprompt", installButton)
       event.preventDefault()
       installPrompt = event
       installButton?.classList.toggle("hidden", false)
-      // installButton?.style.toggleClass("hidden")
     })
+
     window.addEventListener("appinstalled", () => {
+      console.log("appinstalled", installButton)
       installPrompt = null
       installButton?.classList.toggle("hidden", true)
     })
@@ -91,7 +91,7 @@
         Settings
       </DropdownMenu.Item>
       <DropdownMenu.Item
-        id="install"
+        bind:this={installButton}
         onclick={handleInstall}
         class="hidden justify-start hover:cursor-pointer"
       >
