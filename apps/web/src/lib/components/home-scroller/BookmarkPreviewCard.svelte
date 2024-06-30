@@ -7,11 +7,13 @@
 <div
   class="flex flex-col gap-2 p-4 rounded-md h-fit snap-start max-w-72 bg-neutral-200 dark:bg-neutral-800"
 >
-  <img
-    src={item.image}
-    alt={item.title}
-    class="object-cover object-center mb-1 rounded-sm aspect-video"
-  />
+  <a href={item.url} target="_blank" class="">
+    <img
+      src={item.image}
+      alt={item.title}
+      class="object-cover object-center mb-1 rounded-sm aspect-video"
+    />
+  </a>
   <div class="flex flex-col gap-1 w-64">
     <div class="flex justify-between">
       <img
