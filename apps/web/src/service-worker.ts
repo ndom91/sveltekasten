@@ -36,8 +36,6 @@ self.addEventListener("message", (event) => {
 self.addEventListener("fetch", (event: FetchEvent) => {
   const url = new URL(event.request.url)
 
-  console.log("SW.url", url)
-
   if (event.request.method !== "GET" || !url.pathname.includes("/api/v1/bookmarks/share")) {
     return
   }
@@ -47,16 +45,10 @@ self.addEventListener("fetch", (event: FetchEvent) => {
 
   event.waitUntil(
     (async function () {
-      console.log("SW.event.request.url", event.request.url)
-      // const url = new URL(event.request.url)
-      const targetUrl = url.searchParams.get("url")
-      console.log("SW.targetUrl", targetUrl)
-      const formData = await event.request.formData()
-      const formDataObj = {}
-      for (const pair of formData.entries()) {
-        formDataObj[pair[0]] = pair[1]
-      }
+      const textParam = url.searchParams.get("text")
+      const urlParam = url.searchParams.get("link")
 
+      const targetUrl = urlParam ?? textParam ?? ""
       const userId = "clu6qepua0000scqbkr2t0uki"
 
       await fetch("/api/v1/bookmarks", {
@@ -67,11 +59,7 @@ self.addEventListener("fetch", (event: FetchEvent) => {
         body: JSON.stringify([
           {
             rawUrl: url,
-            url: targetUrl,
-            formDataObj,
-            formData,
-            event,
-            eventRequest: event.request,
+            url: decodeURIComponent(targetUrl),
             userId,
           },
         ]),

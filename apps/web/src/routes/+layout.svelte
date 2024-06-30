@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Toaster } from "svelte-sonner"
+  import { Toaster, toast } from "svelte-sonner"
   import { type Snippet, setContext } from "svelte"
   import DragAdd from "./DragAdd.svelte"
   import Scripts from "./Scripts.svelte"
@@ -42,6 +42,7 @@
     console.log("This page is currently controlled by:", navigator.serviceWorker.controller)
 
     navigator.serviceWorker.onmessage = (event) => {
+      toast.success(`sw: ${event.data.msg}`)
       console.log(event.data.msg, event.data.url)
     }
   }

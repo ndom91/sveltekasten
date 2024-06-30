@@ -17,7 +17,7 @@
     "method": "GET",
     "params": {
       "title": "name",
-      "text": "description",
+      "text": "text",
       "url": "link"
     }
   },
