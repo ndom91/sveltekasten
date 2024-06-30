@@ -14,18 +14,11 @@
   "start_url": "/",
   "share_target": {
     "action": "/api/v1/bookmarks/share",
-    "method": "POST",
-    "enctype": "multipart/form-data",
+    "method": "GET",
     "params": {
       "title": "name",
       "text": "description",
-      "url": "link",
-      "files": [
-        {
-          "name": "urls",
-          "accept": "text/plain"
-        }
-      ]
+      "url": "link"
     }
   },
   "icons": [
