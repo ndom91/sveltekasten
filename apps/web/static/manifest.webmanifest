@@ -1,5 +1,5 @@
 {
-  "id": "briefbutler-4",
+  "id": "briefbutler-5",
   "name": "BriefButler",
   "lang": "en_US",
   "short_name": "BriefButler",
@@ -100,13 +100,6 @@
       "type": "image/png",
       "form_factor": "wide",
       "label": "Feed"
-    }
-  ],
-  "related_applications": [
-    {
-      "platform": "webapp",
-      "url": "https://dev.briefkastenhq.com",
-      "id": "com.briefkastenhq.dev"
     }
   ]
 }
