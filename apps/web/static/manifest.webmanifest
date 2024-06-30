@@ -23,8 +23,8 @@
       "files": [
         {
           "name": "urls",
-          "accept": ["text/plain"]
-        },
+          "accept": "text/plain"
+        }
       ]
     }
   },
