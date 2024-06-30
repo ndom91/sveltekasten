@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Toaster, toast } from "svelte-sonner"
-  import { type Snippet, setContext } from "svelte"
+  import { type Snippet, onMount, setContext } from "svelte"
   import DragAdd from "./DragAdd.svelte"
   import Scripts from "./Scripts.svelte"
   import Shortcuts from "./GlobalShortcuts.svelte"
@@ -38,23 +38,26 @@
     })
   })
 
-  if (browser && navigator.serviceWorker.controller) {
-    console.log("This page is currently controlled by:", navigator.serviceWorker.controller)
+  onMount(() => {
+    if (browser && navigator.serviceWorker.controller) {
+      console.log("This page is currently controlled by:", navigator.serviceWorker.controller)
+      navigator.serviceWorker.startMessages()
 
-    navigator.serviceWorker.onmessage = (event) => {
-      toast.success(`sw: ${event.data.msg}`)
-      console.log(event.data.msg, event.data.url)
+      navigator.serviceWorker.onmessage = (event) => {
+        toast.success(`sw.message: ${event.data}`)
+        console.log("sw.message:", event.data)
+      }
     }
-  }
 
-  if (browser && "serviceWorker" in navigator) {
-    navigator.serviceWorker.register(
-      // @ts-expect-error - its fine, we're not transpiling to cjs
-      import.meta.env.MODE === "production" ? "/service-worker.js" : "/dev-sw.js?dev-sw",
-      // @ts-expect-error - its fine, we're not transpiling to cjs
-      { type: import.meta.env.MODE === "production" ? "classic" : "module" },
-    )
-  }
+    if (browser && "serviceWorker" in navigator) {
+      navigator.serviceWorker.register(
+        // @ts-expect-error - its fine, we're not transpiling to cjs
+        import.meta.env.MODE === "production" ? "/service-worker.js" : "/dev-sw.js?dev-sw",
+        // @ts-expect-error - its fine, we're not transpiling to cjs
+        { type: import.meta.env.MODE === "production" ? "classic" : "module" },
+      )
+    }
+  })
 </script>
 
 <svelte:head>

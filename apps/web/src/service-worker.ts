@@ -3,37 +3,37 @@
 /// <reference lib="esnext" />
 /// <reference lib="webworker" />
 
-import { CacheFirst } from "workbox-strategies"
-import { registerRoute, Route } from "workbox-routing"
+const sw = self as unknown as ServiceWorkerGlobalScope
 
-declare let self: ServiceWorkerGlobalScope
+// import { CacheFirst } from "workbox-strategies"
+// import { registerRoute, Route } from "workbox-routing"
+//
+// const fontAssetRoute = new Route(
+//   ({ request }) => {
+//     return request.destination === "font"
+//   },
+//   new CacheFirst({
+//     cacheName: "font-assets",
+//   }),
+// )
+// const imageAssetRoute = new Route(
+//   ({ request }) => {
+//     return request.destination === "image"
+//   },
+//   new CacheFirst({
+//     cacheName: "image-assets",
+//   }),
+// )
+//
+// registerRoute(fontAssetRoute)
+// registerRoute(imageAssetRoute)
 
-const fontAssetRoute = new Route(
-  ({ request }) => {
-    return request.destination === "font"
-  },
-  new CacheFirst({
-    cacheName: "font-assets",
-  }),
-)
-const imageAssetRoute = new Route(
-  ({ request }) => {
-    return request.destination === "image"
-  },
-  new CacheFirst({
-    cacheName: "image-assets",
-  }),
-)
-
-registerRoute(fontAssetRoute)
-registerRoute(imageAssetRoute)
-
-self.addEventListener("message", (event) => {
-  if (event.data && event.data.type === "SKIP_WAITING") self.skipWaiting()
+sw.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") sw.skipWaiting()
 })
 
 // Special fetch handler for song file sharing.
-self.addEventListener("fetch", (event: FetchEvent) => {
+sw.addEventListener("fetch", (event: FetchEvent) => {
   const url = new URL(event.request.url)
 
   if (event.request.method !== "GET" || !url.pathname.includes("/api/v1/bookmarks/share")) {
@@ -62,12 +62,8 @@ self.addEventListener("fetch", (event: FetchEvent) => {
         ]),
       })
 
-      const client = await self.clients.get(event.clientId)
-
-      client?.postMessage({
-        msg: "Got your share!",
-        url,
-      })
+      const client = await sw.clients.get(event.clientId)
+      client?.postMessage("Bookmark Saved!")
     })(),
   )
 })
