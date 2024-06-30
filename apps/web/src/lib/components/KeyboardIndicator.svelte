@@ -9,7 +9,7 @@
 <kbd
   {...$$restProps}
   class={cn(
-    "inline-block rounded-sm bg-zinc-300 p-1 text-zinc-800 dark:bg-zinc-600 dark:text-zinc-100",
+    "inline-block rounded-sm bg-zinc-300 p-1 px-2 text-zinc-800 dark:bg-neutral-600 dark:text-zinc-100",
     className,
   )}
 >

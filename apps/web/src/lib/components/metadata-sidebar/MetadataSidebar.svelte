@@ -34,7 +34,7 @@
   $effect(() => {
     // Hack to get effect to run on sidebar toggle
     ui.metadataSidebarOpen
-    // @ts-expect-error
+    // @ts-expect-error - startViewTransition is a new feature
     document.startViewTransition ? document.startViewTransition(() => mutate()) : mutate()
   })
 </script>
@@ -43,7 +43,7 @@
 <aside
   bind:this={metadataSidebarElement}
   class={cn(
-    "transition-all space-between relative flex h-screen flex-shrink-0 flex-col border-l bg-zinc-50 dark:border-l-zinc-800 dark:bg-zinc-900",
+    "transition-all space-between relative flex h-screen flex-shrink-0 flex-col border-l bg-zinc-50 dark:border-l-zinc-800 dark:bg-neutral-900",
   )}
 >
   {#if ui.metadataSidebarOpen}

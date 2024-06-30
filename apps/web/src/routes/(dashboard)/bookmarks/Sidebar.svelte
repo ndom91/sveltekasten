@@ -27,17 +27,17 @@
   const ui = useInterface()
 
   const isEditMode = $derived(ui.metadataSidebarEditMode === true)
-  const bookmark = bookmarkStore.find(ui.metadataSidebarData.bookmark?.id!)
+  const bookmark = bookmarkStore.find(ui.metadataSidebarData.bookmark?.id)
   console.log("sidebar.foundBookmark", bookmark)
 
   const defaultData = {
-    id: ui.metadataSidebarData.bookmark?.id!,
-    url: ui.metadataSidebarData.bookmark?.url!,
-    title: ui.metadataSidebarData.bookmark?.title!,
-    description: ui.metadataSidebarData.bookmark?.desc!,
-    image: ui.metadataSidebarData.bookmark?.image!,
+    id: ui.metadataSidebarData.bookmark?.id,
+    url: ui.metadataSidebarData.bookmark?.url,
+    title: ui.metadataSidebarData.bookmark?.title,
+    description: ui.metadataSidebarData.bookmark?.desc,
+    image: ui.metadataSidebarData.bookmark?.image,
     category: ui.metadataSidebarData.bookmark?.category?.id,
-    tags: ui.metadataSidebarData.bookmark?.tags!,
+    tags: ui.metadataSidebarData.bookmark?.tags,
   }
 
   const superformInstance = superForm(defaults(defaultData, zodClient(metadataSchema)), {
@@ -144,7 +144,7 @@
           {...$constraints.title}
           class={cn(
             "flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-            !isEditMode ? "cursor-default text-muted" : "bg-zinc-100 dark:bg-zinc-950",
+            !isEditMode ? "cursor-default text-muted" : "bg-zinc-100 dark:bg-neutral-950",
           )}
         />
         {#if $errors.title}<span class="text-xs text-red-400">{$errors.title}</span>{/if}
@@ -162,7 +162,7 @@
             class={cn(
               "flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
               ui.metadataSidebarData.bookmark.metadata?.logo && "pl-10",
-              !isEditMode ? "cursor-default text-muted" : "bg-zinc-100 dark:bg-zinc-950",
+              !isEditMode ? "cursor-default text-muted" : "bg-zinc-100 dark:bg-neutral-950",
             )}
           />
           {#if ui.metadataSidebarData.bookmark.metadata?.logo}
@@ -186,13 +186,13 @@
           {...$constraints.description}
           class={cn(
             "flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-            !isEditMode ? "cursor-default text-muted" : "bg-zinc-100 dark:bg-zinc-950",
+            !isEditMode ? "cursor-default text-muted" : "bg-zinc-100 dark:bg-neutral-950",
           )}
         ></textarea>
         {#if $errors.description}<span class="text-xs text-red-400">{$errors.title}</span>{/if}
       </div>
       <div class="flex flex-col gap-2">
-        <Popover.Root class="relative" bind:open={selectOpen} let:ids>
+        <Popover.Root bind:open={selectOpen}>
           <Label>Category</Label>
           <Popover.Trigger
             class={cn(
@@ -201,12 +201,12 @@
               !$form.category && "text-muted-foreground",
               !isEditMode
                 ? "cursor-default pointer-events-none text-muted"
-                : "bg-zinc-100 dark:bg-zinc-950",
+                : "bg-zinc-100 dark:bg-neutral-950",
             )}
             role="combobox"
           >
-            {ui.metadataSidebarData.categories.find(c => c.id === $form.category)?.name
-            ?? "Select category"}
+            {ui.metadataSidebarData.categories?.find((c) => c.id === $form.category)?.name ??
+              "Select category"}
             <svg
               class="ml-2 w-4 h-4 opacity-50 shrink-0"
               data-slot="icon"
@@ -229,7 +229,7 @@
               <Command.Input autofocus placeholder="Search categories..." class="h-9" />
               <Command.Empty>No categories.</Command.Empty>
               <Command.Group>
-                {#each ui.metadataSidebarData.categories as category}
+                {#each ui.metadataSidebarData.categories ?? [] as category}
                   <Command.Item
                     value={category.name}
                     class="justify-between w-full cursor-pointer"

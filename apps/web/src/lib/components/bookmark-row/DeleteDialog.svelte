@@ -1,45 +1,39 @@
 <script lang="ts">
-  import type { ActionData } from "./$types"
-  import { page } from "$app/stores"
   import { enhance } from "$app/forms"
   import { handleActionResults } from "$lib/utils/form-action"
   import { buttonVariants } from "$lib/components/ui/button"
-  import * as AlertDialog from "$lib/components/ui/alert-dialog"
+  import Dialog from "$lib/components/Dialog.svelte"
+  import { cn } from "$/lib/utils/style"
 
   let {
-    open = $bindable(),
+    dialogElement = $bindable(),
     bookmarkId,
   }: {
-    form?: ActionData
-    open: boolean
+    dialogElement: HTMLDialogElement | null
     bookmarkId: string
   } = $props()
-
-  $effect(() => {
-    if ($page.form?.type === "success") {
-      open = false
-    }
-  })
 </script>
 
-<AlertDialog.Root bind:open closeOnOutsideClick closeOnEscape>
-  <AlertDialog.Content>
-    <AlertDialog.Header>
-      <AlertDialog.Title>Are you sure?</AlertDialog.Title>
-      <AlertDialog.Description>
-        This action cannot be undone. This will permanently delete your bookmark.
-      </AlertDialog.Description>
-    </AlertDialog.Header>
-    <AlertDialog.Footer>
-      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-      <AlertDialog.Action asChild>
-        <form action="?/deleteBookmark" method="post" use:enhance={handleActionResults()}>
-          <input type="hidden" name="bookmarkId" value={bookmarkId} />
-          <button class={buttonVariants({ variant: "destructive" })} type="submit">
-            Continue
-          </button>
-        </form>
-      </AlertDialog.Action>
-    </AlertDialog.Footer>
-  </AlertDialog.Content>
-</AlertDialog.Root>
+<Dialog footer={false} id="delete-bookmark" bind:element={dialogElement}>
+  <div>
+    <h3 class="font-bold text-lg mb-4">Are you sure?</h3>
+    <div>This action cannot be undone. This will permanently delete your bookmark.</div>
+  </div>
+  <div class="flex flex-col sm:flex-row gap-4 sm:justify-end">
+    <button
+      onclick={() => dialogElement?.close()}
+      class={cn(buttonVariants({ variant: "secondary" }), "w-full sm:w-auto")}
+    >
+      Cancel
+    </button>
+    <form action="?/deleteBookmark" method="post" use:enhance={handleActionResults()}>
+      <input type="hidden" name="bookmarkId" value={bookmarkId} />
+      <button
+        class={cn(buttonVariants({ variant: "destructive" }), "w-full sm:w-auto")}
+        type="submit"
+      >
+        Continue
+      </button>
+    </form>
+  </div>
+</Dialog>

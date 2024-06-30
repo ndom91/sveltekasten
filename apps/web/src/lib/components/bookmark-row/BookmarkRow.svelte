@@ -1,7 +1,7 @@
 <script lang="ts">
   import { ofetch } from "ofetch"
   import { format } from "@formkit/tempo"
-  import { getContext } from "svelte"
+  import { getContext, type SvelteComponent } from "svelte"
   import BookmarkActions from "./BookmarkActions.svelte"
   import MobileBookmarkActions from "./MobileBookmarkActions.svelte"
   import MediaQuery from "$lib/components/MediaQuery.svelte"
@@ -10,8 +10,10 @@
   import { useInterface } from "$state/ui.svelte"
   import { invalidateAll } from "$app/navigation"
   import { Image } from "$lib/components/image"
+  import DeleteDialog from "./DeleteDialog.svelte"
 
   const bookmarkStore = getContext<BookmarkContext>("bookmarks")
+  let deleteElement = $state<HTMLDialogElement | null>(null)
 
   const ui = useInterface()
 
@@ -20,10 +22,9 @@
   let bookmark = $state(bookmarkStore.find(bookmarkId)!)
 
   $effect(() => {
-    bookmark = bookmarkStore?.find(bookmarkId)!
+    bookmark = bookmarkStore.find(bookmarkId)!
   })
 
-  let isDeleteDialogOpen = $state(false)
   let isOptionsOpen = $state(false)
 
   const handleMetadataSidebarOpen = () => {
@@ -49,13 +50,11 @@
   tabindex={0}
   data-id={bookmark.id}
   role="row"
-  class="grid relative grid-cols-1 gap-4 p-4 mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none md:grid-cols-[15rem_1fr] dark:focus:bg-zinc-900 focus:border-zinc-500 focus:bg-zinc-100"
+  class="grid relative grid-cols-1 gap-4 p-4 mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none md:grid-cols-[15rem_1fr] dark:focus:bg-neutral-800 focus:border-zinc-500 focus:bg-zinc-100"
   onmouseleave={() => (isOptionsOpen = false)}
   onmouseenter={() => (isOptionsOpen = true)}
 >
-  {#await import("./DeleteDialog.svelte") then { default: DeleteDialog }}
-    <svelte:component this={DeleteDialog} bind:open={isDeleteDialogOpen} bookmarkId={bookmark.id} />
-  {/await}
+  <DeleteDialog bind:dialogElement={deleteElement} bookmarkId={bookmark.id} />
   <Image
     thumbhash={bookmark.imageBlur ?? ""}
     src={bookmark.image ?? `https://source.unsplash.com/random/240x144?sig=${bookmark.url}`}
@@ -101,14 +100,14 @@
         <MobileBookmarkActions
           url={bookmark.url ?? ""}
           {handleMetadataSidebarOpen}
-          handleDeleteDialogOpen={() => (isDeleteDialogOpen = true)}
+          handleDeleteDialogOpen={() => deleteElement?.showModal()}
           {handleArchive}
         />
       {:else}
         <BookmarkActions
           url={bookmark.url ?? ""}
           {handleMetadataSidebarOpen}
-          handleDeleteDialogOpen={() => (isDeleteDialogOpen = true)}
+          handleDeleteDialogOpen={() => deleteElement?.showModal()}
           {isOptionsOpen}
           {handleArchive}
         />

@@ -24,13 +24,15 @@
     header,
     confirmLabel,
     cancelLabel,
+    ...rest
   }: Props = $props()
 </script>
 
 <dialog
   {id}
   bind:this={element}
-  class="z-20 translate-y-[50%] bg-white rounded-lg shadow-sm md:mt-8 lg:mt-16 dark:bg-zinc-900"
+  class="bg-white rounded-lg shadow-xl border dark:bg-neutral-900"
+  {...rest}
 >
   {#if header}
     <header class="py-2">
