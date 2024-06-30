@@ -172,11 +172,18 @@
                         <Render of={cell.render()} />
                       </Table.Cell>
                     {:else if cell.id === "name"}
-                      <Table.Cell class="max-w-48 truncate" {...attrs}>
+                      <!-- @ts-expect-error -->
+                      <Table.Cell class="max-w-48 truncate" title={cell.value} {...attrs}>
+                        <Render of={cell.render()} />
+                      </Table.Cell>
+                    {:else if cell.id === "lastFetched"}
+                      <!-- @ts-expect-error -->
+                      <Table.Cell class="max-w-48 truncate" title={cell.value} {...attrs}>
                         <Render of={cell.render()} />
                       </Table.Cell>
                     {:else if cell.id === "url"}
-                      <Table.Cell class="max-w-48 truncate" {...attrs}>
+                      <!-- @ts-expect-error -->
+                      <Table.Cell class="max-w-48 truncate" title={cell.value} {...attrs}>
                         <Render of={cell.render()} />
                       </Table.Cell>
                     {:else if cell.id === "actions"}
