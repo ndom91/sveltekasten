@@ -24,5 +24,4 @@ tsconfig.tsbuildinfo
 **/playwright-report/
 **/blob-report/
 **/playwright/.cache/
-
-haters/
+dev-dist

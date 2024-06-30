@@ -1,13 +1,11 @@
 <script lang="ts">
   import { type Snippet } from "svelte"
   import { setContext } from "svelte"
-  import { Toaster, toast } from "svelte-sonner"
+  import { Toaster } from "svelte-sonner"
   import DragAdd from "./DragAdd.svelte"
   import Scripts from "./Scripts.svelte"
   import Shortcuts from "./GlobalShortcuts.svelte"
   import { browser } from "$app/environment"
-  import { goto } from "$app/navigation";
-  import { page } from "$app/stores";
   import type { LayoutData } from "./$types"
 
   import { onNavigate } from "$app/navigation"
@@ -22,13 +20,6 @@
   const ui = useInterface()
 
   const { data, children }: { data: LayoutData; children: Snippet } = $props()
-
-  // Share Target Redirect
-  const sharedSuccess = $page.url.searchParams.get('shared')
-  if (sharedSuccess === "true") {
-    toast.success('Link saved!')
-    goto('/')
-  }
 
   // Set current user preferences to store
   ui.aiFeaturesPreferences = data.session?.user?.settings?.ai ?? defaultAISettings

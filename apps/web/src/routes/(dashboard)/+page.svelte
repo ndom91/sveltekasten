@@ -2,6 +2,19 @@
   import { Navbar } from "$lib/components/navbar"
   import { HomeScroller } from "$lib/components/home-scroller"
   import { ScrollerTypes } from "$lib/types"
+  import { toast } from "svelte-sonner"
+  import { goto } from "$app/navigation"
+  import { page } from "$app/stores"
+  import { onMount } from "svelte"
+
+  onMount(() => {
+    // Share Target Redirect
+    const sharedSuccess = $page.url.searchParams.get("shared")
+    if (sharedSuccess === "true") {
+      toast.success("Link saved!")
+      goto("/")
+    }
+  })
 
   type HomeLoadResults = {
     bookmarks: {
