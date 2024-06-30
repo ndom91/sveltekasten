@@ -16,9 +16,9 @@
     "action": "/api/v1/bookmarks/share",
     "method": "GET",
     "params": {
-      "title": "title",
-      "text": "text",
-      "url": "url"
+      "title": "name",
+      "text": "description",
+      "url": "link"
     }
   },
   "icons": [
