@@ -6,8 +6,10 @@ export const isAuthenticated = async (event: RequestEvent): Promise<Session> | n
 
   if (session === null || session.user === undefined || session.user.email === null) {
     if (event.request.formData === undefined) {
+      // For form actions
       error(401, { message: "You are not logged in." })
     } else {
+      // For API handlers
       fail(401, { message: "You are not logged in." })
     }
   }

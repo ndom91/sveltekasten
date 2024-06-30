@@ -47,8 +47,10 @@ self.addEventListener("fetch", (event: FetchEvent) => {
 
   event.waitUntil(
     (async function () {
+      console.log("SW.event.request.url", event.request.url)
       const url = new URL(event.request.url)
       const targetUrl = url.searchParams.get("url")
+      console.log("SW.targetUrl", targetUrl)
 
       // TODO: Get userId
       const userId = "clu6qepua0000scqbkr2t0uks"
