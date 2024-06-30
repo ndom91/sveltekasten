@@ -16,7 +16,7 @@
       // TODO: Hacky cache invalidation; move to sw.onmessage handler when that's working
       setTimeout(() => {
         invalidateAll()
-      }, 1000)
+      }, 3000)
     }
   })
 
