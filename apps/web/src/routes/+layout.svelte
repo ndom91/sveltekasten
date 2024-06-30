@@ -1,7 +1,7 @@
 <script lang="ts">
   import { type Snippet } from "svelte"
   import { setContext } from "svelte"
-  import { Toaster } from "svelte-sonner"
+  import { Toaster, toast } from "svelte-sonner"
   import DragAdd from "./DragAdd.svelte"
   import Scripts from "./Scripts.svelte"
   import Shortcuts from "./GlobalShortcuts.svelte"
@@ -20,6 +20,13 @@
   const ui = useInterface()
 
   const { data, children }: { data: LayoutData; children: Snippet } = $props()
+
+  // Share Target Redirect
+  const urlParams = new URLSearchParams(window.location.search);
+  const sharedSuccess = urlParams.get('shared')
+  if (sharedSuccess === "true") {
+    toast.success('Link saved!')
+  }
 
   // Set current user preferences to store
   ui.aiFeaturesPreferences = data.session?.user?.settings?.ai ?? defaultAISettings

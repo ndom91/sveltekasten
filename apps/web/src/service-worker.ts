@@ -43,7 +43,7 @@ self.addEventListener("fetch", (event: FetchEvent) => {
   }
 
   // Immediately redirect to the start URL, there's nothing to see here.
-  event.respondWith(Response.redirect("./"))
+  event.respondWith(Response.redirect("./?shared=true"))
 
   event.waitUntil(
     (async function () {
