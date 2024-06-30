@@ -1,5 +1,5 @@
 {
-  "id": "briefbutler-6",
+  "id": "briefbutler-7",
   "name": "BriefButler",
   "lang": "en_US",
   "short_name": "BriefButler",
@@ -47,18 +47,15 @@
   ],
   "shortcuts": [
     {
-      "name": "Feeds",
-      "short_name": "Feeds",
-      "url": "/feeds"
-    },
-    {
-      "name": "Bookmarks",
-      "short_name": "Bookmarks",
-      "url": "/bookmarks"
-    },
-    {
       "name": "New Item",
-      "short_name": "Create New",
+      "short_name": "New Item",
+      "icons": [
+        {
+          "src": "img/quickAdd.svg",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ],
       "url": "/bookmarks?quickAdd=true"
     }
   ],

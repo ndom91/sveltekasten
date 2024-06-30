@@ -49,7 +49,6 @@ self.addEventListener("fetch", (event: FetchEvent) => {
       const urlParam = url.searchParams.get("link")
 
       const targetUrl = urlParam ?? textParam ?? ""
-      const userId = "clu6qepua0000scqbkr2t0uki"
 
       await fetch("/api/v1/bookmarks", {
         method: "POST",
@@ -59,7 +58,6 @@ self.addEventListener("fetch", (event: FetchEvent) => {
         body: JSON.stringify([
           {
             url: decodeURIComponent(targetUrl),
-            userId,
           },
         ]),
       })

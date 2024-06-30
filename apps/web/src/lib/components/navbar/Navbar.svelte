@@ -1,5 +1,6 @@
 <script lang="ts">
   import { ModeWatcher } from "mode-watcher"
+  import { cn } from "$lib/utils/style"
   import { blur } from "svelte/transition"
   import { useDebounce } from "runed"
   import { Button } from "$lib/components/ui/button"
@@ -96,7 +97,10 @@
                 builders={[tooltipBuilder]}
                 on:click={() => ui.toggleQuickAdd()}
                 variant="outline"
-                class="p-0 rounded-full size-11"
+                class={cn(
+                  ui.quickAddOpen ? "ring-2 ring-zinc-400" : "",
+                  "p-0 rounded-full size-11 transition",
+                )}
               >
                 <svg
                   class="pointer-events-none size-5"
@@ -126,8 +130,8 @@
           <Popover.Content
             transition={blur}
             transitionConfig={{ delay: 0, duration: 250 }}
-            sideOffset={15}
-            alignOffset={15}
+            sideOffset={30}
+            class="w-[calc(100%_-_16px)] sm:w-auto"
           >
             <QuickAddForm />
           </Popover.Content>
@@ -141,7 +145,10 @@
             <Button
               builders={[tooltipBuilder]}
               variant="outline"
-              class="p-0 rounded-full size-11"
+              class={cn(
+                ui.metadataSidebarOpen ? "ring-2 ring-zinc-400" : "",
+                "p-0 rounded-full size-11 transition",
+              )}
               on:click={() => ui.toggleMetadataSidebar()}
             >
               {#if ui.metadataSidebarOpen}
