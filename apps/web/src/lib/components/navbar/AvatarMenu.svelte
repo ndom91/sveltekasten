@@ -28,6 +28,10 @@
       installButton?.classList.toggle("hidden", false)
       // installButton?.style.toggleClass("hidden")
     })
+    window.addEventListener("appinstalled", () => {
+      installPrompt = null
+      installButton?.classList.toggle("hidden", true)
+    })
   })
 
   async function handleInstall() {
@@ -38,6 +42,7 @@
     // @ts-expect-error TODO: find exact type for beforeinstallprompt Event
     const result = await installPrompt.prompt()
     console.log("Install prompt", result.outcome)
+    installPrompt = null
     installButton?.classList.toggle("hidden", true)
   }
 </script>

@@ -2,7 +2,7 @@
   import { toast } from "svelte-sonner"
   import { ofetch } from "ofetch"
   import { InfiniteLoader, loaderState } from "svelte-infinite"
-  import { getContext, onDestroy } from "svelte"
+  import { getContext, onDestroy, onMount } from "svelte"
   import { watch } from "runed"
   import FilterBar from "./FilterBar.svelte"
   import { page } from "$app/stores"
@@ -13,10 +13,20 @@
   import { useInterface } from "$state/ui.svelte"
   import { BookmarkRow } from "$lib/components/bookmark-row"
   import { Logger, loggerLevels } from "$lib/utils/logger"
+  import { goto } from "$app/navigation"
 
   const ui = useInterface()
   const bookmarkStore = getContext<BookmarkContext>("bookmarks")
   bookmarkStore.bookmarks = $page.data.bookmarks.data
+
+  onMount(() => {
+    // Share Target Redirect
+    const showQuickAdd = $page.url.searchParams.get("quickAdd")
+    if (showQuickAdd === "true") {
+      goto("/bookmarks")
+      ui.toggleQuickAdd()
+    }
+  })
 
   let pageNumber = $state(0)
   let rootElement = $state<HTMLElement>()
@@ -135,10 +145,10 @@
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
       const currentActiveElementIndex = bookmarkStore.bookmarks.findIndex(
-        item => item.id === currentActiveElement.dataset.id,
+        (item) => item.id === currentActiveElement.dataset.id,
       )
-      const nextIndex
-        = e.key === "ArrowDown" || e.key === "j"
+      const nextIndex =
+        e.key === "ArrowDown" || e.key === "j"
           ? currentActiveElementIndex + 1
           : currentActiveElementIndex - 1
       const nextElement = document.querySelector(
@@ -155,7 +165,7 @@
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
       const currentActiveElementIndex = bookmarkStore.bookmarks.findIndex(
-        item => item.id === currentActiveElement.dataset.id,
+        (item) => item.id === currentActiveElement.dataset.id,
       )
       const targetLink = bookmarkStore.bookmarks[currentActiveElementIndex]?.url
       if (!targetLink) {
