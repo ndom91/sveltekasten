@@ -11,6 +11,7 @@
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { FeedRow } from "$lib/components/feed-row"
   import Blob from "$lib/assets/blob1.png"
+  import { dev } from "$app/environment"
 
   import { useInterface } from "$state/ui.svelte"
   import { invalidateAll } from "$app/navigation"
@@ -98,12 +99,12 @@
 
   // Load more items on infinite scroll
   const loadMore = async () => {
-    console.log("LOADMORE")
+    dev && console.log("LOADMORE")
     try {
       pageNumber += 1
       const limit = limitLoadCount
       const skip = limitLoadCount * pageNumber
-      console.log("LOADMORE", { limitLoadCount, pageNumber, limit, skip })
+      dev && console.log("LOADMORE", { limitLoadCount, pageNumber, limit, skip })
 
       const searchResults = await fetchSearchResults({ limit, skip })
       if (!searchResults?.data) {
@@ -112,17 +113,17 @@
       }
 
       if (searchResults.data.length) {
-        console.log("GOT RESULTS", searchResults.data.length)
+        dev && console.log("GOT RESULTS", searchResults.data.length)
 
         allItems = [...allItems, ...searchResults.data]
-        console.log("ALLITEMS", allItems.length)
+        dev && console.log("ALLITEMS", allItems.length)
       }
 
       if (allItems.length >= searchResults.count) {
-        console.log("LOADMORE.COMPLETE")
+        dev && console.log("LOADMORE.COMPLETE")
         loaderState.complete()
       } else {
-        console.log("LOADMORE.LOADED")
+        dev && console.log("LOADMORE.LOADED")
         loaderState.loaded()
       }
     } catch (error) {
@@ -131,7 +132,7 @@
       loaderState.error()
       pageNumber -= 1
     }
-    console.log("LOADMORE.END")
+    dev && console.log("LOADMORE.END")
   }
 
   $inspect("loaderState", loaderState)
@@ -142,7 +143,7 @@
     () => ui.searchQuery,
     () => {
       if (!loaderState.isFirstLoad) {
-        console.log("effect.loaderState.reset")
+        dev && console.log("effect.loaderState.reset")
         loaderState.reset()
         pageNumber = -1
         allItems = []
@@ -162,8 +163,8 @@
       const currentActiveElementIndex = allItems.findIndex(
         (item: LoadFeedEntry) => item.id === currentActiveElement.dataset.id,
       )
-      const nextIndex
-        = e.key === "ArrowDown" || e.key === "j"
+      const nextIndex =
+        e.key === "ArrowDown" || e.key === "j"
           ? currentActiveElementIndex + 1
           : currentActiveElementIndex - 1
       const nextElement = document.querySelector(

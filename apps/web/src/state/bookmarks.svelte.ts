@@ -1,40 +1,40 @@
+import { Map } from "svelte/reactivity"
+
 type Bookmark = LoadBookmarkFlatTags
 
-let bookmarks = $state<Bookmark[]>()
+const bookmarks = new Map<string, Bookmark>()
 
 export function useBookmarks(initial?: Bookmark[]) {
   if (initial) {
-    bookmarks = initial
+    initial.forEach((bk) => bookmarks.set(bk.id, bk))
   }
 
   function add(bookmark: Bookmark | Bookmark[]) {
     if (Array.isArray(bookmark)) {
-      bookmarks?.push(...bookmark)
+      bookmark.forEach((bk) => bookmarks.set(bk.id, bk))
     } else {
-      bookmarks?.push(bookmark)
+      bookmarks.set(bookmark.id, bookmark)
     }
   }
 
   function remove(bookmarkId: string) {
-    bookmarks = bookmarks?.filter(bookmark => bookmark.id !== bookmarkId)
+    bookmarks.delete(bookmarkId)
   }
 
   function update(bookmark: Bookmark) {
-    bookmarks = bookmarks?.map(b => (b.id === bookmark.id ? bookmark : b))
+    bookmarks.set(bookmark.id, bookmark)
   }
 
   function find(bookmarkId: string) {
-    if (bookmarks?.length) {
-      return bookmarks?.find(bookmark => bookmark.id === bookmarkId)
-    }
+    return bookmarks.get(bookmarkId)
   }
 
   return {
     get bookmarks() {
-      return bookmarks ?? []
+      return Array.from(bookmarks.values())
     },
     set bookmarks(value: Bookmark[]) {
-      bookmarks = value
+      value.forEach((bk) => bookmarks.set(bk.id, bk))
     },
     add,
     remove,

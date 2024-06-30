@@ -26,7 +26,7 @@ export const load: LayoutServerLoad = async ({ locals }) => {
     return {
       quickAddForm,
       tags,
-      categories,
+      categories: categories.map((category) => ({ ...category, visible: true })),
     }
   } catch (error) {
     if (error instanceof Error) {
