@@ -9,8 +9,8 @@
 @layer base {
   :root {
     /* --background: 0 0% 100%; */
-    --background: #F3F3F2;
-      /* color(display-p3 1 1 1 / 1); */
+    --background: #FDFEFD;
+    /* color(display-p3 1 1 1 / 1); */
     --foreground: 222.2 84% 4.9%;
 
     --muted: 210 30% 80.1%;
@@ -48,7 +48,7 @@
     /* --backgroundSlate: 222.2 84% 4.9%; */
     /* --background: 240 10% 4%; */
     --background: #1B1B1B;
-      /* color(display-p3 0.035294 0.035294 0.043137 / 1); */
+    /* color(display-p3 0.035294 0.035294 0.043137 / 1); */
     /* 50 */
     --foregroundSlate: 210 40% 98%;
     --foreground: 0 0% 98%;
@@ -197,8 +197,15 @@ p {
   cursor: pointer;
 }
 
+::-webkit-scrollbar-button {
+  display: none !important;
+  background: transparent;
+  color: transparent;
+}
+
 ::-webkit-scrollbar-corner {
   background: transparent;
+  display: none !important;
 }
 
 @supports (scrollbar-width: thin) {

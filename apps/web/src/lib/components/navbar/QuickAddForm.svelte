@@ -45,7 +45,7 @@
 >
   <div class="flex flex-col gap-2 align-start">
     <Label class="flex justify-between items-end" for="title"
-    >Title<small class="text-neutral-400 dark:text-neutral-600">required</small></Label
+      >Title<small class="text-neutral-400 dark:text-neutral-600">required</small></Label
     >
     <input
       type="text"
@@ -54,7 +54,7 @@
       aria-invalid={$errors.title ? "true" : undefined}
       {...$constraints.title}
       class={cn(
-        "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-background file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 focus:ring-2 focus:ring-offset-2 focus:outline-none focus:ring-foreground focus:ring-offset-background transition-shadow duration-200",
+        "flex h-10 w-full rounded-md border border-input disabled:bg-transparent disabled:opacity-50 enabled:bg-zinc-100 placeholder:text-foreground/50 dark:enabled:bg-zinc-950 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-background file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground disabled:cursor-not-allowed  focus:ring-2 focus:ring-offset-2 focus:outline-none focus:ring-foreground focus:ring-offset-background transition-shadow duration-200",
         $errors.title ? "border-red-300" : "",
       )}
     />
@@ -73,7 +73,7 @@
       aria-invalid={$errors.url ? "true" : undefined}
       {...$constraints.url}
       class={cn(
-        "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-background file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 focus:ring-2 focus:ring-offset-2 focus:outline-none focus:ring-foreground focus:ring-offset-background transition-shadow duration-200",
+        "flex h-10 w-full rounded-md border border-input disabled:bg-transparent enabled:bg-zinc-100 placeholder:text-foreground/50 dark:enabled:bg-zinc-950 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-background file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 focus:ring-2 focus:ring-offset-2 focus:outline-none focus:ring-foreground focus:ring-offset-background transition-shadow duration-200",
         $errors.url ? "border-red-300" : "",
       )}
     />
@@ -84,14 +84,14 @@
     <Label for="category">Category</Label>
     <Select.Root
       name="categoryId"
-      onSelectedChange={e => ($categoryProxy = e?.value)}
-      items={$page.data?.categories?.map((cat: { id: string, name: string }) => ({
+      onSelectedChange={(e) => ($categoryProxy = e?.value)}
+      items={$page.data?.categories?.map((cat: { id: string; name: string }) => ({
         value: cat.id,
         label: cat.name,
       }))}
     >
       <Select.Trigger
-        class="w-full transition-shadow duration-200 focus:ring-2 focus:ring-offset-2 focus:outline-none bg-background focus:ring-foreground focus:ring-offset-background"
+        class="w-full transition-shadow duration-200 focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:bg-transparent disabled:opacity-50 truncate border-input enabled:bg-zinc-100 placeholder:text-foreground/50 dark:enabled:bg-zinc-950 focus:ring-foreground focus:ring-offset-background"
       >
         <Select.Value placeholder="Choose a category" />
       </Select.Trigger>
@@ -121,7 +121,7 @@
       aria-invalid={$errors.description ? "true" : undefined}
       {...$constraints.description}
       class={cn(
-        "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-background file:text-sm file:font-medium file:text-foreground placeholder:text-muted disabled:cursor-not-allowed disabled:opacity-50 focus:ring-2 focus:ring-offset-2 focus:outline-none focus:ring-foreground focus:ring-offset-background transition-shadow duration-200",
+        "flex h-10 w-full rounded-md border border-input disabled:bg-transparent truncate enabled:bg-zinc-100 placeholder:text-foreground/50 dark:enabled:bg-zinc-950 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-background file:text-sm file:font-medium file:text-foreground placeholder:text-muted disabled:cursor-not-allowed disabled:opacity-50 focus:ring-2 focus:ring-offset-2 focus:outline-none focus:ring-foreground focus:ring-offset-background transition-shadow duration-200",
         $errors.description ? "border-red-300" : "",
       )}
     />

@@ -44,7 +44,7 @@
 
 <svelte:window onkeydown={handleKeyDown} />
 <nav
-  class="flex justify-between items-center p-4 mx-auto w-full border-b h-[73px] border-b-zinc-100 dark:border-b-zinc-900"
+  class="flex justify-between items-center p-4 mx-auto w-full border-b h-16 border-input dark:border-b-zinc-800"
 >
   <ModeWatcher />
   <Breadcrumbs />
@@ -92,12 +92,10 @@
             <div
               class="rounded-full transition duration-300 focus-within:rounded-full focus-within:ring-2 focus-within:outline-none dark:focus-within:ring-zinc-800 focus-within:ring-zinc-300"
             >
-              <!-- TODO: Fix quick-add button tooltip; Re-add builder to btn -->
               <Button
                 builders={[tooltipBuilder]}
-                onclick={() => ui.toggleQuickAdd()}
+                on:click={() => ui.toggleQuickAdd()}
                 variant="outline"
-                id="quickAddButton"
                 class="p-0 rounded-full size-11"
               >
                 <svg
@@ -120,7 +118,7 @@
               </Button>
             </div>
           </Tooltip.Trigger>
-          <Tooltip.Content transition={flyAndScale}>
+          <Tooltip.Content>
             <p class="flex justify-center items-center">
               Quick add Bookmark <KeyboardIndicator key="Alt N" class="ml-2 text-xs" />
             </p>
