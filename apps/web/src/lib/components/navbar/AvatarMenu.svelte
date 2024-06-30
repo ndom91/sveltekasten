@@ -8,12 +8,37 @@
   import { Skeleton } from "$lib/components/ui/skeleton"
   import { version } from "$app/environment"
   import { flyAndScale } from "$lib/utils/style"
+  import { onMount } from "svelte"
 
   const isDarkMode = $derived($mode === "dark")
   let element = $state<HTMLDialogElement | null>(null)
+  let installPrompt: Event | null = null
+  let installButton: HTMLButtonElement | null = null
 
   const toggleKeyboardShorcuts = () => {
     element?.showModal()
+  }
+
+  onMount(() => {
+    installButton = document.querySelector("#install")
+
+    window.addEventListener("beforeinstallprompt", (event) => {
+      event.preventDefault()
+      installPrompt = event
+      installButton?.classList.toggle("hidden", false)
+      // installButton?.style.toggleClass("hidden")
+    })
+  })
+
+  async function handleInstall() {
+    if (!installPrompt) {
+      return
+    }
+
+    // @ts-expect-error TODO: find exact type for beforeinstallprompt Event
+    const result = await installPrompt.prompt()
+    console.log("Install prompt", result.outcome)
+    installButton?.classList.toggle("hidden", true)
   }
 </script>
 
@@ -59,6 +84,13 @@
       </DropdownMenu.Item>
       <DropdownMenu.Item href="/settings" class="justify-start hover:cursor-pointer">
         Settings
+      </DropdownMenu.Item>
+      <DropdownMenu.Item
+        id="install"
+        onclick={handleInstall}
+        class="hidden justify-start hover:cursor-pointer"
+      >
+        Install
       </DropdownMenu.Item>
       <DropdownMenu.Separator class="bg-neutral-100 dark:bg-neutral-800" />
       <DropdownMenu.Item class="justify-start hover:cursor-pointer">

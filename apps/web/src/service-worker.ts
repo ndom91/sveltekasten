@@ -57,7 +57,7 @@ self.addEventListener("fetch", (event: FetchEvent) => {
         formDataObj[pair[0]] = pair[1]
       }
 
-      const userId = "clu6qepua0000scqbkr2t0ukl"
+      const userId = "clu6qepua0000scqbkr2t0uki"
 
       await fetch("/api/v1/bookmarks", {
         method: "POST",
