@@ -76,7 +76,7 @@ export const PUT: RequestHandler = async (event) => {
 // Create Bookmark(s)
 export const POST: RequestHandler = async (event) => {
   try {
-    await isAuthenticated(event)
+    const session = await isAuthenticated(event)
     const inputData = await event.request.json()
     console.log("API.inputData", inputData)
     const data = z.array(BookmarkUncheckedCreateInputSchema).parse(inputData)
@@ -86,6 +86,7 @@ export const POST: RequestHandler = async (event) => {
         const { imageUrl, imageBlur, metadata } = await fetchBookmarkMetadata(bookmark.url)
         return {
           ...bookmark,
+          userId: session.user.id!,
           image: imageUrl,
           imageBlur,
           desc: metadata.description,
