@@ -68,7 +68,7 @@
       header: "URL",
     }),
     table.column({
-      // @ts-expect-error
+      // @ts-expect-error feedEntries is number
       accessor: ({ _count }) => _count.feedEntries,
       id: "count",
       header: "Entries",
@@ -91,7 +91,7 @@
       header: "",
       cell: (data) =>
         createRender(DataTableActions, {
-          // @ts-expect-error
+          // @ts-expect-error - original does exist in this case
           id: data.row.original.id,
           toggleDeleteDialog: handleToggleDeleteDialog,
         }),
@@ -108,8 +108,8 @@
 
 <DeleteDialog form={$page.form} bind:open={isDeleteDialogOpen} feed={targetFeed!} />
 <div class="flex flex-col gap-2 justify-start items-start">
-  <Card.Root class="w-full shadow-none">
-    <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
+  <Card.Root class="w-full rounded-md shadow-none bg-transparent">
+    <Card.Header class="bg-zinc-100 dark:bg-neutral-800 rounded-t-md">
       <Card.Title>Manage Feeds</Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
@@ -160,7 +160,7 @@
         <Table.Body {...$tableBodyAttrs}>
           {#each $pageRows as row (row.id)}
             <Subscribe rowAttrs={row.attrs()} let:rowAttrs>
-              <Table.Row {...rowAttrs} class="hover:dark:bg-neutral-900/20">
+              <Table.Row {...rowAttrs} class="bg-transparent hover:dark:bg-neutral-900/20">
                 {#each row.cells as cell (cell.id)}
                   <Subscribe attrs={cell.attrs()} let:attrs>
                     {#if cell.id === ""}
@@ -204,8 +204,8 @@
       </Table.Root>
     </Card.Content>
   </Card.Root>
-  <Card.Root class="w-full shadow-none">
-    <Card.Header class="bg-zinc-100 dark:bg-zinc-900">
+  <Card.Root class="w-full shadow-none bg-transparent">
+    <Card.Header class="bg-zinc-100 dark:bg-neutral-800 rounded-t-md">
       <Card.Title>Add Feed</Card.Title>
     </Card.Header>
     <Card.Content class="p-4">

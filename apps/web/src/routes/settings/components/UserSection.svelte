@@ -33,7 +33,7 @@
     ttsSpeaker: string
     ttsLocation: string
     summarizationEnabled: boolean
-  // transcriptionEnabled: boolean
+    // transcriptionEnabled: boolean
   }
 
   const updateUser = async (userSettings: UpdateUserSettingsArgs) => {
@@ -51,7 +51,7 @@
               summarization: {
                 enabled: userSettings.summarizationEnabled,
               },
-            // transcription: {
+              // transcription: {
               //   enabled: userSettings.transcriptionEnabled,
               // },
             },
@@ -75,7 +75,7 @@
     "en-US-SteffanNeural",
   ]
 
-  const ttsLocationItems = Object.values(TTSLocation).map(location => ({
+  const ttsLocationItems = Object.values(TTSLocation).map((location) => ({
     value: location,
     label: location,
   }))
@@ -140,7 +140,7 @@
       ttsSpeaker: ttsSpeaker.trim(),
       ttsLocation: ttsLocation.trim(),
       summarizationEnabled,
-    // transcriptionEnabled: transcriptionEnabled,
+      // transcriptionEnabled: transcriptionEnabled,
     })
   }
 
@@ -151,14 +151,14 @@
       ttsSpeaker: ttsSpeaker.trim(),
       ttsLocation: ttsLocation.trim(),
       summarizationEnabled,
-    // transcriptionEnabled: transcriptionEnabled,
+      // transcriptionEnabled: transcriptionEnabled,
     })
   }
 </script>
 
 <div class="flex flex-col gap-2 justify-start items-start h-full">
-  <Card.Root class="w-full shadow-none">
-    <Card.Header class="bg-neutral-100 dark:bg-neutral-900">
+  <Card.Root class="w-full shadow-none rounded-md bg-transparent">
+    <Card.Header class="bg-zinc-100 dark:bg-neutral-800 rounded-t-md">
       <Card.Title class="flex justify-between items-center w-full">
         <span class="font-normal">API Token</span>
         <Badge class="text-sm bg-amber-500 dark:bg-amber-300">Todo</Badge>
@@ -205,8 +205,8 @@
       </div>
     </Card.Content>
   </Card.Root>
-  <Card.Root class="w-full shadow-none">
-    <Card.Header class="bg-neutral-100 dark:bg-neutral-900">
+  <Card.Root class="w-full shadow-none rounded-md bg-transparent">
+    <Card.Header class="bg-zinc-100 dark:bg-neutral-800 rounded-t-md">
       <Card.Title class="flex justify-between items-center w-full">
         <span class="font-normal">AI Settings</span>
         <Badge class="text-sm">Experimental</Badge>
@@ -222,7 +222,7 @@
           >
           library from
           <a class="underline underline-offset-4" href="https://huggingface.co" target="_blank"
-          >Huggingface</a
+            >Huggingface</a
           >, meaning
           <b>the models are downloaded locally and run in your browser</b> when selecting "Read Aloud"
           on an RSS feed ite, for example.
@@ -267,7 +267,7 @@
                   </div>
                   <p class="text-neutral-500">
                     In the browser, our text-to-speech (TTS) feature is using the <code
-                    >Xenova/speecht5_tts</code
+                      >Xenova/speecht5_tts</code
                     > model and takes about ~10s on average to generate good quality voice audio for
                     each sentence of text. Therefore, this option is really only good for experimentation
                     at this point.
@@ -280,12 +280,14 @@
                     text-to-speed option.
                   </p>
                 </label>
-                <div class="flex flex-col gap-2 justify-start items-start md:flex-row md:items-center">
+                <div
+                  class="flex flex-col gap-2 justify-start items-start md:flex-row md:items-center"
+                >
                   <div class="flex flex-col gap-2 w-56">
                     <label
                       for="ttsLocation"
                       class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 data-invalid:text-destructive text-neutral-800 dark:text-neutral-50"
-                    >Method</label
+                      >Method</label
                     >
                     <Select.Root
                       name="ttsLocation"
@@ -323,7 +325,7 @@
                     </label>
                     <Select.Root
                       name="ttsSpeaker"
-                      items={speakers.map(speaker => ({
+                      items={speakers.map((speaker) => ({
                         value: speaker,
                         label: speaker,
                       }))}
@@ -374,8 +376,8 @@
       </div>
     </Card.Content>
   </Card.Root>
-  <Card.Root class="w-full shadow-none">
-    <Card.Header class="bg-neutral-100 dark:bg-neutral-900">
+  <Card.Root class="w-full shadow-none rounded-md bg-transparent">
+    <Card.Header class="bg-zinc-100 dark:bg-neutral-800 rounded-t-md">
       <Card.Title class="flex justify-between items-center w-full">
         <span class="font-normal">Import</span>
       </Card.Title>
@@ -432,8 +434,8 @@
       {/if}
     </Card.Content>
   </Card.Root>
-  <Card.Root class="w-full shadow-none">
-    <Card.Header class="bg-neutral-100 dark:bg-neutral-900">
+  <Card.Root class="w-full shadow-none rounded-md bg-transparent">
+    <Card.Header class="bg-zinc-100 dark:bg-neutral-800 rounded-t-md">
       <Card.Title class="flex justify-between items-center w-full">
         <span>Export</span>
       </Card.Title>
