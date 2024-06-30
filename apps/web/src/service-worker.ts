@@ -53,7 +53,7 @@ self.addEventListener("fetch", (event: FetchEvent) => {
       console.log("SW.targetUrl", targetUrl)
 
       // TODO: Get userId
-      const userId = "clu6qepua0000scqbkr2t0uks"
+      const userId = "clu6qepua0000scqbkr2t0ukz"
 
       await fetch("/api/v1/bookmarks", {
         method: "POST",

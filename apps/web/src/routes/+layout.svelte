@@ -5,8 +5,10 @@
   import DragAdd from "./DragAdd.svelte"
   import Scripts from "./Scripts.svelte"
   import Shortcuts from "./GlobalShortcuts.svelte"
-  import type { LayoutData } from "./$types"
   import { browser } from "$app/environment"
+  import { goto } from "$app/navigation";
+  import { page } from "$app/stores";
+  import type { LayoutData } from "./$types"
 
   import { onNavigate } from "$app/navigation"
   import { defaultAISettings, useInterface } from "$state/ui.svelte"
@@ -22,10 +24,10 @@
   const { data, children }: { data: LayoutData; children: Snippet } = $props()
 
   // Share Target Redirect
-  const urlParams = new URLSearchParams(window.location.search);
-  const sharedSuccess = urlParams.get('shared')
+  const sharedSuccess = $page.url.searchParams.get('shared')
   if (sharedSuccess === "true") {
     toast.success('Link saved!')
+    goto('/')
   }
 
   // Set current user preferences to store
