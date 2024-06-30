@@ -1,21 +1,19 @@
 <script lang="ts">
-  import { type Snippet } from "svelte"
-  import { setContext } from "svelte"
   import { Toaster } from "svelte-sonner"
+  import { type Snippet, setContext } from "svelte"
   import DragAdd from "./DragAdd.svelte"
   import Scripts from "./Scripts.svelte"
   import Shortcuts from "./GlobalShortcuts.svelte"
-  import { browser } from "$app/environment"
   import type { LayoutData } from "./$types"
 
   import { onNavigate } from "$app/navigation"
+  import { browser } from "$app/environment"
   import { defaultAISettings, useInterface } from "$state/ui.svelte"
   import { useBookmarks } from "$state/bookmarks.svelte"
+  import "$lib/styles/global.css"
 
   const bookmarkStore = useBookmarks()
   setContext("bookmarks", bookmarkStore)
-
-  import "$lib/styles/global.css"
 
   const ui = useInterface()
 

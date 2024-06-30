@@ -48,7 +48,7 @@ self.addEventListener("fetch", (event: FetchEvent) => {
   event.waitUntil(
     (async function () {
       console.log("SW.event.request.url", event.request.url)
-      const url = new URL(event.request.url)
+      // const url = new URL(event.request.url)
       const targetUrl = url.searchParams.get("url")
       console.log("SW.targetUrl", targetUrl)
 
@@ -63,12 +63,14 @@ self.addEventListener("fetch", (event: FetchEvent) => {
         body: JSON.stringify([
           {
             url: targetUrl,
-            event: event.request,
+            event,
             userId,
           },
         ]),
       })
+
       const client = await self.clients.get(event.clientId)
+
       client?.postMessage({
         msg: "Got your share!",
         url,
@@ -76,50 +78,3 @@ self.addEventListener("fetch", (event: FetchEvent) => {
     })(),
   )
 })
-
-// self.addEventListener("fetch", (event: FetchEvent) => {
-//   // Regular requests not related to Web Share Target.
-//   if (event.request.method !== "POST") {
-//     event.respondWith(fetch(event.request))
-//     return
-//   }
-//
-//   if (!event.clientId) return
-//
-//   if (
-//     event.request.method === "POST" &&
-//     new URL(event.request.url).pathname === "/api/v1/bookmarks/share"
-//   ) {
-//     event.respondWith(
-//       (async () => {
-//         const formData = await event.request.formData()
-//         const url = formData.get("url") || ""
-//         // TODO: Get userId
-//         const userId = "abc123"
-//         // const body = await event.request.json()
-//         // const responseUrl = await fetch("/api/v1/bookmarks")
-//
-//         await fetch("/api/v1/bookmarks", {
-//           method: "POST",
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//           body: JSON.stringify([
-//             {
-//               url,
-//               userId,
-//             },
-//           ]),
-//         })
-//         const client = await self.clients.get(event.clientId)
-//         client?.postMessage({
-//           msg: "Got your share!",
-//           url,
-//         })
-//         // TODO: postMessage() back to foreground to alert success or fail
-//         // https://developer.chrome.com/docs/capabilities/web-apis/web-share-target
-//         return Response.redirect("/", 303)
-//       })(),
-//     )
-//   }
-// })
