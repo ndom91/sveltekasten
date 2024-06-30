@@ -52,7 +52,7 @@
   ></div>
   <div class="h-dvh z-20 flex w-full items-center justify-center md:ml-[15%] md:w-[22rem]">
     <div class="flex flex-col justify-center items-center w-80 text-xl">
-      <h2 class="flex items-center mb-4 space-x-2 text-3xl font-light text-zinc-600">
+      <h2 class="flex items-center mb-8 space-x-2 text-3xl font-light text-zinc-600">
         <svg
           class="text-white rounded-md size-12"
           width="250"
