@@ -66,7 +66,7 @@
           onkeyup={useDebounce(handleSearchInput, 500)}
           spellcheck="false"
           aria-label="Search"
-          class="flex py-2 px-3 pl-10 w-full h-10 text-sm bg-transparent rounded-md border md:pr-10 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-input ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring"
+          class="flex py-2 px-3 pl-10 w-full h-10 text-sm bg-neutral-100 dark:bg-neutral-900 rounded-md border md:pr-10 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-input ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring"
         />
         <svg
           class="absolute top-3 left-3 size-4"
