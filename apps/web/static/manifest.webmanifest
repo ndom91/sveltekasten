@@ -16,7 +16,6 @@
     "action": "/api/v1/bookmarks/share",
     "method": "POST",
     "enctype": "multipart/form-data",
-    "method": "GET",
     "params": {
       "title": "name",
       "text": "description",
