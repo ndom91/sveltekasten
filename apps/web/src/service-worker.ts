@@ -58,6 +58,7 @@ sw.addEventListener("fetch", (event: FetchEvent) => {
         body: JSON.stringify([
           {
             url: decodeURIComponent(targetUrl),
+            userId: 'sw'
           },
         ]),
       })
