@@ -68,3 +68,5 @@ sw.addEventListener("fetch", (event: FetchEvent) => {
     })(),
   )
 })
+
+addEventListener("activate", () => sw.clients.claim());
