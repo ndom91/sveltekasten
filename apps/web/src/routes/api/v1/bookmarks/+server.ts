@@ -75,9 +75,12 @@ export const PUT: RequestHandler = async (event) => {
 
 // Create Bookmark(s)
 export const POST: RequestHandler = async (event) => {
+    const inputData = await event.request.json()
+    console.log('API.inputData', inputData)
   try {
     const session = await isAuthenticated(event)
-    const inputData = await event.request.json()
+    // const inputData = await event.request.json()
+    // console.log('API.inputData', inputData)
     const data = z.array(BookmarkUncheckedCreateInputSchema).parse(inputData)
 
     const bookmarkData = await Promise.all(
