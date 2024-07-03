@@ -26,7 +26,7 @@
     >
       Cancel
     </button>
-    <form action="?/deleteBookmark" method="post" use:enhance={handleActionResults()}>
+    <form action="/bookmarks?/deleteBookmark" method="post" use:enhance={handleActionResults(() => dialogElement?.close())}>
       <input type="hidden" name="bookmarkId" value={bookmarkId} />
       <button
         class={cn(buttonVariants({ variant: "destructive" }), "w-full sm:w-auto")}
