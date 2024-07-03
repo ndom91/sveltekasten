@@ -67,7 +67,10 @@ sw.addEventListener("fetch", (event: FetchEvent) => {
       })
 
       const client = await sw.clients.get(event.clientId)
-      client?.postMessage("Bookmark Saved!")
+      client?.postMessage({
+        status: 'success',
+        message: 'Bookmark Added'
+      })
     })(),
   )
 })
