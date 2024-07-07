@@ -20,19 +20,24 @@
   import { Badge } from "$/lib/components/ui/badge"
   import { TTSLocation, defaultAISettings } from "$state/ui.svelte"
   import * as Table from "$lib/components/ui/table"
+  import { Separator } from "$lib/components/ui/separator"
 
   let exportLoading = $state(false)
   let importLoading = $state(false)
   let {
-    tts: { enabled: ttsEnabled, speaker: ttsSpeaker, location: ttsLocation },
-    summarization: { enabled: summarizationEnabled },
-  } = $state($page.data.user?.settings?.ai ?? defaultAISettings)
+    ai: {
+      tts: { enabled: ttsEnabled, speaker: ttsSpeaker, location: ttsLocation },
+      summarization: { enabled: summarizationEnabled },
+    },
+    personal: personalSettings,
+  } = $state($page.data.user?.settings ?? { ai: { defaultAISettings } })
 
   type UpdateUserSettingsArgs = {
     ttsEnabled: boolean
     ttsSpeaker: string
     ttsLocation: string
     summarizationEnabled: boolean
+    personal: Record<string, unknown>
     // transcriptionEnabled: boolean
   }
 
@@ -42,6 +47,9 @@
       body: {
         data: {
           settings: {
+            personal: {
+              compact: userSettings.personal.compact,
+            },
             ai: {
               tts: {
                 enabled: userSettings.ttsEnabled,
@@ -82,7 +90,7 @@
 
   // Import Bookmarks
   let importFile = $state<FileList | null>(null)
-  let parsedBookmarks = $state<ParsedBookmark[]>([])
+  let parsedBookmarks = $state<ParsedBookmark[] | undefined>([])
 
   $effect(() => {
     if (!importFile?.[0]) {
@@ -113,11 +121,11 @@
   const handleImport = async () => {
     importLoading = true
     try {
-      if (!parsedBookmarks.length) {
+      if (!parsedBookmarks?.length) {
         toast.error(`No bookmarks successfully parsed. See console for any potential errors.`)
         return
       }
-      await importBookmarks(parsedBookmarks, $page.data?.session?.user?.id!)
+      await importBookmarks(parsedBookmarks, $page.data.session?.user.id as string)
       parsedBookmarks = []
     } catch (error) {
       console.error(error)
@@ -141,6 +149,7 @@
       ttsLocation: ttsLocation.trim(),
       summarizationEnabled,
       // transcriptionEnabled: transcriptionEnabled,
+      personal: personalSettings,
     })
   }
 
@@ -152,6 +161,19 @@
       ttsLocation: ttsLocation.trim(),
       summarizationEnabled,
       // transcriptionEnabled: transcriptionEnabled,
+      personal: personalSettings,
+    })
+  }
+
+  function toggleSetting(setting: string) {
+    personalSettings[setting] = !personalSettings[setting]
+    updateUser({
+      ttsEnabled,
+      ttsSpeaker: ttsSpeaker.trim(),
+      ttsLocation: ttsLocation.trim(),
+      summarizationEnabled,
+      // transcriptionEnabled: transcriptionEnabled,
+      personal: personalSettings,
     })
   }
 </script>
@@ -160,8 +182,7 @@
   <Card.Root class="w-full shadow-none rounded-md bg-transparent">
     <Card.Header class="bg-zinc-100 dark:bg-neutral-800 rounded-t-md">
       <Card.Title class="flex justify-between items-center w-full">
-        <span class="font-normal">API Token</span>
-        <Badge class="text-sm bg-amber-500 dark:bg-amber-300">Todo</Badge>
+        <span class="font-normal">General</span>
       </Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
@@ -201,6 +222,25 @@
               ></path>
             </svg>
           </button>
+        </div>
+      </div>
+      <Separator class="my-5" />
+      <div class="flex flex-col gap-2 items-start md:flex-row md:items-center">
+        <div class="flex gap-4 items-start">
+          <Checkbox
+            id="summarization"
+            class="mt-1"
+            checked={personalSettings.compact as boolean}
+            onCheckedChange={() => toggleSetting("compact")}
+          />
+          <div>
+            <label for="summarization" class="">
+              <div class="text-lg hover:cursor-pointer">Compact Mode</div>
+              <div class="text-neutral-500">
+                In mobile view, remove bookmark images and paddings, etc.
+              </div>
+            </label>
+          </div>
         </div>
       </div>
     </Card.Content>
@@ -300,11 +340,12 @@
                           ttsSpeaker: ttsSpeaker.trim(),
                           ttsLocation: ttsLocation.trim(),
                           summarizationEnabled,
+                          personal: personalSettings,
                         })
                       }}
                     >
                       <Select.Trigger
-                        class="w-full disabled:cursor-default enabled:bg-neutral-200 enabled:dark:bg-neutral-950"
+                        class="w-full disabled:cursor-not-allowed enabled:bg-neutral-100 enabled:dark:bg-neutral-900 disabled:dark:bg-neutral-700"
                       >
                         <Select.Value placeholder="TTS Inference Location" />
                       </Select.Trigger>
@@ -338,11 +379,12 @@
                           ttsSpeaker: ttsSpeaker.trim(),
                           ttsLocation: ttsLocation.trim(),
                           summarizationEnabled,
+                          personal: personalSettings,
                         })
                       }}
                     >
                       <Select.Trigger
-                        class="w-full disabled:cursor-not-allowed enabled:bg-neutral-200 enabled:dark:bg-neutral-950"
+                        class="w-full disabled:cursor-not-allowed enabled:bg-neutral-100 enabled:dark:bg-neutral-900 disabled:dark:bg-neutral-700"
                       >
                         <Select.Value placeholder="Speaker" />
                       </Select.Trigger>
@@ -393,7 +435,7 @@
           accept="text/html"
           id="import-bookmarks"
           type="file"
-          class="flex py-2 px-3 w-72 text-sm bg-transparent rounded-md border hover:cursor-pointer focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-input ring-offset-background file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-ring"
+          class="flex py-2 px-3 w-72 text-sm bg-neutral-100 dark:bg-neutral-900 rounded-md border hover:cursor-pointer focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-input ring-offset-background file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-ring"
           bind:files={importFile}
         />
       </div>

@@ -23,6 +23,7 @@
   <Popover.Root bind:open let:ids>
     <Popover.Trigger asChild let:builder>
       <Button
+        disabled
         builders={[builder]}
         variant="outline"
         role="combobox"

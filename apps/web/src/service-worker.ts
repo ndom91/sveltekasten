@@ -13,55 +13,53 @@ import { ExpirationPlugin } from "workbox-expiration"
 sw.addEventListener("fetch", (event: FetchEvent) => {
   const url = new URL(event.request.url)
 
-  if (event.request.method !== "GET") {
+  if (event.request.method !== "GET" || !url.pathname.includes("/api/v1/bookmarks/share")) {
     return fetch(event.request)
   }
 
   // Handle Web Share Target requests
-  if (url.pathname.includes("/api/v1/bookmarks/share")) {
-    // Immediately redirect to the start URL, there's nothing to see here.
-    event.respondWith(Response.redirect("./?shared=true"))
+  // Immediately redirect to the start URL, there's nothing to see here.
+  event.respondWith(Response.redirect("./?shared=true"))
 
-    event.waitUntil(
-      (async function () {
-        const textParam = url.searchParams.get("text")
-        const urlParam = url.searchParams.get("link")
+  event.waitUntil(
+    (async function () {
+      const textParam = url.searchParams.get("text")
+      const urlParam = url.searchParams.get("link")
 
-        const targetUrl = urlParam ?? textParam ?? ""
+      const targetUrl = urlParam ?? textParam ?? ""
 
-        await fetch("/api/v1/bookmarks", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+      await fetch("/api/v1/bookmarks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify([
+          {
+            url: decodeURIComponent(targetUrl),
+            userId: "sw",
           },
-          body: JSON.stringify([
-            {
-              url: decodeURIComponent(targetUrl),
-              userId: "sw",
-            },
-          ]),
-        })
+        ]),
+      })
 
-        sw.clients.matchAll().then((clientList) => {
-          for (const client of clientList) {
-            client?.postMessage({
-              type: "SHARE_SUCCES",
-              payload: {
-                message: "Bookmark Added",
-              },
-            })
-          }
-        })
-        // const client = await sw.clients.get(event.clientId)
-        // client?.postMessage({
-        //   type: "SHARE_SUCCES",
-        //   payload: {
-        //     message: "Bookmark Added",
-        //   },
-        // })
-      })(),
-    )
-  }
+      sw.clients.matchAll().then((clientList) => {
+        for (const client of clientList) {
+          client?.postMessage({
+            type: "SHARE_SUCCES",
+            payload: {
+              message: "Bookmark Added",
+            },
+          })
+        }
+      })
+      // const client = await sw.clients.get(event.clientId)
+      // client?.postMessage({
+      //   type: "SHARE_SUCCES",
+      //   payload: {
+      //     message: "Bookmark Added",
+      //   },
+      // })
+    })(),
+  )
 })
 
 sw.addEventListener("activate", () => sw.clients.claim())

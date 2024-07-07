@@ -22,6 +22,7 @@
 
   // Set current user preferences to store
   ui.aiFeaturesPreferences = data.session?.user?.settings?.ai ?? defaultAISettings
+  ui.userSettings = data.session?.user?.settings?.personal ?? {}
 
   // Global View transition
   onNavigate((navigation) => {
@@ -40,30 +41,6 @@
   })
 
   onMount(() => {
-    console.log("layout.onMount", { nav: navigator.serviceWorker.controller })
-    if (browser && navigator.serviceWorker.controller) {
-      console.log("This page is currently controlled by:", navigator.serviceWorker.controller)
-      navigator.serviceWorker.startMessages()
-      // navigator.serviceWorker.onmessage = (event) => {
-      //   // TODO: invalidate cache once items been added
-      //   toast.success(`sw.message: ${event.data.message}`)
-      //   console.log("sw.message:", event.data.message)
-      // }
-    }
-
-    navigator.serviceWorker.addEventListener("message", (event) => {
-      // TODO: invalidate cache once items been added
-      if (event.data.type === "SHARE_SUCCESS") {
-        toast.success(`sw.message: ${event.data}`)
-        console.log("sw.message:", event.data)
-      }
-      // if (event.data.type === "CACHE_UPDATED") {
-      //   const { updatedURL } = event.data.payload
-      //
-      //   console.log(`A newer version of ${updatedURL} is available!`)
-      // }
-    })
-
     if (browser && "serviceWorker" in navigator) {
       navigator.serviceWorker.register(
         // @ts-expect-error - its fine, we're not transpiling to cjs
@@ -71,6 +48,24 @@
         // @ts-expect-error - its fine, we're not transpiling to cjs
         { type: import.meta.env.MODE === "production" ? "classic" : "module" },
       )
+
+      navigator.serviceWorker.addEventListener("message", (event) => {
+        // TODO: invalidate cache once items been added
+        if (event.data.type === "SHARE_SUCCESS") {
+          toast.success(`sw.eventListener: ${event.data}`)
+          console.log("sw.eventListener:", event.data)
+        }
+      })
+    }
+
+    if (navigator.serviceWorker.controller) {
+      console.log("This page is currently controlled by:", navigator.serviceWorker.controller)
+      navigator.serviceWorker.startMessages()
+      navigator.serviceWorker.onmessage = (event) => {
+        // TODO: invalidate cache once items been added
+        toast.success(`sw.onmessage: ${event.data}`)
+        console.log("sw.onmessage:", event.data)
+      }
     }
   })
 </script>

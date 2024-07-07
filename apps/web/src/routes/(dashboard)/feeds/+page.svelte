@@ -213,7 +213,7 @@
 
 <Navbar />
 <main
-  class="align-start overflow-y-scroll flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2"
+  class="align-start outline-none overflow-y-scroll flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2"
   bind:this={rootElement}
 >
   <FilterBar />

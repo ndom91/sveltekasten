@@ -11,6 +11,7 @@ declare module "@auth/sveltekit" {
     id: string
     settings?: {
       ai?: AIFeaturesPreferences
+      personal?: Record<string, unknown>
     }
   }
   interface Session {

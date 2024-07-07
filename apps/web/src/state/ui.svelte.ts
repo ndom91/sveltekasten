@@ -66,10 +66,20 @@ export const defaultAISettings = {
     enabled: true,
   },
 }
+
 let aiFeaturesPreferences = $state<AIFeaturesPreferences>(defaultAISettings)
+
+let userSettings = $state<Record<string, unknown>>({})
 
 export function useInterface() {
   return {
+    // User Settings
+    get userSettings() {
+      return userSettings
+    },
+    set userSettings(data) {
+      userSettings = data
+    },
     // Search
     get searching() {
       return searching
