@@ -16,6 +16,11 @@
       // TODO: Hacky cache invalidation; move to sw.onmessage handler when that's working
       setTimeout(() => {
         invalidateAll()
+        document.querySelector("#dashboard-bookmark-row")?.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "smooth",
+        })
       }, 3000)
     }
   })

@@ -5,6 +5,7 @@
 </script>
 
 <div
+  id="dashboard-bookmark-row"
   class="flex flex-col gap-2 p-4 rounded-md h-fit snap-start max-w-72 bg-neutral-200 dark:bg-neutral-800"
 >
   <a href={item.url} target="_blank" class="">

@@ -202,6 +202,11 @@
       {#each bookmarkStore.bookmarks as item (item.id)}
         <BookmarkRow bind:bookmarkId={item.id} />
       {/each}
+      {#snippet noData()}
+        {#if bookmarkStore.bookmarks.length >= 10}
+          <div class="text-2xl">No more data</div>
+        {/if}
+      {/snippet}
     </InfiniteLoader>
   {:else}
     <EmptyState />

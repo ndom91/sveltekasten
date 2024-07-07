@@ -222,6 +222,11 @@
       {#each allItems as feedEntry (feedEntry.id)}
         <FeedRow {feedEntry} {handleSummarizeText} {handleGenerateSpeech} />
       {/each}
+      {#snippet noData()}
+        {#if allItems.length >= 10}
+          <div class="text-2xl">No more data</div>
+        {/if}
+      {/snippet}
     </InfiniteLoader>
   {:else}
     <EmptyState showArrow={false}>

@@ -21,6 +21,7 @@
 </script>
 
 <div
+  id="dashboard-feed-row"
   class="flex relative flex-col gap-2 p-4 rounded-md snap-start group max-w-72 bg-neutral-200 dark:bg-neutral-800"
 >
   <Tooltip.Root>
