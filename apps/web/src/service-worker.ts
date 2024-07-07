@@ -79,8 +79,8 @@ const fontAssetRoute = new Route(
   }),
 )
 const imageAssetRoute = new Route(
-  ({ request }) => {
-    return request.destination === "image"
+  ({ request, url }) => {
+    return request.destination === "image" && !url.hostname.includes("logo.clearbit.com")
   },
   new CacheFirst({
     cacheName: "image-assets",
