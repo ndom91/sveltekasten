@@ -11,6 +11,7 @@
   import { invalidateAll } from "$app/navigation"
   import { Image } from "$lib/components/image"
   import DeleteDialog from "./DeleteDialog.svelte"
+  import { cn } from "$lib/utils/style"
 
   const bookmarkStore = getContext<BookmarkContext>("bookmarks")
   let deleteElement = $state<HTMLDialogElement | null>(null)
@@ -50,7 +51,7 @@
   tabindex={0}
   data-id={bookmark.id}
   role="row"
-  class="grid relative grid-cols-1 gap-4 p-4 mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none md:grid-cols-[15rem_1fr] dark:focus:bg-neutral-800 focus:border-zinc-500 focus:bg-zinc-100"
+  class="grid relative gap-4 mx-2 p-4 md:mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none grid-cols-1 md:grid-cols-[15rem_1fr] dark:focus:bg-neutral-800 focus:border-zinc-500 focus:bg-zinc-100"
   onmouseleave={() => (isOptionsOpen = false)}
   onmouseenter={() => (isOptionsOpen = true)}
 >
@@ -59,13 +60,16 @@
     thumbhash={bookmark.imageBlur ?? ""}
     src={bookmark.image ?? `https://source.unsplash.com/random/240x144?sig=${bookmark.url}`}
     alt={`${new URL(bookmark.url).hostname} Screenshot`}
-    class="hidden w-60 h-36 rounded-md border transition md:block border-neutral-100 dark:border-neutral-800"
+    class={cn(
+      "w-full md:w-60 h-48 md:h-36 rounded-md border transition md:block border-neutral-100 dark:border-neutral-800",
+      ui.userSettings?.compact ? "hidden" : "",
+    )}
   />
   <div class="flex flex-col gap-2">
-    <span class="text-xl font-semibold line-clamp-1 text-clip" title={bookmark.title}>
+    <span class="text-xl font-semibold pr-6 md:pr-0 line-clamp-1 text-clip" title={bookmark.title}>
       {bookmark.title}
     </span>
-    <p class="break-words line-clamp-2">{bookmark.desc}</p>
+    <p class="break-words line-clamp-2 pr-6 md:pr-0">{bookmark.desc}</p>
     <div class="flex gap-2 justify-start items-center text-sm text-muted">
       {#if bookmark.metadata?.logo}
         <img src={bookmark.metadata?.logo} alt="URL Favicon" class="rounded-full size-4" />

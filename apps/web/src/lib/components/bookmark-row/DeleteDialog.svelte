@@ -14,7 +14,7 @@
   } = $props()
 </script>
 
-<Dialog footer={false} id="delete-bookmark" bind:element={dialogElement} class="!max-w-[60ch]">
+<Dialog footer={false} id="delete-bookmark" bind:element={dialogElement}>
   <div>
     <h3 class="font-bold text-lg mb-4">Are you sure?</h3>
     <div>This action cannot be undone. This will permanently delete your bookmark.</div>

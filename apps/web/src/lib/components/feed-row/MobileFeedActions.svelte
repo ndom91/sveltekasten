@@ -1,5 +1,4 @@
 <script lang="ts">
-  // import { onMount } from "svelte"
   import { fade } from "svelte/transition"
   import { page } from "$app/stores"
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
@@ -8,7 +7,6 @@
   const ui = useInterface()
 
   // TODO: Refactor a bit when popover anchor API is more widely available
-
   let open = $state(false)
 
   const enableSummary = $page.data.session?.user?.settings?.ai?.summarization.enabled ?? false
@@ -46,7 +44,10 @@
 
 <svelte:window on:click={handleClickOutside} />
 
-<div class="flex absolute top-0 right-0 flex-col justify-start mt-2 h-full" bind:this={actionMenuWrapperElement}>
+<div
+  class="flex absolute top-0 right-0 flex-col justify-start mt-2 h-full"
+  bind:this={actionMenuWrapperElement}
+>
   <button class="flex justify-center p-3" onclick={handleToggleCardOpen}>
     <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
       <rect width="256" height="256" fill="none" /><path
@@ -123,7 +124,7 @@
     <!-- popover="auto" -->
     <div
       id={`feed-menu-${id}`}
-      class="right-2 z-30 p-2 space-y-3 w-max rounded-md border transition top-[5.5rem] border-neutral-200 bg-neutral-200 dark:border-neutral-800 dark:bg-neutral-900"
+      class="right-2 z-30 p-3 space-y-3 w-max rounded-md border transition top-[5.5rem] border-neutral-200 bg-neutral-200 dark:border-neutral-800 dark:bg-neutral-900"
       in:fade={{ duration: 200 }}
       out:fade={{ duration: 150 }}
       style={`
@@ -184,7 +185,10 @@
         <span class="font-light">Toggle Unread</span>
       </button>
       {#if enableSummary}
-        <button class="grid items-center grid-cols-[28px_1fr]" onclick={handleStartTextSummarization}>
+        <button
+          class="grid items-center grid-cols-[28px_1fr]"
+          onclick={handleStartTextSummarization}
+        >
           {#if ui.summarizationLoading}
             <LoadingIndicator class="dark:text-white" />
           {:else}
@@ -237,7 +241,10 @@
         </button>
       {/if}
       {#if enableTTS}
-        <button class="grid items-center grid-cols-[28px_1fr]" onclick={handleSetTextToSpeechContent}>
+        <button
+          class="grid items-center grid-cols-[28px_1fr]"
+          onclick={handleSetTextToSpeechContent}
+        >
           {#if ui.textToSpeechLoading}
             <LoadingIndicator class="dark:text-white" />
           {:else}
