@@ -5,6 +5,7 @@
   import { goto } from "$app/navigation"
   import { page } from "$app/stores"
   import { onMount } from "svelte"
+  import { getContext } from "svelte"
 
   onMount(() => {
     // Share Target Redirect
@@ -26,6 +27,13 @@
   }
 
   const { data }: { data: HomeLoadResults } = $props()
+
+  const bookmarkStore = getContext<BookmarkContext>("bookmarks")
+
+  $effect(() => {
+    bookmarkStore.bookmarks = $page.data.bookmarks.data
+  })
+  $inspect("page.bks", bookmarkStore.bookmarks)
 </script>
 
 <svelte:head>
@@ -41,7 +49,7 @@
     <h2 class="text-xl font-thin">Latest Items</h2>
   </div>
   <HomeScroller
-    items={data.bookmarks.data}
+    items={bookmarkStore.bookmarks}
     count={data.bookmarks.count}
     type={ScrollerTypes.BOOKMARKS}
   />

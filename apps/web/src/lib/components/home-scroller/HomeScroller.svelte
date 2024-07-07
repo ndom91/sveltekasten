@@ -5,14 +5,25 @@
   import { capitalize } from "$lib/utils"
   import Browser from "$lib/assets/browser.png"
   import Bell from "$lib/assets/bell.png"
+  import { watch } from "runed"
+  import type { SvelteMap } from "svelte/reactivity"
 
   type ScrollerProps = {
     type: keyof typeof ScrollerTypes
-    items: (LoadBookmark | LoadFeedEntry)[]
+    items: SvelteMap<string, LoadBookmark> | LoadFeedEntry[]
     count: number
   }
+  let element = $state<HTMLElement | undefined>()
 
+  watch(
+    () => items,
+    () => {
+      element?.scrollTo(0, 0)
+    },
+  )
   const { type, items, count }: ScrollerProps = $props()
+
+  $inspect("bks.scroller", items)
 </script>
 
 <section
@@ -94,9 +105,10 @@
     {/if}
   </div>
   <div
+    bind:this={element}
     class="flex overflow-x-scroll gap-4 py-4 px-4 scroll-px-4 scroll-smooth snap-x snap-mandatory after:pointer-events-none after:absolute after:bottom-0 after:right-0 after:h-full after:w-24 after:shadow-[inset_-100px_0px_65px_-65px_#ddd] dark:after:shadow-[inset_-100px_0px_45px_-65px_#141414] after:rounded-r-lg"
   >
-    {#each items as item (item.id)}
+    {#each items.values() as item (item.id)}
       {#if type === ScrollerTypes.BOOKMARKS}
         <BookmarkPreviewCard item={item as LoadBookmark} />
       {:else if type === ScrollerTypes.FEEDS}

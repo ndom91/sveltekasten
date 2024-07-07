@@ -17,7 +17,7 @@
 
   const ui = useInterface()
   const bookmarkStore = getContext<BookmarkContext>("bookmarks")
-  bookmarkStore.bookmarks = $page.data.bookmarks.data
+  $inspect("bks.store", bookmarkStore.bookmarks)
 
   onMount(() => {
     // Share Target Redirect
@@ -130,7 +130,7 @@
     () => {
       loaderState.reset()
       pageNumber = -1
-      bookmarkStore.bookmarks = []
+      // bookmarkStore.bookmarks = []
       loadMore()
     },
   )
@@ -199,7 +199,7 @@
   <FilterBar />
   {#if bookmarkStore.bookmarks?.length}
     <InfiniteLoader triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
-      {#each bookmarkStore.bookmarks as item (item.id)}
+      {#each bookmarkStore.bookmarks.values() as item (item.id)}
         <BookmarkRow bind:bookmarkId={item.id} />
       {/each}
       {#snippet noData()}
@@ -215,7 +215,7 @@
     >
       <li class="relative">
         <span
-          class="absolute -left-5 -top-8 text-6xl font-bold -z-10 text-neutral-500/10 dark:text-neutral-900/40"
+          class="absolute -left-5 -top-8 text-6xl font-bold -z-10 text-neutral-500/10 dark:text-neutral-700/30"
         >
           1
         </span>
@@ -243,7 +243,7 @@
       </li>
       <li class="relative">
         <span
-          class="absolute -left-6 -top-8 text-6xl font-bold -z-10 text-neutral-500/10 dark:text-neutral-900/40"
+          class="absolute -left-6 -top-8 text-6xl font-bold -z-10 text-neutral-500/10 dark:text-neutral-700/30"
         >
           2
         </span>
@@ -251,7 +251,7 @@
       </li>
       <li class="relative">
         <span
-          class="absolute -left-6 -top-8 text-6xl font-bold -z-10 text-neutral-500/10 dark:text-neutral-900/40"
+          class="absolute -left-6 -top-8 text-6xl font-bold -z-10 text-neutral-500/10 dark:text-neutral-700/30"
         >
           3
         </span>

@@ -5,6 +5,7 @@ import "vite-plugin-pwa/info"
 import type { Prisma } from "@prisma/client"
 import type { AIFeaturesPreferences } from "./state/ui.svelte"
 import type { BookmarkFlatTags } from "$lib/types"
+import type { SvelteMap } from "svelte"
 
 declare module "@auth/sveltekit" {
   interface User {
@@ -58,7 +59,7 @@ declare global {
   type LoadFeed = Prisma.FeedGetPayload<object> & { visible: boolean }
 
   interface BookmarkContext {
-    bookmarks: BookmarkFlatTags[]
+    bookmarks: SvelteMap<string, BookmarkFlatTags>
     add: (bookmark: BookmarkFlatTags | BookmarkFlatTags[]) => void
     remove: (bookmarkId: string) => void
     update: (bookmark: BookmarkFlatTags) => void

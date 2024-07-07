@@ -34,6 +34,7 @@ export function useBookmarks(initial?: Bookmark[]) {
       return Array.from(bookmarks.values())
     },
     set bookmarks(value: Bookmark[]) {
+      bookmarks.clear()
       value.forEach((bk) => bookmarks.set(bk.id, bk))
     },
     add,

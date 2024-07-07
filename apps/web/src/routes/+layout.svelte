@@ -46,17 +46,6 @@
       navigator.serviceWorker.register("/service-worker.js", {
         type: dev ? "module" : "classic",
       })
-      // navigator.serviceWorker.register(dev ? "/dev-sw.js?dev-sw" : "/service-worker.js", {
-      //   type: dev ? "module" : "classic",
-      // })
-
-      // navigator.serviceWorker.addEventListener("message", (event) => {
-      //   // TODO: invalidate cache once items been added
-      //   if (event.data.type === "SHARE_SUCCESS") {
-      //     toast.success(`sw.eventListener: ${event.data}`)
-      //     console.log("sw.eventListener:", event.data)
-      //   }
-      // })
     }
 
     if (navigator.serviceWorker.controller) {
@@ -66,15 +55,11 @@
         toast.success(`sw.onmessage0: ${JSON.stringify(event.data)}`)
         if (event.data.type === "SHARE_SUCCESS") {
           toast.success(`sw.onmessage1: ${JSON.stringify(event.data)}`)
-          // TODO: invalidate cache once items been added
+          toast.success("Bookmark added!")
+
           invalidateAll()
           console.log("sw.onmessage:", JSON.stringify(event.data))
           document.querySelector("#dashboard-bookmark-row")?.scrollTo(0, 0)
-          // {
-          //   top: 0,
-          //   left: 0,
-          //   behavior: "smooth",
-          // })
         }
       }
     }

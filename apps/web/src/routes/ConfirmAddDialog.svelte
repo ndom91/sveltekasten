@@ -2,7 +2,7 @@
   import { ofetch } from "ofetch"
   import { toast } from "svelte-sonner"
   import { page } from "$app/stores"
-  import { invalidate } from "$app/navigation"
+  import { invalidateAll } from "$app/navigation"
   import { buttonVariants } from "$lib/components/ui/button"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
 
@@ -30,7 +30,7 @@
       })
 
       if (res.ok) {
-        await invalidate("app:bookmarks")
+        await invalidateAll()
         toast.success(`Added "${url}"`)
       }
     } catch (error) {

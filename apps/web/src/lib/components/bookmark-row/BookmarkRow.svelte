@@ -1,7 +1,7 @@
 <script lang="ts">
   import { ofetch } from "ofetch"
   import { format } from "@formkit/tempo"
-  import { getContext, type SvelteComponent } from "svelte"
+  import { getContext } from "svelte"
   import BookmarkActions from "./BookmarkActions.svelte"
   import MobileBookmarkActions from "./MobileBookmarkActions.svelte"
   import MediaQuery from "$lib/components/MediaQuery.svelte"
