@@ -1,89 +1,57 @@
 !(function () {
-  'use strict'
+  "use strict"
   var a = window.location,
     r = window.document,
-    t = window.localStorage,
     o = r.currentScript,
-    s = o.getAttribute('data-api') || new URL(o.src).origin + '/api/event',
-    l = t && t.plausible_ignore
-  function p(t) {
-    console.warn('Ignoring Event: ' + t)
+    l = o.getAttribute("data-api") || new URL(o.src).origin + "/api/event"
+  function s(t, e) {
+    t && console.warn("Ignoring Event: " + t), e && e.callback && e.callback()
   }
-  function e(t, e) {
+  function t(t, e) {
     if (
       /^localhost$|^127(\.[0-9]+){0,2}\.[0-9]+$|^\[::1?\]$/.test(a.hostname) ||
-      'file:' === a.protocol
+      "file:" === a.protocol
     )
-      return p('localhost')
-    if (
-      !(
-        window._phantom ||
-        window.__nightmare ||
-        window.navigator.webdriver ||
-        window.Cypress
-      )
-    ) {
-      if ('true' == l) return p('localStorage flag')
-      var i = {}
-      ;(i.n = t),
-        (i.u = a.href),
-        (i.d = o.getAttribute('data-domain')),
-        (i.r = r.referrer || null),
-        (i.w = window.innerWidth),
-        e && e.meta && (i.m = JSON.stringify(e.meta)),
-        e && e.props && (i.p = JSON.stringify(e.props))
-      var n = new XMLHttpRequest()
-      n.open('POST', s, !0),
-        n.setRequestHeader('Content-Type', 'text/plain'),
-        n.send(JSON.stringify(i)),
-        (n.onreadystatechange = function () {
-          4 == n.readyState && e && e.callback && e.callback()
-        })
-    }
+      return s("localhost", e)
+    if (window._phantom || window.__nightmare || window.navigator.webdriver || window.Cypress)
+      return s(null, e)
+    try {
+      if ("true" === window.localStorage.plausible_ignore) return s("localStorage flag", e)
+    } catch (t) {}
+    var n = {},
+      i =
+        ((n.n = t),
+        (n.u = a.href),
+        (n.d = o.getAttribute("data-domain")),
+        (n.r = r.referrer || null),
+        e && e.meta && (n.m = JSON.stringify(e.meta)),
+        e && e.props && (n.p = e.props),
+        new XMLHttpRequest())
+    i.open("POST", l, !0),
+      i.setRequestHeader("Content-Type", "text/plain"),
+      i.send(JSON.stringify(n)),
+      (i.onreadystatechange = function () {
+        4 === i.readyState && e && e.callback && e.callback()
+      })
   }
-  function i(t) {
-    for (
-      var e = t.target,
-        i = 'auxclick' == t.type && 2 == t.which,
-        n = 'click' == t.type;
-      e && (void 0 === e.tagName || 'a' != e.tagName.toLowerCase() || !e.href);
-
-    )
-      e = e.parentNode
-    e &&
-      e.href &&
-      e.host &&
-      e.host !== a.host &&
-      ((i || n) &&
-        window.plausible('Outbound Link: Click', { props: { url: e.href } }),
-      (e.target && !e.target.match(/^_(self|parent|top)$/i)) ||
-        t.ctrlKey ||
-        t.metaKey ||
-        t.shiftKey ||
-        !n ||
-        (setTimeout(function () {
-          a.href = e.href
-        }, 150),
-        t.preventDefault()))
+  var e = (window.plausible && window.plausible.q) || []
+  window.plausible = t
+  for (var n, i = 0; i < e.length; i++) t.apply(this, e[i])
+  function p() {
+    n !== a.pathname && ((n = a.pathname), t("pageview"))
   }
-  r.addEventListener('click', i), r.addEventListener('auxclick', i)
-  var n = (window.plausible && window.plausible.q) || []
-  window.plausible = e
-  for (var c, d = 0; d < n.length; d++) e.apply(this, n[d])
-  function u() {
-    c !== a.pathname && ((c = a.pathname), e('pageview'))
-  }
-  var w,
-    h = window.history
-  h.pushState &&
-    ((w = h.pushState),
-    (h.pushState = function () {
-      w.apply(this, arguments), u()
+  var c,
+    w = window.history
+  w.pushState &&
+    ((c = w.pushState),
+    (w.pushState = function () {
+      c.apply(this, arguments), p()
     }),
-    window.addEventListener('popstate', u)),
-    'prerender' === r.visibilityState
-      ? r.addEventListener('visibilitychange', function () {
-          c || 'visible' !== r.visibilityState || u()
+    window.addEventListener("popstate", p)),
+    "prerender" === r.visibilityState
+      ? r.addEventListener("visibilitychange", function () {
+          n || "visible" !== r.visibilityState || p()
         })
-      : u()
+      : p()
 })()
+
