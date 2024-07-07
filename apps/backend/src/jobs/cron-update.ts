@@ -18,7 +18,7 @@ export const updateJob = Cron(
   },
   async (cron: Cron) => {
     // TODO: Think of some way to dedupe feed updates across multiple users effectively.
-    debug.info("Refreshing feeds")
+    debug("Refreshing feeds")
     try {
       const oneHourAgo = new Date()
       oneHourAgo.setHours(oneHourAgo.getHours() - 1)
@@ -30,19 +30,20 @@ export const updateJob = Cron(
         },
       })
       if (!feeds.length) {
-        debug.info("No feeds to refresh")
-        debug.info(
+        debug("No feeds to refresh")
+        debug(
           `Next run: ${format(cron.nextRun() ?? "", { date: "medium", time: "long" })}`,
         )
         return
       }
-      debug.info(
+
+      debug(
         `Found ${feeds.length} feeds to refresh ${feeds.map(f => f.url).join(",")}`,
       )
 
       await Promise.allSettled(
         feeds.map(async (feed) => {
-          debug.info(`Updating feed - ${feed.url}`)
+          debug(`Updating feed - ${feed.url}`)
           await updateFeed(feed)
 
           // After successfully updating all new FeedEntry items, bump feed.lastFetched
@@ -54,11 +55,10 @@ export const updateJob = Cron(
               lastFetched: new Date().toISOString(),
             },
           })
-          debug.info(`Feed updated`)
-          debug.info(
-            `Next run: ${format(cron.nextRun() ?? "", { date: "medium", time: "long" })}`,
-          )
         }),
+      )
+      debug(
+        `Next run: ${format(cron.nextRun() ?? "", { date: "medium", time: "long" })}`,
       )
     } catch (error) {
       console.error(error)

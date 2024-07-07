@@ -18,7 +18,7 @@ export const createFeed = async (data: CreateFeedData) => {
     return
   }
 
-  debug.info(`Inserting feed: ${feed.self}`)
+  debug(`Inserting feed: ${feed.self}`)
 
   await db.feed.create({
     data: {
@@ -76,5 +76,5 @@ export const createFeed = async (data: CreateFeedData) => {
       },
     },
   })
-  debug.info(`Feed Create Success ${feed.url}`)
+  debug(`Feed Create Success ${feed.url}`)
 }

@@ -30,18 +30,19 @@ export const updateFeed = async (feed: Feed) => {
   const newItems = parsedFeed.items.filter(
     item => !matchedFeedEntries.some(entry => entry.guid === item.id),
   )
-  debug(`New Items: ${newItems.map(item => item.title).join(",")}`)
 
   // If no new items, return
   if (!newItems.length) {
-    debug.info(`No new items to update in parsed feed: ${feed.url}`)
+    debug(`No new items in: ${feed.url}`)
     return
   }
+
+  debug(`${newItems.length} New Items`)
 
   // If we have new items to insert, insert their FeedEntry and FeedEntryMedia
   await Promise.all(
     newItems.map((item) => {
-      debug.info(`Inserting ${item.url}`)
+      debug(`Inserting ${item.url}`)
       return db.feedEntry.create({
         data: {
           title: item.title ?? "",
