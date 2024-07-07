@@ -33,11 +33,11 @@ export const updateFeed = async (feed: Feed) => {
 
   // If no new items, return
   if (!newItems.length) {
-    debug(`No new items in: ${feed.url}`)
+    debug(`0 new items in ${feed.url}`)
     return
   }
 
-  debug(`${newItems.length} New Items`)
+  debug(`${newItems.length} new items ${feed.url}`)
 
   // If we have new items to insert, insert their FeedEntry and FeedEntryMedia
   await Promise.all(

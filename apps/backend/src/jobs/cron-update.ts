@@ -30,16 +30,14 @@ export const updateJob = Cron(
         },
       })
       if (!feeds.length) {
-        debug("No feeds to refresh")
+        debug("0 feeds to refresh")
         debug(
           `Next run: ${format(cron.nextRun() ?? "", { date: "medium", time: "long" })}`,
         )
         return
       }
 
-      debug(
-        `Found ${feeds.length} feeds to refresh ${feeds.map(f => f.url).join(",")}`,
-      )
+      debug(`${feeds.length} feeds to refresh`)
 
       await Promise.allSettled(
         feeds.map(async (feed) => {
