@@ -12,7 +12,7 @@
     <img
       src={item.image}
       alt={item.title}
-      class="object-cover object-center mb-1 rounded-sm aspect-video"
+      class="w-64 mb-1 rounded-sm object-top object-cover bg-neutral-800 dark:bg-white aspect-video"
     />
   </a>
   <div class="flex flex-col gap-1 w-64">

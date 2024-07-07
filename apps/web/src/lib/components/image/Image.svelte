@@ -6,7 +6,7 @@
     return new Uint8Array(
       atob(base64)
         .split("")
-        .map(x => x.charCodeAt(0)),
+        .map((x) => x.charCodeAt(0)),
     )
   }
 
