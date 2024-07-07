@@ -33,7 +33,6 @@
   $effect(() => {
     bookmarkStore.bookmarks = $page.data.bookmarks.data
   })
-  $inspect("page.bks", bookmarkStore.bookmarks)
 </script>
 
 <svelte:head>

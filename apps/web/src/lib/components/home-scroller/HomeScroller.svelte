@@ -22,8 +22,6 @@
     },
   )
   const { type, items, count }: ScrollerProps = $props()
-
-  $inspect("bks.scroller", items)
 </script>
 
 <section

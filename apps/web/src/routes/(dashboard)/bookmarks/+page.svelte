@@ -17,7 +17,6 @@
 
   const ui = useInterface()
   const bookmarkStore = getContext<BookmarkContext>("bookmarks")
-  $inspect("bks.store", bookmarkStore.bookmarks)
 
   onMount(() => {
     // Share Target Redirect
