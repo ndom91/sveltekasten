@@ -2,8 +2,7 @@
   import { Navbar } from "$lib/components/navbar"
   import { HomeScroller } from "$lib/components/home-scroller"
   import { ScrollerTypes } from "$lib/types"
-  import { toast } from "svelte-sonner"
-  import { goto, invalidateAll } from "$app/navigation"
+  import { goto } from "$app/navigation"
   import { page } from "$app/stores"
   import { onMount } from "svelte"
 
@@ -11,17 +10,7 @@
     // Share Target Redirect
     const sharedSuccess = $page.url.searchParams.get("shared")
     if (sharedSuccess === "true") {
-      // toast.success("Link saved!")
       goto("/")
-      // TODO: Hacky cache invalidation; move to sw.onmessage handler when that's working
-      setTimeout(() => {
-        // invalidateAll()
-        document.querySelector("#dashboard-bookmark-row")?.scrollTo({
-          top: 0,
-          left: 0,
-          behavior: "smooth",
-        })
-      }, 3000)
     }
   })
 

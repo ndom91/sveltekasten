@@ -27,6 +27,7 @@ sw.addEventListener("fetch", (event: FetchEvent) => {
       const urlParam = url.searchParams.get("link")
 
       const targetUrl = urlParam ?? textParam ?? ""
+      const decodedTargetUrl = decodeURIComponent(targetUrl)
 
       await fetch("/api/v1/bookmarks", {
         method: "POST",
@@ -35,7 +36,7 @@ sw.addEventListener("fetch", (event: FetchEvent) => {
         },
         body: JSON.stringify([
           {
-            url: decodeURIComponent(targetUrl),
+            url: decodedTargetUrl,
             userId: "sw",
           },
         ]),
@@ -47,6 +48,7 @@ sw.addEventListener("fetch", (event: FetchEvent) => {
             type: "SHARE_SUCCES",
             payload: {
               message: "Bookmark Added",
+              url: decodedTargetUrl,
             },
           })
         }
@@ -62,7 +64,18 @@ sw.addEventListener("fetch", (event: FetchEvent) => {
   )
 })
 
-sw.addEventListener("activate", () => sw.clients.claim())
+sw.addEventListener("activate", (event) => {
+  sw.clients.claim()
+
+  // Remove previous cached data from disk
+  async function deleteOldCaches() {
+    for (const key of await caches.keys()) {
+      if (key !== CACHE) await caches.delete(key)
+    }
+  }
+
+  event.waitUntil(deleteOldCaches())
+})
 
 sw.addEventListener("message", (event) => {
   if (event.data && event.data.type === "SKIP_WAITING") sw.skipWaiting()

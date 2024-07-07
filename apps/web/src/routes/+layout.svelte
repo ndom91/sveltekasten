@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Toaster, toast } from "svelte-sonner"
+  import { dev } from "$app/environment"
   import { type Snippet, onMount, setContext } from "svelte"
   import MediaQuery from "$lib/components/MediaQuery.svelte"
   import DragAdd from "./DragAdd.svelte"
@@ -42,12 +43,12 @@
 
   onMount(() => {
     if (browser && "serviceWorker" in navigator) {
-      navigator.serviceWorker.register(
-        // @ts-expect-error - its fine, we're not transpiling to cjs
-        import.meta.env.MODE === "production" ? "/service-worker.js" : "/dev-sw.js?dev-sw",
-        // @ts-expect-error - its fine, we're not transpiling to cjs
-        { type: import.meta.env.MODE === "production" ? "classic" : "module" },
-      )
+      navigator.serviceWorker.register("/service-worker.js", {
+        type: dev ? "module" : "classic",
+      })
+      // navigator.serviceWorker.register(dev ? "/dev-sw.js?dev-sw" : "/service-worker.js", {
+      //   type: dev ? "module" : "classic",
+      // })
 
       // navigator.serviceWorker.addEventListener("message", (event) => {
       //   // TODO: invalidate cache once items been added
