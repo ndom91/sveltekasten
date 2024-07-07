@@ -16,7 +16,7 @@
 
   const handleConfirm = async (): Promise<void> => {
     try {
-      await ofetch("/api/v1/bookmarks", {
+      const res = await ofetch.raw("/api/v1/bookmarks", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -28,8 +28,11 @@
           },
         ],
       })
-      toast.success(`Added "${url}"`)
-      invalidate("app:bookmarks")
+
+      if (res.ok) {
+        await invalidate("app:bookmarks")
+        toast.success(`Added "${url}"`)
+      }
     } catch (error) {
       console.error(error)
       toast.error(String(error))

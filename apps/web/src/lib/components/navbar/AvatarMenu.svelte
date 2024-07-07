@@ -8,12 +8,12 @@
   import { Skeleton } from "$lib/components/ui/skeleton"
   import { version } from "$app/environment"
   import { flyAndScale } from "$lib/utils/style"
-  import { onMount, type SvelteComponent } from "svelte"
+  import { onMount } from "svelte"
 
   const isDarkMode = $derived($mode === "dark")
   let element = $state<HTMLDialogElement | null>(null)
   let installPrompt: Event | null = $state(null)
-  let installButton: SvelteComponent | null = $state(null)
+  let offerInstall = $state(false)
 
   const toggleKeyboardShorcuts = () => {
     element?.showModal()
@@ -21,16 +21,16 @@
 
   onMount(() => {
     window.addEventListener("beforeinstallprompt", (event) => {
-      console.log("beforeinstallprompt", installButton)
+      console.log("beforeinstallprompt", { offerInstall })
       event.preventDefault()
       installPrompt = event
-      installButton?.classList.toggle("hidden", false)
+      offerInstall = true
     })
 
     window.addEventListener("appinstalled", () => {
-      console.log("appinstalled", installButton)
+      console.log("appinstalled", { offerInstall })
       installPrompt = null
-      installButton?.classList.toggle("hidden", true)
+      offerInstall = false
     })
   })
 
@@ -42,8 +42,9 @@
     // @ts-expect-error TODO: find exact type for beforeinstallprompt Event
     const result = await installPrompt.prompt()
     console.log("Install prompt", result.outcome)
+
     installPrompt = null
-    installButton?.classList.toggle("hidden", true)
+    offerInstall = false
   }
 </script>
 
@@ -90,13 +91,15 @@
       <DropdownMenu.Item href="/settings" class="justify-start hover:cursor-pointer">
         Settings
       </DropdownMenu.Item>
-      <DropdownMenu.Item
-        bind:this={installButton}
-        onclick={handleInstall}
-        class="hidden justify-start hover:cursor-pointer"
-      >
-        Install
-      </DropdownMenu.Item>
+      {#if offerInstall}
+        <DropdownMenu.Item
+          onclick={handleInstall}
+          id="install-button"
+          class="justify-start hover:cursor-pointer"
+        >
+          Install
+        </DropdownMenu.Item>
+      {/if}
       <DropdownMenu.Separator class="bg-neutral-100 dark:bg-neutral-800" />
       <DropdownMenu.Item class="justify-start hover:cursor-pointer">
         <SignOut signOutPage="signout" class="w-full *:text-left *:w-full">

@@ -14,7 +14,7 @@
   } = $props()
 </script>
 
-<Dialog footer={false} id="delete-bookmark" bind:element={dialogElement}>
+<Dialog footer={false} id="delete-bookmark" bind:element={dialogElement} class="!max-w-[60ch]">
   <div>
     <h3 class="font-bold text-lg mb-4">Are you sure?</h3>
     <div>This action cannot be undone. This will permanently delete your bookmark.</div>
@@ -26,7 +26,11 @@
     >
       Cancel
     </button>
-    <form action="/bookmarks?/deleteBookmark" method="post" use:enhance={handleActionResults(() => dialogElement?.close())}>
+    <form
+      action="/bookmarks?/deleteBookmark"
+      method="post"
+      use:enhance={handleActionResults(() => dialogElement?.close())}
+    >
       <input type="hidden" name="bookmarkId" value={bookmarkId} />
       <button
         class={cn(buttonVariants({ variant: "destructive" }), "w-full sm:w-auto")}

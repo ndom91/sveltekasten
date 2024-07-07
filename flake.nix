@@ -9,12 +9,12 @@
       prisma =
         (prisma-utils.lib.prisma-factory {
           inherit nixpkgs;
-          prisma-fmt-hash = "sha256-4zsJv0PW8FkGfiiv/9g0y5xWNjmRWD8Q2l2blSSBY3s="; # just copy these hashes for now, and then change them when nix complains about the mismatch
-          query-engine-hash = "sha256-6ILWB6ZmK4ac6SgAtqCkZKHbQANmcqpWO92U8CfkFzw=";
-          libquery-engine-hash = "sha256-n9IimBruqpDJStlEbCJ8nsk8L9dDW95ug+gz9DHS1Lc=";
-          schema-engine-hash = "sha256-j38xSXOBwAjIdIpbSTkFJijby6OGWCoAx+xZyms/34Q=";
+          prisma-fmt-hash = "sha256-dqKh4BRuOjPk8oHn3pKwP63zSs4I10SYIu1/raC8y5g=";
+          query-engine-hash = "sha256-PBuVZ6Cw7rIwB89RMC6iY3ZyBuo/BcQgM2wsX5ggzWg=";
+          libquery-engine-hash = "sha256-d+XWz9BbDSz/ZbycF64bA+bvm5pnaF7l5le/KTfRwUQ=";
+          schema-engine-hash = "sha256-coTYlofR4KTlbrygv9/NNUlnDp3tuCBUXb66LPAcKF8=";
         }).fromPnpmLock
-          ./pnpm-lock.yaml; # <--- path to our pnpm-lock.yaml file that contains the version of prisma-engines
+          ./pnpm-lock.yaml;
     in
     {
       devShells.x86_64-linux.default = nixpkgs.mkShell { shellHook = prisma.shellHook; };

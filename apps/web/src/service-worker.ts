@@ -5,72 +5,93 @@
 
 const sw = self as unknown as ServiceWorkerGlobalScope
 
-// TODO: Test if caching fonts and images is worth the potential headache
-// import { CacheFirst } from "workbox-strategies"
-// import { registerRoute, Route } from "workbox-routing"
-//
-// const fontAssetRoute = new Route(
-//   ({ request }) => {
-//     return request.destination === "font"
-//   },
-//   new CacheFirst({
-//     cacheName: "font-assets",
-//   }),
-// )
-// const imageAssetRoute = new Route(
-//   ({ request }) => {
-//     return request.destination === "image"
-//   },
-//   new CacheFirst({
-//     cacheName: "image-assets",
-//   }),
-// )
-//
-// registerRoute(fontAssetRoute)
-// registerRoute(imageAssetRoute)
-
-sw.addEventListener("activate", () => sw.clients.claim());
-
-sw.addEventListener("message", (event) => {
-  if (event.data && event.data.type === "SKIP_WAITING") sw.skipWaiting()
-})
+import { CacheFirst } from "workbox-strategies"
+import { registerRoute, Route } from "workbox-routing"
+import { ExpirationPlugin } from "workbox-expiration"
 
 // Special fetch handler for song file sharing.
 sw.addEventListener("fetch", (event: FetchEvent) => {
   const url = new URL(event.request.url)
 
-  if (event.request.method !== "GET" || !url.pathname.includes("/api/v1/bookmarks/share")) {
-    return
+  if (event.request.method !== "GET") {
+    return fetch(event.request)
   }
 
-  // Immediately redirect to the start URL, there's nothing to see here.
-  event.respondWith(Response.redirect("./?shared=true"))
+  // Handle Web Share Target requests
+  if (url.pathname.includes("/api/v1/bookmarks/share")) {
+    // Immediately redirect to the start URL, there's nothing to see here.
+    event.respondWith(Response.redirect("./?shared=true"))
 
-  event.waitUntil(
-    (async function () {
-      const textParam = url.searchParams.get("text")
-      const urlParam = url.searchParams.get("link")
+    event.waitUntil(
+      (async function () {
+        const textParam = url.searchParams.get("text")
+        const urlParam = url.searchParams.get("link")
 
-      const targetUrl = urlParam ?? textParam ?? ""
+        const targetUrl = urlParam ?? textParam ?? ""
 
-      await fetch("/api/v1/bookmarks", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify([
-          {
-            url: decodeURIComponent(targetUrl),
-            userId: 'sw'
+        await fetch("/api/v1/bookmarks", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
           },
-        ]),
-      })
+          body: JSON.stringify([
+            {
+              url: decodeURIComponent(targetUrl),
+              userId: "sw",
+            },
+          ]),
+        })
 
-      const client = await sw.clients.get(event.clientId)
-      client?.postMessage({
-        status: 'success',
-        message: 'Bookmark Added'
-      })
-    })(),
-  )
+        sw.clients.matchAll().then((clientList) => {
+          for (const client of clientList) {
+            client?.postMessage({
+              type: "SHARE_SUCCES",
+              payload: {
+                message: "Bookmark Added",
+              },
+            })
+          }
+        })
+        // const client = await sw.clients.get(event.clientId)
+        // client?.postMessage({
+        //   type: "SHARE_SUCCES",
+        //   payload: {
+        //     message: "Bookmark Added",
+        //   },
+        // })
+      })(),
+    )
+  }
 })
+
+sw.addEventListener("activate", () => sw.clients.claim())
+
+sw.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") sw.skipWaiting()
+})
+
+const fontAssetRoute = new Route(
+  ({ request }) => {
+    return request.destination === "font"
+  },
+  new CacheFirst({
+    cacheName: "font-assets",
+  }),
+)
+const imageAssetRoute = new Route(
+  ({ request }) => {
+    return request.destination === "image"
+  },
+  new CacheFirst({
+    cacheName: "image-assets",
+    plugins: [
+      new ExpirationPlugin({
+        // Only cache requests for a week
+        maxAgeSeconds: 7 * 24 * 60 * 60,
+      }),
+    ],
+  }),
+)
+
+registerRoute(fontAssetRoute)
+registerRoute(imageAssetRoute)

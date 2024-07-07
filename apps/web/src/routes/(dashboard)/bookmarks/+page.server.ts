@@ -148,13 +148,14 @@ export const actions: Actions = {
 
       // Add bookmark to queue for fetching screenshot
       if (PUBLIC_WORKER_URL) {
-        await event.fetch(`${PUBLIC_WORKER_URL}/bookmark`, {
+        const res = await event.fetch(`${PUBLIC_WORKER_URL}/bookmark`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ data: [{ url }] }),
         })
+        console.log("bookmarks.workerRes", res)
       }
 
       return message(form, {

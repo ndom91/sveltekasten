@@ -1,11 +1,13 @@
 <script lang="ts">
   import type { Snippet } from "svelte"
+  import { cn } from "$lib/utils/style"
 
   interface Props {
     id: string
     children: Snippet
     element: HTMLDialogElement | null
     footer?: boolean
+    class?: string
     header?: Snippet<[{ cancelAction: () => void }]>
     popoverState?: "auto" | "manual"
     confirmAction?: () => void
@@ -20,6 +22,7 @@
     element = $bindable(),
     confirmAction = () => null,
     cancelAction = () => element?.close(),
+    class: className,
     children,
     header,
     confirmLabel,
@@ -31,7 +34,7 @@
 <dialog
   {id}
   bind:this={element}
-  class="bg-white rounded-lg shadow-xl border dark:bg-neutral-900"
+  class={cn("bg-white rounded-lg shadow-xl border dark:bg-neutral-900", className)}
   {...rest}
 >
   {#if header}
@@ -64,7 +67,7 @@
 
 <style>
   :root {
-    --duration: 0.3;
+    --duration: 0.2;
     --speed: calc(var(--duration) * 1s);
     --bounce-out: linear(
       0 0%,
@@ -109,8 +112,8 @@
   dialog {
     --present: 0;
     --scale: 0.95;
-    --blur: 10;
-    --translate: 12;
+    --blur: 6;
+    --translate: 6;
     outline: none;
     view-transition-name: dialog;
     scale: calc(var(--scale) + ((1 - var(--scale)) * var(--present)));
@@ -164,22 +167,6 @@
   @starting-style {
     dialog[open]::backdrop {
       --present: 0;
-    }
-  }
-
-  ::view-transition-new(dialog) {
-    animation: reveal 1s;
-    clip-path: inset(0 0 0 0);
-    z-index: 2;
-  }
-  ::view-transition-old(dialog) {
-    z-index: -1;
-    animation: none;
-  }
-
-  @keyframes reveal {
-    from {
-      clip-path: inset(0 100% 0 0);
     }
   }
 </style>

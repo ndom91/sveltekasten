@@ -44,13 +44,25 @@
     if (browser && navigator.serviceWorker.controller) {
       console.log("This page is currently controlled by:", navigator.serviceWorker.controller)
       navigator.serviceWorker.startMessages()
-
-      navigator.serviceWorker.onmessage = (event) => {
-        // TODO: invalidate cache once items been added
-        toast.success(`sw.message: ${event.data.message}`)
-        console.log("sw.message:", event.data.message)
-      }
+      // navigator.serviceWorker.onmessage = (event) => {
+      //   // TODO: invalidate cache once items been added
+      //   toast.success(`sw.message: ${event.data.message}`)
+      //   console.log("sw.message:", event.data.message)
+      // }
     }
+
+    navigator.serviceWorker.addEventListener("message", (event) => {
+      // TODO: invalidate cache once items been added
+      if (event.data.type === "SHARE_SUCCESS") {
+        toast.success(`sw.message: ${event.data}`)
+        console.log("sw.message:", event.data)
+      }
+      // if (event.data.type === "CACHE_UPDATED") {
+      //   const { updatedURL } = event.data.payload
+      //
+      //   console.log(`A newer version of ${updatedURL} is available!`)
+      // }
+    })
 
     if (browser && "serviceWorker" in navigator) {
       navigator.serviceWorker.register(

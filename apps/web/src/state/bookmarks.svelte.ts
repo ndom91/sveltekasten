@@ -1,8 +1,8 @@
-import { Map } from "svelte/reactivity"
+import { SvelteMap } from "svelte/reactivity"
 
 type Bookmark = LoadBookmarkFlatTags
 
-const bookmarks = new Map<string, Bookmark>()
+const bookmarks = new SvelteMap<string, Bookmark>()
 
 export function useBookmarks(initial?: Bookmark[]) {
   if (initial) {

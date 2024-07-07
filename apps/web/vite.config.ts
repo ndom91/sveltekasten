@@ -8,7 +8,6 @@ export default defineConfig({
   plugins: [
     sveltekit(),
     SvelteKitPWA({
-      // strategies: "injectManifest",
       filename: "service-worker.ts",
       srcDir: "src",
       injectRegister: false,
