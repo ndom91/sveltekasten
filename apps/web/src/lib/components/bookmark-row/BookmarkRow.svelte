@@ -66,10 +66,10 @@
     )}
   />
   <div class="flex flex-col gap-2 relative">
-    <span class="text-xl font-semibold pr-6 md:pr-0 line-clamp-1 text-clip" title={bookmark.title}>
+    <span class="text-xl font-semibold pr-10 md:pr-0 line-clamp-1 text-clip" title={bookmark.title}>
       {bookmark.title}
     </span>
-    <p class="break-words line-clamp-2 pr-6 md:pr-0">{bookmark.desc}</p>
+    <p class="break-words line-clamp-2 pr-10 md:pr-0">{bookmark.desc}</p>
     <div class="flex gap-2 justify-start items-center text-sm text-muted">
       {#if bookmark.metadata?.logo}
         <img src={bookmark.metadata?.logo} alt="URL Favicon" class="rounded-full size-4" />
@@ -77,7 +77,7 @@
       <a
         target="_blank"
         href={bookmark.url}
-        class="line-clamp-1 text-clip text-zinc-500 pr-12 md:pr-0"
+        class="line-clamp-1 text-clip text-zinc-500 pr-8 md:pr-0"
       >
         {bookmark.url}
       </a>

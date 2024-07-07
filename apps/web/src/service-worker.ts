@@ -53,32 +53,35 @@ sw.addEventListener("fetch", (event: FetchEvent) => {
           })
         }
       })
-      // const client = await sw.clients.get(event.clientId)
-      // client?.postMessage({
-      //   type: "SHARE_SUCCES",
-      //   payload: {
-      //     message: "Bookmark Added",
-      //   },
-      // })
     })(),
   )
 })
 
 sw.addEventListener("activate", (event) => {
-  sw.clients.claim()
+  event.waitUntil(sw.clients.claim())
 
   // Remove previous cached data from disk
   async function deleteOldCaches() {
     for (const key of await caches.keys()) {
-      if (key !== CACHE) await caches.delete(key)
+      if (Object.values(cacheKeys).includes(key)) {
+        await caches.delete(key)
+      }
     }
   }
 
   event.waitUntil(deleteOldCaches())
 })
 
+const cacheKeys = {
+  images: "IMAGE-ASSETS",
+  fonts: "FONT-ASSETS",
+}
+
 sw.addEventListener("message", (event) => {
-  if (event.data && event.data.type === "SKIP_WAITING") sw.skipWaiting()
+  console.log("sw.global.message", JSON.stringify(event), event)
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    sw.skipWaiting()
+  }
 })
 
 const fontAssetRoute = new Route(
@@ -86,7 +89,7 @@ const fontAssetRoute = new Route(
     return request.destination === "font"
   },
   new CacheFirst({
-    cacheName: "font-assets",
+    cacheName: cacheKeys.fonts,
   }),
 )
 const imageAssetRoute = new Route(
@@ -94,7 +97,7 @@ const imageAssetRoute = new Route(
     return request.destination === "image" && !url.hostname.includes("logo.clearbit.com")
   },
   new CacheFirst({
-    cacheName: "image-assets",
+    cacheName: cacheKeys.images,
     plugins: [
       new ExpirationPlugin({
         // Only cache requests for a week

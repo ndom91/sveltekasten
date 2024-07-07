@@ -1,32 +1,43 @@
-import { defineConfig } from "vite"
-// import { SvelteKitPWA } from "@vite-pwa/sveltekit"
+import { defineConfig, type Rollup } from "vite"
 import { join } from "node:path"
 import { sveltekit } from "@sveltejs/kit/vite"
+import { readFileSync, writeFileSync } from "node:fs"
 import { partytownVite } from "@builder.io/partytown/utils"
+import { execSync } from "node:child_process"
+
+function bumpManifestPlugin() {
+  return {
+    name: "bump-manifest",
+    outputOptions(options: Rollup.OutputOptions) {
+      // @ts-expect-error vite.config never built into CJS
+      const cwd = import.meta.dirname
+      const version = execSync("git rev-parse HEAD").toString().trim().substring(0, 7)
+      const manifestPath = join(cwd, "static", "manifest.webmanifest")
+
+      const contentsStr = readFileSync(manifestPath).toString()
+      const contents = JSON.parse(contentsStr)
+      contents.id = `briefkasten-${version}`
+
+      writeFileSync(manifestPath, `${JSON.stringify(contents, null, 2)}\n`)
+
+      return options
+    },
+  }
+}
 
 export default defineConfig({
   plugins: [
     sveltekit(),
-    // SvelteKitPWA({
-    //   filename: "service-worker.ts",
-    //   srcDir: "src",
-    //   injectRegister: false,
-    //   manifest: false,
-    //   injectManifest: {
-    //     injectionPoint: undefined,
-    //   },
-    //   devOptions: {
-    //     enabled: true,
-    //     navigateFallback: "/",
-    //     suppressWarnings: true,
-    //     type: "module",
-    //   },
-    // }),
     partytownVite({
       dest: join(__dirname, "build", "client", "~partytown"),
     }),
   ],
   server: {
     host: "0.0.0.0",
+  },
+  build: {
+    rollupOptions: {
+      plugins: [bumpManifestPlugin()],
+    },
   },
 })
