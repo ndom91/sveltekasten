@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Toaster, toast } from "svelte-sonner"
   import { type Snippet, onMount, setContext } from "svelte"
+  import MediaQuery from "$lib/components/MediaQuery.svelte"
   import DragAdd from "./DragAdd.svelte"
   import Scripts from "./Scripts.svelte"
   import Shortcuts from "./GlobalShortcuts.svelte"
@@ -38,17 +39,17 @@
     })
   })
 
-  onMount(() => {
-    if (browser && navigator.serviceWorker.controller) {
-      console.log("This page is currently controlled by:", navigator.serviceWorker.controller)
-      navigator.serviceWorker.startMessages()
+  if (browser && navigator.serviceWorker.controller) {
+    console.log("This page is currently controlled by:", navigator.serviceWorker.controller)
+    navigator.serviceWorker.startMessages()
 
-      navigator.serviceWorker.onmessage = (event) => {
-        // TODO: invalidate cache once items been added
-        toast.success(`sw.message: ${event.data}`)
-        console.log("sw.message:", event.data)
-      }
+    navigator.serviceWorker.onmessage = (event) => {
+      // TODO: invalidate cache once items been added
+      toast.success(`sw.message: ${event.data.message}`)
+      console.log("sw.message:", event.data.message)
     }
+  }
+  onMount(() => {
 
     if (browser && "serviceWorker" in navigator) {
       navigator.serviceWorker.register(
@@ -70,13 +71,28 @@
 
 <Shortcuts />
 
-<Toaster
-  class="toaster group"
-  toastOptions={{
-    class:
-      "bg-white/20 backdrop-blur-md dark:bg-neutral-700/20 dark:text-white dark:border-gray-400/10 border border-gray-200/70",
-  }}
-/>
+  <MediaQuery query="(max-width: 767px)">
+    {#snippet children(matches)}
+      {#if matches}
+        <Toaster
+          class="toaster group"
+          position={"top-left"}
+          toastOptions={{
+            class:
+              "bg-white/20 backdrop-blur-md dark:bg-neutral-700/20 dark:text-white dark:border-gray-400/10 border border-gray-200/70",
+          }}
+        />
+      {:else}
+        <Toaster
+          class="toaster group"
+          toastOptions={{
+            class:
+              "bg-white/20 backdrop-blur-md dark:bg-neutral-700/20 dark:text-white dark:border-gray-400/10 border border-gray-200/70",
+          }}
+        />
+      {/if}
+    {/snippet}
+  </MediaQuery>
 
 {@render children()}
 

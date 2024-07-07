@@ -8,7 +8,12 @@
     handleArchive: () => void
   }
 
-  const { url, handleMetadataSidebarOpen, handleDeleteDialogOpen, handleArchive }: Props = $props()
+  const {
+    url,
+    handleMetadataSidebarOpen,
+    handleDeleteDialogOpen,
+    handleArchive
+  }: Props = $props()
 </script>
 
 <div class="flex justify-between text-white">

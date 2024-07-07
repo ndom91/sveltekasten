@@ -5,6 +5,7 @@
 
 const sw = self as unknown as ServiceWorkerGlobalScope
 
+// TODO: Test if caching fonts and images is worth the potential headache
 // import { CacheFirst } from "workbox-strategies"
 // import { registerRoute, Route } from "workbox-routing"
 //
@@ -27,6 +28,8 @@ const sw = self as unknown as ServiceWorkerGlobalScope
 //
 // registerRoute(fontAssetRoute)
 // registerRoute(imageAssetRoute)
+
+sw.addEventListener("activate", () => sw.clients.claim());
 
 sw.addEventListener("message", (event) => {
   if (event.data && event.data.type === "SKIP_WAITING") sw.skipWaiting()
@@ -58,12 +61,16 @@ sw.addEventListener("fetch", (event: FetchEvent) => {
         body: JSON.stringify([
           {
             url: decodeURIComponent(targetUrl),
+            userId: 'sw'
           },
         ]),
       })
 
       const client = await sw.clients.get(event.clientId)
-      client?.postMessage("Bookmark Saved!")
+      client?.postMessage({
+        status: 'success',
+        message: 'Bookmark Added'
+      })
     })(),
   )
 })
