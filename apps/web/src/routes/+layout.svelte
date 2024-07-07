@@ -7,7 +7,7 @@
   import Shortcuts from "./GlobalShortcuts.svelte"
   import type { LayoutData } from "./$types"
 
-  import { onNavigate } from "$app/navigation"
+  import { invalidateAll, onNavigate } from "$app/navigation"
   import { browser } from "$app/environment"
   import { defaultAISettings, useInterface } from "$state/ui.svelte"
   import { useBookmarks } from "$state/bookmarks.svelte"
@@ -25,13 +25,13 @@
   ui.userSettings = data.session?.user?.settings?.personal ?? {}
 
   // Global View transition
-  onNavigate((navigation) => {
+  onNavigate((navigation: { complete: any }) => {
     // @ts-expect-error New method, only available in Chromium
     if (!document.startViewTransition) {
       return
     }
 
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
       // @ts-expect-error New method, only available in Chromium
       document.startViewTransition(async () => {
         resolve()
@@ -49,22 +49,32 @@
         { type: import.meta.env.MODE === "production" ? "classic" : "module" },
       )
 
-      navigator.serviceWorker.addEventListener("message", (event) => {
-        // TODO: invalidate cache once items been added
-        if (event.data.type === "SHARE_SUCCESS") {
-          toast.success(`sw.eventListener: ${event.data}`)
-          console.log("sw.eventListener:", event.data)
-        }
-      })
+      // navigator.serviceWorker.addEventListener("message", (event) => {
+      //   // TODO: invalidate cache once items been added
+      //   if (event.data.type === "SHARE_SUCCESS") {
+      //     toast.success(`sw.eventListener: ${event.data}`)
+      //     console.log("sw.eventListener:", event.data)
+      //   }
+      // })
     }
 
     if (navigator.serviceWorker.controller) {
       console.log("This page is currently controlled by:", navigator.serviceWorker.controller)
       navigator.serviceWorker.startMessages()
       navigator.serviceWorker.onmessage = (event) => {
-        // TODO: invalidate cache once items been added
-        toast.success(`sw.onmessage: ${event.data}`)
-        console.log("sw.onmessage:", event.data)
+        toast.success(`sw.onmessage0: ${JSON.stringify(event.data)}`)
+        if (event.data.type === "SHARE_SUCCESS") {
+          toast.success(`sw.onmessage1: ${JSON.stringify(event.data)}`)
+          // TODO: invalidate cache once items been added
+          invalidateAll()
+          console.log("sw.onmessage:", JSON.stringify(event.data))
+          document.querySelector("#dashboard-bookmark-row")?.scrollTo(0, 0)
+          // {
+          //   top: 0,
+          //   left: 0,
+          //   behavior: "smooth",
+          // })
+        }
       }
     }
   })

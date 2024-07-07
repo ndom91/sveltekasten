@@ -11,11 +11,11 @@
     // Share Target Redirect
     const sharedSuccess = $page.url.searchParams.get("shared")
     if (sharedSuccess === "true") {
-      toast.success("Link saved!")
+      // toast.success("Link saved!")
       goto("/")
       // TODO: Hacky cache invalidation; move to sw.onmessage handler when that's working
       setTimeout(() => {
-        invalidateAll()
+        // invalidateAll()
         document.querySelector("#dashboard-bookmark-row")?.scrollTo({
           top: 0,
           left: 0,

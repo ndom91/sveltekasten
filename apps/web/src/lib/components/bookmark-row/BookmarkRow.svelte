@@ -65,7 +65,7 @@
       ui.userSettings?.compact ? "hidden" : "",
     )}
   />
-  <div class="flex flex-col gap-2">
+  <div class="flex flex-col gap-2 relative">
     <span class="text-xl font-semibold pr-6 md:pr-0 line-clamp-1 text-clip" title={bookmark.title}>
       {bookmark.title}
     </span>
@@ -74,7 +74,11 @@
       {#if bookmark.metadata?.logo}
         <img src={bookmark.metadata?.logo} alt="URL Favicon" class="rounded-full size-4" />
       {/if}
-      <a target="_blank" href={bookmark.url} class="line-clamp-1 text-clip text-zinc-500">
+      <a
+        target="_blank"
+        href={bookmark.url}
+        class="line-clamp-1 text-clip text-zinc-500 pr-12 md:pr-0"
+      >
         {bookmark.url}
       </a>
     </div>
@@ -97,25 +101,25 @@
         </span>
       {/if}
     </span>
+    <MediaQuery query="(max-width: 767px)">
+      {#snippet children(matches)}
+        {#if matches}
+          <MobileBookmarkActions
+            url={bookmark.url ?? ""}
+            {handleMetadataSidebarOpen}
+            handleDeleteDialogOpen={() => deleteElement?.showModal()}
+            {handleArchive}
+          />
+        {:else}
+          <BookmarkActions
+            url={bookmark.url ?? ""}
+            {handleMetadataSidebarOpen}
+            handleDeleteDialogOpen={() => deleteElement?.showModal()}
+            {isOptionsOpen}
+            {handleArchive}
+          />
+        {/if}
+      {/snippet}
+    </MediaQuery>
   </div>
-  <MediaQuery query="(max-width: 767px)">
-    {#snippet children(matches)}
-      {#if matches}
-        <MobileBookmarkActions
-          url={bookmark.url ?? ""}
-          {handleMetadataSidebarOpen}
-          handleDeleteDialogOpen={() => deleteElement?.showModal()}
-          {handleArchive}
-        />
-      {:else}
-        <BookmarkActions
-          url={bookmark.url ?? ""}
-          {handleMetadataSidebarOpen}
-          handleDeleteDialogOpen={() => deleteElement?.showModal()}
-          {isOptionsOpen}
-          {handleArchive}
-        />
-      {/if}
-    {/snippet}
-  </MediaQuery>
 </div>
