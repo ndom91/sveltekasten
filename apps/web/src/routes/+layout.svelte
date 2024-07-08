@@ -3,6 +3,7 @@
   import { dev } from "$app/environment"
   import { type Snippet, onMount, setContext } from "svelte"
   import MediaQuery from "$lib/components/MediaQuery.svelte"
+  import { postMessageTypes } from "$lib/constants"
   import DragAdd from "./DragAdd.svelte"
   import Scripts from "./Scripts.svelte"
   import Shortcuts from "./GlobalShortcuts.svelte"
@@ -53,13 +54,9 @@
       navigator.serviceWorker.startMessages()
       navigator.serviceWorker.onmessage = (event) => {
         toast.success(`sw.onmessage0: ${JSON.stringify(event.data)}`)
-        if (event.data.type === "SHARE_SUCCESS") {
-          toast.success(`sw.onmessage1: ${JSON.stringify(event.data)}`)
-          toast.success("Bookmark added!")
-
+        if (event.data.type === postMessageTypes.SHARE_SUCCESS) {
+          toast.success(event.data.payload.message)
           invalidateAll()
-          console.log("sw.onmessage:", JSON.stringify(event.data))
-          document.querySelector("#dashboard-bookmark-row")?.scrollTo(0, 0)
         }
       }
     }

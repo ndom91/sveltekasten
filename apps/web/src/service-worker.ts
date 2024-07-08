@@ -8,6 +8,7 @@ const sw = self as unknown as ServiceWorkerGlobalScope
 import { CacheFirst } from "workbox-strategies"
 import { registerRoute, Route } from "workbox-routing"
 import { ExpirationPlugin } from "workbox-expiration"
+import { postMessageTypes } from "./lib/constants"
 
 // Special fetch handler for song file sharing.
 sw.addEventListener("fetch", (event: FetchEvent) => {
@@ -45,7 +46,7 @@ sw.addEventListener("fetch", (event: FetchEvent) => {
       sw.clients.matchAll().then((clientList) => {
         for (const client of clientList) {
           client?.postMessage({
-            type: "SHARE_SUCCES",
+            type: postMessageTypes.SHARE_SUCCESS,
             payload: {
               message: "Bookmark Added",
               url: decodedTargetUrl,
