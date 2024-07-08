@@ -48,7 +48,7 @@
         data: {
           settings: {
             personal: {
-              compact: userSettings.personal.compact,
+              compact: userSettings.personal?.compact,
             },
             ai: {
               tts: {
@@ -230,7 +230,7 @@
           <Checkbox
             id="summarization"
             class="mt-1"
-            checked={personalSettings.compact as boolean}
+            checked={personalSettings?.compact ?? false}
             onCheckedChange={() => toggleSetting("compact")}
           />
           <div>
