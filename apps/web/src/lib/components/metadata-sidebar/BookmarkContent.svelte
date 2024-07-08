@@ -3,7 +3,7 @@
   import SuperDebug, { defaults, superForm } from "sveltekit-superforms"
   import { format } from "@formkit/tempo"
   import { toast } from "svelte-sonner"
-  import { getContext } from "svelte"
+  // import { getContext } from "svelte"
   import { page } from "$app/stores"
   import { dev } from "$app/environment"
   import { invalidateAll } from "$app/navigation"
@@ -11,6 +11,7 @@
   import { Button, buttonVariants } from "$lib/components/ui/button"
   import { cn } from "$lib/utils/style"
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
+  import { countryMaps } from "$lib/utils/countries"
   import { useInterface } from "$state/ui.svelte"
   import { formSchema as metadataSchema } from "$schemas/metadata-sidebar"
 
@@ -21,30 +22,30 @@
   import * as Popover from "$lib/components/ui/popover"
   import TagInput from "$lib/components/TagInput.svelte"
 
-  const bookmarkStore = getContext<BookmarkContext>("bookmarks")
+  // const bookmarkStore = getContext<BookmarkContext>("bookmarks")
+  // const bookmark = bookmarkStore.find(ui.metadataSidebarData.bookmark?.id!)
 
   const ui = useInterface()
 
   const isEditMode = $derived(ui.metadataSidebarEditMode === true)
-  const bookmark = bookmarkStore.find(ui.metadataSidebarData.bookmark?.id!)
 
   const defaultData = {
-    id: ui.metadataSidebarData.bookmark?.id!,
-    url: ui.metadataSidebarData.bookmark?.url!,
-    title: ui.metadataSidebarData.bookmark?.title!,
-    description: ui.metadataSidebarData.bookmark?.desc!,
-    image: ui.metadataSidebarData.bookmark?.image!,
+    id: ui.metadataSidebarData.bookmark?.id,
+    url: ui.metadataSidebarData.bookmark?.url,
+    title: ui.metadataSidebarData.bookmark?.title,
+    description: ui.metadataSidebarData.bookmark?.desc,
+    image: ui.metadataSidebarData.bookmark?.image,
     category: ui.metadataSidebarData.bookmark?.category?.id,
-    tags: ui.metadataSidebarData.bookmark?.tags!,
+    tags: ui.metadataSidebarData.bookmark?.tags,
   }
 
+  // @ts-expect-error TODO figure out wtf this default fn wants as arg
   const superformInstance = superForm(defaults(defaultData, zodClient(metadataSchema)), {
     resetForm: false,
     dataType: "json",
     validators: zodClient(metadataSchema),
     onUpdated: ({ form }) => {
       if (form.valid) {
-        console.log("ON UPDATED.SUBMIT")
         toast.success("Bookmark Updated")
         ui.toggleMetadataSidebarEditMode()
         invalidateAll()
@@ -204,8 +205,8 @@
             )}
             role="combobox"
           >
-            {ui.metadataSidebarData.categories?.find(c => c.id === $form.category)?.name
-            ?? "Select category"}
+            {ui.metadataSidebarData.categories?.find((c) => c.id === $form.category)?.name ??
+              "Select category"}
             <svg
               class="ml-2 w-4 h-4 opacity-50 shrink-0"
               data-slot="icon"
@@ -293,7 +294,9 @@
         <div class="flex justify-between w-full text-sm">
           <span class="font-bold">Language</span>
           <span>
-            {ui.metadataSidebarData.bookmark.metadata?.lang}
+            {ui.metadataSidebarData.bookmark.metadata?.lang
+              ? countryMaps[ui.metadataSidebarData.bookmark.metadata?.lang.toUpperCase()]
+              : "Unknown"}
           </span>
         </div>
         <div class="flex justify-between w-full text-sm">
