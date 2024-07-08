@@ -2,11 +2,15 @@
   import { tick } from "svelte"
   import * as Command from "$lib/components/ui/command"
   import * as Popover from "$lib/components/ui/popover"
+  import DateRangePicker from "$lib/components/date-range/DateRangePicker.svelte"
+  import { Label } from "$lib/components/ui/label"
   import { Checkbox } from "$lib/components/ui/checkbox"
   import { Button } from "$lib/components/ui/button"
   import { page } from "$app/stores"
 
   let open = $state(false)
+  let unreadFilter = $state(false)
+  let todayFilter = $state(false)
 
   // We want to refocus the trigger button when the user selects
   // an item from the list so users can continue navigating the
@@ -19,7 +23,13 @@
   }
 </script>
 
-<section class="p-4 border-l-4 md:px-8 border-l-transparent">
+<section class="p-4 border-l-4 md:px-8 border-l-transparent flex justify-start items-center gap-4">
+  <div class="flex justify-center items-center gap-2 border border-input rounded-md h-full px-2">
+    <div class="mx-2 flex justify-center items-center gap-2">
+      <Checkbox id="unread" bind:checked={unreadFilter} />
+      <Label for="unread">Unread Only</Label>
+    </div>
+  </div>
   <Popover.Root bind:open let:ids>
     <Popover.Trigger asChild let:builder>
       <Button
@@ -27,7 +37,7 @@
         variant="outline"
         role="combobox"
         aria-expanded={open}
-        class="justify-between w-full md:w-[300px]"
+        class="justify-between w-full md:w-[200px]"
       >
         Feeds
         <svg
@@ -48,7 +58,7 @@
         </svg>
       </Button>
     </Popover.Trigger>
-    <Popover.Content class="p-0 w-[calc(100vw-2.2rem)] md:w-[300px]">
+    <Popover.Content class="p-0 w-[calc(100vw-2.2rem)] md:w-[200px]">
       <Command.Root>
         <Command.Input placeholder="Search.." />
         <Command.Empty>No results</Command.Empty>
@@ -73,4 +83,5 @@
       </Command.Root>
     </Popover.Content>
   </Popover.Root>
+  <DateRangePicker />
 </section>
