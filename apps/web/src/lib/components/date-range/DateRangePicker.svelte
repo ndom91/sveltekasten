@@ -42,7 +42,7 @@
   )
 </script>
 
-<div class="grid gap-2">
+<div class="grid gap-2 flex-grow">
   <Popover.Root openFocus>
     <Popover.Trigger asChild let:builder>
       <Button

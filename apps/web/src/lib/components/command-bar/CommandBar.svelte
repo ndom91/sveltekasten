@@ -82,7 +82,7 @@
 
 <svelte:window onkeydown={handleKeyDown} />
 
-<dialog bind:this={element} class="z-20 rounded-md shadow-sm">
+<dialog bind:this={element} class="z-20 rounded-md shadow-lg border-input border">
   <Command.Root class="p-1" loop>
     <Command.Input
       bind:value

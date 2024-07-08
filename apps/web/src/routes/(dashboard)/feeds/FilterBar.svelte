@@ -10,7 +10,6 @@
 
   let open = $state(false)
   let unreadFilter = $state(false)
-  let todayFilter = $state(false)
 
   // We want to refocus the trigger button when the user selects
   // an item from the list so users can continue navigating the
@@ -23,8 +22,10 @@
   }
 </script>
 
-<section class="p-4 border-l-4 md:px-8 border-l-transparent flex justify-start items-center gap-4">
-  <div class="flex justify-center items-center gap-2 border border-input rounded-md h-full px-2">
+<section
+  class="p-4 border-l-4 md:px-8 border-l-transparent flex justify-start items-center gap-4 flex-wrap"
+>
+  <div class="flex justify-center items-center gap-2 border border-input rounded-md h-10 px-2">
     <div class="mx-2 flex justify-center items-center gap-2">
       <Checkbox id="unread" bind:checked={unreadFilter} />
       <Label for="unread">Unread Only</Label>
@@ -37,7 +38,7 @@
         variant="outline"
         role="combobox"
         aria-expanded={open}
-        class="justify-between w-full md:w-[200px]"
+        class="justify-between min-w-[150px] md:w-[200px]"
       >
         Feeds
         <svg
