@@ -30,7 +30,6 @@
   watch.pre(
     () => ui.userSidebarOpen,
     () => {
-      // @ts-expect-error
       document.startViewTransition ? document.startViewTransition(() => mutate()) : mutate()
     },
   )

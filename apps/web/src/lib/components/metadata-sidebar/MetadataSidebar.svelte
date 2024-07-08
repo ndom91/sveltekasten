@@ -4,6 +4,7 @@
   import { cn } from "$lib/utils/style"
   import { page } from "$app/stores"
   import { useInterface } from "$state/ui.svelte"
+  import { watch } from "runed"
 
   const ui = useInterface()
   let metadataSidebarElement = $state<HTMLElement>()!
@@ -34,7 +35,6 @@
   $effect(() => {
     // Hack to get effect to run on sidebar toggle
     ui.metadataSidebarOpen
-    // @ts-expect-error - startViewTransition is a new feature
     document.startViewTransition ? document.startViewTransition(() => mutate()) : mutate()
   })
 </script>

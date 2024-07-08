@@ -92,7 +92,6 @@
   watch.pre(
     () => cardOpen,
     () => {
-      // @ts-expect-error
       document.startViewTransition ? document.startViewTransition(() => mutate()) : mutate()
     },
   )

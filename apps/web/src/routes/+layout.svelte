@@ -27,14 +27,12 @@
   ui.userSettings = data.session?.user?.settings?.personal ?? {}
 
   // Global View transition
-  onNavigate((navigation: { complete: any }) => {
-    // @ts-expect-error New method, only available in Chromium
+  onNavigate((navigation) => {
     if (!document.startViewTransition) {
       return
     }
 
     return new Promise<void>((resolve) => {
-      // @ts-expect-error New method, only available in Chromium
       document.startViewTransition(async () => {
         resolve()
         await navigation.complete
