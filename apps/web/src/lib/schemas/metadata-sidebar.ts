@@ -1,12 +1,12 @@
 import { z } from "zod"
 
 export const formSchema = z.object({
-  id: z.string().max(500).cuid(),
-  title: z.string({ required_error: "A title is required" }).min(2).max(100),
-  url: z.string({ required_error: "A URL is required" }).url().max(100),
-  description: z.string().max(500).optional(),
+  id: z.string().cuid(),
+  title: z.string({ required_error: "A title is required" }).min(2),
+  url: z.string({ required_error: "A URL is required" }).url(),
+  description: z.string().optional(),
   image: z.string().url().optional(),
-  category: z.string().max(500).cuid().optional(),
+  category: z.string().cuid().optional(),
   // category: z.object({
   //   id: z.string().cuid(),
   //   name: z.string(),
@@ -19,7 +19,7 @@ export const formSchema = z.object({
     z.object({
       id: z.string().cuid(),
       name: z.string(),
-      userId: z.string().min(2).max(50),
+      userId: z.string(),
       createdAt: z.date(),
       updatedAt: z.date(),
     }),

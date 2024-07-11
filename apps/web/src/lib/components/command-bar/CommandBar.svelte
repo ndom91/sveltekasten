@@ -5,15 +5,18 @@
   import Kbd from "$lib/components/KeyboardIndicator.svelte"
   import { useInterface } from "$state/ui.svelte"
 
-  function findNextItem(currentElement: Element | HTMLElement, direction: "k" | "j"): HTMLElement | undefined {
+  function findNextItem(
+    currentElement: Element | HTMLElement,
+    direction: "k" | "j",
+  ): HTMLElement | undefined {
     const directionMethod = direction === "k" ? "previousElementSibling" : "nextElementSibling"
     let nextElement = currentElement?.[directionMethod] as HTMLElement | undefined
     if (nextElement) {
       return nextElement
     }
 
-    nextElement
-      = currentElement.parentElement?.parentElement?.[directionMethod]?.[
+    nextElement =
+      currentElement.parentElement?.parentElement?.[directionMethod]?.[
         directionMethod
       ]?.querySelector("[data-cmdk-item]") ?? undefined
 
@@ -39,7 +42,8 @@
 
     // Navigate up / down list of items
     if (
-      ((event.ctrlKey || event.metaKey) && event.key === "j") || ((event.ctrlKey || event.metaKey) && event.key === "k")
+      ((event.ctrlKey || event.metaKey) && event.key === "j") ||
+      ((event.ctrlKey || event.metaKey) && event.key === "k")
     ) {
       event.preventDefault()
       const currentElement = document.querySelector("[data-cmdk-item][data-selected]")
@@ -61,7 +65,7 @@
   const navigateTo = async (path: string) => {
     element?.close()
 
-    await new Promise(resolve => setTimeout(resolve, 200))
+    await new Promise((resolve) => setTimeout(resolve, 200))
     await goto(path)
   }
 
@@ -72,14 +76,20 @@
 
   const toggleDarkMode = () => {
     toggleMode()
+    element?.close()
   }
 </script>
 
 <svelte:window onkeydown={handleKeyDown} />
 
-<dialog bind:this={element} class="z-20 rounded-md shadow-sm">
+<dialog bind:this={element} class="z-20 rounded-md shadow-lg border-input border">
   <Command.Root class="p-1" loop>
-    <Command.Input bind:value class="text-base" type="command-input" placeholder="Type a command or search..." />
+    <Command.Input
+      bind:value
+      class="text-base"
+      type="command-input"
+      placeholder="Type a command or search..."
+    />
     <Command.List>
       <Command.Empty>No results found.</Command.Empty>
       <Command.Group heading="Actions">
@@ -91,22 +101,34 @@
         <Command.Item onSelect={() => navigateTo("/")} class="flex justify-between text-base">
           Dashboard <Kbd class="text-xs" key="Shift + 1" />
         </Command.Item>
-        <Command.Item onSelect={() => navigateTo("/bookmarks")} class="flex justify-between text-base">
+        <Command.Item
+          onSelect={() => navigateTo("/bookmarks")}
+          class="flex justify-between text-base"
+        >
           Bookmarks <Kbd class="text-xs" key="Shift + 2" />
         </Command.Item>
         <Command.Item onSelect={() => navigateTo("/feeds")} class="flex justify-between text-base">
           Feeds <Kbd class="text-xs" key="Shift + 3" />
         </Command.Item>
-        <Command.Item onSelect={() => navigateTo("/archives")} class="flex justify-between text-base">
+        <Command.Item
+          onSelect={() => navigateTo("/archives")}
+          class="flex justify-between text-base"
+        >
           Archive <Kbd class="text-xs" key="Shift + 4" />
         </Command.Item>
-        <Command.Item onSelect={() => navigateTo("/categories")} class="flex justify-between text-base">
+        <Command.Item
+          onSelect={() => navigateTo("/categories")}
+          class="flex justify-between text-base"
+        >
           Categories <Kbd class="text-xs" key="Shift + 5" />
         </Command.Item>
         <Command.Item onSelect={() => navigateTo("/tags")} class="flex justify-between text-base">
           Tags <Kbd class="text-xs" key="Shift + 6" />
         </Command.Item>
-        <Command.Item onSelect={() => navigateTo("/settings")} class="flex justify-between text-base">
+        <Command.Item
+          onSelect={() => navigateTo("/settings")}
+          class="flex justify-between text-base"
+        >
           Settings <Kbd class="text-xs" key="Shift + 7" />
         </Command.Item>
       </Command.Group>

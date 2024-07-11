@@ -31,7 +31,7 @@
 
 <div
   class={cn(
-    "absolute right-4 top-10 flex rounded-xl bg-zinc-200/30 p-2 text-white delay-100 duration-300 ease-in-out dark:bg-neutral-900/50 backdrop-blur-[6px] shadow-[0_4px_20px_rgba(0,_0,_0,_0.1)] border dark:border-gray-600/10 border-gray-300/40",
+    "absolute right-4 top-10 flex rounded-xl bg-zinc-200/30 p-2 text-white delay-100 duration-300 ease-in-out dark:bg-neutral-900/50 backdrop-blur-[6px] shadow-[0_4px_20px_rgba(0,_0,_0,_0.2)] border dark:border-gray-600/20 border-gray-400/30",
     isOptionsOpen ? "opacity-100" : "opacity-0",
   )}
 >
@@ -149,7 +149,11 @@
           {#if ui.summarizationLoading}
             <LoadingIndicator class="dark:text-white" />
           {:else}
-            <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+            <svg
+              class="size-5 text-zinc-900 dark:text-zinc-100"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 256 256"
+            >
               <rect width="256" height="256" fill="none" /><line
                 x1="112"
                 y1="112"
