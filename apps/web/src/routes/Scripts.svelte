@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onMount } from "svelte"
-  import { watch } from "runed"
   import { page } from "$app/stores"
   import { browser, dev } from "$app/environment"
   import * as Swetrix from "swetrix"
@@ -19,10 +18,13 @@
     }
   })
 
-  watch(
-    () => url,
-    () => {
-      browser && Swetrix.trackPageview(url)
-    },
-  )
+  $effect(() => {
+    url = $page.url.pathname
+    if ($page.url.searchParams.toString() !== "") {
+      url += `?${$page.url.searchParams.toString()}`
+    }
+    if (!dev && browser && $page.url.hostname === "dev.briefkastenhq.com") {
+      Swetrix.trackPageview(url)
+    }
+  })
 </script>
