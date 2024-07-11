@@ -126,9 +126,6 @@ importers:
       '@auth/sveltekit':
         specifier: ^1.4.1
         version: 1.4.1(@sveltejs/kit@2.5.18(@sveltejs/vite-plugin-svelte@3.1.1(svelte@5.0.0-next.175)(vite@5.3.1(@types/node@20.14.10)(terser@5.31.1)))(svelte@5.0.0-next.175)(vite@5.3.1(@types/node@20.14.10)(terser@5.31.1)))(nodemailer@6.9.13)(svelte@5.0.0-next.175)
-      '@builder.io/partytown':
-        specifier: ^0.10.2
-        version: 0.10.2
       '@formkit/tempo':
         specifier: ^0.1.2
         version: 0.1.2
@@ -216,6 +213,9 @@ importers:
       sveltekit-superforms:
         specifier: ^2.15.2
         version: 2.15.2(@sveltejs/kit@2.5.18(@sveltejs/vite-plugin-svelte@3.1.1(svelte@5.0.0-next.175)(vite@5.3.1(@types/node@20.14.10)(terser@5.31.1)))(svelte@5.0.0-next.175)(vite@5.3.1(@types/node@20.14.10)(terser@5.31.1)))(svelte@5.0.0-next.175)
+      swetrix:
+        specifier: ^3.2.1
+        version: 3.2.1
       tailwind-merge:
         specifier: ^2.3.0
         version: 2.3.0
@@ -623,11 +623,6 @@ packages:
   '@babel/types@7.24.7':
     resolution: {integrity: sha512-XEFXSlxiG5td2EJRe8vOmRbaXVgfcBlszKujvVmWIK/UpywWljQCfzAv3RQCGujWQ1RD4YYWEAqDXfuJiy8f5Q==}
     engines: {node: '>=6.9.0'}
-
-  '@builder.io/partytown@0.10.2':
-    resolution: {integrity: sha512-A9U+4PREWcS+CCYzKGIPovtGB/PBgnH/8oQyCE6Nr9drDJk6cMPpLQIEajpGPmG9tYF7N3FkRvhXm/AS9+0iKg==}
-    engines: {node: '>=18.0.0'}
-    hasBin: true
 
   '@csstools/selector-resolve-nested@1.1.0':
     resolution: {integrity: sha512-uWvSaeRcHyeNenKg8tp17EVDRkpflmdyvbE0DHo6D/GdBb6PDnCYYU6gRpXhtICMGMcahQmj2zGxwFM/WC8hCg==}
@@ -3582,6 +3577,9 @@ packages:
       '@sveltejs/kit': 1.x || 2.x
       svelte: 3.x || 4.x || >=5.0.0-next.51
 
+  swetrix@3.2.1:
+    resolution: {integrity: sha512-aR6Z+SYbPF3cgfGV6Snvx3+EwF76ASh5dsLSvtuVilUSfqv5nPMBjx4KVeH5h4Lky9oh4h47R3hnTHc1CVc3uA==}
+
   symbol-tree@3.2.4:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
 
@@ -4659,8 +4657,6 @@ snapshots:
       to-fast-properties: 2.0.0
     optional: true
 
-  '@builder.io/partytown@0.10.2': {}
-
   '@csstools/selector-resolve-nested@1.1.0(postcss-selector-parser@6.1.0)':
     dependencies:
       postcss-selector-parser: 6.1.0
@@ -4671,7 +4667,7 @@ snapshots:
 
   '@emnapi/runtime@1.1.1':
     dependencies:
-      tslib: 2.6.2
+      tslib: 2.6.3
     optional: true
 
   '@esbuild/aix-ppc64@0.21.5':
@@ -7862,6 +7858,11 @@ snapshots:
       yup: 1.4.0
       zod: 3.23.8
       zod-to-json-schema: 3.23.1(zod@3.23.8)
+
+  swetrix@3.2.1:
+    dependencies:
+      '@types/node': 20.14.10
+      tslib: 2.6.3
 
   symbol-tree@3.2.4: {}
 
