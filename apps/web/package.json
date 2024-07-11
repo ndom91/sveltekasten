@@ -4,12 +4,11 @@
   "scripts": {
     "dev": "vite dev --port 3000",
     "clean": "rm -rf build || true",
-    "build": "pnpm clean && vite build && pnpm copy:partytown",
+    "build": "pnpm clean && vite build",
     "start": "node build/index.js",
     "preview": "vite preview",
     "format": "prettier --write src/**/*.{svelte,ts,json,css,html}",
     "test:e2e": "playwright test",
-    "copy:partytown": "pnpm exec partytown copylib build/client/~partytown",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "db:push": "prisma db push",
