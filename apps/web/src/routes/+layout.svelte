@@ -51,7 +51,6 @@
       console.log("This page is currently controlled by:", navigator.serviceWorker.controller)
       navigator.serviceWorker.startMessages()
       navigator.serviceWorker.onmessage = (event) => {
-        toast.success(`sw.onmessage0: ${JSON.stringify(event.data)}`)
         if (event.data.type === postMessageTypes.SHARE_SUCCESS) {
           toast.success(event.data.payload.message)
           invalidateAll()
