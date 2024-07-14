@@ -33,11 +33,7 @@ export const GET: RequestHandler = async (event) => {
       data,
     })
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message)
-    } else {
-      console.error(error)
-    }
+    console.error(String(error))
     return new Response(String(error), { status: 401 })
   }
 }
@@ -64,11 +60,7 @@ export const PUT: RequestHandler = async (event) => {
 
     return json({ data })
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message)
-    } else {
-      console.error(error)
-    }
+    console.error(String(error))
     return new Response(String(error), { status: 401 })
   }
 }
