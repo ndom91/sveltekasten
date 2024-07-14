@@ -78,15 +78,18 @@
   }
 
   const mutate = () => {
-    if (cardOpen) {
-      feedBodyElement.style.opacity = "1.0"
-      feedBodyElement.style.height = "fit-content"
-      feedBodyElement.style.transform = "scaleY(100%)"
-    } else {
-      feedBodyElement.style.opacity = "0"
-      feedBodyElement.style.height = "0px"
-      feedBodyElement.style.transform = "scaleY(0)"
-    }
+    return new Promise<void>((resolve) => {
+      if (cardOpen) {
+        feedBodyElement.style.opacity = "1.0"
+        feedBodyElement.style.height = "fit-content"
+        feedBodyElement.style.transform = "scaleY(100%)"
+      } else {
+        feedBodyElement.style.opacity = "0"
+        feedBodyElement.style.height = "0px"
+        feedBodyElement.style.transform = "scaleY(0)"
+      }
+      resolve()
+    })
   }
 
   watch.pre(
@@ -121,7 +124,7 @@
   bind:this={card}
   tabindex="0"
   class={cn(
-    "grid relative gap-4 mx-2 p-4 md:mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none grid-cols-1 md:grid-cols-[10rem_1fr] dark:focus:bg-neutral-800 focus:border-zinc-500 focus:bg-zinc-100",
+    "grid relative gap-4 mx-2 p-4 md:mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none grid-cols-1 md:grid-cols-[10rem_1fr] dark:focus:bg-neutral-800 focus:border-neutral-500 focus:bg-neutral-100",
     !isFeedVisible && "hidden",
     hideUnread && "hidden",
   )}
@@ -146,10 +149,11 @@
     <div
       bind:this={feedBodyElement}
       class={cn(
-        "prose max-w-screen-lg origin-top prose-img:!w-full dark:prose-blockquote:text-zinc-200 prose-img:!h-auto prose-img:max-w-screen-md prose-img:object-contain prose-video:aspect-video prose-video:max-w-screen-sm dark:text-zinc-100 dark:prose-headings:text-zinc-100 dark:prose-a:text-zinc-200 dark:prose-strong:text-zinc-100 transition-all h-0 opacity-0",
+        "prose max-w-screen-lg origin-top prose-img:!w-full dark:prose-blockquote:text-neutral-200 prose-img:!h-auto prose-img:max-w-screen-md prose-img:object-contain prose-video:aspect-video prose-video:max-w-screen-sm dark:text-neutral-100 dark:prose-headings:text-neutral-100 dark:prose-a:text-neutral-200 dark:prose-strong:text-neutral-100 transition-all h-0 opacity-0",
         cardOpen ? "h-fit" : "h-0",
       )}
     >
+      <!-- eslint-disable-next-line -->
       {@html dompurify.sanitize(feedEntry.content ?? "", {
         USE_PROFILES: { html: true },
         ALLOW_DATA_ATTR: false,
@@ -170,7 +174,7 @@
           target="_blank"
           href={feedEntry.link}
           onclick={() => handleMarkAsUnread()}
-          class="line-clamp-1 text-clip text-zinc-500"
+          class="line-clamp-1 text-clip text-neutral-500"
         >
           {feedEntry.link}
         </a>

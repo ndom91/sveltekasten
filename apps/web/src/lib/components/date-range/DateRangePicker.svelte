@@ -5,16 +5,16 @@
   import { DateFormatter, getLocalTimeZone, today } from "@internationalized/date"
   import * as Popover from "$lib/components/ui/popover/index.js"
   import * as Select from "$lib/components/ui/select/index.js"
-  import { watch } from "runed"
   import type { DateRange } from "bits-ui"
 
   const df = new DateFormatter("en-US", {
     dateStyle: "medium",
   })
 
-  let start = $state(today(getLocalTimeZone()).subtract({ days: 3 }))
-  let end = $state(today(getLocalTimeZone()))
-  let dateRange = $state<DateRange>({ start, end })
+  let dateRange = $state<DateRange>({
+    start: today(getLocalTimeZone()).subtract({ days: 3 }),
+    end: today(getLocalTimeZone()),
+  })
   const userLocale: string = $state(new Intl.NumberFormat().resolvedOptions().locale ?? "en-us")
 
   const items = [
@@ -22,24 +22,6 @@
     { value: 7, label: "Last Week" },
     { value: 30, label: "Last Month" },
   ]
-
-  // TODO: Fix up this hacky reactivity-keep-in-sync BS
-  watch(
-    () => [start, end],
-    () => {
-      dateRange = {
-        start,
-        end,
-      }
-    },
-  )
-  watch(
-    () => dateRange,
-    () => {
-      start = dateRange.start
-      end = dateRange.end
-    },
-  )
 </script>
 
 <div class="grid gap-2 flex-grow">
@@ -48,8 +30,8 @@
       <Button
         variant="outline"
         class={cn(
-          "w-fit justify-start text-left font-normal",
-          !start && !end && "text-muted-foreground",
+          "w-fit justify-start text-left font-normal bg-neutral-100 dark:bg-neutral-900 ",
+          !dateRange.start && !dateRange.end && "text-muted-foreground",
         )}
         builders={[builder]}
       >
@@ -101,13 +83,13 @@
             r="12"
           /><circle cx="128" cy="172" r="12" /><circle cx="172" cy="172" r="12" /></svg
         >
-        {#if start}
-          {#if end}
-            {df.format(start.toDate(getLocalTimeZone()))} - {df.format(
-              end.toDate(getLocalTimeZone()),
+        {#if dateRange.start}
+          {#if dateRange.end}
+            {df.format(dateRange.start.toDate(getLocalTimeZone()))} - {df.format(
+              dateRange.end.toDate(getLocalTimeZone()),
             )}
           {:else}
-            {df.format(start.toDate(getLocalTimeZone()))}
+            {df.format(dateRange.start.toDate(getLocalTimeZone()))}
           {/if}
         {:else}
           Pick a date
@@ -120,9 +102,8 @@
         selected={items[0]}
         onSelectedChange={(v) => {
           if (!v) return
-          // daysCount = v.value
-          start = today(getLocalTimeZone()).subtract({ days: v.value })
-          end = today(getLocalTimeZone())
+          dateRange.start = today(getLocalTimeZone()).subtract({ days: v.value })
+          dateRange.end = today(getLocalTimeZone())
         }}
       >
         <Select.Trigger>

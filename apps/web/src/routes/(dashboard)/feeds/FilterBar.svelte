@@ -25,10 +25,12 @@
 <section
   class="p-4 border-l-4 md:px-8 border-l-transparent flex justify-start items-center gap-4 flex-wrap"
 >
-  <div class="flex justify-center items-center gap-2 border border-input rounded-md h-10 px-2">
+  <div
+    class="flex justify-center items-center gap-2 border border-input rounded-md h-10 px-2 bg-neutral-100 dark:bg-neutral-900"
+  >
     <div class="mx-2 flex justify-center items-center gap-2">
       <Checkbox id="unread" bind:checked={unreadFilter} />
-      <Label for="unread">Unread Only</Label>
+      <Label class="hover:cursor-pointer" for="unread">Unread Only</Label>
     </div>
   </div>
   <Popover.Root bind:open let:ids>
@@ -38,7 +40,7 @@
         variant="outline"
         role="combobox"
         aria-expanded={open}
-        class="justify-between min-w-[150px] md:w-[200px]"
+        class="justify-between min-w-[150px] md:w-[200px] bg-neutral-100 dark:bg-neutral-900 "
       >
         Feeds
         <svg
