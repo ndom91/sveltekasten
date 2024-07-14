@@ -1,3 +1,13 @@
+<script lang="ts" context="module">
+  enum ModalSize {
+    sm = "sm",
+    md = "md",
+    lg = "lg",
+    xl = "xl",
+    "2xl" = "2xl",
+  }
+</script>
+
 <script lang="ts">
   import type { Snippet } from "svelte"
   import { cn } from "$lib/utils/style"
@@ -5,15 +15,16 @@
   interface Props {
     id: string
     children: Snippet
-    element: HTMLDialogElement | null
+    element: HTMLDialogElement | undefined
     footer?: boolean
     class?: string
     header?: Snippet<[{ cancelAction: () => void }]>
     popoverState?: "auto" | "manual"
     confirmAction?: () => void
     cancelAction?: () => void
-    confirmLabel?: Snippet
-    cancelLabel?: Snippet
+    confirmLabel?: string
+    cancelLabel?: string
+    size?: keyof typeof ModalSize
   }
 
   let {
@@ -27,18 +38,31 @@
     header,
     confirmLabel,
     cancelLabel,
+    size = ModalSize.md,
     ...rest
   }: Props = $props()
+
+  const modalSizeWidths = {
+    sm: "max-w-sm",
+    md: "max-w-md",
+    lg: "max-w-lg",
+    xl: "max-w-xl",
+    "2xl": "max-w-2xl",
+  }
 </script>
 
 <dialog
   {id}
   bind:this={element}
-  class={cn("bg-white rounded-lg shadow-xl border dark:bg-neutral-900", className)}
+  class={cn(
+    "bg-white rounded-lg shadow-xl border dark:bg-neutral-900",
+    modalSizeWidths[size],
+    className,
+  )}
   {...rest}
 >
   {#if header}
-    <header class="py-2">
+    <header class="px-2">
       {@render header({ cancelAction: () => element?.close() })}
     </header>
   {/if}
@@ -47,16 +71,16 @@
   </div>
   {#if footer}
     <footer class="flex justify-end py-2 space-x-2">
-      <button class="danger-button" onclick={() => confirmAction()}>
+      <button class="primary-button" onclick={() => confirmAction()}>
         {#if confirmLabel}
-          {@render confirmLabel()}
+          {confirmLabel}
         {:else}
           Confirm
         {/if}
       </button>
-      <button type="button" class="primary-button" onclick={() => cancelAction()}>
+      <button type="button" class="secondary-button" onclick={() => cancelAction()}>
         {#if cancelLabel}
-          {@render cancelLabel()}
+          {cancelLabel}
         {:else}
           Cancel
         {/if}
@@ -168,5 +192,17 @@
     dialog[open]::backdrop {
       --present: 0;
     }
+  }
+
+  .secondary-button,
+  .primary-button {
+    @apply h-10 px-4 py-2 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .secondary-button {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
+  }
+  .primary-button {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90;
   }
 </style>

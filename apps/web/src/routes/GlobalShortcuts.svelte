@@ -2,7 +2,7 @@
   import KeyboardShortcutsHelp from "$lib/components/KeyboardShortcutsHelp.svelte"
   import { goto } from "$app/navigation"
 
-  let element = $state<HTMLDialogElement | null>(null)
+  let element = $state<HTMLDialogElement | undefined>()
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.repeat || e.target instanceof HTMLInputElement) {

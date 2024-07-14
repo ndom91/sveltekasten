@@ -14,7 +14,7 @@
   }
 
   let isDragOver = $state(false)
-  let showConfirmAddDialog = $state(false)
+  let showConfirmAddDialog: HTMLDialogElement | undefined = $state()
   let url = $state("")
 
   const handleDragEnter = (e: DragEvent) => {
@@ -46,7 +46,7 @@
       }
 
       url = parsedUrl
-      showConfirmAddDialog = true
+      showConfirmAddDialog?.showModal()
     }
   }
 
@@ -58,7 +58,8 @@
     const parsedUrl = parseData(text)
     if (parsedUrl) {
       url = parsedUrl
-      showConfirmAddDialog = true
+      console.log("showConfirmAddDialog", showConfirmAddDialog)
+      showConfirmAddDialog?.showModal()
     }
   }
 
@@ -69,7 +70,7 @@
     }
     if (e.key === "Escape" && showConfirmAddDialog) {
       e.preventDefault()
-      showConfirmAddDialog = false
+      showConfirmAddDialog.close()
     }
   }
 
@@ -91,7 +92,7 @@
   ondragover={(e) => e.preventDefault()}
 />
 
-<ConfirmAddDialog {url} bind:open={showConfirmAddDialog} />
+<ConfirmAddDialog {url} bind:dialogElement={showConfirmAddDialog} />
 
 <div
   role="region"

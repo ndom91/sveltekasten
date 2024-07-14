@@ -3,14 +3,13 @@
   import { toast } from "svelte-sonner"
   import { page } from "$app/stores"
   import { invalidateAll } from "$app/navigation"
-  import { buttonVariants } from "$lib/components/ui/button"
-  import * as AlertDialog from "$lib/components/ui/alert-dialog"
+  import Dialog from "$lib/components/Dialog.svelte"
 
   let {
-    open = $bindable(),
+    dialogElement = $bindable(),
     url,
   }: {
-    open: boolean
+    dialogElement: HTMLDialogElement | undefined
     url: string
   } = $props()
 
@@ -37,27 +36,24 @@
       console.error(error)
       toast.error(String(error))
     } finally {
-      open = false
+      dialogElement?.close()
     }
   }
 </script>
 
-<AlertDialog.Root bind:open closeOnOutsideClick closeOnEscape>
-  <AlertDialog.Content class="!shadow-sm">
-    <AlertDialog.Header>
-      <AlertDialog.Title>Create</AlertDialog.Title>
-      <AlertDialog.Description>
-        <div>Are you sure you want to add this URL?</div>
-        <div class="mt-2 font-bold break-all line-clamp-2">{url}</div>
-      </AlertDialog.Description>
-    </AlertDialog.Header>
-    <AlertDialog.Footer>
-      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-      <AlertDialog.Action asChild>
-        <button class={buttonVariants({ variant: "default" })} onclick={handleConfirm}>
-          Add
-        </button>
-      </AlertDialog.Action>
-    </AlertDialog.Footer>
-  </AlertDialog.Content>
-</AlertDialog.Root>
+<Dialog
+  id="confirm-add"
+  bind:element={dialogElement}
+  confirmLabel="Add"
+  confirmAction={handleConfirm}
+>
+  {#snippet header()}
+    <div class="flex justify-between">
+      <h2 class="text-2xl font-bold">Create</h2>
+    </div>
+  {/snippet}
+  <div>
+    <div>Are you sure you want to add this URL?</div>
+    <div class="mt-2 font-bold break-all line-clamp-2">{url}</div>
+  </div>
+</Dialog>

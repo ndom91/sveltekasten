@@ -2,10 +2,10 @@
   import Dialog from "$lib/components/Dialog.svelte"
   import Kbd from "$lib/components/KeyboardIndicator.svelte"
 
-  let { dialogElement = $bindable() }: { dialogElement: HTMLDialogElement | null } = $props()
+  let { dialogElement = $bindable() }: { dialogElement: HTMLDialogElement | undefined } = $props()
 </script>
 
-<Dialog id="keyboard-shortcuts" footer={false} bind:element={dialogElement}>
+<Dialog id="keyboard-shortcuts" size="2xl" footer={false} bind:element={dialogElement}>
   {#snippet header({ cancelAction })}
     <div class="flex justify-between">
       <h2 class="text-2xl font-bold">Keyboard Shortcuts</h2>
