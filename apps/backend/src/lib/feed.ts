@@ -1,5 +1,5 @@
-import type Feed from "@rowanmanning/feed-parser/lib/feed/base.d.ts"
-import parser from "@rowanmanning/feed-parser"
+import { Feed } from "@rowanmanning/feed-parser/lib/feed/base.js"
+import { parseFeed } from "@rowanmanning/feed-parser"
 import debugFactory from "./log.js"
 
 const debug = debugFactory("backend:fetch-feed")
@@ -34,5 +34,5 @@ export const fetchFeed = async ({ url, lastFetched = null }: FetchFeed): Promise
   }
 
   const xml = await response.text()
-  return parser(xml)
+  return parseFeed(xml)
 }

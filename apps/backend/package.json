@@ -18,17 +18,17 @@
     "db:generate": "prisma generate"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.609.0",
+    "@aws-sdk/client-s3": "^3.614.0",
     "@formkit/tempo": "^0.1.2",
     "@hono/node-server": "^1.12.0",
     "@hono/zod-validator": "^0.2.2",
     "@panva/hkdf": "^1.2.1",
-    "@prisma/client": "5.16.1",
-    "@rowanmanning/feed-parser": "^0.5.7",
-    "croner": "^8.0.2",
+    "@prisma/client": "5.16.2",
+    "@rowanmanning/feed-parser": "^1.0.0",
+    "croner": "^8.1.0",
     "debug": "^4.3.5",
     "fastq": "^1.17.1",
-    "hono": "^4.4.12",
+    "hono": "^4.4.13",
     "jose": "^5.6.3",
     "playwright-chromium": "^1.44.0",
     "rss-parser": "^3.13.0",
@@ -41,7 +41,7 @@
     "@types/debug": "^4.1.12",
     "@types/node": "^20.14.10",
     "@types/xml2js": "^0.4.14",
-    "prisma": "5.16.1",
+    "prisma": "5.16.2",
     "tsx": "^4.16.2"
   }
 }
