@@ -4,6 +4,7 @@
   import { page } from "$app/stores"
   import { invalidateAll } from "$app/navigation"
   import Dialog from "$lib/components/Dialog.svelte"
+  import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
 
   let {
     dialogElement = $bindable(),
@@ -13,8 +14,11 @@
     url: string
   } = $props()
 
+  let loading = $state(false)
+
   const handleConfirm = async (): Promise<void> => {
     try {
+      loading = true
       const res = await ofetch.raw("/api/v1/bookmarks", {
         method: "POST",
         headers: {
@@ -36,21 +40,23 @@
       console.error(error)
       toast.error(String(error))
     } finally {
+      loading = false
       dialogElement?.close()
     }
   }
 </script>
 
-<Dialog
-  id="confirm-add"
-  bind:element={dialogElement}
-  confirmLabel="Add"
-  confirmAction={handleConfirm}
->
+<Dialog id="confirm-add" bind:element={dialogElement} confirmAction={handleConfirm}>
   {#snippet header()}
     <div class="flex justify-between">
       <h2 class="text-2xl font-bold">Create</h2>
     </div>
+  {/snippet}
+  {#snippet confirmLabel()}
+    Add
+    {#if loading}
+      <LoadingIndicator size="sm" class="ml-2" />
+    {/if}
   {/snippet}
   <div>
     <div>Are you sure you want to add this URL?</div>

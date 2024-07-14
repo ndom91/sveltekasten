@@ -1,16 +1,14 @@
-<script lang="ts" context="module">
-  enum ModalSize {
-    sm = "sm",
-    md = "md",
-    lg = "lg",
-    xl = "xl",
-    "2xl" = "2xl",
-  }
-</script>
-
 <script lang="ts">
   import type { Snippet } from "svelte"
   import { cn } from "$lib/utils/style"
+
+  const ModalSize = {
+    sm: "sm",
+    md: "md",
+    lg: "lg",
+    xl: "xl",
+    "2xl": "2xl",
+  } as const
 
   interface Props {
     id: string
@@ -22,8 +20,8 @@
     popoverState?: "auto" | "manual"
     confirmAction?: () => void
     cancelAction?: () => void
-    confirmLabel?: string
-    cancelLabel?: string
+    confirmLabel?: Snippet
+    cancelLabel?: Snippet
     size?: keyof typeof ModalSize
   }
 
@@ -73,14 +71,14 @@
     <footer class="flex justify-end py-2 space-x-2">
       <button class="primary-button" onclick={() => confirmAction()}>
         {#if confirmLabel}
-          {confirmLabel}
+          {@render confirmLabel()}
         {:else}
           Confirm
         {/if}
       </button>
       <button type="button" class="secondary-button" onclick={() => cancelAction()}>
         {#if cancelLabel}
-          {cancelLabel}
+          {@render cancelLabel()}
         {:else}
           Cancel
         {/if}
