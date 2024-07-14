@@ -76,6 +76,7 @@
     "svelte-infinite": "^0.3.2",
     "svelte-sonner": "^0.3.27",
     "sveltekit-superforms": "^2.16.0",
+    "swetrix": "^3.2.1",
     "tailwind-merge": "^2.4.0",
     "tailwind-variants": "^0.2.1",
     "thumbhash": "^0.1.1",
