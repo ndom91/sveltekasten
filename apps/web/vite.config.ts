@@ -2,7 +2,6 @@ import { defineConfig, type Rollup } from "vite"
 import { join } from "node:path"
 import { sveltekit } from "@sveltejs/kit/vite"
 import { readFileSync, writeFileSync } from "node:fs"
-import { partytownVite } from "@builder.io/partytown/utils"
 import { execSync } from "node:child_process"
 
 function bumpManifestPlugin() {
@@ -26,12 +25,7 @@ function bumpManifestPlugin() {
 }
 
 export default defineConfig({
-  plugins: [
-    sveltekit(),
-    partytownVite({
-      dest: join(__dirname, "build", "client", "~partytown"),
-    }),
-  ],
+  plugins: [sveltekit()],
   server: {
     host: "0.0.0.0",
   },

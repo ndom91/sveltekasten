@@ -19,7 +19,6 @@
   const bookmarkStore = getContext<BookmarkContext>("bookmarks")
 
   onMount(() => {
-    // Share Target Redirect
     const showQuickAdd = $page.url.searchParams.get("quickAdd")
     if (showQuickAdd === "true") {
       goto("/bookmarks")
