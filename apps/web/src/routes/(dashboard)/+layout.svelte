@@ -6,7 +6,7 @@
 
   const { children } = $props()
 
-  const DISABLED_PATHS = ["/categories", "/tags", "/settings", "/"]
+  const DISABLED_PATHS = ["/feeds", "/categories", "/tags", "/settings", "/"]
 
   const metadataEnabled = $derived(() => !DISABLED_PATHS.includes($page.url.pathname))
 </script>

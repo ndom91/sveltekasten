@@ -25,7 +25,7 @@
   <CommandBar />
   <Sidebar />
   <div class="flex flex-col flex-grow items-start w-full">
-    <Navbar simple />
+    <Navbar showSearch={false} showQuickAdd={false} showSidebar={false} />
     <Tabs.Root
       value={tab ?? "user"}
       class="flex flex-col flex-grow w-full max-w-screen-3xl"

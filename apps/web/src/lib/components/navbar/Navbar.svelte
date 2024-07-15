@@ -13,7 +13,7 @@
   import { flyAndScale } from "$lib/utils/style"
   import { AudioPlayer } from "$lib/components/audio-player"
 
-  const { simple = false } = $props()
+  const { showSearch = true, showQuickAdd = true, showSidebar = true } = $props()
   const ui = useInterface()
   let searchInputEl = $state<HTMLInputElement>()
 
@@ -50,10 +50,10 @@
   <ModeWatcher />
   <Breadcrumbs />
   <div class="flex gap-2 justify-end items-center md:gap-4">
-    {#if !simple}
-      {#if ui.textToSpeechAudioBlob && ui.aiFeaturesPreferences.tts.enabled}
-        <AudioPlayer src={ui.textToSpeechAudioBlob} />
-      {/if}
+    {#if ui.textToSpeechAudioBlob && ui.aiFeaturesPreferences.tts.enabled}
+      <AudioPlayer src={ui.textToSpeechAudioBlob} />
+    {/if}
+    {#if showSearch}
       <div
         class="relative rounded-md transition duration-300 focus-within:rounded-md focus-within:ring-2 focus-within:outline-none dark:focus-within:ring-zinc-800 focus-within:ring-zinc-300"
       >
@@ -86,6 +86,8 @@
         </svg>
         <KeyboardIndicator key="/" class="hidden absolute top-2 right-3 text-xs md:block" />
       </div>
+    {/if}
+    {#if showQuickAdd}
       <Popover.Root bind:open={ui.quickAddOpen}>
         <Tooltip.Root>
           <Popover.Trigger tabindex={-1} />
@@ -137,6 +139,8 @@
           </Popover.Content>
         </Tooltip.Root>
       </Popover.Root>
+    {/if}
+    {#if showSidebar}
       <div
         class="rounded-full transition duration-300 focus-within:rounded-full focus-within:ring-2 focus-within:outline-none dark:focus-within:ring-zinc-800 focus-within:ring-zinc-300"
       >

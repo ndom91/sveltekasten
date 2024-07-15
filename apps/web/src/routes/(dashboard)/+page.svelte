@@ -40,7 +40,7 @@
   <meta name="description" content="RSS Feeds, Bookmarks, and more!" />
 </svelte:head>
 
-<Navbar simple />
+<Navbar showSearch={false} showQuickAdd={false} showSidebar={false} />
 <main
   class="overflow-y-scroll align-start flex max-w-[100vw] md:max-w-[calc(100vw_-_72px)] flex-col justify-start gap-6"
 >
