@@ -1,7 +1,7 @@
+import { isAuthenticated } from "$/lib/auth"
+import { db } from "$lib/prisma"
 import { json, text } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
-import { db } from "$lib/prisma"
-import { isAuthenticated } from "$/lib/auth"
 
 interface RequestBody {
   where: Record<string, unknown>

@@ -1,6 +1,6 @@
 import "@auth/sveltekit"
-import type { Prisma } from "@prisma/client"
 import type { AIFeaturesPreferences } from "./state/ui.svelte"
+import type { Prisma } from "@prisma/client"
 import type { SvelteMap } from "svelte"
 
 declare module "@auth/sveltekit" {

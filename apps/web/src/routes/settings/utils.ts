@@ -1,5 +1,5 @@
-import { toast } from "svelte-sonner"
 import { ofetch } from "ofetch"
+import { toast } from "svelte-sonner"
 
 export interface ParsedBookmark {
   title?: string

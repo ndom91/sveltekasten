@@ -50,8 +50,19 @@ export default ts.config(
         {
           alphabetize: {
             order: "asc",
-            caseInsensitive: true,
+            orderImportKind: "asc",
+            caseInsensitive: false,
           },
+          groups: [
+            "index",
+            "sibling",
+            "parent",
+            "internal",
+            "external",
+            "builtin",
+            "object",
+            "type",
+          ],
         },
       ],
       "import-x/no-unresolved": [

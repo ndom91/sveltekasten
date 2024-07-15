@@ -1,9 +1,9 @@
+import { db } from "$lib/prisma"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { type JWT, SvelteKitAuth, type User } from "@auth/sveltekit"
 import type { Provider } from "@auth/sveltekit/providers"
-import { env } from "$env/dynamic/private"
 import { dev } from "$app/environment"
-import { db } from "$lib/prisma"
+import { env } from "$env/dynamic/private"
 
 const providers: Provider[] = []
 

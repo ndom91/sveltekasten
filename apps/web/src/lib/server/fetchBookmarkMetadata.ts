@@ -1,20 +1,20 @@
-import { ofetch } from "ofetch"
-
+import { getThumbhash } from "$lib/server/thumbhash"
 import metascraper from "metascraper"
-import metascraperDescription from "metascraper-description"
-import metascraperTitle from "metascraper-title"
+
+import metascraperAuthor from "metascraper-author"
 import metascraperClearbit from "metascraper-clearbit"
+import metascraperDate from "metascraper-date"
+import metascraperDescription from "metascraper-description"
+import metascraperFeed from "metascraper-feed"
 import metascraperImage from "metascraper-image"
+import metascraperLang from "metascraper-lang"
 import metascraperLogo from "metascraper-logo"
 import metascraperLogoFavicon from "metascraper-logo-favicon"
-import metascraperLang from "metascraper-lang"
 import metascraperPublisher from "metascraper-publisher"
-import metascraperAuthor from "metascraper-author"
-import metascraperFeed from "metascraper-feed"
-import metascraperDate from "metascraper-date"
-import metascraperUrl from "metascraper-url"
 import metascraperReadability from "metascraper-readability"
-import { getThumbhash } from "$lib/server/thumbhash"
+import metascraperUrl from "metascraper-url"
+import metascraperTitle from "metascraper-title"
+import { ofetch } from "ofetch"
 
 const metascraperClient = metascraper([
   metascraperDescription(),

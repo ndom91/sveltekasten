@@ -1,6 +1,6 @@
+import { db } from "$lib/prisma"
 import { fail, redirect } from "@sveltejs/kit"
 import type { Actions, PageServerLoad } from "./$types"
-import { db } from "$lib/prisma"
 
 export const actions: Actions = {
   deleteBookmark: async ({ request, locals }) => {

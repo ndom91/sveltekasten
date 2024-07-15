@@ -1,6 +1,6 @@
+import { handle as handleAuth, providerMap } from "./auth"
 import { sequence } from "@sveltejs/kit/hooks"
 import type { Handle } from "@sveltejs/kit"
-import { handle as handleAuth, providerMap } from "./auth"
 import { dev } from "$app/environment"
 
 function getStatusColor(statusCode: string): string {

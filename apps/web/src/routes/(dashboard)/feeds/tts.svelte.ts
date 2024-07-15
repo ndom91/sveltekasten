@@ -1,6 +1,6 @@
-import { ofetch } from "ofetch"
-import { TTSLocation, useInterface } from "$state/ui.svelte"
 import ttsWorkerUrl from "$lib/transformers/tts-worker?url"
+import { TTSLocation, useInterface } from "$state/ui.svelte"
+import { ofetch } from "ofetch"
 import { dev } from "$app/environment"
 
 const ui = useInterface()

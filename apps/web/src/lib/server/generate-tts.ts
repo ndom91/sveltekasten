@@ -1,5 +1,5 @@
-import { randomUUID } from "node:crypto"
 import WebSocket from "ws"
+import { randomUUID } from "node:crypto"
 import { EDGE_AI_KEY } from "$env/static/private"
 
 const EDGE_SPEECH_URL =
