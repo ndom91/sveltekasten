@@ -1,14 +1,14 @@
 import { fail, redirect } from "@sveltejs/kit"
 import { message, superValidate } from "sveltekit-superforms"
 import { zod } from "sveltekit-superforms/adapters"
-import { db } from "$lib/prisma"
-import { isAuthenticated } from "$lib/auth"
 import type { Actions, PageServerLoad } from "./$types"
-import { formSchema as quickAddSchema } from "$schemas/quick-add"
-import { formSchema as metadataSchema } from "$schemas/metadata-sidebar"
-import { fetchBookmarkMetadata } from "$lib/server/fetchBookmarkMetadata"
 import { PUBLIC_WORKER_URL } from "$env/static/public"
+import { isAuthenticated } from "$lib/auth"
+import { db } from "$lib/prisma"
+import { fetchBookmarkMetadata } from "$lib/server/fetchBookmarkMetadata"
 import type { Tag } from "$lib/types/zod"
+import { formSchema as metadataSchema } from "$schemas/metadata-sidebar"
+import { formSchema as quickAddSchema } from "$schemas/quick-add"
 
 export const actions: Actions = {
   deleteBookmark: async (event) => {
@@ -191,7 +191,7 @@ export const load: PageServerLoad = async (event) => {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
 
-    const [data, count] = await db.bookmark.findManyAndCount({
+    const [data, count] = (await db.bookmark.findManyAndCount({
       take: limit + skip,
       skip,
       where: {
@@ -203,9 +203,9 @@ export const load: PageServerLoad = async (event) => {
         tags: { include: { tag: true } },
       },
       orderBy: { createdAt: "desc" },
-    })
+    })) as unknown as [LoadBookmark[], number]
 
-    const bookmarks = data.map((bookmark: LoadBookmark) => {
+    const bookmarks = data.map((bookmark) => {
       return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) }
     }) as LoadBookmarkFlatTags[]
 

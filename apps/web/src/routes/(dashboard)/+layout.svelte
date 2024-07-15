@@ -50,7 +50,6 @@
     }
 
     if (navigator.serviceWorker.controller) {
-      console.log("This page is currently controlled by:", navigator.serviceWorker.controller)
       navigator.serviceWorker.startMessages()
       navigator.serviceWorker.onmessage = (event) => {
         if (event.data.type === postMessageTypes.SHARE_SUCCESS) {

@@ -1,19 +1,19 @@
 <script lang="ts">
-  import { toast } from "svelte-sonner"
   import { ofetch } from "ofetch"
-  import { InfiniteLoader, loaderState } from "svelte-infinite"
-  import { getContext, onDestroy, onMount } from "svelte"
   import { watch } from "runed"
+  import { getContext, onDestroy, onMount } from "svelte"
+  import { InfiniteLoader, loaderState } from "svelte-infinite"
+  import { toast } from "svelte-sonner"
   import FilterBar from "./FilterBar.svelte"
-  import { page } from "$app/stores"
 
-  import { Navbar } from "$lib/components/navbar"
+  import { goto } from "$app/navigation"
+  import { page } from "$app/stores"
+  import { BookmarkRow } from "$lib/components/bookmark-row"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
-  import { useInterface } from "$state/ui.svelte"
-  import { BookmarkRow } from "$lib/components/bookmark-row"
+  import { Navbar } from "$lib/components/navbar"
   import { Logger, loggerLevels } from "$lib/utils/logger"
-  import { goto } from "$app/navigation"
+  import { useInterface } from "$state/ui.svelte"
 
   const ui = useInterface()
   const bookmarkStore = getContext<BookmarkContext>("bookmarks")

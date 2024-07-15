@@ -29,7 +29,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
       orderBy: { createdAt: "desc" },
     })
 
-    const [bookmarkData, bookmarkCount] = await db.bookmark.findManyAndCount({
+    const [bookmarkData, bookmarkCount] = (await db.bookmark.findManyAndCount({
       take: 10,
       skip: 0,
       where: {
@@ -41,7 +41,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
         tags: { include: { tag: true } },
       },
       orderBy: { createdAt: "desc" },
-    })
+    })) as unknown as [LoadBookmark[], number]
 
     return {
       feedEntries: {

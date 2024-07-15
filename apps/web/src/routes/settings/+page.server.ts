@@ -90,7 +90,7 @@ export const load: PageServerLoad = async (event) => {
       orderBy: { createdAt: "desc" },
     })
 
-    const [bookmarkData, bookmarkCount] = await db.bookmark.findManyAndCount({
+    const [bookmarkData, bookmarkCount] = (await db.bookmark.findManyAndCount({
       where: {
         userId: session?.user?.id,
       },
@@ -99,7 +99,7 @@ export const load: PageServerLoad = async (event) => {
         tags: { include: { tag: true } },
       },
       orderBy: { createdAt: "desc" },
-    })
+    })) as unknown as [LoadBookmark[], number]
 
     const bookmarksFlatTags = bookmarkData.map((bookmark) => {
       return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) }
