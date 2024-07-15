@@ -51,7 +51,7 @@
   tabindex={0}
   data-id={bookmark.id}
   role="row"
-  class="grid relative gap-4 mx-2 p-4 md:mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none grid-cols-1 md:grid-cols-[15rem_1fr] dark:focus:bg-neutral-800 focus:border-zinc-500 focus:bg-zinc-100"
+  class="grid relative gap-4 mx-2 p-4 md:mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none grid-cols-1 md:grid-cols-[15rem_1fr] dark:focus:bg-neutral-800/40 focus:border-zinc-500 focus:bg-zinc-100"
   onmouseleave={() => (isOptionsOpen = false)}
   onmouseenter={() => (isOptionsOpen = true)}
 >

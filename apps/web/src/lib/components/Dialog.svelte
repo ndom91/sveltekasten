@@ -176,7 +176,7 @@
   /* Backdrop */
   dialog::backdrop {
     --present: 0;
-    background-color: color-mix(in lch, canvas, transparent 80%);
+    background-color: color-mix(in lch, #000000, transparent 60%);
     backdrop-filter: blur(4px);
     opacity: calc(var(--present) * 1);
     transition:

@@ -124,7 +124,7 @@
   bind:this={card}
   tabindex="0"
   class={cn(
-    "grid relative gap-4 mx-2 p-4 md:mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none grid-cols-1 md:grid-cols-[10rem_1fr] dark:focus:bg-neutral-800 focus:border-neutral-500 focus:bg-neutral-100",
+    "grid relative gap-4 mx-2 p-4 md:mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none grid-cols-1 md:grid-cols-[10rem_1fr] dark:focus:bg-neutral-800/40 focus:border-neutral-500 focus:bg-neutral-100",
     !isFeedVisible && "hidden",
     hideUnread && "hidden",
   )}
