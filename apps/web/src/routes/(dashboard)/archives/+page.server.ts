@@ -41,7 +41,7 @@ export const load: PageServerLoad = async (event) => {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
 
-    const [data, count] = await db.bookmark.findManyAndCount({
+    const [data, count] = (await db.bookmark.findManyAndCount({
       take: limit + skip,
       skip,
       where: {
@@ -53,11 +53,11 @@ export const load: PageServerLoad = async (event) => {
         tags: { include: { tag: true } },
       },
       orderBy: { createdAt: "desc" },
-    })
+    })) as unknown as [LoadBookmark[], number]
 
     const bookmarks = data.map((bookmark) => {
-      return { ...bookmark, tags: bookmark.tags.map(tag => tag.tag) }
-    }) as LoadBookmarkFlatTags[]
+      return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) }
+    })
 
     return {
       session,

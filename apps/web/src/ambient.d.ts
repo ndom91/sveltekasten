@@ -1,7 +1,7 @@
 import "@auth/sveltekit"
 import type { Prisma } from "@prisma/client"
 import type { AIFeaturesPreferences } from "./state/ui.svelte"
-import type { BookmarkFlatTags } from "$lib/types"
+// import type { BookmarkFlatTags } from "$lib/types"
 import type { SvelteMap } from "svelte"
 
 declare module "@auth/sveltekit" {
@@ -28,23 +28,26 @@ declare module "@auth/sveltekit" {
 declare global {
   type TODO = any
 
-  type bk = Prisma.BookmarkGetPayload<object>
+  type bk = Prisma.BookmarkGetPayload<{}>
 
-  type LoadBookmark = Prisma.BookmarkGetPayload<{
-    include: { category: true; tags: { include: { tag: true } } }
-  }>
-  type LoadBookmarkFlatTags = BookmarkFlatTags
+  export const bookmarksWithRelationships = Prisma.validator<Prisma.BookmarkDefaultArgs>()({
+    include: { tags: { include: { tag: true } }, category: true },
+  })
+  type LoadBookmark = Prisma.BookmarkGetPayload<typeof bookmarksWithRelationships>
+  type FlatTags = Prisma.TagGetPayload<{}>
+  type LoadBookmarkFlatTags = Omit<LoadBookmark, "tags"> & { tags: FlatTags[] }
+
   type LoadFeedEntry = Prisma.FeedEntryGetPayload<{
     include: { feed: true; feedMedia: true }
   }>
-  type LoadFeed = Prisma.FeedGetPayload<object> & { visible: boolean }
+  type LoadFeed = Prisma.FeedGetPayload<{}> & { visible: boolean }
 
   interface BookmarkContext {
-    bookmarks: SvelteMap<string, BookmarkFlatTags>
-    add: (bookmark: BookmarkFlatTags | BookmarkFlatTags[]) => void
+    bookmarks: SvelteMap<string, LoadBookmarkFlatTags>
+    add: (bookmark: LoadBookmarkFlatTags | LoadBookmarkFlatTags[]) => void
     remove: (bookmarkId: string) => void
-    update: (bookmark: BookmarkFlatTags) => void
-    find: (bookmarkId: string) => BookmarkFlatTags | undefined
+    update: (bookmark: LoadBookmarkFlatTags) => void
+    find: (bookmarkId: string) => LoadBookmarkFlatTags | undefined
   }
 
   declare const __DATE__: string
