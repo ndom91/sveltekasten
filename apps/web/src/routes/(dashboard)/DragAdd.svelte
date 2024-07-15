@@ -58,7 +58,6 @@
     const parsedUrl = parseData(text)
     if (parsedUrl) {
       url = parsedUrl
-      console.log("showConfirmAddDialog", showConfirmAddDialog)
       showConfirmAddDialog?.showModal()
     }
   }

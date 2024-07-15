@@ -68,18 +68,19 @@ export const providerMap = providers.map((provider) => {
 })
 
 export const { signIn, signOut, handle } = SvelteKitAuth({
-  debug: !!dev,
+  // debug: !!dev,
   trustHost: true,
   adapter: PrismaAdapter(db),
   providers,
   session: {
-    strategy: "jwt",
+    strategy: "database",
   },
   pages: {
     signIn: "/login",
   },
   callbacks: {
     async jwt({ token, profile, account, user, trigger }) {
+      console.log("args", { token, profile, account, user, trigger })
       if (account) {
         // Initial user profile
         const userProfile: User = {
@@ -95,14 +96,12 @@ export const { signIn, signOut, handle } = SvelteKitAuth({
         }
 
         return {
-          ...token,
           access_token: account.access_token,
           expires_at:
             account.expires_at ??
             Math.floor(Date.now() / 1000 + (account.expires_in ?? 60 * 60 * 24 * 30)),
           refresh_token: account.refresh_token,
-          providerId: account.provider,
-          profile: userProfile,
+          user: userProfile,
         }
       } else if (Date.now() < (token.expires_at as number) * 1000) {
         // Token is still valid
@@ -117,12 +116,7 @@ export const { signIn, signOut, handle } = SvelteKitAuth({
       }
     },
     async session({ session, token }) {
-      if (token.profile) {
-        // @ts-expect-error skipping 'emailVerified' on purpose
-        session.user = token.profile as User
-      }
-
-      session.error = token.error as "RefreshAccessTokenError" | undefined
+      session.error = token?.error as "RefreshAccessTokenError" | undefined
       // session.accessToken = token.access_token
       return session
     },
