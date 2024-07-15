@@ -1,63 +1,12 @@
 <script lang="ts">
-  import { Toaster, toast } from "svelte-sonner"
-  import { dev } from "$app/environment"
-  import { type Snippet, onMount, setContext } from "svelte"
+  import { Toaster } from "svelte-sonner"
   import MediaQuery from "$lib/components/MediaQuery.svelte"
-  import { postMessageTypes } from "$lib/constants"
-  import DragAdd from "./DragAdd.svelte"
   import Scripts from "./Scripts.svelte"
   import Shortcuts from "./GlobalShortcuts.svelte"
-  import type { LayoutData } from "./$types"
-
-  import { invalidateAll, onNavigate } from "$app/navigation"
-  import { browser } from "$app/environment"
-  import { defaultAISettings, useInterface } from "$state/ui.svelte"
-  import { useBookmarks } from "$state/bookmarks.svelte"
+  import type { Snippet } from "svelte"
   import "$lib/styles/global.css"
 
-  const bookmarkStore = useBookmarks()
-  setContext("bookmarks", bookmarkStore)
-
-  const ui = useInterface()
-
-  const { data, children }: { data: LayoutData; children: Snippet } = $props()
-
-  // Set current user preferences to store
-  ui.aiFeaturesPreferences = data.session?.user?.settings?.ai ?? defaultAISettings
-  ui.userSettings = data.session?.user?.settings?.personal ?? {}
-
-  // Global View transition
-  onNavigate((navigation) => {
-    if (!document.startViewTransition) {
-      return
-    }
-
-    return new Promise<void>((resolve) => {
-      document.startViewTransition(async () => {
-        resolve()
-        await navigation.complete
-      })
-    })
-  })
-
-  onMount(() => {
-    if (browser && "serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/service-worker.js", {
-        type: dev ? "module" : "classic",
-      })
-    }
-
-    if (navigator.serviceWorker.controller) {
-      console.log("This page is currently controlled by:", navigator.serviceWorker.controller)
-      navigator.serviceWorker.startMessages()
-      navigator.serviceWorker.onmessage = (event) => {
-        if (event.data.type === postMessageTypes.SHARE_SUCCESS) {
-          toast.success(event.data.payload.message)
-          invalidateAll()
-        }
-      }
-    }
-  })
+  const { children }: { children: Snippet } = $props()
 </script>
 
 <svelte:head>
@@ -93,5 +42,3 @@
 </MediaQuery>
 
 {@render children()}
-
-<DragAdd />

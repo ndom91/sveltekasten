@@ -1,6 +1,6 @@
 <script lang="ts">
   import { mode, toggleMode } from "mode-watcher"
-  import { SignOut } from "@auth/sveltekit/components"
+  import { signOut } from "@auth/sveltekit/client"
   import { page } from "$app/stores"
   import KeyboardShortcutsHelp from "$lib/components/KeyboardShortcutsHelp.svelte"
   import * as Avatar from "$lib/components/ui/avatar"
@@ -11,7 +11,7 @@
   import { onMount } from "svelte"
 
   const isDarkMode = $derived($mode === "dark")
-  let element = $state<HTMLDialogElement | null>(null)
+  let element = $state<HTMLDialogElement | undefined>()
   let installPrompt: Event | null = $state(null)
   let offerInstall = $state(false)
 
@@ -101,10 +101,11 @@
         </DropdownMenu.Item>
       {/if}
       <DropdownMenu.Separator class="bg-neutral-100 dark:bg-neutral-800" />
-      <DropdownMenu.Item class="justify-start hover:cursor-pointer">
-        <SignOut signOutPage="signout" class="w-full *:text-left *:w-full">
-          <div slot="submitButton" class="w-full">Sign Out</div>
-        </SignOut>
+      <DropdownMenu.Item
+        class="justify-start hover:cursor-pointer"
+        onclick={() => signOut({ redirectTo: "/login" })}
+      >
+        Sign Out
       </DropdownMenu.Item>
     </DropdownMenu.Group>
   </DropdownMenu.Content>

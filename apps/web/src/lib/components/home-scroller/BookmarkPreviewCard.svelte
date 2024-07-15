@@ -31,7 +31,7 @@
       target="_blank"
       class="transition focus:underline focus:outline-none focus:outline-offset-2"
     >
-      <span class="line-clamp-2" title={item.title}><b>{item.title}</b> {item.desc}</span>
+      <span class="line-clamp-2" title={item.title}>{item.title} - {item.desc}</span>
     </a>
   </div>
 </div>

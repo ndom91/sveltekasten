@@ -1,5 +1,5 @@
-import { providerMap, signIn } from "../../auth"
-import type { Actions, PageServerLoad } from "./$types"
+import { providerMap } from "../../auth"
+import type { PageServerLoad } from "./$types"
 
 export const load: PageServerLoad = ({ url }) => {
   const redirectTo = url.searchParams.get("redirectTo")
@@ -7,8 +7,4 @@ export const load: PageServerLoad = ({ url }) => {
     providers: providerMap,
     redirectTo,
   }
-}
-
-export const actions: Actions = {
-  default: signIn,
 }

@@ -1,4 +1,5 @@
 <script lang="ts">
+  // debugger
   import { twJoin } from "tailwind-merge"
   import { SignIn } from "@auth/sveltekit/components"
   import { toast } from "svelte-sonner"
@@ -25,8 +26,6 @@
         return "bg-gray-600 hover:bg-gray-800 text-white"
     }
   }
-  const redirectTo = $state.snapshot($page.data.redirectTo)
-  const providers = $state.snapshot($page.data.providers)
 
   if (browser && $page.url.searchParams.get("verifyEmail")) {
     tick().then(() => {
@@ -76,7 +75,7 @@
       </h2>
       <div class="flex flex-col gap-2 p-6 m-8 w-full bg-white rounded shadow-lg">
         {#if !$page.data.session?.user}
-          {#if providers.find((p: any) => p.id === "sendgrid")}
+          {#if $page.data.providers.find((p: any) => p.id === "sendgrid")}
             <SignIn
               provider="sendgrid"
               signInPage="signin"
@@ -111,12 +110,14 @@
               <div class="flex-1 bg-zinc-300 h-[1px]"></div>
             </div>
           {/if}
-          {#each providers.filter((p: any) => p.id !== "sendgrid") as provider}
+          {#each $page.data.providers.filter((p: any) => p.id !== "sendgrid") as provider}
             <SignIn
               provider={provider.id}
               signInPage="signin"
               options={{
-                redirectTo: redirectTo ? `/${decodeURIComponent(redirectTo).slice(1)}` : `/`,
+                redirectTo: $page.data.redirectTo
+                  ? `/${decodeURIComponent($page.data.redirectTo).slice(1)}`
+                  : `/`,
               }}
               class="w-full *:w-full [&>button]:transition focus:[&>button]:outline-none focus:[&>button]:ring-2 focus:[&>button]:ring-offset-2 focus:[&>button]:ring-zinc-300 [&>button]:rounded-sm"
             >

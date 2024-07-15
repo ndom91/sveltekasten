@@ -1,6 +1,8 @@
 import { Prisma } from "@prisma/client"
 import { PrismaClient } from "@prisma/client"
 
+// TODO: Reimplement singleton for prod
+
 const db = new PrismaClient().$extends({
   name: "findManyAndCount",
   model: {
