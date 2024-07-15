@@ -23,6 +23,9 @@ export default ts.config(
       "import-x/extensions": [".ts"],
       "import-x/parsers": {
         "@typescript-eslint/parser": [".ts"],
+        typescript: {
+          project: ["./tsconfig.json", "./.svelte-kit/tsconfig.json"],
+        },
       },
       "import-x/resolver": {
         node: {
@@ -95,6 +98,13 @@ export default ts.config(
     },
   },
   {
-    ignores: ["build/", ".svelte-kit/", "dist/", "dev-dist/", "eslint.config.js"],
+    ignores: [
+      "build/",
+      ".svelte-kit/",
+      "dist/",
+      "dev-dist/",
+      "eslint.config.js",
+      "src/service-worker.ts",
+    ],
   },
 )

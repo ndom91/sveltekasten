@@ -26,19 +26,19 @@ declare module "@auth/sveltekit" {
 declare global {
   type TODO = any
 
-  type bk = Prisma.BookmarkGetPayload<{}>
+  type bk = Prisma.BookmarkGetPayload<object>
 
   export const bookmarksWithRelationships = Prisma.validator<Prisma.BookmarkDefaultArgs>()({
     include: { tags: { include: { tag: true } }, category: true },
   })
   type LoadBookmark = Prisma.BookmarkGetPayload<typeof bookmarksWithRelationships>
-  type FlatTags = Prisma.TagGetPayload<{}>
+  type FlatTags = Prisma.TagGetPayload<object>
   type LoadBookmarkFlatTags = Omit<LoadBookmark, "tags"> & { tags: FlatTags[] }
 
   type LoadFeedEntry = Prisma.FeedEntryGetPayload<{
     include: { feed: true; feedMedia: true }
   }>
-  type LoadFeed = Prisma.FeedGetPayload<{}> & { visible: boolean }
+  type LoadFeed = Prisma.FeedGetPayload<object> & { visible: boolean }
 
   interface BookmarkContext {
     bookmarks: SvelteMap<string, LoadBookmarkFlatTags>
