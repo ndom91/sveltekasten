@@ -20,7 +20,13 @@ const limiter = rateLimiter({
     const info = getConnInfo(c) // info is `ConnInfo`
 
     const a = c.req.header('CF-Connecting-IP') || c.req.header('X-Forwarded-For') || c.req.header('origin') || '127.0.0.1'
-    console.log('custom', a)
+    console.log('custom.cf-connecting', c.req.header('CF-Connecting-IP'))
+    console.log('custom.xff', c.req.header('X-Forwarded-For'))
+    console.log('custom.xrip', c.req.header('X-Real-IP'))
+    console.log('custom.xfserver', c.req.header('X-Forwarded-Server'))
+    console.log('custom.xfhost', c.req.header('X-Forwarded-Host'))
+    console.log('custom.origin', c.req.header('origin'))
+    console.log('custom.a', a)
     console.log('connInfo', info.remote.address)
     return a
   }

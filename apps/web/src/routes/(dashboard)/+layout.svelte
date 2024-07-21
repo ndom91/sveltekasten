@@ -64,7 +64,9 @@
 <div class="flex overflow-hidden h-full">
   <CommandBar />
   <Sidebar />
-  <div class="flex flex-col min-h-full transition duration-300 translate-x-0 flex-grow-[9]">
+  <div
+    class="flex flex-col max-w-full min-h-full transition duration-300 translate-x-0 flex-grow-[9]"
+  >
     {@render children()}
   </div>
   {#if metadataEnabled()}
