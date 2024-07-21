@@ -49,7 +49,7 @@ const handleEmailVerifyRedirect: Handle = ({ event, resolve }) => {
 
 const handleLoginProviders: Handle = async ({ event, resolve }) => {
   if (event.route.id === "/login") {
-    event.locals.providers = providerMap.map(provider => ({
+    event.locals.providers = providerMap.map((provider) => ({
       id: provider.id,
       name: provider.name,
     }))
@@ -57,4 +57,40 @@ const handleLoginProviders: Handle = async ({ event, resolve }) => {
   return resolve(event)
 }
 
-export const handle = sequence(logger, handleEmailVerifyRedirect, handleAuth, handleLoginProviders)
+const rateLimitMap = new Map()
+
+const handleRateLimit: Handle = async ({ event, resolve }) => {
+  const ip = event.getClientAddress()
+  const limit = 20 // Limiting requests to 5 per minute per IP
+  const windowMs = 60 * 1000 // 1 minute
+
+  if (!rateLimitMap.has(ip)) {
+    rateLimitMap.set(ip, {
+      count: 0,
+      lastReset: Date.now(),
+    })
+  }
+
+  const ipData = rateLimitMap.get(ip)
+
+  if (Date.now() - ipData.lastReset > windowMs) {
+    ipData.count = 0
+    ipData.lastReset = Date.now()
+  }
+
+  if (ipData.count >= limit) {
+    return new Response("Too Many Requests", { status: 429 })
+  }
+
+  ipData.count += 1
+
+  return resolve(event)
+}
+
+export const handle = sequence(
+  logger,
+  handleRateLimit,
+  handleEmailVerifyRedirect,
+  handleAuth,
+  handleLoginProviders,
+)
