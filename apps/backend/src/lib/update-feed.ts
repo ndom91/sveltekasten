@@ -53,7 +53,7 @@ export const updateFeed = async (feed: Feed) => {
           contentSnippet: item.description,
           ingested: new Date().toISOString(),
           published: item.published,
-          categories: item.categories.map(category => category.label).filter(Boolean) as string[],
+          categories: item.categories.map(category => category.label && !category.label.includes('|')).filter(Boolean) as string[],
           user: {
             connect: {
               id: feed.userId,
