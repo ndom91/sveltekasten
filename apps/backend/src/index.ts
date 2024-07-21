@@ -4,6 +4,8 @@ import { format } from "@formkit/tempo"
 import { prettyJSON } from "hono/pretty-json"
 import { rateLimiter } from "hono-rate-limiter";
 import { type HttpBindings, serve } from "@hono/node-server"
+import { getConnInfo } from '@hono/node-server/conninfo'
+
 
 import { updateJob } from "./jobs/cron-update.js"
 import bookmark from "./routes/bookmark/index.js"
@@ -11,12 +13,15 @@ import feed from "./routes/feed/index.js"
 import root from "./routes/root.js"
 
 const limiter = rateLimiter({
-  windowMs: 5 * 60 * 1000, // 5 minutes
+  windowMs: 1 * 60 * 1000, // 5 minutes
   limit: 5, // Limit each IP to 100 requests per `window`
   standardHeaders: "draft-6", // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
   keyGenerator: (c) => {
-    const a = c.req.header('CF-Connecting-IP') || c.req.header('X-Forwarded-For') || c.req.header('origin') || '127.0.0.1' // Method to generate custom identifiers for clients.
-    console.log('clientIp', a)
+    const info = getConnInfo(c) // info is `ConnInfo`
+
+    const a = c.req.header('CF-Connecting-IP') || c.req.header('X-Forwarded-For') || c.req.header('origin') || '127.0.0.1'
+    console.log('custom', a)
+    console.log('connInfo', info.remote.address)
     return a
   }
 });
