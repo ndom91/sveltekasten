@@ -34,6 +34,7 @@ let searchQuery = $state("")
 
 // Feed Page
 let showUnreadOnly = $state(false)
+let filteredFeeds = $state([])
 
 // Sidebars
 let metadataSidebarOpen = $state(false)
@@ -98,6 +99,12 @@ export function useInterface() {
     },
     set showUnreadOnly(query) {
       showUnreadOnly = query
+    },
+    get filteredFeeds() {
+      return filteredFeeds
+    },
+    set filteredFeeds(query) {
+      filteredFeeds = query
     },
 
     // LLM TTS

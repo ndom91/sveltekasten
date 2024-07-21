@@ -57,7 +57,7 @@
   </Tooltip.Root>
   <img
     src={item.feedMedia?.[0]?.href ??
-      `https://picsum.photos/seed/${encodeURIComponent(item.title.replaceAll(" ", "").substring(0, 5).toLowerCase())}/240/153.webp`}
+      `https://picsum.photos/seed/${encodeURIComponent(item.id)}/240/153.webp`}
     alt={item.title}
     class="object-cover object-center mb-1 rounded-sm aspect-video"
   />

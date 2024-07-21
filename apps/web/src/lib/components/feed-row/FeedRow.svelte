@@ -102,6 +102,7 @@
   const isFeedVisible = $derived(
     !!$page.data.feeds.data.find((feed: Feed) => feed.id === feedEntry.feed.id).visible,
   )
+
   const hideUnread = $derived.by(() => {
     if (ui.showUnreadOnly) {
       return !feedEntry.unread
@@ -111,9 +112,7 @@
 
   const itemImage =
     feedEntry.feedMedia?.[0]?.href ??
-    `https://picsum.photos/seed/${encodeURIComponent(
-      feedEntry.title.replaceAll(" ", "").substring(0, 5).toLowerCase(),
-    )}/240/153.webp`
+    `https://picsum.photos/seed/${encodeURIComponent(feedEntry.id)}/240/153.webp`
 </script>
 
 <svelte:window onkeydown={handleKeyDown} />
@@ -128,12 +127,15 @@
     !isFeedVisible && "hidden",
     hideUnread && "hidden",
   )}
-  onmouseleave={() => (showFeedActions = false)}
-  onmouseenter={() => (showFeedActions = true)}
+  onpointerleave={() => (showFeedActions = false)}
+  onpointerenter={() => (showFeedActions = true)}
 >
-  {#if feedEntry.unread}
-    <div class="absolute top-2 left-2 bg-emerald-400 rounded-full duration-1000 size-4"></div>
-  {/if}
+  <div
+    class={cn(
+      "absolute transition-[var(--ease-in-out-3)] top-2 left-2 bg-emerald-400 rounded-full size-4",
+      feedEntry.unread ? "opacity-100" : "opacity-0",
+    )}
+  ></div>
   <img
     src={itemImage}
     alt="Feed Item Hero"

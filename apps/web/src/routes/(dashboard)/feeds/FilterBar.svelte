@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { tick } from "svelte"
   import * as Command from "$lib/components/ui/command"
   import * as Popover from "$lib/components/ui/popover"
   import DateRangePicker from "$lib/components/date-range/DateRangePicker.svelte"
@@ -7,19 +6,13 @@
   import { Checkbox } from "$lib/components/ui/checkbox"
   import { Button } from "$lib/components/ui/button"
   import { page } from "$app/stores"
+  import { useInterface } from "$state/ui.svelte"
 
+  const ui = useInterface()
   let open = $state(false)
-  let unreadFilter = $state(false)
 
-  // We want to refocus the trigger button when the user selects
-  // an item from the list so users can continue navigating the
-  // rest of the form with the keyboard.
-  function closeAndFocusTrigger(triggerId: string) {
-    open = false
-    tick().then(() => {
-      document.getElementById(triggerId)?.focus()
-    })
-  }
+  const feeds = $state($page.data.feeds.data)
+  // $inspect({ feeds })
 </script>
 
 <section
@@ -29,11 +22,11 @@
     class="flex justify-center items-center gap-2 border border-input rounded-md h-10 px-2 bg-neutral-100 dark:bg-neutral-900"
   >
     <div class="mx-2 flex justify-center items-center gap-2">
-      <Checkbox id="unread" bind:checked={unreadFilter} />
+      <Checkbox id="unread" bind:checked={ui.showUnreadOnly} />
       <Label class="hover:cursor-pointer" for="unread">Unread Only</Label>
     </div>
   </div>
-  <Popover.Root bind:open let:ids>
+  <Popover.Root bind:open>
     <Popover.Trigger asChild let:builder>
       <Button
         builders={[builder]}
@@ -66,20 +59,20 @@
         <Command.Input placeholder="Search.." />
         <Command.Empty>No results</Command.Empty>
         <Command.Group>
-          {#each $page.data.feeds.data as item}
-            <Command.Item
-              value={item.name}
-              onSelect={() => {
-                closeAndFocusTrigger(ids.trigger)
-              }}
-            >
-              <Checkbox id={item.id} bind:checked={item.visible} />
-              <img
-                src={`https://icons.duckduckgo.com/ip9/${new URL(item.url).hostname}.ico`}
-                alt="URL Favicon"
-                class="m-2 rounded-full size-4"
-              />
-              <span class="truncate">{item.name}</span>
+          {#each feeds as feed}
+            <Command.Item class="flex" value={feed.name}>
+              <Checkbox id={feed.id} bind:checked={feed.visible} />
+              <label
+                class="flex hover:cursor-pointer flex-grow truncate items-center max-w-full w-fit"
+                for={feed.id}
+              >
+                <span class="truncate flex-grow mx-2">{feed.name}</span>
+                <img
+                  src={`https://icons.duckduckgo.com/ip9/${new URL(feed.url).hostname}.ico`}
+                  alt="URL Favicon"
+                  class="m-2 rounded-full size-5"
+                />
+              </label>
             </Command.Item>
           {/each}
         </Command.Group>

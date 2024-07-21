@@ -11,13 +11,13 @@
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { FeedRow } from "$lib/components/feed-row"
   import Blob from "$lib/assets/blob1.png"
-  import { dev } from "$app/environment"
 
   import { useInterface } from "$state/ui.svelte"
   import { invalidateAll } from "$app/navigation"
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
 
   let innerWidth = $state(1000)
+  let innerHeight = $state(800)
 
   const ui = useInterface()
   const { data } = $props()
@@ -28,7 +28,7 @@
   }
 
   let pageNumber = $state(0)
-  let allItems = $state<LoadFeedEntry[]>(data.feedEntries?.data as LoadFeedEntry[])
+  let allItems = $state<LoadFeedEntry[]>([])
   let rootElement = $state<HTMLElement>()
   const limitLoadCount = 20
 
@@ -37,7 +37,6 @@
     allItems = data.feedEntries?.data as LoadFeedEntry[]
   })
 
-  $inspect("page", pageNumber)
   registerTtsWorker()
   registerSummarizationWorker()
 
@@ -99,12 +98,10 @@
 
   // Load more items on infinite scroll
   const loadMore = async () => {
-    dev && console.log("LOADMORE")
     try {
       pageNumber += 1
       const limit = limitLoadCount
       const skip = limitLoadCount * pageNumber
-      dev && console.log("LOADMORE", { limitLoadCount, pageNumber, limit, skip })
 
       const searchResults = await fetchSearchResults({ limit, skip })
       if (!searchResults?.data) {
@@ -113,17 +110,12 @@
       }
 
       if (searchResults.data.length) {
-        dev && console.log("GOT RESULTS", searchResults.data.length)
-
         allItems = [...allItems, ...searchResults.data]
-        dev && console.log("ALLITEMS", allItems.length)
       }
 
       if (allItems.length >= searchResults.count) {
-        dev && console.log("LOADMORE.COMPLETE")
         loaderState.complete()
       } else {
-        dev && console.log("LOADMORE.LOADED")
         loaderState.loaded()
       }
     } catch (error) {
@@ -132,10 +124,7 @@
       loaderState.error()
       pageNumber -= 1
     }
-    dev && console.log("LOADMORE.END")
   }
-
-  $inspect("loaderState", loaderState)
 
   // Handle search input changes
   // Reset fields and load first results from api
@@ -143,7 +132,6 @@
     () => ui.searchQuery,
     () => {
       if (!loaderState.isFirstLoad) {
-        dev && console.log("effect.loaderState.reset")
         loaderState.reset()
         pageNumber = -1
         allItems = []
@@ -200,8 +188,6 @@
       ui.searchQuery = ""
     }
   })
-
-  let innerHeight = $state(800)
 </script>
 
 <svelte:head>

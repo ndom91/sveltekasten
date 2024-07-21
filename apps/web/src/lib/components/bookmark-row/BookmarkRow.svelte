@@ -12,6 +12,9 @@
   import { Image } from "$lib/components/image"
   import DeleteDialog from "./DeleteDialog.svelte"
   import { cn } from "$lib/utils/style"
+  import type { Category } from "$lib/types/zod"
+
+  type CategoryVisible = Category & { visible: boolean }
 
   const bookmarkStore = getContext<BookmarkContext>("bookmarks")
   let deleteElement = $state<HTMLDialogElement | null>(null)
@@ -22,9 +25,9 @@
 
   let bookmark = $state(bookmarkStore.find(bookmarkId)!)
 
-  $effect(() => {
-    bookmark = bookmarkStore.find(bookmarkId)!
-  })
+  // $effect(() => {
+  //   bookmark = bookmarkStore.find(bookmarkId)!
+  // })
 
   let isOptionsOpen = $state(false)
 
@@ -45,15 +48,27 @@
     })
     invalidateAll()
   }
+
+  const categories = $state($page.data.categories)
+  let isBookmarkCategoryHidden = $state(false)
+
+  $effect(() => {
+    isBookmarkCategoryHidden = !!categories
+      .filter((cat: CategoryVisible) => cat.visible === false)
+      .find((cat: CategoryVisible) => cat.id === bookmark?.category?.id)
+  })
 </script>
 
 <div
   tabindex={0}
   data-id={bookmark.id}
   role="row"
-  class="grid relative gap-4 mx-2 p-4 md:mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none grid-cols-1 md:grid-cols-[15rem_1fr] dark:focus:bg-neutral-800/40 focus:border-zinc-500 focus:bg-zinc-100"
-  onmouseleave={() => (isOptionsOpen = false)}
-  onmouseenter={() => (isOptionsOpen = true)}
+  class={cn(
+    "grid relative gap-4 mx-2 p-4 md:mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none grid-cols-1 md:grid-cols-[15rem_1fr] dark:focus:bg-neutral-800/40 focus:border-zinc-500 focus:bg-zinc-100",
+    isBookmarkCategoryHidden && "hidden",
+  )}
+  onpointerleave={() => (isOptionsOpen = false)}
+  onpointerenter={() => (isOptionsOpen = true)}
 >
   <DeleteDialog bind:dialogElement={deleteElement} bookmarkId={bookmark.id} />
   <Image

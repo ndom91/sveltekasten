@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { tick } from "svelte"
   import * as Command from "$lib/components/ui/command"
   import * as Popover from "$lib/components/ui/popover"
   import { Checkbox } from "$lib/components/ui/checkbox"
@@ -8,27 +7,19 @@
 
   let open = $state(false)
 
-  // We want to refocus the trigger button when the user selects
-  // an item from the list so users can continue navigating the
-  // rest of the form with the keyboard.
-  function closeAndFocusTrigger(triggerId: string) {
-    open = false
-    tick().then(() => {
-      document.getElementById(triggerId)?.focus()
-    })
-  }
+  const categories = $state($page.data.categories)
+  // $inspect({ categories })
 </script>
 
 <section class="p-4 border-l-4 md:px-8 border-l-transparent">
-  <Popover.Root bind:open let:ids>
+  <Popover.Root bind:open>
     <Popover.Trigger asChild let:builder>
       <Button
-        disabled
         builders={[builder]}
         variant="outline"
         role="combobox"
         aria-expanded={open}
-        class="justify-between w-[200px]"
+        class="justify-between w-[200px] bg-neutral-100 dark:bg-neutral-900"
       >
         Categories
         <svg
@@ -54,15 +45,15 @@
         <Command.Input placeholder="Search.." />
         <Command.Empty>No results</Command.Empty>
         <Command.Group>
-          {#each $page.data.categories as item}
-            <Command.Item
-              value={item.name}
-              onSelect={() => {
-                closeAndFocusTrigger(ids.trigger)
-              }}
-            >
+          {#each categories as item}
+            <Command.Item value={item.name}>
               <Checkbox id={item.id} bind:checked={item.visible} />
-              <span class="ml-2 truncate">{item.name}</span>
+              <label
+                for={item.id}
+                class="flex hover:cursor-pointer flex-grow truncate items-center"
+              >
+                <span class="ml-2 truncate">{item.name}</span>
+              </label>
             </Command.Item>
           {/each}
         </Command.Group>
