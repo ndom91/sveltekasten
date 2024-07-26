@@ -30,6 +30,7 @@
     "fastq": "^1.17.1",
     "hono": "^4.5.1",
     "hono-rate-limiter": "^0.4.0",
+    "ipx": "^3.0.1",
     "jose": "^5.6.3",
     "playwright-chromium": "^1.44.0",
     "rss-parser": "^3.13.0",
