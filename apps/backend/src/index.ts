@@ -9,6 +9,7 @@ import { updateJob } from "./jobs/cron-update.js"
 import bookmark from "./routes/bookmark/index.js"
 import feed from "./routes/feed/index.js"
 import root from "./routes/root.js"
+import { ipxHandler } from "./lib/imageProxy.js"
 
 const limiter = rateLimiter({
   windowMs: 1 * 60 * 1000, // 5 minutes
@@ -26,6 +27,7 @@ const app = new Hono<{ Bindings: HttpBindings }>({ strict: false }).basePath(
 app.use(logger())
 app.use(prettyJSON())
 app.use(limiter)
+app.use("/img", c => ipxHandler(c.req.raw))
 
 app.route("/bookmark", bookmark)
 app.route("/feed", feed)
