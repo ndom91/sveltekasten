@@ -1,7 +1,6 @@
 <script lang="ts">
   import { ofetch } from "ofetch"
   import { format } from "@formkit/tempo"
-  import { getContext } from "svelte"
   import BookmarkActions from "./BookmarkActions.svelte"
   import MobileBookmarkActions from "./MobileBookmarkActions.svelte"
   import MediaQuery from "$lib/components/MediaQuery.svelte"
@@ -11,24 +10,15 @@
   import { invalidateAll } from "$app/navigation"
   import { Image } from "$lib/components/image"
   import DeleteDialog from "./DeleteDialog.svelte"
-  import { cn } from "$lib/utils/style"
   import type { Category } from "$lib/types/zod"
 
   type CategoryVisible = Category & { visible: boolean }
 
-  // const bookmarkStore = getContext<BookmarkContext>("bookmarks")
   let deleteElement = $state<HTMLDialogElement>()
 
   const ui = useInterface()
 
-  // const { bookmarkId = $bindable() }: { bookmarkId: string } = $props()
   const { bookmark = $bindable() }: { bookmark: LoadBookmarkFlatTags } = $props()
-
-  // let bookmark = $state(bookmarkStore.find(bookmarkId)!)
-
-  // $effect(() => {
-  //   bookmark = bookmarkStore.find(bookmarkId)!
-  // })
 
   let isOptionsOpen = $state(false)
 

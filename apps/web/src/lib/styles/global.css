@@ -182,8 +182,7 @@ p {
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 16px;
 }
 
 ::-webkit-scrollbar-track {
@@ -191,10 +190,16 @@ p {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3c3b3b3b;
-  border-radius: 100vh;
   transition: all 250ms ease-in-out;
   cursor: pointer;
+  background-clip: content-box;
+  background-color: #8888883b;
+  border: 5px solid transparent;
+  border-radius: 20px;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background-color: #3c3b3b3b;
 }
 
 ::-webkit-scrollbar-button {
@@ -208,12 +213,6 @@ p {
   display: none !important;
 }
 
-@supports (scrollbar-width: thin) {
-  * {
-    scrollbar-width: thin;
-    scrollbar-color: #3c3b3b3b #00000000;
-  }
-}
 
 /* RSS Feed Content */
 .prose iframe {

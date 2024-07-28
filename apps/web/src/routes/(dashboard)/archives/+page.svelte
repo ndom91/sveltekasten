@@ -2,28 +2,29 @@
   import { toast } from "svelte-sonner"
   import { ofetch } from "ofetch"
   import { InfiniteLoader, loaderState } from "svelte-infinite"
-  import { onDestroy } from "svelte"
-  import { watch } from "runed"
+  import { getContext, onDestroy } from "svelte"
   import { Navbar } from "$lib/components/navbar"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { useInterface } from "$state/ui.svelte"
   import { BookmarkRow } from "$lib/components/bookmark-row"
+  import { page } from "$app/stores"
+  import { Logger, loggerLevels } from "$/lib/utils/logger"
 
   const ui = useInterface()
-  const { data = $bindable() }: { data: any } = $props()
+  const bookmarkStore = getContext<BookmarkContext>("bookmarks")
 
   let pageNumber = $state(0)
-  let allItems = $state<LoadBookmarkFlatTags[]>(data.bookmarks.data!)
   const rootElement = $state<HTMLElement>()
 
   const limitLoadCount = 20
+  const logger = new Logger({ level: loggerLevels.DEBUG })
 
   $effect(() => {
-    allItems = data.bookmarks.data!
+    bookmarkStore.bookmarks = $page.data.bookmarks.data
   })
 
-  if (data.error) {
-    console.error(String(data.error))
+  if ($page.data.error) {
+    logger.error(String($page.data.error))
   }
 
   const fetchSearchResults = async ({
@@ -89,10 +90,10 @@
       }
 
       if (searchResults.data.length) {
-        allItems.push(...(searchResults.data as any[]))
+        bookmarkStore.add(searchResults.data as any[])
       }
 
-      if (allItems.length >= searchResults.count) {
+      if (bookmarkStore.bookmarks.length >= searchResults.count) {
         loaderState.complete()
       } else {
         loaderState.loaded()
@@ -112,7 +113,7 @@
     if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "j" || e.key === "k") {
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
-      const currentActiveElementIndex = allItems.findIndex(
+      const currentActiveElementIndex = bookmarkStore.bookmarks.findIndex(
         (item) => item.id === currentActiveElement.dataset.id,
       )
       const nextIndex =
@@ -120,7 +121,7 @@
           ? currentActiveElementIndex + 1
           : currentActiveElementIndex - 1
       const nextElement = document.querySelector(
-        `[data-id="${allItems[nextIndex]?.id}"]`,
+        `[data-id="${bookmarkStore.bookmarks[nextIndex]?.id}"]`,
       ) as HTMLElement
 
       if (nextElement) {
@@ -130,10 +131,10 @@
     if (e.key === "o") {
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
-      const currentActiveElementIndex = allItems.findIndex(
+      const currentActiveElementIndex = bookmarkStore.bookmarks.findIndex(
         (item) => item.id === currentActiveElement.dataset.id,
       )
-      const targetLink = allItems[currentActiveElementIndex]?.url
+      const targetLink = bookmarkStore.bookmarks[currentActiveElementIndex]?.url
       if (!targetLink) {
         toast.error("No item selected")
         return
@@ -144,15 +145,15 @@
 
   // Handle search input changes
   // Reset and execute first search for new query
-  watch.pre(
-    () => ui.searchQuery,
-    () => {
-      loaderState.reset()
-      pageNumber = -1
-      allItems = []
-      loadMore()
-    },
-  )
+  // watch.pre(
+  //   () => ui.searchQuery,
+  //   () => {
+  //     loaderState.reset()
+  //     pageNumber = -1
+  //     allItems = []
+  //     loadMore()
+  //   },
+  // )
 
   // Reset state on unmount
   onDestroy(() => {
@@ -170,15 +171,18 @@
 <svelte:window onkeydown={handleKeyDown} />
 
 <Navbar />
-<main
-  class="align-start overflow-y-scroll flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2"
->
-  {#if data.bookmarks?.count}
+<main class="align-start outline-none overflow-y-scroll flex flex-col justify-start gap-2">
+  {#if bookmarkStore.bookmarks?.length}
     <div class="h-full">
       <InfiniteLoader triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
-        {#each allItems as item, i (item.id)}
-          <BookmarkRow bind:bookmark={allItems[i]} />
+        {#each bookmarkStore.bookmarks as item (item.id)}
+          <BookmarkRow bookmark={item} />
         {/each}
+        {#snippet noData()}
+          {#if bookmarkStore.bookmarks.length >= 10}
+            <div class="text-2xl">No more data</div>
+          {/if}
+        {/snippet}
       </InfiniteLoader>
     </div>
   {:else}

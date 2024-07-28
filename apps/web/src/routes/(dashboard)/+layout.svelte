@@ -64,7 +64,7 @@
 <div class="flex h-screen max-w-full">
   <CommandBar />
   <Sidebar />
-  <div class="flex flex-col min-w-0">
+  <div class="flex flex-col min-w-0 w-full">
     {@render children()}
   </div>
   {#if metadataEnabled()}

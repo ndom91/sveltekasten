@@ -11,7 +11,6 @@
   import { getContext, onDestroy, onMount } from "svelte"
   import { InfiniteLoader, loaderState } from "svelte-infinite"
   import { toast } from "svelte-sonner"
-
   import { goto } from "$app/navigation"
   import { page } from "$app/stores"
 
@@ -103,11 +102,9 @@
       }
 
       if (searchResults.data.length) {
-        // allItems.push(...(searchResults.data as any[]))
         bookmarkStore.add(searchResults.data)
       }
 
-      // if (allItems.length >= searchResults.count) {
       if (bookmarkStore.bookmarks.length >= searchResults.count) {
         loaderState.complete()
       } else {
