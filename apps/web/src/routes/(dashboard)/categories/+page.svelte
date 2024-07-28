@@ -10,6 +10,7 @@
   import { handleActionResults } from "$lib/utils/form-action"
   import { Button } from "$lib/components/ui/button"
   import { Input } from "$lib/components/ui/input"
+  import { Label } from "$/lib/components/ui/label"
 
   const { data }: { data: any } = $props()
   const categoryStore = writable(data.categories)
@@ -74,18 +75,27 @@
 
 <Navbar showSearch={false} showQuickAdd={false} showSidebar={false} />
 <main
-  class="p-4 outline-none align-start overflow-y-scroll flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2"
+  class="p-4 outline-none align-start overflow-y-scroll flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-8"
 >
-  <form
-    method="post"
-    action="?/createCategory"
-    use:enhance={handleActionResults()}
-    class="flex gap-4 justify-start items-center py-4"
-  >
-    <Input class="w-60" placeholder="Name" id="name" name="name" type="text" />
-    <Input class="w-96" placeholder="Description" id="description" name="description" type="text" />
-    <Button variant="secondary" type="submit" class="w-24">Save</Button>
-  </form>
+  <fieldset class="grid gap-6 rounded-lg border p-4">
+    <legend class="-ml-1 px-2 font-light"> Create New </legend>
+    <form
+      method="post"
+      action="?/createCategory"
+      use:enhance={handleActionResults()}
+      class="flex flex-col md:flex-row gap-4 justify-start items-center py-4"
+    >
+      <div class="grid gap-3 w-full md:w-56 place-items-baseline">
+        <Label for="name">Name</Label>
+        <Input class="" id="name" name="name" type="text" />
+      </div>
+      <div class="grid gap-3 w-full md:w-64 flex-1">
+        <Label for="description">Description</Label>
+        <Input class="" id="description" name="description" type="text" />
+      </div>
+      <Button variant="default" type="submit" class="w-full md:w-36 place-self-end">Save</Button>
+    </form>
+  </fieldset>
   <Table.Root {...$tableAttrs}>
     <Table.Header>
       {#each $headerRows as headerRow}
@@ -166,5 +176,10 @@
         </Subscribe>
       {/each}
     </Table.Body>
+    <Table.Footer class="bg-transparent dark:text-white text-muted-foreground">
+      <span class="flex whitespace-pre text-xs">
+        Showing <strong>1-10</strong> of <strong>{$categoryStore.length}</strong> categories(s)
+      </span>
+    </Table.Footer>
   </Table.Root>
 </main>
