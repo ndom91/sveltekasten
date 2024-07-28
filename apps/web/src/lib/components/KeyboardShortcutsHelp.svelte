@@ -32,10 +32,10 @@
     <tbody class="*:h-10">
       <tr class="font-semibold">
         <td colspan="2">
-          <div class="text-lg dark:text-zinc-100">Global</div>
+          <div class="text-lg dark:text-neutral-100">Global</div>
         </td>
         <td colspan="2">
-          <div class="text-lg dark:text-zinc-100">Navigation</div>
+          <div class="text-lg dark:text-neutral-100">Navigation</div>
         </td>
       </tr>
       <tr>
@@ -76,7 +76,7 @@
       </tr>
       <tr>
         <td colspan="2" class="font-semibold">
-          <div class="text-lg dark:text-zinc-100">Items Lists</div>
+          <div class="text-lg dark:text-neutral-100">Items Lists</div>
         </td>
         <td>Navigate to Settings</td>
         <td><Kbd class="text-xs" key="Shift + 7" /></td>

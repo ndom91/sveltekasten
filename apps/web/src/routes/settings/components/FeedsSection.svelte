@@ -109,7 +109,7 @@
 <DeleteDialog form={$page.form} bind:open={isDeleteDialogOpen} feed={targetFeed!} />
 <div class="flex flex-col gap-2 justify-start items-start">
   <Card.Root class="w-full rounded-md shadow-none bg-transparent">
-    <Card.Header class="bg-zinc-100 dark:bg-neutral-800 rounded-t-md">
+    <Card.Header class="bg-neutral-100 dark:bg-neutral-800 rounded-t-md">
       <Card.Title>Manage Feeds</Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
@@ -212,7 +212,7 @@
     </Card.Content>
   </Card.Root>
   <Card.Root class="w-full shadow-none bg-transparent">
-    <Card.Header class="bg-zinc-100 dark:bg-neutral-800 rounded-t-md">
+    <Card.Header class="bg-neutral-100 dark:bg-neutral-800 rounded-t-md">
       <Card.Title>Add Feed</Card.Title>
     </Card.Header>
     <Card.Content class="p-4">

@@ -70,7 +70,7 @@
     onclick={() => (paused = !paused)}
     class={cn(
       "outline-none rounded-l-md flex justify-center items-center",
-      windowWidth < 768 ? "w-16 bg-zinc-200 dark:bg-red-300/30" : "gap-2 py-2 px-3",
+      windowWidth < 768 ? "w-16 bg-neutral-200 dark:bg-red-300/30" : "gap-2 py-2 px-3",
     )}
   >
     {#if !paused}

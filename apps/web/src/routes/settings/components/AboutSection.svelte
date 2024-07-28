@@ -4,7 +4,7 @@
 
 <div class="flex flex-col gap-2 justify-start items-start">
   <Card.Root class="w-full shadow-none rounded-md bg-transparent">
-    <Card.Header class="bg-zinc-100 dark:bg-neutral-800 rounded-t-md">
+    <Card.Header class="bg-neutral-100 dark:bg-neutral-800 rounded-t-md">
       <Card.Title>About</Card.Title>
     </Card.Header>
     <Card.Content class="p-4">

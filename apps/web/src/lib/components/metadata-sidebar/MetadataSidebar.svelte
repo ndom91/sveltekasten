@@ -43,7 +43,7 @@
 <aside
   bind:this={metadataSidebarElement}
   class={cn(
-    "transition-all space-between relative flex h-screen flex-shrink-0 flex-col border-l bg-zinc-50 dark:border-l-zinc-800 dark:bg-neutral-900",
+    "transition-all space-between relative flex h-screen flex-shrink-0 flex-col border-l bg-neutral-50 dark:border-l-zinc-800 dark:bg-neutral-900",
   )}
 >
   {#if ui.metadataSidebarOpen}

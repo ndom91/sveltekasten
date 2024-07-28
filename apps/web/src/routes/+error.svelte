@@ -11,7 +11,7 @@
     class="flex gap-4 justify-end items-center p-4 mx-auto w-full h-20 border-b border-b-zinc-100 dark:border-b-zinc-900"
   >
     <div class="flex gap-2 justify-start items-center mx-auto w-full max-w-7xl text-xl">
-      <Logo class="mr-4 size-8 text-zinc-800 dark:text-zinc-50" />
+      <Logo class="mr-4 size-8 text-neutral-800 dark:text-neutral-50" />
       <span class="items-center text-red-400">
         {$page.status}
       </span>

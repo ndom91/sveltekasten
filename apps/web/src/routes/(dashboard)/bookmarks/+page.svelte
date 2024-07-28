@@ -219,7 +219,7 @@
         </span>
         Open the quick add form with the add button (
         <svg
-          class="inline p-1 rounded-md size-7 bg-zinc-300 text-zinc-800 dark:bg-zinc-600 dark:text-zinc-100"
+          class="inline p-1 rounded-md size-7 bg-neutral-300 text-neutral-800 dark:bg-neutral-600 dark:text-neutral-100"
           data-slot="icon"
           fill="none"
           stroke-width="1.5"

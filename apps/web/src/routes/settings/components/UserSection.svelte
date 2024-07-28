@@ -180,7 +180,7 @@
 
 <div class="flex flex-col gap-2 justify-start items-start h-full">
   <Card.Root class="w-full shadow-none rounded-md bg-transparent">
-    <Card.Header class="bg-zinc-100 dark:bg-neutral-800 rounded-t-md">
+    <Card.Header class="bg-neutral-100 dark:bg-neutral-800 rounded-t-md">
       <Card.Title class="flex justify-between items-center w-full">
         <span class="font-normal">General</span>
       </Card.Title>
@@ -246,7 +246,7 @@
     </Card.Content>
   </Card.Root>
   <Card.Root class="w-full shadow-none rounded-md bg-transparent">
-    <Card.Header class="bg-zinc-100 dark:bg-neutral-800 rounded-t-md">
+    <Card.Header class="bg-neutral-100 dark:bg-neutral-800 rounded-t-md">
       <Card.Title class="flex justify-between items-center w-full">
         <span class="font-normal">AI Settings</span>
         <Badge class="text-sm">Experimental</Badge>
@@ -419,7 +419,7 @@
     </Card.Content>
   </Card.Root>
   <Card.Root class="w-full shadow-none rounded-md bg-transparent">
-    <Card.Header class="bg-zinc-100 dark:bg-neutral-800 rounded-t-md">
+    <Card.Header class="bg-neutral-100 dark:bg-neutral-800 rounded-t-md">
       <Card.Title class="flex justify-between items-center w-full">
         <span class="font-normal">Import</span>
       </Card.Title>
@@ -477,7 +477,7 @@
     </Card.Content>
   </Card.Root>
   <Card.Root class="w-full shadow-none rounded-md bg-transparent">
-    <Card.Header class="bg-zinc-100 dark:bg-neutral-800 rounded-t-md">
+    <Card.Header class="bg-neutral-100 dark:bg-neutral-800 rounded-t-md">
       <Card.Title class="flex justify-between items-center w-full">
         <span>Export</span>
       </Card.Title>

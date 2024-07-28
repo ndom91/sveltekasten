@@ -39,7 +39,7 @@
   <Drawer.Portal>
     <Drawer.Overlay class="fixed inset-0 transition bg-black/40" />
     <Drawer.Content
-      class="flex fixed top-0 bottom-0 left-0 z-30 p-2 w-full rounded-r-xl max-w-[300px] bg-zinc-100 dark:bg-zinc-900"
+      class="flex fixed top-0 bottom-0 left-0 z-30 p-2 w-full rounded-r-xl max-w-[300px] bg-neutral-100 dark:bg-neutral-900"
     >
       <div class="flex flex-col w-full h-full">
         <div class="flex justify-start items-center m-4">
@@ -55,7 +55,7 @@
         </div>
         <SidebarContent open={true} {toggleDrawer} />
       </div>
-      <div class="flex-shrink-0 self-center mx-2 mb-8 w-1.5 h-12 rounded-full bg-zinc-300"></div>
+      <div class="flex-shrink-0 self-center mx-2 mb-8 w-1.5 h-12 rounded-full bg-neutral-300"></div>
     </Drawer.Content>
   </Drawer.Portal>
 </Drawer.Root>

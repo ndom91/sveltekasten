@@ -82,7 +82,7 @@
     </svg>
 
     <Combobox.Input
-      class="inline-flex py-2 px-3 pl-10 w-full h-10 text-sm rounded-md border transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:bg-transparent disabled:opacity-50 truncate border-input enabled:bg-zinc-100 placeholder:text-foreground/50 dark:enabled:bg-zinc-950 focus:ring-foreground focus:ring-offset-background"
+      class="inline-flex py-2 px-3 pl-10 w-full h-10 text-sm rounded-md border transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:bg-transparent disabled:opacity-50 truncate border-input enabled:bg-neutral-100 placeholder:text-foreground/50 dark:enabled:bg-neutral-950 focus:ring-foreground focus:ring-offset-background"
       placeholder="Select a tag"
       aria-label="Select a tag"
       aria-invalid={$errors ? "true" : undefined}

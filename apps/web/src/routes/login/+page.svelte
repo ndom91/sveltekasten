@@ -13,7 +13,7 @@
   const providerButtonStyles = (provider: string): string => {
     switch (provider) {
       case "github":
-        return "bg-zinc-700 text-white"
+        return "bg-neutral-700 text-white"
       case "google":
         return "bg-white focus:ring-blue-700 text-blue-600 border border-gray-300"
       case "azure-ad":
@@ -47,11 +47,11 @@
   />
   <div
     aria-label="Slate cover background"
-    class="absolute left-0 top-0 z-10 flex h-[275%] w-[150%] translate-x-[-70%] translate-y-[-28%] rotate-[30deg] items-center bg-zinc-950 md:translate-y-[-15%] md:rotate-[11deg]"
+    class="absolute left-0 top-0 z-10 flex h-[275%] w-[150%] translate-x-[-70%] translate-y-[-28%] rotate-[30deg] items-center bg-neutral-950 md:translate-y-[-15%] md:rotate-[11deg]"
   ></div>
   <div class="h-dvh z-20 flex w-full items-center justify-center md:ml-[15%] md:w-[22rem]">
     <div class="flex flex-col justify-center items-center w-80 text-xl">
-      <h2 class="flex items-center mb-8 space-x-2 text-3xl font-light text-zinc-600">
+      <h2 class="flex items-center mb-8 space-x-2 text-3xl font-light text-neutral-600">
         <svg
           class="text-white rounded-md size-12"
           width="250"
@@ -98,16 +98,16 @@
               </div>
               <div
                 slot="submitButton"
-                class="flex overflow-hidden justify-center items-center px-4 space-x-2 w-full h-10 text-sm font-light text-white rounded-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 bg-zinc-700 ring-offset-background focus-visible:ring-zinc-300"
+                class="flex overflow-hidden justify-center items-center px-4 space-x-2 w-full h-10 text-sm font-light text-white rounded-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 bg-neutral-700 ring-offset-background focus-visible:ring-zinc-300"
               >
                 Continue
               </div>
             </SignIn>
 
             <div class="flex gap-2 items-center my-2">
-              <div class="flex-1 bg-zinc-300 h-[1px]"></div>
-              <span class="text-xs leading-4 uppercase text-zinc-500">or</span>
-              <div class="flex-1 bg-zinc-300 h-[1px]"></div>
+              <div class="flex-1 bg-neutral-300 h-[1px]"></div>
+              <span class="text-xs leading-4 uppercase text-neutral-500">or</span>
+              <div class="flex-1 bg-neutral-300 h-[1px]"></div>
             </div>
           {/if}
           {#each $page.data.providers.filter((p: any) => p.id !== "sendgrid") as provider}

@@ -38,7 +38,7 @@
 >
   <a href={url} target="_blank" class="flex justify-center p-3">
     <svg
-      class="size-5 text-zinc-900 dark:text-zinc-100"
+      class="size-5 text-neutral-900 dark:text-neutral-100"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 256 256"
     >
@@ -108,7 +108,7 @@
     >
       <button class="grid items-center grid-cols-[28px_1fr]" onclick={handleMetadataSidebarOpen}>
         <svg
-          class="size-5 text-zinc-900 dark:text-zinc-100"
+          class="size-5 text-neutral-900 dark:text-neutral-100"
           data-slot="icon"
           fill="none"
           stroke-width="1.5"
@@ -127,7 +127,7 @@
       </button>
       <button class="grid items-center grid-cols-[28px_1fr]" onclick={handleArchive}>
         <svg
-          class="size-5 text-zinc-900 dark:text-zinc-100"
+          class="size-5 text-neutral-900 dark:text-neutral-100"
           data-slot="icon"
           fill="none"
           stroke-width="1.5"

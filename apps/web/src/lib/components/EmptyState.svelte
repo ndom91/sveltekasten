@@ -16,7 +16,7 @@
 </script>
 
 {#if showArrow}
-  <div class="hidden absolute top-28 right-28 lg:block text-zinc-700 dark:text-zinc-100">
+  <div class="hidden absolute top-28 right-28 lg:block text-neutral-700 dark:text-neutral-100">
     {@html Arrow}
   </div>
 {/if}

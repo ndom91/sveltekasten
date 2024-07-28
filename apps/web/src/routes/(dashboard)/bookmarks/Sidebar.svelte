@@ -113,7 +113,7 @@
             class="inline-block p-1 mx-1 align-text-bottom rounded-sm size-6 bg-neutral-200 dark:bg-neutral-800"
           >
             <svg
-              class="size-4 text-zinc-900 dark:text-zinc-200"
+              class="size-4 text-neutral-900 dark:text-neutral-200"
               data-slot="icon"
               fill="none"
               stroke-width="1.5"
@@ -144,7 +144,7 @@
           {...$constraints.title}
           class={cn(
             "flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-            !isEditMode ? "cursor-default text-muted" : "bg-zinc-100 dark:bg-neutral-950",
+            !isEditMode ? "cursor-default text-muted" : "bg-neutral-100 dark:bg-neutral-950",
           )}
         />
         {#if $errors.title}<span class="text-xs text-red-400">{$errors.title}</span>{/if}
@@ -162,7 +162,7 @@
             class={cn(
               "flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
               ui.metadataSidebarData.bookmark.metadata?.logo && "pl-10",
-              !isEditMode ? "cursor-default text-muted" : "bg-zinc-100 dark:bg-neutral-950",
+              !isEditMode ? "cursor-default text-muted" : "bg-neutral-100 dark:bg-neutral-950",
             )}
           />
           {#if ui.metadataSidebarData.bookmark.metadata?.logo}
@@ -186,7 +186,7 @@
           {...$constraints.description}
           class={cn(
             "flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-            !isEditMode ? "cursor-default text-muted" : "bg-zinc-100 dark:bg-neutral-950",
+            !isEditMode ? "cursor-default text-muted" : "bg-neutral-100 dark:bg-neutral-950",
           )}
         ></textarea>
         {#if $errors.description}<span class="text-xs text-red-400">{$errors.title}</span>{/if}
@@ -201,7 +201,7 @@
               !$form.category && "text-muted-foreground",
               !isEditMode
                 ? "cursor-default pointer-events-none text-muted"
-                : "bg-zinc-100 dark:bg-neutral-950",
+                : "bg-neutral-100 dark:bg-neutral-950",
             )}
             role="combobox"
           >

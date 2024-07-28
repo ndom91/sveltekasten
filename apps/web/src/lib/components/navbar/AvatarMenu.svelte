@@ -72,7 +72,7 @@
         <div class="truncate">
           {$page.data.session?.user?.name ?? $page.data.session?.user?.email}
         </div>
-        <div class="font-light text-zinc-400 dark:text-zinc-600">{version}</div>
+        <div class="font-light text-neutral-400 dark:text-neutral-600">{version}</div>
       </DropdownMenu.Label>
       <DropdownMenu.Separator class="bg-neutral-100 dark:bg-neutral-800" />
       <DropdownMenu.CheckboxItem

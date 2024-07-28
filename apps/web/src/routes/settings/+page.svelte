@@ -33,7 +33,7 @@
     >
       <div class="p-4">
         <Tabs.List
-          class="*:w-full *:text-lg *:font-normal h-12 w-full bg-zinc-100 dark:bg-neutral-800"
+          class="*:w-full *:text-lg *:font-normal h-12 w-full bg-neutral-100 dark:bg-neutral-800"
         >
           <Tabs.Trigger class="data-[state=active]:shadow-none" value="user">User</Tabs.Trigger>
           <Tabs.Trigger class="data-[state=active]:shadow-none" value="feeds">Feeds</Tabs.Trigger>

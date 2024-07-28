@@ -47,7 +47,7 @@
               class="rounded-full size-6"
             />
           </label>
-          <div class="line-clamp-2 dark:text-zinc-600">
+          <div class="line-clamp-2 dark:text-neutral-600">
             {feed.description}
           </div>
           <div class="flex gap-2 justify-start items-center">
