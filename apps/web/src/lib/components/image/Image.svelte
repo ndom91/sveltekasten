@@ -38,9 +38,17 @@
   }
 </script>
 
-<div class={cn("relative", className)}>
+<div
+  style="grid-template: 'container';"
+  class={cn(
+    "relative grid place-items-center flex-shrink-0 place-content-center overflow-hidden rounded-md border border-neutral-100 dark:border-neutral-800",
+    "md:w-64 w-48 max-h-36",
+    className,
+  )}
+>
   <img
-    class="object-cover object-center absolute top-0 left-0 w-full h-full rounded-md opacity-0 transition duration-500"
+    style="grid-area: container;"
+    class="object-cover w-full h-auto aspect-video rounded-md opacity-0 transition duration-500"
     class:srcImageLoaded={loaded}
     use:onload
     alt={alt ?? "Bookmark Image"}
@@ -48,18 +56,17 @@
     {...rest}
   />
   <img
+    style="grid-area: container;"
     src={placeholderURL}
     alt="Thumbhash Placeholder"
-    class="object-cover object-center absolute top-0 left-0 w-full h-full rounded-md transition duration-500 pointer-events-none"
+    class="object-fill object-left-top rounded-md transition duration-500 pointer-events-none"
     class:loaded
   />
 </div>
 
 <style>
   img.srcImageLoaded {
-    display: block !important;
     opacity: 1;
-    position: relative;
   }
   img.loaded {
     opacity: 0 !important;

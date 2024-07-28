@@ -135,9 +135,10 @@
 
   // Handle keyboard navigation of items
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.repeat || e.target instanceof HTMLInputElement) {
+    if (e.target instanceof HTMLInputElement) {
       return
     }
+
     // Navigate up / down list of items
     if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "j" || e.key === "k") {
       e.preventDefault()
@@ -145,10 +146,12 @@
       const currentActiveElementIndex = bookmarkStore.bookmarks.findIndex(
         (item) => item.id === currentActiveElement.dataset.id,
       )
+
       const nextIndex =
         e.key === "ArrowDown" || e.key === "j"
           ? currentActiveElementIndex + 1
           : currentActiveElementIndex - 1
+
       const nextElement = document.querySelector(
         `[data-id="${bookmarkStore.bookmarks[nextIndex]?.id}"]`,
       ) as HTMLElement
@@ -197,8 +200,8 @@
   <FilterBar />
   {#if bookmarkStore.bookmarks?.length}
     <InfiniteLoader triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
-      {#each bookmarkStore.bookmarks.values() as item (item.id)}
-        <BookmarkRow bind:bookmarkId={item.id} />
+      {#each bookmarkStore.bookmarks as item (item.id)}
+        <BookmarkRow bookmark={item} />
       {/each}
       {#snippet noData()}
         {#if bookmarkStore.bookmarks.length >= 10}

@@ -16,14 +16,15 @@
 
   type CategoryVisible = Category & { visible: boolean }
 
-  const bookmarkStore = getContext<BookmarkContext>("bookmarks")
-  let deleteElement = $state<HTMLDialogElement | null>(null)
+  // const bookmarkStore = getContext<BookmarkContext>("bookmarks")
+  let deleteElement = $state<HTMLDialogElement>()
 
   const ui = useInterface()
 
-  const { bookmarkId = $bindable() }: { bookmarkId: string } = $props()
+  // const { bookmarkId = $bindable() }: { bookmarkId: string } = $props()
+  const { bookmark = $bindable() }: { bookmark: LoadBookmarkFlatTags } = $props()
 
-  let bookmark = $state(bookmarkStore.find(bookmarkId)!)
+  // let bookmark = $state(bookmarkStore.find(bookmarkId)!)
 
   // $effect(() => {
   //   bookmark = bookmarkStore.find(bookmarkId)!
@@ -63,10 +64,8 @@
   tabindex={0}
   data-id={bookmark.id}
   role="row"
-  class={cn(
-    "grid relative gap-4 mx-2 p-4 md:mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none focus:outline-none grid-cols-1 md:grid-cols-[15rem_1fr] dark:focus:bg-neutral-800/40 focus:border-zinc-500 focus:bg-zinc-100",
-    isBookmarkCategoryHidden && "hidden",
-  )}
+  class="max-w-full relative gap-4 mx-2 p-4 md:mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none flex dark:focus:bg-neutral-800/40 focus:border-zinc-500 focus:bg-zinc-100"
+  class:hidden={isBookmarkCategoryHidden}
   onpointerleave={() => (isOptionsOpen = false)}
   onpointerenter={() => (isOptionsOpen = true)}
 >
@@ -75,16 +74,13 @@
     thumbhash={bookmark.imageBlur ?? ""}
     src={bookmark.image ?? `https://source.unsplash.com/random/240x144?sig=${bookmark.url}`}
     alt={`${new URL(bookmark.url).hostname} Screenshot`}
-    class={cn(
-      "w-full md:w-60 h-48 md:h-36 rounded-md border transition md:block border-neutral-100 dark:border-neutral-800",
-      ui.userSettings?.compact ? "hidden" : "",
-    )}
+    class={ui.userSettings?.compact ? "hidden" : ""}
   />
-  <div class="flex flex-col gap-2 relative">
-    <span class="text-xl font-semibold pr-10 md:pr-0 line-clamp-1 text-clip" title={bookmark.title}>
+  <div class="flex flex-col gap-2 relative truncate">
+    <span class="text-xl font-semibold pr-10 md:pr-0 line-clamp-1" title={bookmark.title}>
       {bookmark.title}
     </span>
-    <p class="break-words line-clamp-2 pr-10 md:pr-0">{bookmark.desc}</p>
+    <p class="line-clamp-2 pr-10 md:pr-0">{bookmark.desc}</p>
     <div class="flex gap-2 justify-start items-center text-sm text-muted">
       {#if bookmark.metadata?.logo}
         <img src={bookmark.metadata?.logo} alt="URL Favicon" class="rounded-full size-4" />

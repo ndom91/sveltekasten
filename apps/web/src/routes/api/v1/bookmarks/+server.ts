@@ -81,7 +81,7 @@ export const POST: RequestHandler = async (event) => {
           image: imageUrl,
           imageBlur,
           desc: metadata.description,
-          title: metadata.description,
+          title: metadata.title ?? metadata.description,
           metadata,
         }
       }),

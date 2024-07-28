@@ -106,7 +106,7 @@
   }
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.repeat || e.target instanceof HTMLInputElement) {
+    if (e.target instanceof HTMLInputElement) {
       return
     }
     if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "j" || e.key === "k") {

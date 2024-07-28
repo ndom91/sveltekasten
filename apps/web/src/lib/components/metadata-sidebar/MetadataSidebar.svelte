@@ -4,7 +4,6 @@
   import { cn } from "$lib/utils/style"
   import { page } from "$app/stores"
   import { useInterface } from "$state/ui.svelte"
-  import { watch } from "runed"
 
   const ui = useInterface()
   let metadataSidebarElement = $state<HTMLElement>()!
@@ -40,6 +39,7 @@
 </script>
 
 <svelte:window onkeydown={handleKeyDown} />
+
 <aside
   bind:this={metadataSidebarElement}
   class={cn(

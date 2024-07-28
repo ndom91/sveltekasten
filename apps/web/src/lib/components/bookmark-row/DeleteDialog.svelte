@@ -9,7 +9,7 @@
     dialogElement = $bindable(),
     bookmarkId,
   }: {
-    dialogElement: HTMLDialogElement | null
+    dialogElement: HTMLDialogElement | undefined
     bookmarkId: string
   } = $props()
 </script>
