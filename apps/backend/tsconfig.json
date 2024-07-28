@@ -3,6 +3,7 @@
     "outDir": "./dist",
     "strict": true,
     "strictNullChecks": true,
+    "skipLibCheck": true,
     "noUncheckedIndexedAccess": true,
 
     "lib": [

@@ -9,7 +9,21 @@ import { updateJob } from "./jobs/cron-update.js"
 import bookmark from "./routes/bookmark/index.js"
 import feed from "./routes/feed/index.js"
 import root from "./routes/root.js"
-import { ipxHandler } from "./lib/imageProxy.js"
+// import { ipxHandler } from "./lib/imageProxy.js"
+
+import {
+  createIPX,
+  createIPXWebServer,
+  ipxFSStorage,
+  ipxHttpStorage,
+} from 'ipx';
+
+const ipx = createIPX({
+  storage: ipxFSStorage(),
+  httpStorage: ipxHttpStorage({
+    allowAllDomains: true,
+  }),
+});
 
 const limiter = rateLimiter({
   windowMs: 1 * 60 * 1000, // 5 minutes
@@ -20,14 +34,16 @@ const limiter = rateLimiter({
   }
 });
 
-const app = new Hono<{ Bindings: HttpBindings }>({ strict: false }).basePath(
+const app = new Hono<{ Bindings: HttpBindings }>().basePath(
   "/worker/v1",
 )
 
 app.use(logger())
 app.use(prettyJSON())
-app.use(limiter)
-app.use("/img", c => ipxHandler(c.req.raw))
+if (process.env.NODE_ENV === "production") {
+  app.use(limiter)
+}
+app.use("/*", c => createIPXWebServer(ipx)(c.req.raw))
 
 app.route("/bookmark", bookmark)
 app.route("/feed", feed)

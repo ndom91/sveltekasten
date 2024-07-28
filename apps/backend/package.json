@@ -18,7 +18,7 @@
     "db:generate": "prisma generate"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.616.0",
+    "@aws-sdk/client-s3": "^3.620.0",
     "@formkit/tempo": "^0.1.2",
     "@hono/node-server": "^1.12.0",
     "@hono/zod-validator": "^0.2.2",
@@ -26,9 +26,9 @@
     "@prisma/client": "5.17.0",
     "@rowanmanning/feed-parser": "^1.0.0",
     "croner": "^8.1.0",
-    "debug": "^4.3.5",
+    "debug": "^4.3.6",
     "fastq": "^1.17.1",
-    "hono": "^4.5.1",
+    "hono": "^4.5.2",
     "hono-rate-limiter": "^0.4.0",
     "ipx": "^3.0.1",
     "jose": "^5.6.3",
@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@types/debug": "^4.1.12",
-    "@types/node": "^20.14.11",
+    "@types/node": "^22.0.0",
     "@types/xml2js": "^0.4.14",
     "prisma": "5.17.0",
     "tsx": "^4.16.2"

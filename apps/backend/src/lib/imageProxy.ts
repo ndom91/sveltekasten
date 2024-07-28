@@ -8,6 +8,7 @@ import {
 const ipx = createIPX({
   storage: ipxFSStorage({ dir: './public/' }),
   httpStorage: ipxHttpStorage({
+    allowAllDomains: true,
     domains: ['images.unsplash.com']
   }),
 });
