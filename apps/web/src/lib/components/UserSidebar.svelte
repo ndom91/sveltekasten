@@ -44,9 +44,7 @@
 {:else}
   <aside
     bind:this={userSidebarElement}
-    class={cn(
-      "space-between flex h-full flex-col border-r bg-neutral-50 transition-all border-r-neutral-200 dark:border-r-neutral-800/60 dark:bg-neutral-900 duration-100 w-[72px] justify-start",
-    )}
+    class="flex h-full flex-col border-r bg-neutral-50 transition-all border-r-neutral-200 dark:border-r-neutral-800/60 dark:bg-neutral-900 duration-100 min-w-[72px] justify-start"
   >
     <div class="flex justify-start items-center m-4">
       <Button
