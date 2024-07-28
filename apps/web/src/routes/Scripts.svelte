@@ -1,38 +1,33 @@
 <script lang="ts">
+  import { partytownSnippet } from "@builder.io/partytown/integration"
   import { onMount } from "svelte"
-  import * as Swetrix from "swetrix"
   import { page } from "$app/stores"
   import { dev } from "$app/environment"
-  import { env } from "$env/dynamic/public"
 
-  let url = $state("")
+  // Set partykit script content
+  let scriptTag: HTMLScriptElement
   onMount(() => {
-    if (
-      !dev &&
-      $page.url.hostname === "dev.briefkastenhq.com" &&
-      env.PUBLIC_SWETRIX_PROJECT &&
-      env.PUBLIC_SWETRIX_API_HOST
-    ) {
-      url = $page.url.pathname
-      if ($page.url.searchParams.toString() !== "") {
-        url += `?${$page.url.searchParams.toString()}`
-      }
-      Swetrix.init(env.PUBLIC_SWETRIX_PROJECT, { apiURL: env.PUBLIC_SWETRIX_API_HOST })
-    }
-  })
-
-  $effect(() => {
-    if (
-      !dev &&
-      $page.url.hostname === "dev.briefkastenhq.com" &&
-      env.PUBLIC_SWETRIX_PROJECT &&
-      env.PUBLIC_SWETRIX_API_HOST
-    ) {
-      url = $page.url.pathname
-      if ($page.url.searchParams.toString() !== "") {
-        url += `?${$page.url.searchParams.toString()}`
-      }
-      Swetrix.trackPageview(url)
+    if (!dev && $page.url.hostname === "dev.briefkastenhq.com") {
+      scriptTag.textContent = partytownSnippet()
     }
   })
 </script>
+
+<svelte:head>
+  <script bind:this={scriptTag}></script>
+  <!-- eslint-disable-next-line svelte/valid-compile -->
+  {#if !dev && $page.url.hostname === "dev.briefkastenhq.com"}
+    <script>
+      partytown = {
+        forward: ["plausible"],
+      }
+    </script>
+
+    <script
+      type="text/partytown"
+      src="/p.js"
+      data-domain="dev.briefkastenhq.com"
+      data-api="/add/event"
+    ></script>
+  {/if}
+</svelte:head>
