@@ -41,9 +41,7 @@
 </svelte:head>
 
 <Navbar showSearch={false} showQuickAdd={false} showSidebar={false} />
-<main
-  class="overflow-y-scroll align-start flex max-w-[100vw] md:max-w-[calc(100vw_-_72px)] flex-col justify-start gap-6"
->
+<main class="overflow-y-scroll align-start flex flex-col justify-start gap-6">
   <div class="flex justify-start px-4 pt-4 w-full">
     <h2 class="text-xl font-thin">Latest Items</h2>
   </div>
