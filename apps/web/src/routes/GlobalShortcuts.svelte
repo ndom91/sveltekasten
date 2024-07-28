@@ -8,6 +8,10 @@
     if (e.repeat || e.target instanceof HTMLInputElement) {
       return
     }
+    if (e.key === "Escape" && element) {
+      e.preventDefault()
+      element.close()
+    }
     if ((e.ctrlKey || e.metaKey) && e.key === "/") {
       e.preventDefault()
       element?.showModal()
