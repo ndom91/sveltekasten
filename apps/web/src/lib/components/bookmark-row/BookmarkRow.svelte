@@ -77,13 +77,17 @@
     class={ui.userSettings?.compact ? "hidden" : ""}
   />
   <div class="flex flex-col gap-2 relative truncate">
-    <span class="text-xl font-semibold pr-10 md:pr-0 line-clamp-1" title={bookmark.title}>
+    <span class="text-xl font-semibold pr-10 md:pr-0 truncate" title={bookmark.title}>
       {bookmark.title}
     </span>
     <p class="line-clamp-2 pr-10 md:pr-0">{bookmark.desc}</p>
     <div class="flex gap-2 justify-start items-center text-sm text-muted">
-      {#if bookmark.metadata?.logo}
-        <img src={bookmark.metadata?.logo} alt="URL Favicon" class="rounded-full size-4" />
+      {#if (bookmark.metadata as Record<string, string>)?.logo}
+        <img
+          src={(bookmark.metadata as Record<string, string>)?.logo}
+          alt="URL Favicon"
+          class="rounded-full size-4"
+        />
       {/if}
       <a
         target="_blank"
