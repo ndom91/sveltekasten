@@ -1,3 +1,4 @@
+/* eslint-disable */
 !(function () {
   "use strict"
   var a = window.location,
@@ -13,45 +14,47 @@
       "file:" === a.protocol
     )
       return s("localhost", e)
-    if (window._phantom || window.__nightmare || window.navigator.webdriver || window.Cypress)
+    if (
+      (window._phantom || window.__nightmare || window.navigator.webdriver || window.Cypress) &&
+      !window.__plausible
+    )
       return s(null, e)
     try {
       if ("true" === window.localStorage.plausible_ignore) return s("localStorage flag", e)
     } catch (t) {}
-    var n = {},
-      i =
-        ((n.n = t),
-        (n.u = a.href),
-        (n.d = o.getAttribute("data-domain")),
-        (n.r = r.referrer || null),
-        e && e.meta && (n.m = JSON.stringify(e.meta)),
-        e && e.props && (n.p = e.props),
+    var i = {},
+      n =
+        ((i.n = t),
+        (i.u = a.href),
+        (i.d = o.getAttribute("data-domain")),
+        (i.r = r.referrer || null),
+        e && e.meta && (i.m = JSON.stringify(e.meta)),
+        e && e.props && (i.p = e.props),
         new XMLHttpRequest())
-    i.open("POST", l, !0),
-      i.setRequestHeader("Content-Type", "text/plain"),
-      i.send(JSON.stringify(n)),
-      (i.onreadystatechange = function () {
-        4 === i.readyState && e && e.callback && e.callback()
+    n.open("POST", l, !0),
+      n.setRequestHeader("Content-Type", "text/plain"),
+      n.send(JSON.stringify(i)),
+      (n.onreadystatechange = function () {
+        4 === n.readyState && e && e.callback && e.callback({ status: n.status })
       })
   }
   var e = (window.plausible && window.plausible.q) || []
   window.plausible = t
-  for (var n, i = 0; i < e.length; i++) t.apply(this, e[i])
+  for (var i, n = 0; n < e.length; n++) t.apply(this, e[n])
   function p() {
-    n !== a.pathname && ((n = a.pathname), t("pageview"))
+    i !== a.pathname && ((i = a.pathname), t("pageview"))
   }
   var c,
-    w = window.history
-  w.pushState &&
-    ((c = w.pushState),
-    (w.pushState = function () {
+    u = window.history
+  u.pushState &&
+    ((c = u.pushState),
+    (u.pushState = function () {
       c.apply(this, arguments), p()
     }),
     window.addEventListener("popstate", p)),
     "prerender" === r.visibilityState
       ? r.addEventListener("visibilitychange", function () {
-          n || "visible" !== r.visibilityState || p()
+          i || "visible" !== r.visibilityState || p()
         })
       : p()
 })()
-

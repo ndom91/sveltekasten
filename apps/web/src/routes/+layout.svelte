@@ -1,7 +1,6 @@
 <script lang="ts">
   import { Toaster } from "svelte-sonner"
   import MediaQuery from "$lib/components/MediaQuery.svelte"
-  import Scripts from "./Scripts.svelte"
   import Shortcuts from "./GlobalShortcuts.svelte"
   import type { Snippet } from "svelte"
   import "$lib/styles/global.css"
@@ -13,8 +12,6 @@
   <title>BriefButler</title>
   <meta name="description" content="RSS Feeds, Bookmarks, and more!" />
 </svelte:head>
-
-<Scripts />
 
 <Shortcuts />
 
