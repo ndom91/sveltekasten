@@ -233,7 +233,7 @@
                   {#each ui.metadataSidebarData.categories as category}
                     <Command.Item
                       value={category.name}
-                      class="justify-between w-full cursor-pointer"
+                      class="justify-start gap-2 w-full cursor-pointer"
                       onSelect={() => {
                         // Toggle selected on/off
                         $form.category = $form.category === category.id ? undefined : category.id
