@@ -2,7 +2,7 @@
   import { page } from "$app/stores"
   import { toast } from "svelte-sonner"
   import DragAdd from "./DragAdd.svelte"
-  import Sidebar from "$lib/components/UserSidebar.svelte"
+  import Sidebar from "$lib/components/NavigationSidebar.svelte"
   import { MetadataSidebar } from "$/lib/components/metadata-sidebar"
   import { CommandBar } from "$lib/components/command-bar"
   import { dev } from "$app/environment"

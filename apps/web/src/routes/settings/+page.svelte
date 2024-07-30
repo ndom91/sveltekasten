@@ -4,7 +4,7 @@
   import AboutSection from "./components/AboutSection.svelte"
   import { page } from "$app/stores"
   import { goto } from "$app/navigation"
-  import Sidebar from "$lib/components/UserSidebar.svelte"
+  import Sidebar from "$lib/components/NavigationSidebar.svelte"
   import { Navbar } from "$lib/components/navbar"
   import { CommandBar } from "$lib/components/command-bar"
   import * as Tabs from "$lib/components/ui/tabs"
