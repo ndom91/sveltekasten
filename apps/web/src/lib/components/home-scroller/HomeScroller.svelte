@@ -6,13 +6,15 @@
   import Browser from "$lib/assets/browser.png"
   import Bell from "$lib/assets/bell.png"
   import { watch } from "runed"
-  import type { SvelteMap } from "svelte/reactivity"
 
-  type ScrollerProps = {
+  type Props = {
     type: keyof typeof ScrollerTypes
-    items: SvelteMap<string, LoadBookmark> | LoadFeedEntry[]
+    items: LoadBookmarkFlatTags[] | LoadFeedEntry[]
     count: number
   }
+
+  const { type, items, count }: Props = $props()
+
   let element = $state<HTMLElement | undefined>()
 
   watch(
@@ -21,7 +23,6 @@
       element?.scrollTo(0, 0)
     },
   )
-  const { type, items, count }: ScrollerProps = $props()
 </script>
 
 <section

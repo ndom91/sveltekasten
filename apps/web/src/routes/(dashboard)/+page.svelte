@@ -15,23 +15,10 @@
     }
   })
 
-  type HomeLoadResults = {
-    bookmarks: {
-      data: LoadBookmark[]
-      count: number
-    }
-    feedEntries: {
-      data: LoadFeedEntry[]
-      count: number
-    }
-  }
-
-  const { data }: { data: HomeLoadResults } = $props()
-
-  const bookmarkStore = getContext<BookmarkContext>("bookmarks")
+  const bookmarkService = getContext<BookmarkContext>("bookmarks")
 
   $effect(() => {
-    bookmarkStore.bookmarks = $page.data.bookmarks.data
+    bookmarkService.bookmarks = $page.data.bookmarks.data
   })
 </script>
 
@@ -41,18 +28,15 @@
 </svelte:head>
 
 <Navbar showSearch={false} showQuickAdd={false} showSidebar={false} />
-<main class="overflow-y-scroll align-start flex flex-col justify-start gap-6">
-  <div class="flex justify-start px-4 pt-4 w-full">
-    <h2 class="text-xl font-thin">Latest Items</h2>
-  </div>
+<main class="overflow-y-scroll py-4 align-start flex flex-col justify-start gap-6">
   <HomeScroller
-    items={bookmarkStore.bookmarks}
-    count={data.bookmarks.count}
+    items={bookmarkService.bookmarks}
+    count={$page.data.bookmarks.count}
     type={ScrollerTypes.BOOKMARKS}
   />
   <HomeScroller
-    items={data.feedEntries.data}
-    count={data.feedEntries.count}
+    items={$page.data.feedEntries.data}
+    count={$page.data.feedEntries.count}
     type={ScrollerTypes.FEEDS}
   />
 </main>
