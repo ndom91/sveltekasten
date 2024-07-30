@@ -168,7 +168,7 @@
     <div class="flex gap-2 justify-start items-center mt-2 text-sm text-muted">
       {#if feedEntry.link}
         <img
-          src={`https://icons.duckduckgo.com/ip9/${new URL(feedEntry.link).hostname}.ico`}
+          src={`https://favicon.yandex.net/favicon/${new URL(feedEntry.link).hostname}`}
           alt="URL Favicon"
           class="rounded-full size-4"
         />

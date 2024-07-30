@@ -42,7 +42,7 @@
           <label for={new URL(feed.url).host} class="flex gap-2 justify-start items-center">
             <span> {new URL(feed.url).host} </span>
             <img
-              src={`https://icons.duckduckgo.com/ip9/${new URL(feed.url).hostname}.ico`}
+              src={`https://favicon.yandex.net/favicon/${new URL(feed.url).hostname}`}
               alt="URL Favicon"
               class="rounded-full size-6"
             />

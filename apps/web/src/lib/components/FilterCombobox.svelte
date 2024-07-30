@@ -68,7 +68,7 @@
           >
             <Checkbox id={item.id} bind:checked={item.visible} />
             <img
-              src={`https://icons.duckduckgo.com/ip9/${new URL(item.url).hostname}.ico`}
+              src={`https://favicon.yandex.net/favicon/${new URL(item.url).hostname}`}
               alt="URL Favicon"
               class="m-2 rounded-full size-4"
             />

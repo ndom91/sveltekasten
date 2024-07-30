@@ -18,7 +18,7 @@
   <div class="flex flex-col gap-1 w-64">
     <div class="flex justify-between">
       <img
-        src={`https://icons.duckduckgo.com/ip9/${new URL(item.url).hostname}.ico`}
+        src={`https://favicon.yandex.net/favicon/${new URL(item.url).hostname}`}
         alt="URL Favicon"
         class="rounded-full size-5"
       />

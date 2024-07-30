@@ -68,7 +68,7 @@
               >
                 <span class="truncate flex-grow mx-2">{feed.name}</span>
                 <img
-                  src={`https://icons.duckduckgo.com/ip9/${new URL(feed.url).hostname}.ico`}
+                  src={`https://favicon.yandex.net/favicon/${new URL(feed.url).hostname}`}
                   alt="URL Favicon"
                   class="m-2 rounded-full size-5"
                 />
