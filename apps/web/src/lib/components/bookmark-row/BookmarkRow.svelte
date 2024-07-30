@@ -66,7 +66,7 @@
     alt={`${new URL(bookmark.url).hostname} Screenshot`}
     class={ui.userSettings?.compact ? "hidden" : ""}
   />
-  <div class="flex flex-col gap-2 relative truncate">
+  <div class="w-full flex flex-col gap-2 relative truncate">
     <span class="text-xl font-semibold pr-10 md:pr-0 truncate" title={bookmark.title}>
       {bookmark.title}
     </span>
