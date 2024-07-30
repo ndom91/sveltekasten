@@ -15,6 +15,8 @@
     toggleDrawer?.()
     goto(target)
   }
+
+  const activePath = $derived($page.url.pathname)
 </script>
 
 <div class="flex-grow p-4">
@@ -27,7 +29,7 @@
           data-sveltekit-preload-data="hover"
           class={cn(
             "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
-            $page.url.pathname === "/" && "ring-2 ring-neutral-300 dark:ring-neutral-800",
+            activePath === "/" && "active",
           )}
           onclickcapture={() => toggleAndNavigate("/")}
         >
@@ -77,7 +79,7 @@
           data-sveltekit-preload-data="hover"
           class={cn(
             "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
-            $page.url.pathname === "/bookmarks" && "ring-2 ring-neutral-300 dark:ring-neutral-800",
+            activePath === "/bookmarks" && "active",
           )}
           onclickcapture={() => toggleAndNavigate("/bookmarks")}
         >
@@ -126,7 +128,7 @@
           data-sveltekit-preload-data="hover"
           class={cn(
             "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
-            $page.url.pathname === "/feeds" && "ring-2 ring-neutral-300 dark:ring-neutral-800",
+            activePath === "/feeds" && "active",
           )}
           onclickcapture={() => toggleAndNavigate("/feeds")}
         >
@@ -176,7 +178,7 @@
           data-sveltekit-preload-data="hover"
           class={cn(
             "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
-            $page.url.pathname === "/archives" && "ring-2 ring-neutral-300 dark:ring-neutral-800",
+            activePath === "/archives" && "active",
           )}
           onclickcapture={() => toggleAndNavigate("/archives")}
         >
@@ -225,7 +227,7 @@
           data-sveltekit-preload-data="hover"
           class={cn(
             "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
-            $page.url.pathname === "/categories" && "ring-2 ring-neutral-300 dark:ring-neutral-800",
+            activePath === "/categories" && "active",
           )}
           onclickcapture={() => toggleAndNavigate("/categories")}
         >
@@ -275,7 +277,7 @@
           data-sveltekit-preload-data="hover"
           class={cn(
             "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
-            $page.url.pathname === "/tags" && "ring-2 ring-neutral-300 dark:ring-neutral-800",
+            activePath === "/tags" && "active",
           )}
           onclickcapture={() => toggleAndNavigate("/tags")}
         >
@@ -333,3 +335,12 @@
     </span>
   </div>
 </div>
+
+<style>
+  :global(button.active) {
+    @apply ring-2 ring-offset-transparent ring-neutral-400;
+  }
+  :global(html.dark button.active) {
+    @apply ring-neutral-800;
+  }
+</style>

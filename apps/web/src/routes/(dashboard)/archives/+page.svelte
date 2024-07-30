@@ -164,7 +164,7 @@
 </script>
 
 <svelte:head>
-  <title>BriefButler | Bookmarks</title>
+  <title>BriefButler | Archives</title>
   <meta name="description" content="RSS Feeds, Bookmarks and more!" />
 </svelte:head>
 
