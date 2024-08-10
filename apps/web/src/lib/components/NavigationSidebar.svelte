@@ -1,9 +1,9 @@
 <script lang="ts">
   import { watch } from "runed"
-  import Drawer from "$lib/components/mobile/Drawer.svelte"
-  import SidebarContent from "$lib/components/SidebarContent.svelte"
-  import { Button } from "$lib/components/ui/button"
   import Logo from "$lib/assets/Logo.svelte"
+  import SidebarContent from "$lib/components/SidebarContent.svelte"
+  import Drawer from "$lib/components/mobile/Drawer.svelte"
+  import { Button } from "$lib/components/ui/button"
   import { cn } from "$lib/utils/style"
   import { useInterface } from "$state/ui.svelte"
 

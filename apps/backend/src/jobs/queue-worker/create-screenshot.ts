@@ -1,13 +1,13 @@
-import { readFile } from "node:fs/promises"
-import { existsSync } from "node:fs"
-import { join } from "node:path"
-import { userInfo } from "node:os"
-import type { Buffer } from "node:buffer"
 import { chromium } from "playwright-chromium"
-import { uploadImage } from "../../plugins/storage.js"
-import { db } from "../../plugins/prisma.js"
 import { getThumbhash } from "../../lib/image.js"
 import debugFactory from "../../lib/log.js"
+import { db } from "../../plugins/prisma.js"
+import { uploadImage } from "../../plugins/storage.js"
+import { existsSync } from "node:fs"
+import { readFile } from "node:fs/promises"
+import { userInfo } from "node:os"
+import { join } from "node:path"
+import type { Buffer } from "node:buffer"
 
 const debug = debugFactory("backend:create-screenshot")
 

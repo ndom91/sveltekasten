@@ -1,4 +1,9 @@
 <script lang="ts">
+  import { ofetch } from "ofetch"
+  import { watch } from "runed"
+  import { getContext, onDestroy, onMount } from "svelte"
+  import { InfiniteLoader, loaderState } from "svelte-infinite"
+  import { toast } from "svelte-sonner"
   import FilterBar from "./FilterBar.svelte"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
@@ -6,11 +11,6 @@
   import { Navbar } from "$lib/components/navbar"
   import { Logger, loggerLevels } from "$lib/utils/logger"
   import { useInterface } from "$state/ui.svelte"
-  import { ofetch } from "ofetch"
-  import { watch } from "runed"
-  import { getContext, onDestroy, onMount } from "svelte"
-  import { InfiniteLoader, loaderState } from "svelte-infinite"
-  import { toast } from "svelte-sonner"
   import { goto } from "$app/navigation"
   import { page } from "$app/stores"
 

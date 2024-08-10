@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type { Snippet } from "svelte"
-  import { cn } from "$lib/utils/style"
-  import EmptyIllustration from "$lib/assets/new.png"
   import Arrow from "$lib/assets/arrow.svg?raw"
+  import EmptyIllustration from "$lib/assets/new.png"
+  import { cn } from "$lib/utils/style"
+  import type { Snippet } from "svelte"
 
   const {
     showArrow = true,

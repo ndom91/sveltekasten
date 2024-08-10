@@ -4,13 +4,13 @@
   import { Render, Subscribe, createRender, createTable } from "svelte-headless-table"
   import { addSortBy } from "svelte-headless-table/plugins"
   import DataTableActions from "./data-table-actions.svelte"
-  import * as Table from "$lib/components/ui/table"
+  import { Label } from "$/lib/components/ui/label"
   import { Navbar } from "$lib/components/navbar"
-  import { enhance } from "$app/forms"
-  import { handleActionResults } from "$lib/utils/form-action"
   import { Button } from "$lib/components/ui/button"
   import { Input } from "$lib/components/ui/input"
-  import { Label } from "$/lib/components/ui/label"
+  import * as Table from "$lib/components/ui/table"
+  import { handleActionResults } from "$lib/utils/form-action"
+  import { enhance } from "$app/forms"
 
   const { data } = $props()
   const tagStore = writable(data.tags)

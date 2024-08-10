@@ -1,4 +1,5 @@
 
+import { Command as CommandPrimitive } from "cmdk-sv";
 import Dialog from "./command-dialog.svelte";
 import Empty from "./command-empty.svelte";
 import Group from "./command-group.svelte";
@@ -8,7 +9,6 @@ import List from "./command-list.svelte";
 import Separator from "./command-separator.svelte";
 import Shortcut from "./command-shortcut.svelte";
 import Root from "./command.svelte";
-import { Command as CommandPrimitive } from "cmdk-sv";
 
 const Loading = CommandPrimitive.Loading;
 

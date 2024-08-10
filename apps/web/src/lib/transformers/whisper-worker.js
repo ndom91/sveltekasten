@@ -1,6 +1,6 @@
 // https://github.com/xenova/whisper-web/blob/main/src/worker.js
 
-/* eslint-disable camelcase */
+ 
 import { pipeline, env } from "@xenova/transformers"
 
 // Disable local models

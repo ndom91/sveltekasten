@@ -1,10 +1,10 @@
 <script lang="ts">
   import { ofetch } from "ofetch"
   import { toast } from "svelte-sonner"
-  import { page } from "$app/stores"
-  import { invalidateAll } from "$app/navigation"
   import Dialog from "$lib/components/Dialog.svelte"
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
+  import { invalidateAll } from "$app/navigation"
+  import { page } from "$app/stores"
 
   let {
     dialogElement = $bindable(),

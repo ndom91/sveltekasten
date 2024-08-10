@@ -1,17 +1,17 @@
 <script lang="ts">
   import { ModeWatcher } from "mode-watcher"
-  import { cn } from "$lib/utils/style"
-  import { blur } from "svelte/transition"
   import { useDebounce } from "runed"
+  import { blur } from "svelte/transition"
+  import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
+  import { AudioPlayer } from "$lib/components/audio-player"
+  import { Breadcrumbs, QuickAddForm } from "$lib/components/navbar"
   import { Button } from "$lib/components/ui/button"
   import * as Popover from "$lib/components/ui/popover"
   import * as Tooltip from "$lib/components/ui/tooltip"
-  import { Breadcrumbs, QuickAddForm } from "$lib/components/navbar"
-  import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
+  import { cn } from "$lib/utils/style"
+  import { flyAndScale } from "$lib/utils/style"
   import { useInterface } from "$state/ui.svelte"
   import { invalidate } from "$app/navigation"
-  import { flyAndScale } from "$lib/utils/style"
-  import { AudioPlayer } from "$lib/components/audio-player"
 
   const { showSearch = true, showQuickAdd = true, showSidebar = true } = $props()
   const ui = useInterface()

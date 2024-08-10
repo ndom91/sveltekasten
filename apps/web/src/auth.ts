@@ -1,6 +1,6 @@
-import { db } from "$lib/prisma"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { type JWT, SvelteKitAuth, type User } from "@auth/sveltekit"
+import { db } from "$lib/prisma"
 import type { Provider } from "@auth/sveltekit/providers"
 import { dev } from "$app/environment"
 import { env } from "$env/dynamic/private"

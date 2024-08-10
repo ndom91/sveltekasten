@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { ofetch } from "ofetch"
   import { format } from "@formkit/tempo"
-  import * as Tooltip from "$lib/components/ui/tooltip"
+  import { ofetch } from "ofetch"
   import { Button } from "$lib/components/ui/button"
+  import * as Tooltip from "$lib/components/ui/tooltip"
   import { invalidateAll } from "$app/navigation"
 
   const { item }: { item: LoadFeedEntry } = $props()

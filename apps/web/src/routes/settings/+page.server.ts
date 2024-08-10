@@ -1,6 +1,6 @@
+import { fail, redirect } from "@sveltejs/kit"
 import { isAuthenticated } from "$/lib/auth"
 import { db } from "$lib/prisma"
-import { fail, redirect } from "@sveltejs/kit"
 import type { Actions, PageServerLoad } from "./$types"
 import { PUBLIC_WORKER_URL } from "$env/static/public"
 

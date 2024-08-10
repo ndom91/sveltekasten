@@ -1,8 +1,8 @@
 <script lang="ts">
   import { fade } from "svelte/transition"
-  import { page } from "$app/stores"
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
   import { useInterface } from "$state/ui.svelte"
+  import { page } from "$app/stores"
 
   const ui = useInterface()
 

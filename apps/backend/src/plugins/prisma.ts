@@ -1,6 +1,6 @@
-import process from "node:process"
 import { PrismaClient } from "@prisma/client"
 import debugFactory from "../lib/log.js"
+import process from "node:process"
 
 const debug = debugFactory("backend:db")
 
@@ -10,7 +10,7 @@ const prismaClientSingleton = () => {
 
 declare const globalThis: {
   prismaGlobal: ReturnType<typeof prismaClientSingleton>
-  // eslint-disable-next-line no-restricted-globals
+   
 } & typeof global
 
 const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()

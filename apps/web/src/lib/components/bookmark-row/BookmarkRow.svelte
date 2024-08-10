@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { ofetch } from "ofetch"
   import { format } from "@formkit/tempo"
+  import { ofetch } from "ofetch"
   import BookmarkActions from "./BookmarkActions.svelte"
+  import DeleteDialog from "./DeleteDialog.svelte"
   import MobileBookmarkActions from "./MobileBookmarkActions.svelte"
   import MediaQuery from "$lib/components/MediaQuery.svelte"
-  import { page } from "$app/stores"
+  import { Image } from "$lib/components/image"
   import { Badge } from "$lib/components/ui/badge"
   import { useInterface } from "$state/ui.svelte"
-  import { invalidateAll } from "$app/navigation"
-  import { Image } from "$lib/components/image"
-  import DeleteDialog from "./DeleteDialog.svelte"
   import type { Category } from "$lib/types/zod"
+  import { invalidateAll } from "$app/navigation"
+  import { page } from "$app/stores"
 
   type CategoryVisible = Category & { visible: boolean }
 
@@ -54,7 +54,7 @@
   tabindex={0}
   data-id={bookmark.id}
   role="row"
-  class="max-w-full relative gap-4 mx-2 p-4 md:mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-300 outline-none flex dark:focus:bg-neutral-800/40 focus:border-zinc-500 focus:bg-neutral-100"
+  class="max-w-full relative gap-4 mx-2 p-4 md:mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-500 outline-none flex dark:focus:bg-neutral-800/40 focus:border-zinc-500 focus:bg-neutral-100 bookmark-row ease-[var(--ease-spring-3)]"
   class:hidden={isBookmarkCategoryHidden}
   onpointerleave={() => (isOptionsOpen = false)}
   onpointerenter={() => (isOptionsOpen = true)}
@@ -128,3 +128,11 @@
     </MediaQuery>
   </div>
 </div>
+
+<style>
+  .bookmark-row {
+    @starting-style {
+      @apply opacity-0 -translate-y-2;
+    }
+  }
+</style>

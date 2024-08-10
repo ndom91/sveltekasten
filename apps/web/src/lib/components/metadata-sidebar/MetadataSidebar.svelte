@@ -2,8 +2,8 @@
   import BookmarkContent from "./BookmarkContent.svelte"
   import FeedContent from "./FeedContent.svelte"
   import { cn } from "$lib/utils/style"
-  import { page } from "$app/stores"
   import { useInterface } from "$state/ui.svelte"
+  import { page } from "$app/stores"
 
   const ui = useInterface()
   let metadataSidebarElement = $state<HTMLElement>()!

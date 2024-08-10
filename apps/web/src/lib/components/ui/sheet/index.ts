@@ -1,3 +1,5 @@
+import { Dialog as SheetPrimitive } from "bits-ui";
+import { tv, type VariantProps } from "tailwind-variants";
 import Content from "./sheet-content.svelte";
 import Description from "./sheet-description.svelte";
 import Footer from "./sheet-footer.svelte";
@@ -5,8 +7,6 @@ import Header from "./sheet-header.svelte";
 import Overlay from "./sheet-overlay.svelte";
 import Portal from "./sheet-portal.svelte";
 import Title from "./sheet-title.svelte";
-import { Dialog as SheetPrimitive } from "bits-ui";
-import { tv, type VariantProps } from "tailwind-variants";
 
 
 const Root = SheetPrimitive.Root;

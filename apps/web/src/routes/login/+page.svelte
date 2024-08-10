@@ -1,14 +1,14 @@
 <script lang="ts">
   // debugger
-  import { twJoin } from "tailwind-merge"
   import { SignIn } from "@auth/sveltekit/components"
-  import { toast } from "svelte-sonner"
   import { tick } from "svelte"
+  import { toast } from "svelte-sonner"
+  import { twJoin } from "tailwind-merge"
   import ProviderIcons from "./ProviderIcons.svelte"
-  import { goto } from "$app/navigation"
-  import { browser } from "$app/environment"
-  import { page } from "$app/stores"
   import LoginPattern from "$lib/assets/LoginPattern.svelte"
+  import { browser } from "$app/environment"
+  import { goto } from "$app/navigation"
+  import { page } from "$app/stores"
 
   const providerButtonStyles = (provider: string): string => {
     switch (provider) {

@@ -1,5 +1,5 @@
-import { Feed } from "@rowanmanning/feed-parser/lib/feed/base.js"
 import { parseFeed } from "@rowanmanning/feed-parser"
+import { Feed } from "@rowanmanning/feed-parser/lib/feed/base.js"
 import debugFactory from "./log.js"
 
 const debug = debugFactory("backend:fetch-feed")

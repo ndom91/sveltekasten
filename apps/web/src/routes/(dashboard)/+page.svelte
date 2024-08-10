@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { Navbar } from "$lib/components/navbar"
+  import { onMount } from "svelte"
+  import { getContext } from "svelte"
   import { HomeScroller } from "$lib/components/home-scroller"
+  import { Navbar } from "$lib/components/navbar"
   import { ScrollerTypes } from "$lib/types"
   import { goto } from "$app/navigation"
   import { page } from "$app/stores"
-  import { onMount } from "svelte"
-  import { getContext } from "svelte"
 
   onMount(() => {
     // Share Target Redirect

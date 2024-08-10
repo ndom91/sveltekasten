@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { ofetch } from "ofetch"
-  import { watch } from "runed"
   import { format } from "@formkit/tempo"
   import dompurify from "isomorphic-dompurify"
+  import { ofetch } from "ofetch"
+  import { watch } from "runed"
   import FeedActions from "./FeedActions.svelte"
   import MobileFeedActions from "./MobileFeedActions.svelte"
   import MediaQuery from "$lib/components/MediaQuery.svelte"
   import { Badge } from "$lib/components/ui/badge"
   import { cn } from "$lib/utils/style"
-  import { page } from "$app/stores"
   import { useInterface } from "$state/ui.svelte"
   import type { Feed, FeedEntry, FeedEntryMedia } from "$lib/types/zod"
+  import { page } from "$app/stores"
 
   const ui = useInterface()
 

@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { cn } from "$lib/utils/style"
-  import { Button } from "$lib/components/ui/button"
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
+  import { Button } from "$lib/components/ui/button"
   import * as Tooltip from "$lib/components/ui/tooltip"
+  import { cn } from "$lib/utils/style"
 
   type Props = {
     isOptionsOpen: boolean

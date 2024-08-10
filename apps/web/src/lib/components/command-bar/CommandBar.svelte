@@ -1,9 +1,9 @@
 <script lang="ts">
   import { toggleMode } from "mode-watcher"
-  import * as Command from "$lib/components/ui/command"
-  import { goto } from "$app/navigation"
   import Kbd from "$lib/components/KeyboardIndicator.svelte"
+  import * as Command from "$lib/components/ui/command"
   import { useInterface } from "$state/ui.svelte"
+  import { goto } from "$app/navigation"
 
   function findNextItem(
     currentElement: Element | HTMLElement,

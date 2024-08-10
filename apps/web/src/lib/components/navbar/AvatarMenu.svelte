@@ -1,14 +1,14 @@
 <script lang="ts">
-  import { mode, toggleMode } from "mode-watcher"
   import { signOut } from "@auth/sveltekit/client"
-  import { page } from "$app/stores"
+  import { mode, toggleMode } from "mode-watcher"
+  import { onMount } from "svelte"
   import KeyboardShortcutsHelp from "$lib/components/KeyboardShortcutsHelp.svelte"
   import * as Avatar from "$lib/components/ui/avatar"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import { Skeleton } from "$lib/components/ui/skeleton"
-  import { version } from "$app/environment"
   import { flyAndScale } from "$lib/utils/style"
-  import { onMount } from "svelte"
+  import { version } from "$app/environment"
+  import { page } from "$app/stores"
 
   const isDarkMode = $derived($mode === "dark")
   let element = $state<HTMLDialogElement | undefined>()

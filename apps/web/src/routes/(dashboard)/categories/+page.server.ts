@@ -1,7 +1,7 @@
-import { db } from "$lib/prisma"
-import { CategoryCreateInputSchema } from "$lib/types/zod"
 import Prisma from "@prisma/client"
 import { fail, redirect } from "@sveltejs/kit"
+import { db } from "$lib/prisma"
+import { CategoryCreateInputSchema } from "$lib/types/zod"
 import type { Actions, PageServerLoad } from "./$types"
 
 export const load: PageServerLoad = async ({ locals, url }) => {

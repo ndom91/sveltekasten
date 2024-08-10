@@ -1,8 +1,8 @@
 <script lang="ts">
   import { Drawer } from "vaul-svelte"
-  import { Button } from "$lib/components/ui/button"
   import Logo from "$lib/assets/Logo.svelte"
   import SidebarContent from "$lib/components/SidebarContent.svelte"
+  import { Button } from "$lib/components/ui/button"
   import { useInterface } from "$state/ui.svelte"
 
   const ui = useInterface()

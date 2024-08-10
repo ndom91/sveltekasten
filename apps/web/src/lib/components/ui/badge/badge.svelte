@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { cn } from "$lib/utils/style";
 	import { badgeVariants, type Variant } from ".";
+	import { cn } from "$lib/utils/style";
 
 	let className: string | undefined | null = undefined;
 	export let href: string | undefined = undefined;

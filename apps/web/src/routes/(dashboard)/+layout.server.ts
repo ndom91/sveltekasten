@@ -1,8 +1,8 @@
-import { db } from "$lib/prisma"
-import { formSchema } from "$schemas/quick-add"
 import { fail } from "@sveltejs/kit"
 import { superValidate } from "sveltekit-superforms"
 import { zod } from "sveltekit-superforms/adapters"
+import { db } from "$lib/prisma"
+import { formSchema } from "$schemas/quick-add"
 import type { LayoutServerLoad } from "./$types"
 
 export const load: LayoutServerLoad = async ({ locals }) => {

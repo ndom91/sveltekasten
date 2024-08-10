@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { page } from "$app/stores"
-  import * as Tooltip from "$lib/components/ui/tooltip"
-  import { Button } from "$lib/components/ui/button"
   import { AvatarMenu } from "$lib/components/navbar"
+  import { Button } from "$lib/components/ui/button"
+  import * as Tooltip from "$lib/components/ui/tooltip"
   import { cn, flyAndScale } from "$lib/utils/style"
   import { useInterface } from "$state/ui.svelte"
   import { goto } from "$app/navigation"
+  import { page } from "$app/stores"
 
   const ui = useInterface()
 

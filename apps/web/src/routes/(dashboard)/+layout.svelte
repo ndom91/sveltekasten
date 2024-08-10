@@ -1,18 +1,18 @@
 <script lang="ts">
-  import { page } from "$app/stores"
+  import { type Snippet, onMount, setContext } from "svelte"
   import { toast } from "svelte-sonner"
   import DragAdd from "./DragAdd.svelte"
-  import Sidebar from "$lib/components/NavigationSidebar.svelte"
   import { MetadataSidebar } from "$/lib/components/metadata-sidebar"
+  import Sidebar from "$lib/components/NavigationSidebar.svelte"
   import { CommandBar } from "$lib/components/command-bar"
-  import { dev } from "$app/environment"
-  import { type Snippet, onMount, setContext } from "svelte"
   import { postMessageTypes } from "$lib/constants"
-
-  import { invalidateAll, onNavigate } from "$app/navigation"
-  import { browser } from "$app/environment"
-  import { defaultAISettings, useInterface } from "$state/ui.svelte"
   import { useBookmarks } from "$state/bookmarks.svelte"
+  import { defaultAISettings, useInterface } from "$state/ui.svelte"
+  import { dev } from "$app/environment"
+
+  import { browser } from "$app/environment"
+  import { invalidateAll, onNavigate } from "$app/navigation"
+  import { page } from "$app/stores"
 
   const { children }: { children: Snippet } = $props()
 

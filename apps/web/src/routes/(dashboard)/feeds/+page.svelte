@@ -1,20 +1,20 @@
 <script lang="ts">
-  import { onDestroy } from "svelte"
-  import { toast } from "svelte-sonner"
   import { ofetch } from "ofetch"
-  import { InfiniteLoader, loaderState } from "svelte-infinite"
   import { watch } from "runed"
+  import { onDestroy } from "svelte"
+  import { InfiniteLoader, loaderState } from "svelte-infinite"
+  import { toast } from "svelte-sonner"
   import FilterBar from "./FilterBar.svelte"
-  import { handleGenerateSpeech, registerTtsWorker } from "./tts.svelte"
   import { handleSummarizeText, registerSummarizationWorker } from "./summarization.svelte"
-  import { Navbar } from "$lib/components/navbar"
+  import { handleGenerateSpeech, registerTtsWorker } from "./tts.svelte"
+  import Blob from "$lib/assets/blob1.png"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { FeedRow } from "$lib/components/feed-row"
-  import Blob from "$lib/assets/blob1.png"
+  import { Navbar } from "$lib/components/navbar"
 
+  import { documentVisibilityStore } from "$lib/utils/documentVisibility"
   import { useInterface } from "$state/ui.svelte"
   import { invalidateAll } from "$app/navigation"
-  import { documentVisibilityStore } from "$lib/utils/documentVisibility"
 
   let innerWidth = $state(1000)
   let innerHeight = $state(800)

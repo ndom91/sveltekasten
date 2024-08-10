@@ -1,6 +1,6 @@
 <script lang="ts">
-	import * as Select from "$lib/components/ui/select";
 	import { getFormField } from "formsnap";
+	import * as Select from "$lib/components/ui/select";
 	import type { Select as SelectPrimitive } from "bits-ui";
 
 	type $$Props = SelectPrimitive.Props<unknown>;

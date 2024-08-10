@@ -1,5 +1,5 @@
-import { handle as handleAuth, providerMap } from "./auth"
 import { sequence } from "@sveltejs/kit/hooks"
+import { handle as handleAuth, providerMap } from "./auth"
 import type { Handle } from "@sveltejs/kit"
 import { dev } from "$app/environment"
 

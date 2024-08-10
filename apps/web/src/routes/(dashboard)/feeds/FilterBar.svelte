@@ -1,12 +1,12 @@
 <script lang="ts">
-  import * as Command from "$lib/components/ui/command"
-  import * as Popover from "$lib/components/ui/popover"
   import DateRangePicker from "$lib/components/date-range/DateRangePicker.svelte"
-  import { Label } from "$lib/components/ui/label"
-  import { Checkbox } from "$lib/components/ui/checkbox"
   import { Button } from "$lib/components/ui/button"
-  import { page } from "$app/stores"
+  import { Checkbox } from "$lib/components/ui/checkbox"
+  import * as Command from "$lib/components/ui/command"
+  import { Label } from "$lib/components/ui/label"
+  import * as Popover from "$lib/components/ui/popover"
   import { useInterface } from "$state/ui.svelte"
+  import { page } from "$app/stores"
 
   const ui = useInterface()
   let open = $state(false)

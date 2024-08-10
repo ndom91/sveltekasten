@@ -1,7 +1,7 @@
-import { db } from "../plugins/prisma.js"
-import debugFactory from "./log.js"
-import type { Feed } from "./types/zod/index.js"
 import { fetchFeed } from "./feed.js"
+import debugFactory from "./log.js"
+import { db } from "../plugins/prisma.js"
+import type { Feed } from "./types/zod/index.js"
 
 const debug = debugFactory("backend:update-feed")
 

@@ -1,25 +1,25 @@
 <script lang="ts">
-  import { zodClient } from "sveltekit-superforms/adapters"
-  import SuperDebug, { defaults, superForm } from "sveltekit-superforms"
   import { format } from "@formkit/tempo"
-  import { toast } from "svelte-sonner"
   import { getContext } from "svelte"
-  import { page } from "$app/stores"
+  import { toast } from "svelte-sonner"
+  import SuperDebug, { defaults, superForm } from "sveltekit-superforms"
+  import { zodClient } from "sveltekit-superforms/adapters"
+
+  import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
+  import TagInput from "$lib/components/TagInput.svelte"
+  import { Button, buttonVariants } from "$lib/components/ui/button"
+  import * as Command from "$lib/components/ui/command"
+  import { Label } from "$lib/components/ui/label"
+  import * as Popover from "$lib/components/ui/popover"
+  import * as Tooltip from "$lib/components/ui/tooltip"
+  import { cn } from "$lib/utils/style"
+  import { formSchema as metadataSchema } from "$schemas/metadata-sidebar"
+  import { useInterface } from "$state/ui.svelte"
+
+  // import * as Select from "$lib/components/ui/select"
   import { dev } from "$app/environment"
   import { invalidateAll } from "$app/navigation"
-
-  import { Button, buttonVariants } from "$lib/components/ui/button"
-  import { cn } from "$lib/utils/style"
-  import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
-  import { useInterface } from "$state/ui.svelte"
-  import { formSchema as metadataSchema } from "$schemas/metadata-sidebar"
-
-  import { Label } from "$lib/components/ui/label"
-  // import * as Select from "$lib/components/ui/select"
-  import * as Command from "$lib/components/ui/command"
-  import * as Tooltip from "$lib/components/ui/tooltip"
-  import * as Popover from "$lib/components/ui/popover"
-  import TagInput from "$lib/components/TagInput.svelte"
+  import { page } from "$app/stores"
 
   const bookmarkStore = getContext("bookmarks")
   console.log("sidebar.bkContext", bookmarkStore)

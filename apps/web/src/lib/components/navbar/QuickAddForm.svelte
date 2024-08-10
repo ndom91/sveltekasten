@@ -1,18 +1,18 @@
 <script lang="ts">
-  import { zodClient } from "sveltekit-superforms/adapters"
-  import SuperDebug, { fieldProxy, superForm } from "sveltekit-superforms"
   import { toast } from "svelte-sonner"
-  import { page } from "$app/stores"
-  import { dev } from "$app/environment"
+  import SuperDebug, { fieldProxy, superForm } from "sveltekit-superforms"
+  import { zodClient } from "sveltekit-superforms/adapters"
 
-  import { cn } from "$lib/utils/style"
-  import { Button } from "$lib/components/ui/button"
-  import * as Select from "$lib/components/ui/select"
-  import { Label } from "$lib/components/ui/label"
-  import { formSchema } from "$schemas/quick-add"
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
   import TagInput from "$lib/components/TagInput.svelte"
+  import { Button } from "$lib/components/ui/button"
+  import { Label } from "$lib/components/ui/label"
+  import * as Select from "$lib/components/ui/select"
+  import { cn } from "$lib/utils/style"
+  import { formSchema } from "$schemas/quick-add"
   import { useInterface } from "$state/ui.svelte"
+  import { dev } from "$app/environment"
+  import { page } from "$app/stores"
 
   const ui = useInterface()
 

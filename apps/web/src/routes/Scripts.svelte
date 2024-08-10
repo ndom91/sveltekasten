@@ -1,8 +1,8 @@
 <script lang="ts">
   import { partytownSnippet } from "@builder.io/partytown/integration"
   import { onMount } from "svelte"
-  import { page } from "$app/stores"
   import { dev } from "$app/environment"
+  import { page } from "$app/stores"
 
   // Set partykit script content
   let scriptTag: HTMLScriptElement

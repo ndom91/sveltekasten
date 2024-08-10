@@ -1,5 +1,5 @@
-import type { Buffer } from "node:buffer"
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
+import type { Buffer } from "node:buffer"
 
 interface UploadImageArgs {
   image: Buffer

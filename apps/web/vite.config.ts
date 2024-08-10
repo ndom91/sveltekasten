@@ -1,9 +1,9 @@
-import { defineConfig, type Rollup } from "vite"
-import { join } from "node:path"
-import { sveltekit } from "@sveltejs/kit/vite"
-import { readFileSync, writeFileSync } from "node:fs"
 import { partytownVite } from "@builder.io/partytown/utils"
+import { sveltekit } from "@sveltejs/kit/vite"
+import { defineConfig, type Rollup } from "vite"
 import { execSync } from "node:child_process"
+import { readFileSync, writeFileSync } from "node:fs"
+import { join } from "node:path"
 
 function bumpManifestPlugin() {
   return {

@@ -1,7 +1,8 @@
 <script lang="ts">
+  import { format } from "@formkit/tempo"
   import { ofetch } from "ofetch"
   import { toast } from "svelte-sonner"
-  import { format } from "@formkit/tempo"
+  import { parseChromeBookmarks, parsePocketBookmarks } from "../import"
   import {
     type ParsedBookmark,
     bookmarkTypes,
@@ -9,18 +10,17 @@
     importBookmarks,
     parseImportFile,
   } from "../utils"
-  import { parseChromeBookmarks, parsePocketBookmarks } from "../import"
-  import { page } from "$app/stores"
+  import { Badge } from "$/lib/components/ui/badge"
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
   import { Button } from "$lib/components/ui/button"
-  import { Checkbox } from "$lib/components/ui/checkbox"
   import * as Card from "$lib/components/ui/card"
+  import { Checkbox } from "$lib/components/ui/checkbox"
   import * as Select from "$lib/components/ui/select"
-  import { clipboard } from "$lib/utils/clipboard"
-  import { Badge } from "$/lib/components/ui/badge"
-  import { TTSLocation, defaultAISettings } from "$state/ui.svelte"
-  import * as Table from "$lib/components/ui/table"
   import { Separator } from "$lib/components/ui/separator"
+  import * as Table from "$lib/components/ui/table"
+  import { clipboard } from "$lib/utils/clipboard"
+  import { TTSLocation, defaultAISettings } from "$state/ui.svelte"
+  import { page } from "$app/stores"
 
   let exportLoading = $state(false)
   let importLoading = $state(false)

@@ -1,5 +1,5 @@
-import { z } from "zod"
 import { zValidator } from "@hono/zod-validator"
+import { z } from "zod"
 
 const schema = z.object({
   feedUrl: z.string().url(),

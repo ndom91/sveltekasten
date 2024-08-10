@@ -2,8 +2,8 @@
   import { watch } from "runed"
   import { tick } from "svelte"
   import AudioVisualizer from "./AudioVisualizer.svelte"
-  import { useInterface } from "$state/ui.svelte"
   import { cn } from "$/lib/utils/style"
+  import { useInterface } from "$state/ui.svelte"
 
   const { src }: { src: string } = $props()
 

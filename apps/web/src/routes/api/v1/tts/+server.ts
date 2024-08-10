@@ -1,6 +1,6 @@
+import { text } from "@sveltejs/kit"
 import { isAuthenticated } from "$/lib/auth"
 import { createEdgeSpeech } from "$lib/server/generate-tts"
-import { text } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
 
 export const POST: RequestHandler = async (event) => {

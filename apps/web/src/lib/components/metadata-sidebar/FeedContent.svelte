@@ -1,12 +1,12 @@
 <script lang="ts">
   import { ofetch } from "ofetch"
-  import type { PageServerLoad } from "./$types"
-  import { page } from "$app/stores"
   import { Badge } from "$lib/components/ui/badge"
   import { Button } from "$lib/components/ui/button"
   import { Checkbox } from "$lib/components/ui/checkbox"
   import { useInterface } from "$state/ui.svelte"
   import type { Feed } from "$lib/types/zod"
+  import type { PageServerLoad } from "./$types"
+  import { page } from "$app/stores"
 
   const ui = useInterface()
 

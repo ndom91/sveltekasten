@@ -1,9 +1,9 @@
 <script lang="ts">
   import { tick } from "svelte"
+  import { Button } from "$lib/components/ui/button"
+  import { Checkbox } from "$lib/components/ui/checkbox"
   import * as Command from "$lib/components/ui/command"
   import * as Popover from "$lib/components/ui/popover"
-  import { Checkbox } from "$lib/components/ui/checkbox"
-  import { Button } from "$lib/components/ui/button"
 
   const {
     data: inputData,

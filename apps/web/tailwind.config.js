@@ -1,5 +1,5 @@
-import { fontFamily } from "tailwindcss/defaultTheme"
 import { StaticShadows } from "open-props/src/shadows"
+import { fontFamily } from "tailwindcss/defaultTheme"
 
 /** @type {import('tailwindcss').Config} */
 const config = {

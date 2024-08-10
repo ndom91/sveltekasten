@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Separator } from "$lib/components/ui/separator"
   import { fade } from "svelte/transition"
+  import { Separator } from "$lib/components/ui/separator"
 
   // TODO: Refactor a bit when popover anchor API is more widely available
   let open = $state(false)

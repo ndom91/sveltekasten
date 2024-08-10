@@ -1,5 +1,5 @@
-import { db } from "$lib/prisma"
 import { fail, redirect } from "@sveltejs/kit"
+import { db } from "$lib/prisma"
 import type { Feed } from "$lib/types/zod"
 import type { PageServerLoad } from "./$types"
 
