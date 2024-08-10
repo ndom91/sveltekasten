@@ -6,23 +6,14 @@ import globals from "globals"
 import pluginImportX from "eslint-plugin-import-x"
 import svelteParser from "svelte-eslint-parser"
 
-console.log('ts-eslint', ts.configs.recommendedTypeChecked)
-
 export default ts.config(
   js.configs.recommended,
   // ...ts.configs.recommended,
-  ...ts.configs.recommendedTypeChecked.map((config) => ({
-    ...config,
-    files: ['**/*.ts'], // We use TS config only for TS files
-  })),
-  {
-    languageOptions: {
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
-  },
+  ...ts.configs.recommendedTypeChecked,
+  // ...ts.configs.recommendedTypeChecked.map((config) => ({
+  //   ...config,
+  //   files: ['**/*.ts'],
+  // })),
   ...svelte.configs["flat/recommended"],
   prettier,
   ...svelte.configs["flat/prettier"],
@@ -31,6 +22,10 @@ export default ts.config(
       globals: {
         ...globals.browser,
         ...globals.node,
+      },
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
       },
     },
   },
