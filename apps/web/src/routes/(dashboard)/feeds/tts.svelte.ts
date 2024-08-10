@@ -1,7 +1,6 @@
 import { ofetch } from "ofetch"
 import ttsWorkerUrl from "$lib/transformers/tts-worker?url"
 import { TTSLocation, useInterface } from "$state/ui.svelte"
-import { dev } from "$app/environment"
 
 const ui = useInterface()
 let progressItems = $state<TODO>([])
@@ -16,6 +15,7 @@ export const registerTtsWorker = () => {
       return
     }
     if (!ttsWorker) {
+      // @ts-expect-error - This will never be compiled to CJS
       ttsWorker = new Worker(new URL(ttsWorkerUrl, import.meta.url), {
         type: "module",
       })
@@ -45,17 +45,13 @@ export const registerTtsWorker = () => {
           break
 
         case "ready":
-          dev && console.log("pipeline ready")
           // Pipeline ready: the worker is ready to accept messages.
           // ready = true
           break
 
         case "complete":
-          const blobUrl = URL.createObjectURL(e.data.output)
-          dev && console.log(`Audio Set: ${blobUrl}`)
-          ui.textToSpeechAudioBlob = blobUrl
+          ui.textToSpeechAudioBlob = URL.createObjectURL(e.data.output)
           ui.textToSpeechLoading = false
-          dev && console.timeEnd("audio.generate")
           break
       }
     }
@@ -92,7 +88,6 @@ export const handleGenerateSpeech = async (text: string) => {
     return
   }
 
-  dev && console.time("audio.generate")
   ui.textToSpeechLoading = true
   ttsWorker.postMessage({
     text,

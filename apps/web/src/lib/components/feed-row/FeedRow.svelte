@@ -11,6 +11,7 @@
   import { useInterface } from "$state/ui.svelte"
   import type { Feed, FeedEntry, FeedEntryMedia } from "$lib/types/zod"
   import { page } from "$app/stores"
+  import { env } from "$env/dynamic/public"
 
   const ui = useInterface()
 
@@ -23,7 +24,7 @@
       feedMedia: FeedEntryMedia[]
       feed: Feed
     }
-    handleGenerateSpeech: (text: string) => void
+    handleGenerateSpeech: (text: string) => Promise<void>
     handleSummarizeText: (text: string) => void
   } = $props()
 
@@ -31,6 +32,14 @@
   let card = $state<HTMLElement>()
   let cardOpen = $state(false)
   let feedBodyElement = $state<HTMLElement>()!
+
+  const imageUrl = $derived.by(() => {
+    if (feedEntry.feedMedia?.[0]?.href) {
+      return `${env.PUBLIC_IMG_URL}/s_160x96/${feedEntry.feedMedia?.[0]?.href}`
+    } else {
+      return `${env.PUBLIC_IMG_URL}/https://picsum.photos/seed/${encodeURIComponent(feedEntry.id)}/240/153.webp`
+    }
+  })
 
   const handleMarkAsUnread = async (target: boolean | null = null) => {
     feedEntry = {
@@ -43,25 +52,25 @@
     })
   }
 
-  const handleToggleCardOpen = () => {
+  const handleToggleCardOpen = async () => {
     cardOpen = !cardOpen
 
     if (feedEntry.unread === true) {
-      handleMarkAsUnread(false)
+      await handleMarkAsUnread(false)
     }
   }
 
-  const handleKeyDown = (e: KeyboardEvent) => {
+  const handleKeyDown = async (e: KeyboardEvent) => {
     if (e.repeat || e.target instanceof HTMLInputElement) {
       return
     }
     if (e.key === "\\" && e.target === card) {
       e.preventDefault()
-      handleToggleCardOpen()
+      await handleToggleCardOpen()
     }
     if (e.key === "u" && e.target === card) {
       e.preventDefault()
-      handleMarkAsUnread()
+      await handleMarkAsUnread()
     }
   }
 
@@ -70,7 +79,7 @@
     // Hack to quickly get text content from HTML String
     const tmp = document.createElement("div")
     tmp.innerHTML = feedEntry.content!
-    handleGenerateSpeech(tmp.textContent!)
+    await handleGenerateSpeech(tmp.textContent!)
   }
 
   const handleStartTextSummarization = () => {
@@ -95,7 +104,7 @@
   watch.pre(
     () => cardOpen,
     () => {
-      document.startViewTransition ? document.startViewTransition(() => mutate()) : mutate()
+      void (document.startViewTransition ? document.startViewTransition(() => mutate()) : mutate())
     },
   )
 
@@ -109,10 +118,6 @@
     }
     return false
   })
-
-  const itemImage =
-    feedEntry.feedMedia?.[0]?.href ??
-    `https://picsum.photos/seed/${encodeURIComponent(feedEntry.id)}/240/153.webp`
 </script>
 
 <svelte:window onkeydown={handleKeyDown} />
@@ -137,13 +142,13 @@
     )}
   ></div>
   <img
-    src={itemImage}
+    src={imageUrl}
     alt="Feed Item Hero"
-    class="hidden object-cover object-center w-48 h-24 rounded-md border md:block border-neutral-100 dark:border-neutral-800"
+    class="hidden h-24 w-48 rounded-md border border-neutral-100 object-cover object-center dark:border-neutral-800 md:block"
   />
-  <div class="flex flex-col justify-between pr-6 w-full md:pr-0">
+  <div class="flex w-full flex-col justify-between pr-6 md:pr-0">
     <span
-      class="pr-4 w-auto text-xl font-semibold md:pr-0 line-clamp-2 min-h-[28px] md:line-clamp-1"
+      class="line-clamp-2 min-h-[28px] w-auto pr-4 text-xl font-semibold md:line-clamp-1 md:pr-0"
       title={feedEntry.title}
     >
       {feedEntry.title}
@@ -165,12 +170,12 @@
         FORBID_TAGS: ["style"],
       })}
     </div>
-    <div class="flex gap-2 justify-start items-center mt-2 text-sm text-muted">
+    <div class="text-muted mt-2 flex items-center justify-start gap-2 text-sm">
       {#if feedEntry.link}
         <img
           src={`https://favicon.yandex.net/favicon/${new URL(feedEntry.link).hostname}`}
           alt="URL Favicon"
-          class="rounded-full size-4"
+          class="size-4 rounded-full"
         />
         <a
           target="_blank"
@@ -182,7 +187,7 @@
         </a>
       {/if}
     </div>
-    <span class="flex flex-wrap gap-2 mt-3">
+    <span class="mt-3 flex flex-wrap gap-2">
       <Badge variant="secondary">
         {format(feedEntry.createdAt, { date: "medium", time: "short" })}
       </Badge>

@@ -16,25 +16,25 @@
       method: "PUT",
       body: { feedEntry },
     })
-    invalidateAll()
+    await invalidateAll()
   }
 </script>
 
 <div
   id="dashboard-feed-row"
-  class="flex relative flex-col gap-2 p-4 rounded-md snap-start group max-w-72 bg-neutral-200 dark:bg-neutral-800"
+  class="max-w-72 group relative flex snap-start flex-col gap-2 rounded-md bg-neutral-200 p-4 dark:bg-neutral-800"
 >
   <Tooltip.Root>
     <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
       <Button
-        class="absolute top-4 right-4 p-2 rounded-full opacity-0 transition group-hover:opacity-100 focus:ring-2 focus:ring-offset-0 focus:opacity-100 focus:outline-none bg-neutral-50 border-neutral-100 dark:bg-neutral-950 dark:border-neutral-800 focus:dark:ring-neutral-700 duration-300 ease-in-out dark:bg-neutral-900/50 backdrop-blur-[6px] shadow-[0_4px_20px_rgba(0,_0,_0,_0.1)] border dark:border-gray-600/10 border-gray-300/40"
+        class="absolute right-4 top-4 rounded-full border border-gray-300/40 border-neutral-100 bg-neutral-50 p-2 opacity-0 shadow-[0_4px_20px_rgba(0,_0,_0,_0.1)] backdrop-blur-[6px] transition duration-300 ease-in-out focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-0 group-hover:opacity-100 dark:border-gray-600/10 dark:border-neutral-800 dark:bg-neutral-900/50 dark:bg-neutral-950 focus:dark:ring-neutral-700"
         builders={[tooltipBuilder]}
         variant="ghost"
         size="icon"
         on:click={handleMarkAsRead}
       >
         <svg
-          class="size-5 text-neutral-900 dark:text-neutral-100 group-hover:animate-[var(--animation-shake-z)]"
+          class="size-5 text-neutral-900 group-hover:animate-[var(--animation-shake-z)] dark:text-neutral-100"
           data-slot="icon"
           fill="none"
           stroke-width="1.5"
@@ -59,14 +59,14 @@
     src={item.feedMedia?.[0]?.href ??
       `https://picsum.photos/seed/${encodeURIComponent(item.id)}/240/153.webp`}
     alt={item.title}
-    class="object-cover object-center mb-1 rounded-sm aspect-video"
+    class="mb-1 aspect-video rounded-sm object-cover object-center"
   />
-  <div class="flex overflow-hidden flex-col gap-1 w-64">
+  <div class="flex w-64 flex-col gap-1 overflow-hidden">
     <div class="flex justify-between">
       <img
         src={`https://favicon.yandex.net/favicon/${new URL(item.link).hostname}`}
         alt="URL Favicon"
-        class="rounded-full size-5"
+        class="size-5 rounded-full"
       />
       <span class="dark:text-neutral-400">
         {format(item.published!, { date: "medium", time: "short" })}
@@ -75,7 +75,7 @@
     <a
       href={item.link}
       target="_blank"
-      class="transition focus:underline focus:outline-none line-clamp-2 focus:outline-offset-2"
+      class="line-clamp-2 transition focus:underline focus:outline-none focus:outline-offset-2"
       title={item.title}
     >
       {item.title}

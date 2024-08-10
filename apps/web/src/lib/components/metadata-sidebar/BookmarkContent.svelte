@@ -44,11 +44,11 @@
     resetForm: false,
     dataType: "json",
     validators: zodClient(metadataSchema),
-    onUpdated: ({ form }) => {
+    onUpdated: async ({ form }) => {
       if (form.valid) {
         toast.success("Bookmark Updated")
         ui.toggleMetadataSidebarEditMode()
-        invalidateAll()
+        await invalidateAll()
       }
     },
     onError: ({ result }) => {
@@ -66,10 +66,10 @@
   method="POST"
   action="/bookmarks?/saveMetadata"
   use:enhance
-  class="flex gap-4 justify-start items-center h-full"
+  class="flex h-full items-center justify-start gap-4"
 >
-  <div class="flex overflow-y-scroll flex-col gap-4 p-6 pr-4 w-full h-full">
-    <div class="flex justify-between items-center">
+  <div class="flex h-full w-full flex-col gap-4 overflow-y-scroll p-6 pr-4">
+    <div class="flex items-center justify-between">
       <h2>Metadata</h2>
       <Tooltip.Root>
         <Tooltip.Trigger asChild let:builder={tooltipBuilder}>
@@ -81,7 +81,7 @@
             onclick={() => ui.toggleMetadataSidebarEditMode()}
           >
             <svg
-              class="pointer-events-none size-5"
+              class="size-5 pointer-events-none"
               data-slot="icon"
               fill="none"
               stroke-width="1.5"
@@ -104,13 +104,13 @@
       </Tooltip.Root>
     </div>
     {#if !ui.metadataSidebarData.bookmark}
-      <div class="inline mt-2 leading-relaxed">
+      <div class="mt-2 inline leading-relaxed">
         <div class="font-bold">No bookmark selected.</div>
         <span class="leading-loose">
           Please select a bookmark to view in detail and edit by clicking the
           <span
             title="Edit"
-            class="inline-block p-1 mx-1 align-text-bottom rounded-sm size-6 bg-neutral-200 dark:bg-neutral-800"
+            class="size-6 mx-1 inline-block rounded-sm bg-neutral-200 p-1 align-text-bottom dark:bg-neutral-800"
           >
             <svg
               class="size-4 text-neutral-900 dark:text-neutral-200"
@@ -133,7 +133,7 @@
         </span>
       </div>
     {:else}
-      <div class="flex flex-col gap-2 items-start">
+      <div class="flex flex-col items-start gap-2">
         <Label for="title">Title</Label>
         <input
           type="text"
@@ -167,7 +167,7 @@
           />
           {#if ui.metadataSidebarData.bookmark.metadata?.logo}
             <img
-              class="absolute top-3 left-3 size-4"
+              class="size-4 absolute left-3 top-3"
               src={ui.metadataSidebarData.bookmark.metadata?.logo}
               alt="URL Favicon"
             />
@@ -175,7 +175,7 @@
         </div>
         {#if $errors.url}<span class="text-xs text-red-400">{$errors.title}</span>{/if}
       </div>
-      <div class="flex flex-col gap-2 grow-wrap">
+      <div class="grow-wrap flex flex-col gap-2">
         <Label for="description">Description</Label>
         <textarea
           rows="4"
@@ -208,7 +208,7 @@
             {ui.metadataSidebarData.categories?.find((c) => c.id === $form.category)?.name ??
               "Select category"}
             <svg
-              class="ml-2 w-4 h-4 opacity-50 shrink-0"
+              class="ml-2 h-4 w-4 shrink-0 opacity-50"
               data-slot="icon"
               fill="none"
               stroke-width="1.5"
@@ -224,7 +224,7 @@
               ></path>
             </svg>
           </Popover.Trigger>
-          <Popover.Content class="p-0 w-[230px]">
+          <Popover.Content class="w-[230px] p-0">
             <Command.Root>
               <Command.Input autofocus placeholder="Search categories..." class="h-9" />
               <Command.Empty>No categories.</Command.Empty>
@@ -233,7 +233,7 @@
                   {#each ui.metadataSidebarData.categories as category}
                     <Command.Item
                       value={category.name}
-                      class="justify-start gap-2 w-full cursor-pointer"
+                      class="w-full cursor-pointer justify-start gap-2"
                       onSelect={() => {
                         // Toggle selected on/off
                         $form.category = $form.category === category.id ? undefined : category.id
@@ -277,21 +277,21 @@
         <div
           class={cn("w-full rounded-full border-b-2 border-zinc-100 px-8 dark:border-zinc-800")}
         ></div>
-        <div class="flex flex-col gap-2 items-start mb-2">
+        <div class="mb-2 flex flex-col items-start gap-2">
           <h2>Cover Photo</h2>
           <img
             src={ui.metadataSidebarData.bookmark.image}
             alt="Bookmark Screenshot"
-            class="object-cover w-full max-w-sm rounded-md border-2 border-neutral-100 dark:border-neutral-800"
+            class="w-full max-w-sm rounded-md border-2 border-neutral-100 object-cover dark:border-neutral-800"
           />
         </div>
       {/if}
       <div
         class={cn("w-full rounded-full border-b-2 border-zinc-100 px-8 dark:border-zinc-800")}
       ></div>
-      <div class="flex flex-col flex-grow gap-2 items-start mb-2">
+      <div class="mb-2 flex flex-grow flex-col items-start gap-2">
         <h2>Metadata</h2>
-        <div class="flex justify-between w-full text-sm">
+        <div class="flex w-full justify-between text-sm">
           <span class="font-bold">Language</span>
           <span>
             {ui.metadataSidebarData.bookmark.metadata?.lang
@@ -299,13 +299,13 @@
               : "Unknown"}
           </span>
         </div>
-        <div class="flex justify-between w-full text-sm">
+        <div class="flex w-full justify-between text-sm">
           <span class="font-bold">Publisher</span>
           <span>
             {ui.metadataSidebarData.bookmark.metadata?.publisher}
           </span>
         </div>
-        <div class="flex justify-between w-full text-sm">
+        <div class="flex w-full justify-between text-sm">
           <span class="font-bold">Added</span>
           {#if ui.metadataSidebarData.bookmark.createdAt}
             <span>
@@ -319,7 +319,7 @@
           <Button
             type="submit"
             disabled={$submitting || $delayed}
-            class="w-full transition-shadow duration-200 focus:ring-2 focus:ring-offset-2 focus:outline-none ring-offset-background focus:ring-foreground focus:ring-offset-background"
+            class="ring-offset-background focus:ring-foreground focus:ring-offset-background w-full transition-shadow duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2"
           >
             {#if $submitting || $delayed}
               <LoadingIndicator class="mr-2" />

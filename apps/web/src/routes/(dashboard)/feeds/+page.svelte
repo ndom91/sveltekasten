@@ -47,7 +47,7 @@
   // Page visibility auto refresh
   $effect(() => {
     if (prevVisibility === "hidden" && $visibility === "visible") {
-      invalidateAll()
+      void invalidateAll()
       pageNumber = 1
     }
     prevVisibility = $visibility
@@ -199,7 +199,7 @@
 
 <Navbar showSearch={true} showQuickAdd={false} showSidebar={false} />
 <main
-  class="align-start outline-none overflow-y-scroll flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2"
+  class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2 overflow-y-scroll outline-none"
   bind:this={rootElement}
 >
   <FilterBar />
@@ -220,7 +220,7 @@
         <img src={Blob} alt="Empty State Blob" class="m-16 w-full max-w-md grayscale dark:invert" />
       {/snippet}
     </EmptyState>
-    <p class="mx-auto w-1/2 text-center text-muted-foreground">
+    <p class="text-muted-foreground mx-auto w-1/2 text-center">
       Get started by adding a feed in the
       <a class="underline underline-offset-2" href="/settings"> settings </a>
     </p>

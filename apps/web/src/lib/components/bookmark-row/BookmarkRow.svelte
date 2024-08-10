@@ -11,6 +11,7 @@
   import type { Category } from "$lib/types/zod"
   import { invalidateAll } from "$app/navigation"
   import { page } from "$app/stores"
+  import { env } from "$env/dynamic/public"
 
   type CategoryVisible = Category & { visible: boolean }
 
@@ -37,11 +38,19 @@
       method: "PUT",
       body: { id: bookmark.id, update: { archived: true } },
     })
-    invalidateAll()
+    await invalidateAll()
   }
 
   const categories = $state($page.data.categories)
   let isBookmarkCategoryHidden = $state(false)
+
+  const imageUrl = $derived.by(() => {
+    if (bookmark.image) {
+      return `${env.PUBLIC_IMG_URL}/s_260x144/${bookmark.image}`
+    } else {
+      return `${env.PUBLIC_IMG_URL}/https://source.unsplash.com/random/240x144?sig=${bookmark.url}`
+    }
+  })
 
   $effect(() => {
     isBookmarkCategoryHidden = !!categories
@@ -54,7 +63,7 @@
   tabindex={0}
   data-id={bookmark.id}
   role="row"
-  class="max-w-full relative gap-4 mx-2 p-4 md:mx-4 rounded-lg rounded-l-none border-l-4 border-transparent transition-all duration-500 outline-none flex dark:focus:bg-neutral-800/40 focus:border-zinc-500 focus:bg-neutral-100 bookmark-row ease-[var(--ease-spring-3)]"
+  class="bookmark-row relative mx-2 flex max-w-full gap-4 rounded-lg rounded-l-none border-l-4 border-transparent p-4 outline-none transition-all duration-500 ease-[var(--ease-spring-3)] focus:border-zinc-500 focus:bg-neutral-100 dark:focus:bg-neutral-800/40 md:mx-4"
   class:hidden={isBookmarkCategoryHidden}
   onpointerleave={() => (isOptionsOpen = false)}
   onpointerenter={() => (isOptionsOpen = true)}
@@ -62,27 +71,27 @@
   <DeleteDialog bind:dialogElement={deleteElement} bookmarkId={bookmark.id} />
   <Image
     thumbhash={bookmark.imageBlur ?? ""}
-    src={bookmark.image ?? `https://source.unsplash.com/random/240x144?sig=${bookmark.url}`}
+    src={imageUrl}
     alt={`${new URL(bookmark.url).hostname} Screenshot`}
     class={ui.userSettings?.compact ? "hidden" : ""}
   />
-  <div class="w-full flex flex-col gap-2 relative truncate">
-    <span class="text-xl font-semibold pr-10 md:pr-0 truncate" title={bookmark.title}>
+  <div class="relative flex w-full flex-col gap-2 truncate">
+    <span class="truncate pr-10 text-xl font-semibold md:pr-0" title={bookmark.title}>
       {bookmark.title}
     </span>
     <p class="line-clamp-2 pr-10 md:pr-0">{bookmark.desc}</p>
-    <div class="flex gap-2 justify-start items-center text-sm text-muted">
+    <div class="text-muted flex items-center justify-start gap-2 text-sm">
       {#if (bookmark.metadata as Record<string, string>)?.logo}
         <img
           src={(bookmark.metadata as Record<string, string>)?.logo}
           alt="URL Favicon"
-          class="rounded-full size-4"
+          class="size-4 rounded-full"
         />
       {/if}
       <a
         target="_blank"
         href={bookmark.url}
-        class="line-clamp-1 text-clip text-neutral-500 pr-8 md:pr-0"
+        class="line-clamp-1 text-clip pr-8 text-neutral-500 md:pr-0"
       >
         {bookmark.url}
       </a>
@@ -132,7 +141,7 @@
 <style>
   .bookmark-row {
     @starting-style {
-      @apply opacity-0 -translate-y-2;
+      @apply -translate-y-2 opacity-0;
     }
   }
 </style>

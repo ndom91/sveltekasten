@@ -1,7 +1,6 @@
 import { toast } from "svelte-sonner"
 import summaryWorkerUrl from "$lib/transformers/summary-worker?url"
 import { useInterface } from "$state/ui.svelte"
-import { dev } from "$app/environment"
 
 const ui = useInterface()
 
@@ -19,12 +18,9 @@ export const registerSummarizationWorker = () => {
       switch (e.data.status) {
         case "complete":
           ui.summarizationLoading = false
-
           // TODO: UI to display summary
           toast.success(e.data.output, { duration: 10000 })
           console.log("Summary:", e.data.output)
-
-          dev && console.timeEnd("summary.generate")
           break
       }
     }
@@ -39,7 +35,6 @@ export const handleSummarizeText = (text: string) => {
   if (!summaryWorker || !ui.aiFeaturesPreferences.summarization.enabled) {
     return
   }
-  dev && console.time("summary.generate")
   ui.summarizationLoading = true
   summaryWorker.postMessage({
     text,

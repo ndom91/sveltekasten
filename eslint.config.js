@@ -8,12 +8,7 @@ import svelteParser from "svelte-eslint-parser"
 
 export default ts.config(
   js.configs.recommended,
-  // ...ts.configs.recommended,
   ...ts.configs.recommendedTypeChecked,
-  // ...ts.configs.recommendedTypeChecked.map((config) => ({
-  //   ...config,
-  //   files: ['**/*.ts'],
-  // })),
   ...svelte.configs["flat/recommended"],
   prettier,
   ...svelte.configs["flat/prettier"],
@@ -34,7 +29,7 @@ export default ts.config(
     languageOptions: {
       parser: svelteParser,
       parserOptions: {
-        project: ["./apps/web/tsconfig.json"],
+        project: ["./apps/web/tsconfig.json", "./apps/web/.svelte-kit/tsconfig.json"],
         extraFileExtensions: [".svelte"],
         parser: ts.parser,
       },
@@ -45,7 +40,7 @@ export default ts.config(
     languageOptions: {
       parser: svelteParser,
       parserOptions: {
-        project: ["./apps/web/tsconfig.json"],
+        project: ["./apps/*/tsconfig.json", "./apps/web/.svelte-kit/tsconfig.json"],
         extraFileExtensions: [".svelte"],
         parser: ts.parser,
       },
@@ -119,8 +114,8 @@ export default ts.config(
       "apps/web/src/service-worker.ts",
     ],
   },
-  {
-    files: ['**/*.js', '**/*.config.js', '**/*.config.ts'],
-    ...ts.configs.disableTypeChecked,
-  },
+  // {
+  //   files: ['**/*.js', '**/*.config.js', '**/*.config.ts'],
+  //   ...ts.configs.disableTypeChecked,
+  // },
 )

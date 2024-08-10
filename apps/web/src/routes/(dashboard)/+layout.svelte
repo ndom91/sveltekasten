@@ -51,10 +51,10 @@
 
     if (navigator.serviceWorker.controller) {
       navigator.serviceWorker.startMessages()
-      navigator.serviceWorker.onmessage = (event) => {
+      navigator.serviceWorker.onmessage = async (event) => {
         if (event.data.type === postMessageTypes.SHARE_SUCCESS) {
           toast.success(event.data.payload.message)
-          invalidateAll()
+          await invalidateAll()
         }
       }
     }
@@ -64,7 +64,7 @@
 <div class="flex h-screen max-w-full">
   <CommandBar />
   <Sidebar />
-  <div class="flex flex-col min-w-0 w-full">
+  <div class="flex w-full min-w-0 flex-col">
     {@render children()}
   </div>
   {#if metadataEnabled()}
