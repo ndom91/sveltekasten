@@ -1,8 +1,8 @@
 <script lang="ts">
   import { Toaster } from "svelte-sonner"
-  import MediaQuery from "$lib/components/MediaQuery.svelte"
   import Shortcuts from "./GlobalShortcuts.svelte"
   import Scripts from "./Scripts.svelte"
+  import MediaQuery from "$lib/components/MediaQuery.svelte"
   import type { Snippet } from "svelte"
   import "$lib/styles/global.css"
 
@@ -26,7 +26,7 @@
         position="top-left"
         toastOptions={{
           class:
-            "bg-white/20 backdrop-blur-md dark:bg-neutral-700/20 dark:text-white dark:border-gray-400/10 border border-gray-200/70",
+            "dark:bg-neutral-700/20 bg-white/20 dark:text-white dark:border-gray-400/10 border backdrop-blur-md border-gray-200/70",
         }}
       />
     {:else}
@@ -34,7 +34,7 @@
         class="toaster group"
         toastOptions={{
           class:
-            "bg-white/20 backdrop-blur-md dark:bg-neutral-700/20 dark:text-white dark:border-gray-400/10 border border-gray-200/70",
+            "bg-white/20 dark:bg-neutral-700/20 dark:text-white dark:border-gray-400/10 border backdrop-blur-md border-gray-200/70",
         }}
       />
     {/if}

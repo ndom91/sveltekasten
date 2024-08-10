@@ -6,17 +6,53 @@ import globals from "globals"
 import pluginImportX from "eslint-plugin-import-x"
 import svelteParser from "svelte-eslint-parser"
 
+console.log('ts-eslint', ts.configs.recommendedTypeChecked)
+
 export default ts.config(
   js.configs.recommended,
-  ...ts.configs.recommended,
-  ...svelte.configs["flat/recommended"],
+  // ...ts.configs.recommended,
+  ...ts.configs.recommendedTypeChecked.map((config) => ({
+    ...config,
+    files: ['**/*.ts'], // We use TS config only for TS files
+  })),
   {
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
+  ...svelte.configs["flat/recommended"],
+  prettier,
+  ...svelte.configs["flat/prettier"],
+  {
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+    },
+  },
+  {
+    files: ["apps/web/**/*.svelte"],
     languageOptions: {
       parser: svelteParser,
       parserOptions: {
-        parser: ts.parser,
-        project: ["./tsconfig.json"],
+        project: ["./apps/web/tsconfig.json"],
         extraFileExtensions: [".svelte"],
+        parser: ts.parser,
+      },
+    },
+  },
+  {
+    // files: ['**/*.ts'],
+    languageOptions: {
+      parser: svelteParser,
+      parserOptions: {
+        project: ["./apps/web/tsconfig.json"],
+        extraFileExtensions: [".svelte"],
+        parser: ts.parser,
       },
     },
     settings: {
@@ -24,7 +60,7 @@ export default ts.config(
       "import-x/parsers": {
         "@typescript-eslint/parser": [".ts"],
         typescript: {
-          project: ["./tsconfig.json", "./.svelte-kit/tsconfig.json"],
+          project: "apps/*/tsconfig.json",
         },
       },
       "import-x/resolver": {
@@ -32,7 +68,7 @@ export default ts.config(
           extensions: [".js", ".jsx", ".ts", ".tsx", ".svelte"],
         },
         typescript: {
-          project: ["./tsconfig.json", "./.svelte-kit/tsconfig.json"],
+          project: "apps/*/tsconfig.json",
         },
       },
     },
@@ -47,21 +83,19 @@ export default ts.config(
       "@typescript-eslint/no-unsafe-member-access": ["off", "never"],
       "@typescript-eslint/no-use-before-define": ["off", "warn"],
       "@typescript-eslint/no-explicit-any": ["off", "warn"],
-      "import-x/no-cycle": "error",
+      "import-x/no-cycle": 0,
       "import-x/order": [
         "error",
         {
           alphabetize: {
             order: "asc",
-            orderImportKind: "asc",
-            caseInsensitive: false,
           },
           groups: [
+            "external",
             "index",
             "sibling",
             "parent",
             "internal",
-            "external",
             "builtin",
             "object",
             "type",
@@ -77,34 +111,21 @@ export default ts.config(
       "import-x/no-relative-packages": "error", // Don't allow packages to have relative imports between each other
     },
   },
-  prettier,
-  ...svelte.configs["flat/prettier"],
-  {
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-      },
-    },
-  },
-  {
-    files: ["**/*.svelte"],
-    languageOptions: {
-      parser: svelteParser,
-      parserOptions: {
-        extraFileExtensions: [".svelte"],
-        parser: ts.parser,
-      },
-    },
-  },
   {
     ignores: [
-      "build/",
-      ".svelte-kit/",
-      "dist/",
-      "dev-dist/",
+      "**/build/",
+      "**/.svelte-kit/",
+      "**/dist/",
+      "**/dev-dist/",
+      "**/distServer/",
+      "**/node_modules",
+      "**/playwright.config.ts",
       "eslint.config.js",
-      "src/service-worker.ts",
+      "apps/web/src/service-worker.ts",
     ],
+  },
+  {
+    files: ['**/*.js', '**/*.config.js', '**/*.config.ts'],
+    ...ts.configs.disableTypeChecked,
   },
 )
