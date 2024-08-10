@@ -16,15 +16,16 @@
 </script>
 
 {#if showArrow}
-  <div class="hidden absolute top-28 right-28 lg:block text-neutral-700 dark:text-neutral-100">
+  <div class="absolute right-28 top-28 hidden text-neutral-700 dark:text-neutral-100 lg:block">
+    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
     {@html Arrow}
   </div>
 {/if}
-<div class={cn(className, "flex flex-col items-center mx-auto w-full md:w-1/2")}>
+<div class={cn(className, "mx-auto flex w-full flex-col items-center md:w-1/2")}>
   {#if illustration}
     {@render illustration()}
   {:else}
     <img src={EmptyIllustration} alt="Empty" class="w-full max-w-xl grayscale dark:invert" />
   {/if}
-  <p class="px-8 mb-4 text-3xl font-light text-center">Looks like there's nothing here!</p>
+  <p class="mb-4 px-8 text-center text-3xl font-light">Looks like there's nothing here!</p>
 </div>
