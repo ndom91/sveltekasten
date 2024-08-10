@@ -32,6 +32,7 @@
     "hono-rate-limiter": "^0.4.0",
     "ipx": "^3.0.1",
     "jose": "^5.6.3",
+    "lru-cache": "^11.0.0",
     "playwright-chromium": "^1.44.0",
     "rss-parser": "^3.13.0",
     "sharp": "^0.33.4",
