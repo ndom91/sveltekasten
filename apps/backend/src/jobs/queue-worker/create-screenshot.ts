@@ -1,5 +1,5 @@
 import { chromium } from "playwright-chromium"
-import { getThumbhash } from "../../lib/image.js"
+import { getThumbhash } from "../../lib/blurhash.js"
 import debugFactory from "../../lib/log.js"
 import { db } from "../../plugins/prisma.js"
 import { uploadImage } from "../../plugins/storage.js"
