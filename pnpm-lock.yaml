@@ -88,7 +88,7 @@ importers:
         version: 8.1.1
       debug:
         specifier: ^4.3.6
-        version: 4.3.6
+        version: 4.3.6(supports-color@8.1.1)
       fastq:
         specifier: ^1.17.1
         version: 1.17.1
@@ -201,9 +201,6 @@ importers:
       metascraper-lang:
         specifier: ^5.45.22
         version: 5.45.22
-      metascraper-publisher:
-        specifier: ^5.45.22
-        version: 5.45.22
       metascraper-readability:
         specifier: ^5.45.22
         version: 5.45.22
@@ -211,6 +208,9 @@ importers:
         specifier: ^5.45.22
         version: 5.45.22
       metascraper-url:
+        specifier: ^5.45.22
+        version: 5.45.22
+      metascraper-x:
         specifier: ^5.45.22
         version: 5.45.22
       mode-watcher:
@@ -3430,10 +3430,6 @@ packages:
     resolution: {integrity: sha512-goRvKkbRMG7bLeSDPc9rGvTPzTL5vsg8V8qo8AbIUEsJ97ptB1C2RgMn8pNQGozjGSheoBjFYsCepbCj/4twww==}
     engines: {node: '>= 16'}
 
-  metascraper-publisher@5.45.22:
-    resolution: {integrity: sha512-R/Z0lUPZMDhL/pJ6LTtFR95rBtI9rvF7UtiCpbRbQbVv5ylqvv5wwOiyNYGWRmO7bfzCzlt248bmdpk6CxlASw==}
-    engines: {node: '>= 16'}
-
   metascraper-readability@5.45.22:
     resolution: {integrity: sha512-IKbavP624JWRsGnJhXQT1yuMj9urK9GTX+RI3SNYvvfo1YYKIj+98hZRODBSD6//PjCOnMNOVR6S2g1DPLAOkg==}
     engines: {node: '>= 16'}
@@ -3444,6 +3440,10 @@ packages:
 
   metascraper-url@5.45.22:
     resolution: {integrity: sha512-nM2zqO19ax0COBxJkGeCOZAAq4Zp2YfrK9/lRGPbmA2pchwjyvV50wSk4T89WhiSqv3/IXFgX2uvDwwHAmrIJg==}
+    engines: {node: '>= 16'}
+
+  metascraper-x@5.45.22:
+    resolution: {integrity: sha512-BJG+KQwOAR2QoYDlOVe6BdX298Vctg2dTSka9cmW8eaPFSoFeeoPJBhb1hPeVGXlbbzS+b83wF0A4T4gpwSwEw==}
     engines: {node: '>= 16'}
 
   metascraper@5.45.22:
@@ -7388,10 +7388,6 @@ snapshots:
     dependencies:
       ms: 2.1.2
 
-  debug@4.3.6:
-    dependencies:
-      ms: 2.1.2
-
   debug@4.3.6(supports-color@8.1.1):
     dependencies:
       ms: 2.1.2
@@ -8730,15 +8726,6 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  metascraper-publisher@5.45.22:
-    dependencies:
-      '@metascraper/helpers': 5.45.22
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - supports-color
-      - utf-8-validate
-
   metascraper-readability@5.45.22:
     dependencies:
       '@metascraper/helpers': 5.45.22
@@ -8760,6 +8747,15 @@ snapshots:
       - utf-8-validate
 
   metascraper-url@5.45.22:
+    dependencies:
+      '@metascraper/helpers': 5.45.22
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - supports-color
+      - utf-8-validate
+
+  metascraper-x@5.45.22:
     dependencies:
       '@metascraper/helpers': 5.45.22
     transitivePeerDependencies:

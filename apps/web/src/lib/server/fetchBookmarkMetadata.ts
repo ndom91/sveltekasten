@@ -5,18 +5,18 @@ import metascraperDescription from "metascraper-description"
 import metascraperFeed from "metascraper-feed"
 import metascraperImage from "metascraper-image"
 import metascraperLang from "metascraper-lang"
-import metascraperPublisher from "metascraper-publisher"
 import metascraperReadability from "metascraper-readability"
 import metascraperTitle from "metascraper-title"
 import metascraperUrl from "metascraper-url"
+import metascraperX from "metascraper-x"
 import { getThumbhash } from "$lib/server/thumbhash"
 
 const metascraperClient = metascraper([
+  metascraperX(),
   metascraperDescription(),
   metascraperTitle(),
   metascraperImage(),
   metascraperLang(),
-  metascraperPublisher(),
   metascraperAuthor(),
   metascraperFeed(),
   metascraperReadability(),
@@ -29,6 +29,7 @@ export const fetchBookmarkMetadata = async (url: string) => {
   const targetPageResponse = await fetch(url)
   const bookmarkPageText = await targetPageResponse.text()
   const metadata = await metascraperClient({ html: bookmarkPageText, url })
+  console.log("metadata2", metadata)
   if (!metadata.image) {
     return {
       imageUrl: undefined,
