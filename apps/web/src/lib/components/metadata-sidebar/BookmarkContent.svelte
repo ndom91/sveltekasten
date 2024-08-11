@@ -17,6 +17,7 @@
   import { dev } from "$app/environment"
   import { invalidateAll } from "$app/navigation"
   import { page } from "$app/stores"
+  import { PUBLIC_WORKER_URL } from "$env/static/public"
 
   const ui = useInterface()
 
@@ -57,7 +58,7 @@
   const faviconUrl = $derived.by(() => {
     let iconUrl = ""
     try {
-      iconUrl = `https://favicon.im/${new URL($form.url as string).hostname}`
+      iconUrl = `${PUBLIC_WORKER_URL}/img/_/https://favicon.im/${new URL($form.url as string).hostname}`
     } catch {
       iconUrl = "https://raw.githubusercontent.com/hustcc/placeholder.js/master/favicon.ico"
     }

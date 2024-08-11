@@ -22,6 +22,7 @@ export const imageProxyHandler = async (c: Context) => {
   const targetUrl = c.req.raw.url.replace(/\/img/, "")
 
   const cachedResponse = cache.get(targetUrl) as Blob | undefined
+
   if (cachedResponse) {
     return new Response(cachedResponse, {
       status: 200,
@@ -37,7 +38,10 @@ export const imageProxyHandler = async (c: Context) => {
 
   const clonedResponse = response.clone()
   const data = await clonedResponse.blob()
-  cache.set(targetUrl, data)
+
+  if (response.ok) {
+    cache.set(targetUrl, data)
+  }
 
   return new Response(response.body, {
     status: response.status,

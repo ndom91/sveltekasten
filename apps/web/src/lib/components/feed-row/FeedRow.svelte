@@ -175,7 +175,7 @@
     <div class="text-muted mt-2 flex items-center justify-start gap-2 text-sm">
       {#if feedEntry.link}
         <img
-          src={`https://favicon.im/${new URL(feedEntry.link).hostname}`}
+          src={`${PUBLIC_WORKER_URL}/img/_/https://favicon.im/${new URL(feedEntry.link).hostname}`}
           alt="URL Favicon"
           class="size-4 rounded-full"
         />
