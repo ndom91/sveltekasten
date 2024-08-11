@@ -8,9 +8,9 @@
   import { Button } from "$lib/components/ui/button"
   import { Label } from "$lib/components/ui/label"
   import * as Select from "$lib/components/ui/select"
+  import { useInterface } from "$lib/state/ui.svelte"
   import { cn } from "$lib/utils/style"
   import { formSchema } from "$schemas/quick-add"
-  import { useInterface } from "$state/ui.svelte"
   import { dev } from "$app/environment"
   import { page } from "$app/stores"
 
@@ -43,8 +43,8 @@
   use:enhance
   class="flex flex-col gap-2"
 >
-  <div class="flex flex-col gap-2 align-start">
-    <Label class="flex justify-between items-end" for="title"
+  <div class="align-start flex flex-col gap-2">
+    <Label class="flex items-end justify-between" for="title"
       >Title<small class="text-neutral-400 dark:text-neutral-600">required</small></Label
     >
     <input
@@ -61,8 +61,8 @@
     {#if $errors.title}<span class="text-xs text-red-400">{$errors.title}</span>{/if}
   </div>
 
-  <div class="flex flex-col gap-2 align-start">
-    <Label class="flex justify-between items-end" for="url">
+  <div class="align-start flex flex-col gap-2">
+    <Label class="flex items-end justify-between" for="url">
       URL
       <small class="text-neutral-400 dark:text-neutral-600">required</small>
     </Label>
@@ -80,7 +80,7 @@
     {#if $errors.url}<span class="text-xs text-red-400">{$errors.url}</span>{/if}
   </div>
 
-  <div class="flex flex-col gap-2 align-start">
+  <div class="align-start flex flex-col gap-2">
     <Label for="category">Category</Label>
     <Select.Root
       name="categoryId"
@@ -91,7 +91,7 @@
       }))}
     >
       <Select.Trigger
-        class="w-full transition-shadow duration-200 focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:bg-transparent disabled:opacity-50 truncate border-input enabled:bg-neutral-100 placeholder:text-foreground/50 dark:enabled:bg-neutral-950 focus:ring-foreground focus:ring-offset-background"
+        class="border-input placeholder:text-foreground/50 focus:ring-foreground focus:ring-offset-background w-full truncate transition-shadow duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 enabled:bg-neutral-100 disabled:bg-transparent disabled:opacity-50 dark:enabled:bg-neutral-950"
       >
         <Select.Value placeholder="Choose a category" />
       </Select.Trigger>
@@ -105,13 +105,13 @@
     {#if $errors.category}<span class="text-xs text-red-400">{$errors.category}</span>{/if}
   </div>
 
-  <div class="flex flex-col gap-2 align-start">
+  <div class="align-start flex flex-col gap-2">
     <Label for="tags">Tags</Label>
     <!-- @ts-ignore -->
     <TagInput {form} tags={$page.data.tags} field="tags" />
   </div>
 
-  <div class="flex flex-col gap-2 align-start">
+  <div class="align-start flex flex-col gap-2">
     <Label for="description">Description</Label>
     <input
       type="text"
@@ -131,7 +131,7 @@
   <Button
     type="submit"
     disabled={$submitting || $delayed}
-    class="transition-shadow duration-200 focus:ring-2 focus:ring-offset-2 focus:outline-none ring-offset-background focus:ring-foreground focus:ring-offset-background"
+    class="ring-offset-background focus:ring-foreground focus:ring-offset-background transition-shadow duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2"
   >
     {#if $submitting || $delayed}
       <LoadingIndicator class="mr-2" />

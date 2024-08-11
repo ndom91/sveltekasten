@@ -17,8 +17,8 @@
   import * as Select from "$lib/components/ui/select"
   import { Separator } from "$lib/components/ui/separator"
   import * as Table from "$lib/components/ui/table"
+  import { TTSLocation, defaultAISettings } from "$lib/state/ui.svelte"
   import { clipboard } from "$lib/utils/clipboard"
-  import { TTSLocation, defaultAISettings } from "$state/ui.svelte"
   import { page } from "$app/stores"
 
   let exportLoading = $state(false)

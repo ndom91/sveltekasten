@@ -1,7 +1,7 @@
 <script lang="ts">
   import { fade } from "svelte/transition"
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
-  import { useInterface } from "$state/ui.svelte"
+  import { useInterface } from "$lib/state/ui.svelte"
   import { page } from "$app/stores"
 
   const ui = useInterface()
@@ -45,7 +45,7 @@
 <svelte:window on:click={handleClickOutside} />
 
 <div
-  class="flex absolute top-0 right-0 flex-col justify-start mt-2 h-full"
+  class="absolute right-0 top-0 mt-2 flex h-full flex-col justify-start"
   bind:this={actionMenuWrapperElement}
 >
   <button class="flex justify-center p-3" onclick={handleToggleCardOpen}>
@@ -124,7 +124,7 @@
     <!-- popover="auto" -->
     <div
       id={`feed-menu-${id}`}
-      class="right-2 z-30 p-3 space-y-3 w-max rounded-md border transition top-[5.5rem] border-neutral-200 bg-neutral-200 dark:border-neutral-800 dark:bg-neutral-900"
+      class="right-2 top-[5.5rem] z-30 w-max space-y-3 rounded-md border border-neutral-200 bg-neutral-200 p-3 transition dark:border-neutral-800 dark:bg-neutral-900"
       in:fade={{ duration: 200 }}
       out:fade={{ duration: 150 }}
       style={`
@@ -135,7 +135,7 @@
       //top: anchor(--a-${id} bottom);
     `}
     >
-      <a href={url} target="_blank" class="grid items-center grid-cols-[28px_1fr]">
+      <a href={url} target="_blank" class="grid grid-cols-[28px_1fr] items-center">
         <svg class="size-[1.15rem]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
           <rect width="256" height="256" fill="none" /><polyline
             points="216 104 215.99 40.01 152 40"
@@ -165,7 +165,7 @@
         >
         <span class="font-light">Open</span>
       </a>
-      <button class="grid items-center grid-cols-[28px_1fr]" onclick={() => handleMarkAsUnread()}>
+      <button class="grid grid-cols-[28px_1fr] items-center" onclick={() => handleMarkAsUnread()}>
         <svg
           class="size-[1.15rem]"
           data-slot="icon"
@@ -186,7 +186,7 @@
       </button>
       {#if enableSummary}
         <button
-          class="grid items-center grid-cols-[28px_1fr]"
+          class="grid grid-cols-[28px_1fr] items-center"
           onclick={handleStartTextSummarization}
         >
           {#if ui.summarizationLoading}
@@ -242,7 +242,7 @@
       {/if}
       {#if enableTTS}
         <button
-          class="grid items-center grid-cols-[28px_1fr]"
+          class="grid grid-cols-[28px_1fr] items-center"
           onclick={handleSetTextToSpeechContent}
         >
           {#if ui.textToSpeechLoading}

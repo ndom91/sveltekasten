@@ -1,6 +1,6 @@
 import { toast } from "svelte-sonner"
+import { useInterface } from "$lib/state/ui.svelte"
 import summaryWorkerUrl from "$lib/transformers/summary-worker?url"
-import { useInterface } from "$state/ui.svelte"
 
 const ui = useInterface()
 

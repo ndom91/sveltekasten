@@ -1,7 +1,7 @@
 <script lang="ts">
   import { toast } from "svelte-sonner"
   import { z } from "zod"
-  import ConfirmAddDialog from "./ConfirmAddDialog.svelte"
+  import ConfirmAddDialog from "$lib/components/ConfirmAddDialog.svelte"
   import { cn } from "$/lib/utils/style"
 
   const parseData = (text: string | undefined): string | void => {
@@ -104,7 +104,7 @@
   <div
     role="region"
     aria-hidden="true"
-    class="grid place-items-center p-12 m-12 w-full h-full rounded-lg border-4 border-black border-opacity-75 border-dashed dark:border-white"
+    class="m-12 grid h-full w-full place-items-center rounded-lg border-4 border-dashed border-black border-opacity-75 p-12 dark:border-white"
     ondragover={(e) => e.preventDefault()}
     ondrop={handleDrop}
   >

@@ -3,7 +3,7 @@
   import { tick } from "svelte"
   import AudioVisualizer from "./AudioVisualizer.svelte"
   import { cn } from "$/lib/utils/style"
-  import { useInterface } from "$state/ui.svelte"
+  import { useInterface } from "$lib/state/ui.svelte"
 
   const { src }: { src: string } = $props()
 
@@ -46,6 +46,7 @@
       .then(() => {
         paused = false
       })
+      .catch((err) => console.error(err))
   }
 </script>
 
@@ -53,8 +54,8 @@
 
 <div
   class={cn(
-    "flex relative  items-stretch bg-neutral-900 rounded-md",
-    windowWidth < 768 ? "fixed bottom-6 z-30 shadow-md -translate-x-1/2 left-1/2" : "",
+    "relative flex  items-stretch rounded-md bg-neutral-900",
+    windowWidth < 768 ? "fixed bottom-6 left-1/2 z-30 -translate-x-1/2 shadow-md" : "",
   )}
 >
   <audio
@@ -145,7 +146,7 @@
       >
       <div class="text-[0.65rem]">20s</div>
     </button>
-    <div class="flex gap-1 h-10">
+    <div class="flex h-10 gap-1">
       <AudioVisualizer {paused} />
     </div>
     <button class="flex flex-col items-center" title="Skip forward 20s" onclick={() => seek(20)}>
@@ -176,7 +177,7 @@
       <div class="text-[0.65rem]">20s</div>
     </button>
     <button
-      class="flex flex-col justify-end items-center"
+      class="flex flex-col items-center justify-end"
       title="Skip forward 20s"
       onclick={togglePlaybackRate}
     >

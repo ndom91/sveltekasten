@@ -2,8 +2,8 @@
   import { AvatarMenu } from "$lib/components/navbar"
   import { Button } from "$lib/components/ui/button"
   import * as Tooltip from "$lib/components/ui/tooltip"
+  import { useInterface } from "$lib/state/ui.svelte"
   import { cn, flyAndScale } from "$lib/utils/style"
-  import { useInterface } from "$state/ui.svelte"
   import { goto } from "$app/navigation"
   import { page } from "$app/stores"
 
@@ -11,16 +11,16 @@
 
   const { open = false, toggleDrawer }: { open?: boolean; toggleDrawer?: () => void } = $props()
 
-  const toggleAndNavigate = (target: string) => {
+  const toggleAndNavigate = async (target: string) => {
     toggleDrawer?.()
-    goto(target)
+    await goto(target)
   }
 
   const activePath = $derived($page.url.pathname)
 </script>
 
 <div class="flex-grow p-4">
-  <nav class="flex flex-col gap-2 items-start">
+  <nav class="flex flex-col items-start gap-2">
     <Tooltip.Root>
       <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
         <Button
@@ -28,7 +28,7 @@
           builders={[tooltipBuilder]}
           data-sveltekit-preload-data="hover"
           class={cn(
-            "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
+            "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:ring-offset-0 dark:focus:ring-neutral-800",
             activePath === "/" && "active",
           )}
           onclickcapture={() => toggleAndNavigate("/")}
@@ -322,8 +322,8 @@
     </Tooltip.Root>
   </nav>
 </div>
-<div class="flex flex-col justify-center items-start self-end p-4 w-full">
-  <div class="flex justify-between items-center w-full">
+<div class="flex w-full flex-col items-start justify-center self-end p-4">
+  <div class="flex w-full items-center justify-between">
     <AvatarMenu />
     <span
       class={cn(

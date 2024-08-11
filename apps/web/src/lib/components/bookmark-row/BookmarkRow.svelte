@@ -6,7 +6,7 @@
   import MediaQuery from "$lib/components/MediaQuery.svelte"
   import { Image } from "$lib/components/image"
   import { Badge } from "$lib/components/ui/badge"
-  import { useInterface } from "$state/ui.svelte"
+  import { useInterface } from "$lib/state/ui.svelte"
   import type { Category } from "$lib/types/zod"
   import { invalidateAll } from "$app/navigation"
   import { page } from "$app/stores"

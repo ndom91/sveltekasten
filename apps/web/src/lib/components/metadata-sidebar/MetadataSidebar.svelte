@@ -1,8 +1,8 @@
 <script lang="ts">
   import BookmarkContent from "./BookmarkContent.svelte"
   import FeedContent from "./FeedContent.svelte"
+  import { useInterface } from "$lib/state/ui.svelte"
   import { cn } from "$lib/utils/style"
-  import { useInterface } from "$state/ui.svelte"
   import { page } from "$app/stores"
 
   const ui = useInterface()
@@ -43,7 +43,7 @@
 <aside
   bind:this={metadataSidebarElement}
   class={cn(
-    "transition-all space-between relative flex h-screen flex-shrink-0 flex-col border-l bg-neutral-50 dark:border-l-zinc-800 dark:bg-neutral-900",
+    "space-between relative flex h-screen flex-shrink-0 flex-col border-l bg-neutral-50 transition-all dark:border-l-zinc-800 dark:bg-neutral-900",
   )}
 >
   {#if ui.metadataSidebarOpen}

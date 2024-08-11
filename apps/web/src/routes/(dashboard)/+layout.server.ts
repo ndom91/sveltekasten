@@ -23,7 +23,28 @@ export const load: LayoutServerLoad = async ({ locals }) => {
         where: { userId: session?.user?.id },
       }),
     ])
+
+    const [bookmarkData, bookmarkCount] = (await db.bookmark.findManyAndCount({
+      where: {
+        userId: session?.user?.id,
+        archived: false,
+      },
+      include: {
+        category: true,
+        tags: { include: { tag: true } },
+      },
+      orderBy: { createdAt: "desc" },
+    })) as unknown as [LoadBookmark[], number]
+
+    const bookmarks = bookmarkData.map((bookmark) => {
+      return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) }
+    }) as LoadBookmarkFlatTags[]
+
     return {
+      bookmarks: {
+        data: bookmarks,
+        count: bookmarkCount,
+      },
       quickAddForm,
       tags,
       categories: categories.map((category) => ({ ...category, visible: true })),

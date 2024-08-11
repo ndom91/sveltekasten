@@ -1,16 +1,18 @@
 <script lang="ts">
-  import { getContext, onDestroy } from "svelte"
+  import { onDestroy } from "svelte"
   import { InfiniteLoader, loaderState } from "svelte-infinite"
   import { toast } from "svelte-sonner"
-  import { Logger, loggerLevels } from "$/lib/utils/logger"
   import EmptyState from "$lib/components/EmptyState.svelte"
   import { BookmarkRow } from "$lib/components/bookmark-row"
   import { Navbar } from "$lib/components/navbar"
-  import { useInterface } from "$state/ui.svelte"
+  import { BookmarksService } from "$lib/state/bookmarks.svelte"
+  import { useInterface } from "$lib/state/ui.svelte"
+  import { getContext } from "$lib/utils/context"
+  import { Logger, loggerLevels } from "$lib/utils/logger"
   import { page } from "$app/stores"
 
   const ui = useInterface()
-  const bookmarkStore = getContext<BookmarkContext>("bookmarks")
+  const bookmarkStore = getContext(BookmarksService)
 
   let pageNumber = $state(0)
   const rootElement = $state<HTMLElement>()

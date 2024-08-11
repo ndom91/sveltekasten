@@ -1,15 +1,15 @@
 <script lang="ts">
   import { type Snippet, onMount, setContext } from "svelte"
   import { toast } from "svelte-sonner"
-  import DragAdd from "./DragAdd.svelte"
-  import { MetadataSidebar } from "$/lib/components/metadata-sidebar"
+  import DragAdd from "$lib/components/DragAdd.svelte"
   import Sidebar from "$lib/components/NavigationSidebar.svelte"
   import { CommandBar } from "$lib/components/command-bar"
+  import { MetadataSidebar } from "$lib/components/metadata-sidebar"
   import { postMessageTypes } from "$lib/constants"
-  import { useBookmarks } from "$state/bookmarks.svelte"
-  import { defaultAISettings, useInterface } from "$state/ui.svelte"
-  import { dev } from "$app/environment"
+  import { BookmarksService } from "$lib/state/bookmarks.svelte"
+  import { defaultAISettings, useInterface } from "$lib/state/ui.svelte"
 
+  import { dev } from "$app/environment"
   import { browser } from "$app/environment"
   import { invalidateAll, onNavigate } from "$app/navigation"
   import { page } from "$app/stores"
@@ -19,8 +19,8 @@
   const DISABLED_PATHS = ["/feeds", "/categories", "/tags", "/settings", "/"]
   const metadataEnabled = $derived(() => !DISABLED_PATHS.includes($page.url.pathname))
 
-  const bookmarkStore = useBookmarks()
-  setContext("bookmarks", bookmarkStore)
+  const bookmarksService = new BookmarksService($page.data.bookmarks.data)
+  setContext(BookmarksService, bookmarksService)
 
   const ui = useInterface()
 

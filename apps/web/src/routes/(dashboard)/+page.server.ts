@@ -29,29 +29,29 @@ export const load: PageServerLoad = async ({ locals, url }) => {
       orderBy: { createdAt: "desc" },
     })
 
-    const [bookmarkData, bookmarkCount] = (await db.bookmark.findManyAndCount({
-      take: 10,
-      skip: 0,
-      where: {
-        userId: session?.user?.id,
-        archived: false,
-      },
-      include: {
-        category: true,
-        tags: { include: { tag: true } },
-      },
-      orderBy: { createdAt: "desc" },
-    })) as unknown as [LoadBookmark[], number]
+    // const [bookmarkData, bookmarkCount] = (await db.bookmark.findManyAndCount({
+    //   take: 10,
+    //   skip: 0,
+    //   where: {
+    //     userId: session?.user?.id,
+    //     archived: false,
+    //   },
+    //   include: {
+    //     category: true,
+    //     tags: { include: { tag: true } },
+    //   },
+    //   orderBy: { createdAt: "desc" },
+    // })) as unknown as [LoadBookmark[], number]
 
     return {
       feedEntries: {
         data: feedData,
         count: feedCount,
       },
-      bookmarks: {
-        data: bookmarkData,
-        count: bookmarkCount,
-      },
+      // bookmarks: {
+      //   data: bookmarkData,
+      //   count: bookmarkCount,
+      // },
     }
   } catch (error) {
     if (error instanceof Error) {

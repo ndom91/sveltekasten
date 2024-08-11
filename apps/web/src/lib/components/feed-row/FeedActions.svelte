@@ -3,8 +3,8 @@
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
   import { Button } from "$lib/components/ui/button"
   import * as Tooltip from "$lib/components/ui/tooltip"
+  import { useInterface } from "$lib/state/ui.svelte"
   import { cn } from "$lib/utils/style"
-  import { useInterface } from "$state/ui.svelte"
   import { page } from "$app/stores"
 
   const ui = useInterface()
@@ -31,7 +31,7 @@
 
 <div
   class={cn(
-    "absolute right-4 top-10 flex rounded-xl bg-neutral-200/30 p-2 text-white delay-100 duration-300 ease-in-out dark:bg-neutral-900/50 backdrop-blur-[6px] shadow-[0_4px_20px_rgba(0,_0,_0,_0.2)] border dark:border-gray-600/20 border-gray-400/30",
+    "absolute right-4 top-10 flex rounded-xl border border-gray-400/30 bg-neutral-200/30 p-2 text-white shadow-[0_4px_20px_rgba(0,_0,_0,_0.2)] backdrop-blur-[6px] delay-100 duration-300 ease-in-out dark:border-gray-600/20 dark:bg-neutral-900/50",
     isOptionsOpen ? "opacity-100" : "opacity-0",
   )}
 >

@@ -4,8 +4,8 @@
   import SidebarContent from "$lib/components/SidebarContent.svelte"
   import Drawer from "$lib/components/mobile/Drawer.svelte"
   import { Button } from "$lib/components/ui/button"
+  import { useInterface } from "$lib/state/ui.svelte"
   import { cn } from "$lib/utils/style"
-  import { useInterface } from "$state/ui.svelte"
 
   const ui = useInterface()
   let userSidebarElement = $state<HTMLElement>()!
@@ -44,11 +44,11 @@
 {:else}
   <aside
     bind:this={userSidebarElement}
-    class="flex h-full flex-col border-r bg-neutral-50 transition-all border-r-neutral-200 dark:border-r-neutral-800/60 dark:bg-neutral-900 duration-100 justify-start"
+    class="flex h-full flex-col justify-start border-r border-r-neutral-200 bg-neutral-50 transition-all duration-100 dark:border-r-neutral-800/60 dark:bg-neutral-900"
   >
-    <div class="flex justify-start items-center m-4">
+    <div class="m-4 flex items-center justify-start">
       <Button
-        class="flex justify-start transition focus:ring-2 focus:outline-none focus:dark:ring-neutral-700"
+        class="flex justify-start transition focus:outline-none focus:ring-2 focus:dark:ring-neutral-700"
         size="icon"
         variant="link"
         on:click={ui.toggleUserSidebar}

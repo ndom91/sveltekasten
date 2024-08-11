@@ -183,50 +183,47 @@ export const load: PageServerLoad = async (event) => {
   }
 
   try {
-    const skip = Number(event.url.searchParams.get("skip") ?? "0")
-    const limit = Number(event.url.searchParams.get("limit") ?? "20")
+    // const skip = Number(event.url.searchParams.get("skip") ?? "0")
+    // const limit = Number(event.url.searchParams.get("limit") ?? "20")
 
     const session = await event.locals.auth()
     if (!session?.user?.id) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
 
-    const [data, count] = (await db.bookmark.findManyAndCount({
-      take: limit + skip,
-      skip,
-      where: {
-        userId: session?.user?.id,
-        archived: false,
-      },
-      include: {
-        category: true,
-        tags: { include: { tag: true } },
-      },
-      orderBy: { createdAt: "desc" },
-    })) as unknown as [LoadBookmark[], number]
-
-    const bookmarks = data.map((bookmark) => {
-      return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) }
-    }) as LoadBookmarkFlatTags[]
+    // const [data, count] = (await db.bookmark.findManyAndCount({
+    //   take: limit + skip,
+    //   skip,
+    //   where: {
+    //     userId: session?.user?.id,
+    //     archived: false,
+    //   },
+    //   include: {
+    //     category: true,
+    //     tags: { include: { tag: true } },
+    //   },
+    //   orderBy: { createdAt: "desc" },
+    // })) as unknown as [LoadBookmark[], number]
+    //
+    // const bookmarks = data.map((bookmark) => {
+    //   return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) }
+    // }) as LoadBookmarkFlatTags[]
 
     return {
-      bookmarks: {
-        data: bookmarks,
-        count,
-      },
+      // bookmarks: {
+      //   data: bookmarks,
+      //   count,
+      // },
       session,
     }
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message)
-    } else {
-      console.error(error)
-    }
+    console.error(String(error))
+
     return {
-      bookmarks: {
-        data: [],
-        count: 0,
-      },
+      // bookmarks: {
+      //   data: [],
+      //   count: 0,
+      // },
       session,
       error,
     }

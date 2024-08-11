@@ -8,9 +8,9 @@
   import { Button } from "$lib/components/ui/button"
   import * as Popover from "$lib/components/ui/popover"
   import * as Tooltip from "$lib/components/ui/tooltip"
+  import { useInterface } from "$lib/state/ui.svelte"
   import { cn } from "$lib/utils/style"
   import { flyAndScale } from "$lib/utils/style"
-  import { useInterface } from "$state/ui.svelte"
   import { invalidate } from "$app/navigation"
 
   const { showSearch = true, showQuickAdd = true, showSidebar = true } = $props()
@@ -45,17 +45,17 @@
 
 <svelte:window onkeydown={handleKeyDown} />
 <nav
-  class="flex justify-between items-center p-4 mx-auto w-full border-b h-16 border-input dark:border-b-zinc-800"
+  class="border-input mx-auto flex h-16 w-full items-center justify-between border-b p-4 dark:border-b-zinc-800"
 >
   <ModeWatcher />
   <Breadcrumbs />
-  <div class="flex gap-2 justify-end items-center md:gap-4">
+  <div class="flex items-center justify-end gap-2 md:gap-4">
     {#if ui.textToSpeechAudioBlob && ui.aiFeaturesPreferences.tts.enabled}
       <AudioPlayer src={ui.textToSpeechAudioBlob} />
     {/if}
     {#if showSearch}
       <div
-        class="relative rounded-md transition duration-300 focus-within:rounded-md focus-within:ring-2 focus-within:outline-none dark:focus-within:ring-zinc-800 focus-within:ring-zinc-300"
+        class="relative rounded-md transition duration-300 focus-within:rounded-md focus-within:outline-none focus-within:ring-2 focus-within:ring-zinc-300 dark:focus-within:ring-zinc-800"
       >
         <input
           type="text"
@@ -66,10 +66,10 @@
           onkeyup={useDebounce(handleSearchInput, 500)}
           spellcheck="false"
           aria-label="Search"
-          class="flex py-2 px-3 pl-10 w-full h-10 text-sm bg-neutral-100 dark:bg-neutral-900 rounded-md border md:pr-10 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-input ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring"
+          class="border-input ring-offset-background file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border bg-neutral-100 px-3 py-2 pl-10 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-neutral-900 md:pr-10"
         />
         <svg
-          class="absolute top-3 left-3 size-4"
+          class="size-4 absolute left-3 top-3"
           data-slot="icon"
           fill="none"
           stroke-width="1.5"
@@ -84,7 +84,7 @@
             d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
           ></path>
         </svg>
-        <KeyboardIndicator key="/" class="hidden absolute top-2 right-3 text-xs md:block" />
+        <KeyboardIndicator key="/" class="absolute right-3 top-2 hidden text-xs md:block" />
       </div>
     {/if}
     {#if showQuickAdd}
@@ -93,7 +93,7 @@
           <Popover.Trigger tabindex={-1} />
           <Tooltip.Trigger asChild let:builder={tooltipBuilder}>
             <div
-              class="rounded-full transition duration-300 focus-within:rounded-full focus-within:ring-2 focus-within:outline-none dark:focus-within:ring-zinc-800 focus-within:ring-zinc-300"
+              class="rounded-full transition duration-300 focus-within:rounded-full focus-within:outline-none focus-within:ring-2 focus-within:ring-zinc-300 dark:focus-within:ring-zinc-800"
             >
               <Button
                 builders={[tooltipBuilder]}
@@ -105,7 +105,7 @@
                 )}
               >
                 <svg
-                  class="pointer-events-none size-5"
+                  class="size-5 pointer-events-none"
                   data-slot="icon"
                   aria-label="Quick Add"
                   fill="none"
@@ -125,7 +125,7 @@
             </div>
           </Tooltip.Trigger>
           <Tooltip.Content>
-            <p class="flex justify-center items-center">
+            <p class="flex items-center justify-center">
               Quick add Bookmark <KeyboardIndicator key="Alt N" class="ml-2 text-xs" />
             </p>
           </Tooltip.Content>
@@ -142,7 +142,7 @@
     {/if}
     {#if showSidebar}
       <div
-        class="rounded-full transition duration-300 focus-within:rounded-full focus-within:ring-2 focus-within:outline-none dark:focus-within:ring-zinc-800 focus-within:ring-zinc-300"
+        class="rounded-full transition duration-300 focus-within:rounded-full focus-within:outline-none focus-within:ring-2 focus-within:ring-zinc-300 dark:focus-within:ring-zinc-800"
       >
         <Tooltip.Root>
           <Tooltip.Trigger asChild let:builder={tooltipBuilder}>
@@ -194,7 +194,7 @@
             </Button>
           </Tooltip.Trigger>
           <Tooltip.Content transition={flyAndScale}>
-            <p class="flex justify-center items-center">
+            <p class="flex items-center justify-center">
               Toggle Sidebar <KeyboardIndicator key="]" class="ml-2 text-xs" />
             </p>
           </Tooltip.Content>

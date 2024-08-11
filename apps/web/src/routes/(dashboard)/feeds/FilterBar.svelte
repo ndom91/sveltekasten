@@ -5,7 +5,7 @@
   import * as Command from "$lib/components/ui/command"
   import { Label } from "$lib/components/ui/label"
   import * as Popover from "$lib/components/ui/popover"
-  import { useInterface } from "$state/ui.svelte"
+  import { useInterface } from "$lib/state/ui.svelte"
   import { page } from "$app/stores"
 
   const ui = useInterface()
@@ -16,12 +16,12 @@
 </script>
 
 <section
-  class="p-4 border-l-4 md:px-8 border-l-transparent flex justify-start items-center gap-4 flex-wrap"
+  class="flex flex-wrap items-center justify-start gap-4 border-l-4 border-l-transparent p-4 md:px-8"
 >
   <div
-    class="flex justify-center items-center gap-2 border border-input rounded-md h-10 px-2 bg-neutral-100 dark:bg-neutral-900"
+    class="border-input flex h-10 items-center justify-center gap-2 rounded-md border bg-neutral-100 px-2 dark:bg-neutral-900"
   >
-    <div class="mx-2 flex justify-center items-center gap-2">
+    <div class="mx-2 flex items-center justify-center gap-2">
       <Checkbox id="unread" bind:checked={ui.showUnreadOnly} />
       <Label class="hover:cursor-pointer" for="unread">Unread Only</Label>
     </div>
@@ -33,11 +33,11 @@
         variant="outline"
         role="combobox"
         aria-expanded={open}
-        class="justify-between min-w-[150px] md:w-[200px] bg-neutral-100 dark:bg-neutral-900 "
+        class="min-w-[150px] justify-between bg-neutral-100 dark:bg-neutral-900 md:w-[200px] "
       >
         Feeds
         <svg
-          class="ml-2 w-4 h-4 opacity-50 shrink-0"
+          class="ml-2 h-4 w-4 shrink-0 opacity-50"
           data-slot="icon"
           fill="none"
           stroke-width="1.5"
@@ -54,7 +54,7 @@
         </svg>
       </Button>
     </Popover.Trigger>
-    <Popover.Content class="p-0 w-[calc(100vw-2.2rem)] md:w-[200px]">
+    <Popover.Content class="w-[calc(100vw-2.2rem)] p-0 md:w-[200px]">
       <Command.Root>
         <Command.Input placeholder="Search.." />
         <Command.Empty>No results</Command.Empty>
@@ -63,14 +63,14 @@
             <Command.Item class="flex" value={feed.name}>
               <Checkbox id={feed.id} bind:checked={feed.visible} />
               <label
-                class="flex hover:cursor-pointer flex-grow truncate items-center max-w-full w-fit"
+                class="flex w-fit max-w-full flex-grow items-center truncate hover:cursor-pointer"
                 for={feed.id}
               >
-                <span class="truncate flex-grow mx-2">{feed.name}</span>
+                <span class="mx-2 flex-grow truncate">{feed.name}</span>
                 <img
                   src={`https://favicon.yandex.net/favicon/${new URL(feed.url).hostname}`}
                   alt="URL Favicon"
-                  class="m-2 rounded-full size-5"
+                  class="size-5 m-2 rounded-full"
                 />
               </label>
             </Command.Item>

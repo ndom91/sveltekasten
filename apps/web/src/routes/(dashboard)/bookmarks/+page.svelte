@@ -1,6 +1,6 @@
 <script lang="ts">
   import { watch } from "runed"
-  import { getContext, onDestroy, onMount } from "svelte"
+  import { onDestroy, onMount } from "svelte"
   import { InfiniteLoader, loaderState } from "svelte-infinite"
   import { toast } from "svelte-sonner"
   import FilterBar from "./FilterBar.svelte"
@@ -8,18 +8,20 @@
   import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
   import { BookmarkRow } from "$lib/components/bookmark-row"
   import { Navbar } from "$lib/components/navbar"
+  import { BookmarksService } from "$lib/state/bookmarks.svelte"
+  import { useInterface } from "$lib/state/ui.svelte"
+  import { getContext } from "$lib/utils/context"
   import { Logger, loggerLevels } from "$lib/utils/logger"
-  import { useInterface } from "$state/ui.svelte"
   import { goto } from "$app/navigation"
   import { page } from "$app/stores"
 
   const ui = useInterface()
-  const bookmarkStore = getContext<BookmarkContext>("bookmarks")
+  const bookmarkService = getContext(BookmarksService)
 
-  onMount(() => {
+  onMount(async () => {
     const showQuickAdd = $page.url.searchParams.get("quickAdd")
     if (showQuickAdd === "true") {
-      goto("/bookmarks")
+      await goto("/bookmarks")
       ui.toggleQuickAdd()
     }
   })
@@ -31,7 +33,11 @@
   const logger = new Logger({ level: loggerLevels.DEBUG })
 
   $effect(() => {
-    bookmarkStore.bookmarks = $page.data.bookmarks.data
+    if ($page.data.bookmarks.data.length) {
+      $page.data.bookmarks.data.forEach((bk: LoadBookmarkFlatTags) => {
+        bookmarkService.update(bk)
+      })
+    }
   })
 
   if ($page.data.error) {
@@ -105,10 +111,10 @@
       }
 
       if (searchResults.data.length) {
-        bookmarkStore.add(searchResults.data)
+        bookmarkService.add(searchResults.data)
       }
 
-      if (bookmarkStore.bookmarks.length >= searchResults.count) {
+      if (bookmarkService.bookmarks.length >= searchResults.count) {
         loaderState.complete()
       } else {
         loaderState.loaded()
@@ -143,7 +149,7 @@
     if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "j" || e.key === "k") {
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
-      const currentActiveElementIndex = bookmarkStore.bookmarks.findIndex(
+      const currentActiveElementIndex = bookmarkService.bookmarks.findIndex(
         (item) => item.id === currentActiveElement.dataset.id,
       )
 
@@ -153,7 +159,7 @@
           : currentActiveElementIndex - 1
 
       const nextElement = document.querySelector(
-        `[data-id="${bookmarkStore.bookmarks[nextIndex]?.id}"]`,
+        `[data-id="${bookmarkService.bookmarks[nextIndex]?.id}"]`,
       ) as HTMLElement
 
       if (nextElement) {
@@ -165,10 +171,10 @@
     if (e.key === "o") {
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
-      const currentActiveElementIndex = bookmarkStore.bookmarks.findIndex(
+      const currentActiveElementIndex = bookmarkService.bookmarks.findIndex(
         (item) => item.id === currentActiveElement.dataset.id,
       )
-      const targetLink = bookmarkStore.bookmarks[currentActiveElementIndex]?.url
+      const targetLink = bookmarkService.bookmarks[currentActiveElementIndex]?.url
       if (!targetLink) {
         toast.error("No item selected")
         return
@@ -198,13 +204,13 @@
   bind:this={rootElement}
 >
   <FilterBar />
-  {#if bookmarkStore.bookmarks?.length}
+  {#if bookmarkService.bookmarks?.length}
     <InfiniteLoader triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
-      {#each bookmarkStore.bookmarks as item (item.id)}
+      {#each bookmarkService.bookmarks as item (item.id)}
         <BookmarkRow bookmark={item} />
       {/each}
       {#snippet noData()}
-        {#if bookmarkStore.bookmarks.length >= 10}
+        {#if bookmarkService.bookmarks.length >= 10}
           <div class="text-2xl">No more data</div>
         {/if}
       {/snippet}

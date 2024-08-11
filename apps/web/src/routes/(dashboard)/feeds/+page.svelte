@@ -11,8 +11,8 @@
   import { FeedRow } from "$lib/components/feed-row"
   import { Navbar } from "$lib/components/navbar"
 
+  import { useInterface } from "$lib/state/ui.svelte"
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
-  import { useInterface } from "$state/ui.svelte"
   import { invalidateAll } from "$app/navigation"
 
   let innerWidth = $state(1000)

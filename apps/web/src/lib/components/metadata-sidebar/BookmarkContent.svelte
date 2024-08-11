@@ -3,8 +3,6 @@
   import { toast } from "svelte-sonner"
   import SuperDebug, { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
-  // import { getContext } from "svelte"
-
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
   import TagInput from "$lib/components/TagInput.svelte"
   import { Button, buttonVariants } from "$lib/components/ui/button"
@@ -12,18 +10,13 @@
   import { Label } from "$lib/components/ui/label"
   import * as Popover from "$lib/components/ui/popover"
   import * as Tooltip from "$lib/components/ui/tooltip"
+  import { useInterface } from "$lib/state/ui.svelte"
   import { countryMaps } from "$lib/utils/countries"
   import { cn } from "$lib/utils/style"
   import { formSchema as metadataSchema } from "$schemas/metadata-sidebar"
-  import { useInterface } from "$state/ui.svelte"
-
-  // import * as Select from "$lib/components/ui/select"
   import { dev } from "$app/environment"
   import { invalidateAll } from "$app/navigation"
   import { page } from "$app/stores"
-
-  // const bookmarkStore = getContext<BookmarkContext>("bookmarks")
-  // const bookmark = bookmarkStore.find(ui.metadataSidebarData.bookmark?.id!)
 
   const ui = useInterface()
 
@@ -46,9 +39,9 @@
     validators: zodClient(metadataSchema),
     onUpdated: async ({ form }) => {
       if (form.valid) {
+        await invalidateAll()
         toast.success("Bookmark Updated")
         ui.toggleMetadataSidebarEditMode()
-        await invalidateAll()
       }
     },
     onError: ({ result }) => {
@@ -153,8 +146,8 @@
           aria-invalid={$errors.title ? "true" : undefined}
           {...$constraints.title}
           class={cn(
-            "flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-            !isEditMode ? "cursor-default text-muted" : "bg-neutral-100 dark:bg-neutral-950",
+            "border-input ring-offset-background file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border bg-transparent px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
+            !isEditMode ? "text-muted cursor-default" : "bg-neutral-100 dark:bg-neutral-950",
           )}
         />
         {#if $errors.title}<span class="text-xs text-red-400">{$errors.title}</span>{/if}

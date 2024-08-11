@@ -2,7 +2,7 @@
   import { toggleMode } from "mode-watcher"
   import Kbd from "$lib/components/KeyboardIndicator.svelte"
   import * as Command from "$lib/components/ui/command"
-  import { useInterface } from "$state/ui.svelte"
+  import { useInterface } from "$lib/state/ui.svelte"
   import { goto } from "$app/navigation"
 
   function findNextItem(
@@ -82,7 +82,7 @@
 
 <svelte:window onkeydown={handleKeyDown} />
 
-<dialog bind:this={element} class="z-20 rounded-md shadow-lg border-input border">
+<dialog bind:this={element} class="border-input z-20 rounded-md border shadow-lg">
   <Command.Root class="p-1" loop>
     <Command.Input
       bind:value

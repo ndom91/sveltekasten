@@ -2,7 +2,7 @@
   import { format } from "@formkit/tempo"
   import { PUBLIC_WORKER_URL } from "$env/static/public"
 
-  const { item }: { item: LoadBookmark } = $props()
+  const { item }: { item: LoadBookmarkFlatTags } = $props()
 
   const imageUrl = $derived.by(() => {
     if (item.image) {

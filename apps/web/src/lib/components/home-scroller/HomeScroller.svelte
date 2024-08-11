@@ -26,15 +26,15 @@
 </script>
 
 <section
-  class="flex relative flex-col mx-4 max-w-full rounded-lg bg-neutral-100 dark:bg-neutral-900"
+  class="relative mx-4 flex max-w-full flex-col overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-900"
 >
-  <div class="flex z-10 flex-grow justify-between mx-4 mt-3">
+  <div class="z-10 mx-4 mt-3 flex flex-grow justify-between">
     <h2 class="text-xl font-thin">
       {type === ScrollerTypes.FEEDS ? `Unread Feed Items (${count})` : capitalize(type)}
     </h2>
     {#if items.length}
       <a
-        class="flex gap-2 items-center p-1 rounded-md transition focus:ring-2 focus:outline-none focus:ring-neutral-300 focus:dark:ring-neutral-700"
+        class="flex items-center gap-2 rounded-md p-1 transition focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:dark:ring-neutral-700"
         data-sveltekit-preload-data="hover"
         href={`/${type.toLowerCase()}`}
       >
@@ -99,22 +99,22 @@
             stroke-width="16"
           />
         </svg>
-        <span class="text-neutral-700 truncate dark:text-neutral-400">See more</span>
+        <span class="truncate text-neutral-700 dark:text-neutral-400">See more</span>
       </a>
     {/if}
   </div>
   <div
     bind:this={element}
-    class="flex overflow-x-scroll gap-4 py-4 px-4 scroll-px-4 scroll-smooth snap-x snap-mandatory after:pointer-events-none after:absolute after:bottom-0 after:right-0 after:h-full after:w-24 after:shadow-[inset_-100px_0px_65px_-65px_#ddd] dark:after:shadow-[inset_-100px_0px_45px_-65px_#141414] after:rounded-r-lg"
+    class="flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-scroll scroll-smooth px-4 py-4 after:pointer-events-none after:absolute after:bottom-0 after:right-0 after:h-full after:w-24 after:rounded-r-lg after:shadow-[inset_-100px_0px_65px_-65px_#ddd] dark:after:shadow-[inset_-100px_0px_45px_-65px_#141414]"
   >
-    {#each items.values() as item (item.id)}
+    {#each items as item (item.id)}
       {#if type === ScrollerTypes.BOOKMARKS}
-        <BookmarkPreviewCard item={item as LoadBookmark} />
+        <BookmarkPreviewCard {item} />
       {:else if type === ScrollerTypes.FEEDS}
-        <FeedItemPreviewCard item={item as LoadFeedEntry} />
+        <FeedItemPreviewCard {item} />
       {/if}
     {:else}
-      <div class="grid place-items-center w-full h-48">
+      <div class="grid h-48 w-full place-items-center">
         {#if type === ScrollerTypes.BOOKMARKS}
           <div class="z-10">
             Go to the <a href="/bookmarks" class="underline underline-offset-4">bookmarks</a> page to
@@ -123,7 +123,7 @@
           <img
             src={Browser}
             alt="Empty State Browser"
-            class="absolute -right-4 -bottom-20 w-72 max-w-md opacity-20 pointer-events-none rotate-[18deg] grayscale dark:invert"
+            class="pointer-events-none absolute -bottom-20 -right-4 w-72 max-w-md rotate-[18deg] opacity-20 grayscale dark:invert"
           />
         {:else if type === ScrollerTypes.FEEDS}
           <div class="z-10">
@@ -133,7 +133,7 @@
           <img
             src={Bell}
             alt="Empty State Browser"
-            class="absolute -right-4 -bottom-16 w-64 max-w-md opacity-20 pointer-events-none rotate-[10deg] grayscale dark:invert"
+            class="pointer-events-none absolute -bottom-16 -right-4 w-64 max-w-md rotate-[10deg] opacity-20 grayscale dark:invert"
           />
         {/if}
       </div>
