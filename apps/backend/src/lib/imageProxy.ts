@@ -37,17 +37,28 @@ export const imageProxyHandler = async (c: Context) => {
   }
 
   const response = await createIPXWebServer(ipx)(new Request(targetUrl))
-
   const clonedResponse = response.clone()
+  let responseBody = response.body
+  let responseStatus = response.status
+
   let data = await clonedResponse.blob()
 
+  // Attempt retry if IPX doesn't handle image request properly
   if (!response.ok) {
-    // Favicons with mimetype 'image/vnd.microsoft.icon' are not supported by IPX / sharp
-    // So we'll fetch it ourselves and cache it
     const extractedFaviconUrl = targetUrl.match(/\/_\/(https:\/\/.*)/)
     if (extractedFaviconUrl?.[1]) {
-      const rawFaviconResponse = await fetch(extractedFaviconUrl[1])
-      data = await rawFaviconResponse.blob()
+      const rawFaviconResponse = await fetch(extractedFaviconUrl[1], {
+        headers: {
+          "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+          "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        }
+      })
+      const clonedRawFaviconResponse = rawFaviconResponse.clone()
+
+      responseBody = rawFaviconResponse.body
+      responseStatus = rawFaviconResponse.status
+
+      data = await clonedRawFaviconResponse.blob()
     }
   }
 
@@ -56,8 +67,13 @@ export const imageProxyHandler = async (c: Context) => {
   }
 
   // TODO: Clone response body from raw retry to immediately return that
-  return new Response(response.body, {
-    status: response.status,
-    statusText: response.statusText
+  return new Response(responseBody, {
+    status: responseStatus,
+    headers: {
+      "x-cache": "MISS",
+      "x-image-proxy": "0.0.1",
+      "Content-Type": data.type,
+      'cache-control': 'max-age=31536000, public, s-maxage=31536000',
+    }
   })
 }

@@ -60,6 +60,9 @@ const handleLoginProviders: Handle = async ({ event, resolve }) => {
 const rateLimitMap = new Map()
 
 const handleRateLimit: Handle = async ({ event, resolve }) => {
+  if (dev) {
+    return resolve(event)
+  }
   const ip = event.getClientAddress()
   const limit = 150 // Requests per window
   const windowMs = 60 * 1000 * 1 // minutes
