@@ -29,7 +29,7 @@ export const fetchBookmarkMetadata = async (url: string) => {
   const targetPageResponse = await fetch(url)
   const bookmarkPageText = await targetPageResponse.text()
   const metadata = await metascraperClient({ html: bookmarkPageText, url })
-  console.log("metadata2", metadata)
+
   if (!metadata.image) {
     return {
       imageUrl: undefined,

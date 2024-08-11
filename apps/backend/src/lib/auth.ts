@@ -26,7 +26,9 @@ export async function getUserId(c: Context) {
       = process.env.NODE_ENV !== "production"
         ? "authjs.session-token"
         : "__Secure-authjs.session-token"
+
     const cookieValue = getCookie(c, cookieName)!
+
     debug("Parsing cookies", { cookieName, cookieValue })
 
     const session = await getSession(cookieValue)

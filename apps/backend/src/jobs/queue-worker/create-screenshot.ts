@@ -28,7 +28,6 @@ export interface CreateScreenshot {
 }
 
 export const createScreenshot = async (data: CreateScreenshot) => {
-  console.log("CREATING SCREENSHOT")
   if (
     !process.env.BUCKET_PUBLIC_URL
     || !process.env.BUCKET_SECRET_KEY
@@ -83,10 +82,7 @@ const updateImageUrl = async ({
 }
 
 const screenshotUrl = async ({ url }: ScreenshotArgs) => {
-
-  console.log("SCREENSHOTURL")
   const localChromiumPath = await getLocalChromiumPath()
-  console.log("SCREENSHOTURL.LOCALCHROMIUMPATH", localChromiumPath)
   const browser = await chromium.launch({
     executablePath:
       process.env.NODE_ENV !== "development"

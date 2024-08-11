@@ -7,7 +7,7 @@ import { feedQueue } from "../../plugins/queue.js"
 
 const api = new Hono()
 
-api.get("/", async (c) => {
+api.get("/", (c) => {
   try {
     const queueList = feedQueue.getQueue()
 
