@@ -6,6 +6,7 @@
   import type { Feed } from "$lib/types/zod"
   import type { PageServerLoad } from "./$types"
   import { page } from "$app/stores"
+  import { PUBLIC_WORKER_URL } from "$env/static/public"
 
   const ui = useInterface()
 
@@ -44,7 +45,7 @@
           <label for={new URL(feed.url).host} class="flex items-center justify-start gap-2">
             <span> {new URL(feed.url).host} </span>
             <img
-              src={`https://favicon.yandex.net/favicon/${new URL(feed.url).hostname}`}
+              src={`${PUBLIC_WORKER_URL}/img/_/https://favicon.yandex.net/favicon/${new URL(feed.url).hostname}`}
               alt="URL Favicon"
               class="size-6 rounded-full"
             />

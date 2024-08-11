@@ -4,6 +4,7 @@
   import { Checkbox } from "$lib/components/ui/checkbox"
   import * as Command from "$lib/components/ui/command"
   import * as Popover from "$lib/components/ui/popover"
+  import { PUBLIC_WORKER_URL } from "$env/static/public"
 
   const {
     data: inputData,
@@ -33,11 +34,11 @@
       variant="outline"
       role="combobox"
       aria-expanded={open}
-      class="justify-between w-[300px]"
+      class="w-[300px] justify-between"
     >
       {placeholder}
       <svg
-        class="ml-2 w-4 h-4 opacity-50 shrink-0"
+        class="ml-2 h-4 w-4 shrink-0 opacity-50"
         data-slot="icon"
         fill="none"
         stroke-width="1.5"
@@ -54,7 +55,7 @@
       </svg>
     </Button>
   </Popover.Trigger>
-  <Popover.Content class="p-0 w-[300px]">
+  <Popover.Content class="w-[300px] p-0">
     <Command.Root>
       <Command.Input placeholder="Search.." />
       <Command.Empty>No results</Command.Empty>
@@ -68,9 +69,9 @@
           >
             <Checkbox id={item.id} bind:checked={item.visible} />
             <img
-              src={`https://favicon.yandex.net/favicon/${new URL(item.url).hostname}`}
+              src={`${PUBLIC_WORKER_URL}/img/_/https://favicon.yandex.net/favicon/${new URL(item.url).hostname}`}
               alt="URL Favicon"
-              class="m-2 rounded-full size-4"
+              class="size-4 m-2 rounded-full"
             />
             <span class="truncate">{item.name}</span>
           </Command.Item>

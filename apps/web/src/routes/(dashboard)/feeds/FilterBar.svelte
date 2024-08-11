@@ -7,6 +7,7 @@
   import * as Popover from "$lib/components/ui/popover"
   import { useInterface } from "$lib/state/ui.svelte"
   import { page } from "$app/stores"
+  import { PUBLIC_WORKER_URL } from "$env/static/public"
 
   const ui = useInterface()
   let open = $state(false)
@@ -68,7 +69,7 @@
               >
                 <span class="mx-2 flex-grow truncate">{feed.name}</span>
                 <img
-                  src={`https://favicon.yandex.net/favicon/${new URL(feed.url).hostname}`}
+                  src={`${PUBLIC_WORKER_URL}/img/_/https://favicon.yandex.net/favicon/${new URL(feed.url).hostname}`}
                   alt="URL Favicon"
                   class="size-5 m-2 rounded-full"
                 />

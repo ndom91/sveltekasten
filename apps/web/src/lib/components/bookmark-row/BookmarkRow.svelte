@@ -87,7 +87,7 @@
     <p class="line-clamp-2 pr-10 md:pr-0">{bookmark.desc}</p>
     <div class="text-muted flex items-center justify-start gap-2 text-sm">
       <img
-        src={`${PUBLIC_WORKER_URL}/img/_/https://favicon.im/${new URL(bookmark.url).hostname}?larger=true`}
+        src={`${PUBLIC_WORKER_URL}/img/_/https://favicon.yandex.net/favicon/${new URL(bookmark.url).hostname}`}
         alt="URL Favicon"
         class="size-4 rounded-full"
       />

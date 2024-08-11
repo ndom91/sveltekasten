@@ -58,7 +58,7 @@
   const faviconUrl = $derived.by(() => {
     let iconUrl = ""
     try {
-      iconUrl = `${PUBLIC_WORKER_URL}/img/_/https://favicon.im/${new URL($form.url as string).hostname}`
+      iconUrl = `${PUBLIC_WORKER_URL}/img/_/https://favicon.yandex.net/favicon/${new URL($form.url as string).hostname}`
     } catch {
       iconUrl = "https://raw.githubusercontent.com/hustcc/placeholder.js/master/favicon.ico"
     }
