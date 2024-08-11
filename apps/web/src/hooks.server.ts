@@ -61,7 +61,7 @@ const rateLimitMap = new Map()
 
 const handleRateLimit: Handle = async ({ event, resolve }) => {
   const ip = event.getClientAddress()
-  const limit = 100 // Requests per window
+  const limit = 150 // Requests per window
   const windowMs = 60 * 1000 * 1 // minutes
 
   if (!rateLimitMap.has(ip)) {

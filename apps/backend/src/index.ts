@@ -21,7 +21,7 @@ app.use(prettyJSON())
 if (process.env.NODE_ENV === "production") {
   app.use(rateLimiter({
     windowMs: 1 * 60 * 1000, // 1 minutes
-    limit: 25,
+    limit: 150,
     standardHeaders: "draft-6",
     keyGenerator: (c) => {
       return c.req.header('X-Forwarded-For') || c.req.header('X-Real-IP') || c.req.header('CF-Connecting-IP') || '127.0.0.1'
