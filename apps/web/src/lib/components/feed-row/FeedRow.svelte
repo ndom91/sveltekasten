@@ -11,7 +11,7 @@
   import { useInterface } from "$state/ui.svelte"
   import type { Feed, FeedEntry, FeedEntryMedia } from "$lib/types/zod"
   import { page } from "$app/stores"
-  import { env } from "$env/dynamic/public"
+  import { PUBLIC_WORKER_URL } from "$env/static/public"
 
   const ui = useInterface()
 
@@ -35,9 +35,9 @@
 
   const imageUrl = $derived.by(() => {
     if (feedEntry.feedMedia?.[0]?.href) {
-      return `${env.PUBLIC_WORKER_URL}/img/s_160x96/${feedEntry.feedMedia?.[0]?.href}`
+      return `${PUBLIC_WORKER_URL}/img/s_160x96/${feedEntry.feedMedia?.[0]?.href}`
     } else {
-      return `${env.PUBLIC_WORKER_URL}/img/s_160x96/https://picsum.photos/seed/${encodeURIComponent(feedEntry.id)}/240/153.webp`
+      return `${PUBLIC_WORKER_URL}/img/s_160x96/https://picsum.photos/seed/${encodeURIComponent(feedEntry.id)}/240/153.webp`
     }
   })
 

@@ -11,7 +11,7 @@
   import type { Category } from "$lib/types/zod"
   import { invalidateAll } from "$app/navigation"
   import { page } from "$app/stores"
-  import { env } from "$env/dynamic/public"
+  import { PUBLIC_WORKER_URL } from "$env/static/public"
 
   type CategoryVisible = Category & { visible: boolean }
 
@@ -46,9 +46,9 @@
 
   const imageUrl = $derived.by(() => {
     if (bookmark.image) {
-      return `${env.PUBLIC_WORKER_URL}/img/s_260x144/${bookmark.image}`
+      return `${PUBLIC_WORKER_URL}/img/s_260x144/${bookmark.image}`
     } else {
-      return `${env.PUBLIC_WORKER_URL}/img/s_260x144/https://source.unsplash.com/random/240x144?sig=${bookmark.url}`
+      return `${PUBLIC_WORKER_URL}/img/s_260x144/https://source.unsplash.com/random/240x144?sig=${bookmark.url}`
     }
   })
 
