@@ -15,19 +15,19 @@ export const load: PageServerLoad = async ({ locals, url }) => {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
 
-    const [feedData, feedCount] = await db.feedEntry.findManyAndCount({
-      take: 10,
-      skip: 0,
-      where: {
-        userId: session?.user?.id,
-        unread: true,
-      },
-      include: {
-        feed: true,
-        feedMedia: true,
-      },
-      orderBy: { createdAt: "desc" },
-    })
+    // const [feedData, feedCount] = await db.feedEntry.findManyAndCount({
+    //   take: 10,
+    //   skip: 0,
+    //   where: {
+    //     userId: session?.user?.id,
+    //     unread: true,
+    //   },
+    //   include: {
+    //     feed: true,
+    //     feedMedia: true,
+    //   },
+    //   orderBy: { createdAt: "desc" },
+    // })
 
     // const [bookmarkData, bookmarkCount] = (await db.bookmark.findManyAndCount({
     //   take: 10,
@@ -44,10 +44,10 @@ export const load: PageServerLoad = async ({ locals, url }) => {
     // })) as unknown as [LoadBookmark[], number]
 
     return {
-      feedEntries: {
-        data: feedData,
-        count: feedCount,
-      },
+      // feedEntries: {
+      //   data: feedData,
+      //   count: feedCount,
+      // },
       // bookmarks: {
       //   data: bookmarkData,
       //   count: bookmarkCount,

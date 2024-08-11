@@ -25,6 +25,8 @@ export const load: LayoutServerLoad = async ({ locals }) => {
     ])
 
     const [bookmarkData, bookmarkCount] = (await db.bookmark.findManyAndCount({
+      take: 10,
+      skip: 0,
       where: {
         userId: session?.user?.id,
         archived: false,
@@ -40,21 +42,62 @@ export const load: LayoutServerLoad = async ({ locals }) => {
       return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) }
     }) as LoadBookmarkFlatTags[]
 
+    const [feedEntryData, feedEntryCount] = await db.feedEntry.findManyAndCount({
+      take: 10,
+      skip: 0,
+      where: { userId: session?.user?.id },
+      include: {
+        feed: true,
+        feedMedia: true,
+      },
+      orderBy: { published: "desc" },
+    })
+
+    const [feedData, feedCount] = await db.feed.findManyAndCount({
+      where: { userId: session?.user?.id },
+      select: {
+        id: true,
+        name: true,
+        url: true,
+        description: true,
+        language: true,
+        userId: true,
+        lastFetched: true,
+        createdAt: true,
+        updatedAt: true,
+        _count: {
+          select: {
+            feedEntries: { where: { unread: true } },
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    })
+
     return {
       bookmarks: {
         data: bookmarks,
         count: bookmarkCount,
+      },
+      feedEntries: {
+        data: feedEntryData,
+        count: feedEntryCount ?? 0,
+      },
+      feeds: {
+        data: feedData.map((feed) => {
+          return {
+            ...feed,
+            visible: true,
+          }
+        }) as unknown as (LoadFeed & { visible: boolean })[],
+        count: feedCount ?? 0,
       },
       quickAddForm,
       tags,
       categories: categories.map((category) => ({ ...category, visible: true })),
     }
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message)
-    } else {
-      console.error(error)
-    }
+    console.error(String(error))
     return {
       categories: [],
       tags: [],

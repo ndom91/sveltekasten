@@ -7,6 +7,8 @@
   import { MetadataSidebar } from "$lib/components/metadata-sidebar"
   import { postMessageTypes } from "$lib/constants"
   import { BookmarksService } from "$lib/state/bookmarks.svelte"
+  import { FeedEntriesService } from "$lib/state/feedEntries.svelte"
+  import { FeedsService } from "$lib/state/feeds.svelte"
   import { defaultAISettings, useInterface } from "$lib/state/ui.svelte"
 
   import { dev } from "$app/environment"
@@ -19,7 +21,11 @@
   const DISABLED_PATHS = ["/feeds", "/categories", "/tags", "/settings", "/"]
   const metadataEnabled = $derived(() => !DISABLED_PATHS.includes($page.url.pathname))
 
+  const feedsService = new FeedsService($page.data.feeds.data)
+  const feedEntriesService = new FeedEntriesService($page.data.feedEntries.data)
   const bookmarksService = new BookmarksService($page.data.bookmarks.data)
+  setContext(FeedsService, feedsService)
+  setContext(FeedEntriesService, feedEntriesService)
   setContext(BookmarksService, bookmarksService)
 
   const ui = useInterface()

@@ -11,29 +11,38 @@
   import { FeedRow } from "$lib/components/feed-row"
   import { Navbar } from "$lib/components/navbar"
 
+  import { FeedEntriesService } from "$lib/state/feedEntries.svelte"
+  // import { FeedsService } from "$lib/state/feeds.svelte"
   import { useInterface } from "$lib/state/ui.svelte"
+  import { getContext } from "$lib/utils/context"
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
   import { invalidateAll } from "$app/navigation"
+  import { page } from "$app/stores"
+
+  // const feedsService = getContext(FeedsService)
+  const feedEntriesService = getContext(FeedEntriesService)
 
   let innerWidth = $state(1000)
   let innerHeight = $state(800)
 
   const ui = useInterface()
-  const { data } = $props()
 
   // Log error from page server loading
-  if (data.error) {
-    console.error(data.error)
+  if ($page.data.error) {
+    console.error($page.data.error)
   }
 
   let pageNumber = $state(0)
-  let allItems = $state<LoadFeedEntry[]>([])
   let rootElement = $state<HTMLElement>()
   const limitLoadCount = 20
 
   // Reset feed items on load invalidation
   $effect(() => {
-    allItems = data.feedEntries?.data as LoadFeedEntry[]
+    if ($page.data.feedEntries.data.length) {
+      $page.data.feedEntries.data.forEach((feedEntry: LoadFeedEntry) => {
+        feedEntriesService.update(feedEntry)
+      })
+    }
   })
 
   registerTtsWorker()
@@ -113,10 +122,10 @@
       }
 
       if (searchResults.data.length) {
-        allItems = [...allItems, ...searchResults.data]
+        feedEntriesService.add(searchResults.data)
       }
 
-      if (allItems.length >= searchResults.count) {
+      if (feedEntriesService.feedEntries.length >= searchResults.count) {
         loaderState.complete()
       } else {
         loaderState.loaded()
@@ -137,7 +146,7 @@
       if (!loaderState.isFirstLoad) {
         loaderState.reset()
         pageNumber = -1
-        allItems = []
+        // allItems = []
         loadMore()
       }
     },
@@ -151,7 +160,7 @@
     if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "j" || e.key === "k") {
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
-      const currentActiveElementIndex = allItems.findIndex(
+      const currentActiveElementIndex = feedEntriesService.feedEntries.findIndex(
         (item: LoadFeedEntry) => item.id === currentActiveElement.dataset.id,
       )
       const nextIndex =
@@ -159,7 +168,7 @@
           ? currentActiveElementIndex + 1
           : currentActiveElementIndex - 1
       const nextElement = document.querySelector(
-        `[data-id="${allItems[nextIndex]?.id}"]`,
+        `[data-id="${feedEntriesService.feedEntries[nextIndex]?.id}"]`,
       ) as HTMLDivElement
 
       if (nextElement) {
@@ -169,10 +178,10 @@
     if (e.key === "o") {
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
-      const currentActiveElementIndex = allItems.findIndex(
+      const currentActiveElementIndex = feedEntriesService.feedEntries.findIndex(
         (item: LoadFeedEntry) => item.id === currentActiveElement.dataset.id,
       )
-      const targetLink = allItems[currentActiveElementIndex]?.link
+      const targetLink = feedEntriesService.feedEntries[currentActiveElementIndex]?.link
       if (!targetLink) {
         toast.error("No item selected")
         return
@@ -206,13 +215,13 @@
   bind:this={rootElement}
 >
   <FilterBar />
-  {#if data.feedEntries?.count}
+  {#if feedEntriesService.feedEntries.length}
     <InfiniteLoader triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
-      {#each allItems as feedEntry (feedEntry.id)}
+      {#each feedEntriesService.feedEntries as feedEntry (feedEntry.id)}
         <FeedRow {feedEntry} {handleSummarizeText} {handleGenerateSpeech} />
       {/each}
       {#snippet noData()}
-        {#if allItems.length >= 10}
+        {#if feedEntriesService.feedEntries.length >= 10}
           <div class="text-2xl">No more data</div>
         {/if}
       {/snippet}

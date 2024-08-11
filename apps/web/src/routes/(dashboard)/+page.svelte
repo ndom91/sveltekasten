@@ -1,10 +1,11 @@
 <script lang="ts">
   import { onMount } from "svelte"
-  import { getContext } from "$/lib/utils/context"
   import { HomeScroller } from "$lib/components/home-scroller"
   import { Navbar } from "$lib/components/navbar"
   import { BookmarksService } from "$lib/state/bookmarks.svelte"
+  import { FeedEntriesService } from "$lib/state/feedEntries.svelte"
   import { ScrollerTypes } from "$lib/types"
+  import { getContext } from "$lib/utils/context"
   import { goto } from "$app/navigation"
   import { page } from "$app/stores"
 
@@ -17,10 +18,11 @@
   })
 
   const bookmarkService = getContext(BookmarksService)
+  const feedEntriesService = getContext(FeedEntriesService)
 
-  $effect(() => {
-    bookmarkService.bookmarks = $page.data.bookmarks.data
-  })
+  // $effect(() => {
+  //   bookmarkService.bookmarks = $page.data.bookmarks.data
+  // })
 </script>
 
 <svelte:head>
@@ -32,12 +34,12 @@
 <main class="align-start flex flex-col justify-start gap-6 overflow-y-scroll py-4">
   <HomeScroller
     items={bookmarkService.bookmarks}
-    count={$page.data.bookmarks.count}
+    count={bookmarkService.bookmarks.length}
     type={ScrollerTypes.BOOKMARKS}
   />
   <HomeScroller
-    items={$page.data.feedEntries.data}
-    count={$page.data.feedEntries.count}
+    items={feedEntriesService.feedEntries}
+    count={feedEntriesService.feedEntries.length}
     type={ScrollerTypes.FEEDS}
   />
 </main>
