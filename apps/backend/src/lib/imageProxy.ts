@@ -15,19 +15,19 @@ const ipx = createIPX({
 });
 
 const cache = new LRUCache({
-  max: 200,
+  max: 500,
 });
 
 export const imageProxyHandler = async (c: Context) => {
   const targetUrl = c.req.raw.url.replace(/\/img/, "")
 
-  const cachedResponse = cache.get(targetUrl)
+  const cachedResponse = cache.get(targetUrl) as Blob | undefined
   if (cachedResponse) {
-    return new Response(cachedResponse as Blob, {
+    return new Response(cachedResponse, {
       status: 200,
       headers: {
         "x-cache": "HIT",
-        "Content-Type": "image/jpeg",
+        "Content-Type": cachedResponse.type,
         'cache-control': 'max-age=31536000, public, s-maxage=31536000',
       },
     })
