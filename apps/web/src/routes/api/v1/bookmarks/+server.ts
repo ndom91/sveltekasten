@@ -99,7 +99,7 @@ export const POST: RequestHandler = async (event) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ data: bookmarkData }),
+        body: JSON.stringify({ data: bookmarkData.filter((bookmark) => !bookmark.image) }),
       })
     }
 
