@@ -2,8 +2,12 @@
   import { cn } from "$/lib/utils/style"
   import Dialog from "$lib/components/Dialog.svelte"
   import { buttonVariants } from "$lib/components/ui/button"
+  import { BookmarksService } from "$lib/state/bookmarks.svelte"
+  import { getContext } from "$lib/utils/context"
   import { handleActionResults } from "$lib/utils/form-action"
   import { enhance } from "$app/forms"
+
+  const bookmarksService = getContext(BookmarksService)
 
   let {
     dialogElement = $bindable(),
@@ -12,14 +16,19 @@
     dialogElement: HTMLDialogElement | undefined
     bookmarkId: string
   } = $props()
+
+  const bookmark = $derived(bookmarksService.find(bookmarkId))
 </script>
 
 <Dialog footer={false} id="delete-bookmark" bind:element={dialogElement}>
   <div>
-    <h3 class="font-bold text-lg mb-4">Are you sure?</h3>
-    <div>This action cannot be undone. This will permanently delete your bookmark.</div>
+    <h3 class="mb-4 text-lg font-bold">Delete</h3>
+    <div>
+      Are you sure you want to delete <b>{bookmark?.url}</b>? <br /><br />This action cannot be
+      undone. This will permanently delete your bookmark.
+    </div>
   </div>
-  <div class="flex flex-col sm:flex-row gap-4 sm:justify-end">
+  <div class="flex flex-col gap-4 sm:flex-row sm:justify-end">
     <button
       onclick={() => dialogElement?.close()}
       class={cn(buttonVariants({ variant: "secondary" }), "w-full sm:w-auto")}
@@ -29,7 +38,10 @@
     <form
       action="/bookmarks?/deleteBookmark"
       method="post"
-      use:enhance={handleActionResults(() => dialogElement?.close())}
+      use:enhance={handleActionResults(() => {
+        dialogElement?.close()
+        bookmarksService.remove(bookmarkId)
+      })}
     >
       <input type="hidden" name="bookmarkId" value={bookmarkId} />
       <button
