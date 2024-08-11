@@ -122,7 +122,7 @@
       }
 
       if (searchResults.data.length) {
-        feedEntriesService.add(searchResults.data)
+        feedEntriesService.append(searchResults.data)
       }
 
       if (feedEntriesService.feedEntries.length >= searchResults.count) {

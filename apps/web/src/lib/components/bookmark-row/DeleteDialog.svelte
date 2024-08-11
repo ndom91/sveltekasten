@@ -24,8 +24,8 @@
   <div>
     <h3 class="mb-4 text-lg font-bold">Delete</h3>
     <div>
-      Are you sure you want to delete <b>{bookmark?.url}</b>? <br /><br />This action cannot be
-      undone. This will permanently delete your bookmark.
+      Are you sure you want to delete <b class="break-all">{bookmark?.url}</b>? <br /><br />This
+      action cannot be undone. This will permanently delete your bookmark.
     </div>
   </div>
   <div class="flex flex-col gap-4 sm:flex-row sm:justify-end">

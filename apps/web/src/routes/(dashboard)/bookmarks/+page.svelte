@@ -111,7 +111,7 @@
       }
 
       if (searchResults.data.length) {
-        bookmarkService.add(searchResults.data)
+        bookmarkService.append(searchResults.data)
       }
 
       if (bookmarkService.bookmarks.length >= searchResults.count) {

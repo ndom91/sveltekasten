@@ -13,6 +13,18 @@ export class FeedsService {
     if (Array.isArray(feeds)) {
       feeds.forEach((feed) => {
         if (this.feeds.find((savedFeed) => savedFeed.id === feed.id)) return
+        this.feeds.unshift(feed)
+      })
+    } else {
+      if (this.feeds.find((savedFeed) => savedFeed.id === feeds.id)) return
+      this.feeds.unshift(feeds)
+    }
+  }
+
+  append(feeds: Feed | Feed[]) {
+    if (Array.isArray(feeds)) {
+      feeds.forEach((feed) => {
+        if (this.feeds.find((savedFeed) => savedFeed.id === feed.id)) return
         this.feeds.push(feed)
       })
     } else {

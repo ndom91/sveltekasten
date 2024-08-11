@@ -13,6 +13,18 @@ export class BookmarksService {
     if (Array.isArray(bookmark)) {
       bookmark.forEach((bk) => {
         if (this.bookmarks.find((savedBookmark) => savedBookmark.id === bk.id)) return
+        this.bookmarks.unshift(bk)
+      })
+    } else {
+      if (this.bookmarks.find((savedBookmark) => savedBookmark.id === bookmark.id)) return
+      this.bookmarks.unshift(bookmark)
+    }
+  }
+
+  append(bookmark: Bookmark | Bookmark[]) {
+    if (Array.isArray(bookmark)) {
+      bookmark.forEach((bk) => {
+        if (this.bookmarks.find((savedBookmark) => savedBookmark.id === bk.id)) return
         this.bookmarks.push(bk)
       })
     } else {
@@ -30,6 +42,15 @@ export class BookmarksService {
     const bookmarkIndex = this.bookmarks.findIndex((bk) => bk.id === bookmark.id)
     if (bookmarkIndex) {
       this.bookmarks[bookmarkIndex] = bookmark
+    }
+  }
+
+  upsert(bookmark: Bookmark) {
+    const bookmarkIndex = this.bookmarks.findIndex((bk) => bk.id === bookmark.id)
+    if (bookmarkIndex) {
+      this.bookmarks[bookmarkIndex] = bookmark
+    } else {
+      this.bookmarks.push(bookmark)
     }
   }
 

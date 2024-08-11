@@ -28,6 +28,21 @@
   setContext(FeedEntriesService, feedEntriesService)
   setContext(BookmarksService, bookmarksService)
 
+  $effect(() => {
+    // Deal with invalidated and re-run 'Load' functions
+    if ($page.data.bookmarks.data.length) {
+      // Add newly created to state
+      if (!bookmarksService.find($page.data.bookmarks.data[0])) {
+        bookmarksService.add($page.data.bookmarks.data[0])
+      }
+
+      // Update any potentially changed bookmarks
+      $page.data.bookmarks.data.forEach((bk: LoadBookmarkFlatTags) => {
+        bookmarksService.update(bk)
+      })
+    }
+  })
+
   const ui = useInterface()
 
   // Set current user preferences to store

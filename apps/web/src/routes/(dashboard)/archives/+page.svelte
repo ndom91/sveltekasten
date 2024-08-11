@@ -12,7 +12,7 @@
   import { page } from "$app/stores"
 
   const ui = useInterface()
-  const bookmarkStore = getContext(BookmarksService)
+  const bookmarksService = getContext(BookmarksService)
 
   let pageNumber = $state(0)
   const rootElement = $state<HTMLElement>()
@@ -20,9 +20,9 @@
   const limitLoadCount = 20
   const logger = new Logger({ level: loggerLevels.DEBUG })
 
-  $effect(() => {
-    bookmarkStore.bookmarks = $page.data.bookmarks.data
-  })
+  // $effect(() => {
+  //   bookmarkStore.bookmarks = $page.data.bookmarks.data
+  // })
 
   if ($page.data.error) {
     logger.error(String($page.data.error))
@@ -95,10 +95,10 @@
       }
 
       if (searchResults.data.length) {
-        bookmarkStore.add(searchResults.data as any[])
+        bookmarksService.append(searchResults.data)
       }
 
-      if (bookmarkStore.bookmarks.length >= searchResults.count) {
+      if (bookmarksService.bookmarks.length >= searchResults.count) {
         loaderState.complete()
       } else {
         loaderState.loaded()
@@ -118,7 +118,7 @@
     if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "j" || e.key === "k") {
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
-      const currentActiveElementIndex = bookmarkStore.bookmarks.findIndex(
+      const currentActiveElementIndex = bookmarksService.bookmarks.findIndex(
         (item) => item.id === currentActiveElement.dataset.id,
       )
       const nextIndex =
@@ -126,7 +126,7 @@
           ? currentActiveElementIndex + 1
           : currentActiveElementIndex - 1
       const nextElement = document.querySelector(
-        `[data-id="${bookmarkStore.bookmarks[nextIndex]?.id}"]`,
+        `[data-id="${bookmarksService.bookmarks[nextIndex]?.id}"]`,
       ) as HTMLElement
 
       if (nextElement) {
@@ -136,10 +136,10 @@
     if (e.key === "o") {
       e.preventDefault()
       const currentActiveElement = e.target as HTMLElement
-      const currentActiveElementIndex = bookmarkStore.bookmarks.findIndex(
+      const currentActiveElementIndex = bookmarksService.bookmarks.findIndex(
         (item) => item.id === currentActiveElement.dataset.id,
       )
-      const targetLink = bookmarkStore.bookmarks[currentActiveElementIndex]?.url
+      const targetLink = bookmarksService.bookmarks[currentActiveElementIndex]?.url
       if (!targetLink) {
         toast.error("No item selected")
         return
@@ -177,14 +177,14 @@
 
 <Navbar />
 <main class="align-start flex flex-col justify-start gap-2 overflow-y-scroll outline-none">
-  {#if bookmarkStore.bookmarks?.length}
+  {#if bookmarksService.bookmarks?.length}
     <div class="h-full">
       <InfiniteLoader triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
-        {#each bookmarkStore.bookmarks as item (item.id)}
+        {#each bookmarksService.bookmarks as item (item.id)}
           <BookmarkRow bookmark={item} />
         {/each}
         {#snippet noData()}
-          {#if bookmarkStore.bookmarks.length >= 10}
+          {#if bookmarksService.bookmarks.length >= 10}
             <div class="text-2xl">No more data</div>
           {/if}
         {/snippet}
