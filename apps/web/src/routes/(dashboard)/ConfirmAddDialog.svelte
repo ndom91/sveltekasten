@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { ofetch } from "ofetch"
   import { toast } from "svelte-sonner"
   import Dialog from "$lib/components/Dialog.svelte"
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
@@ -19,17 +18,17 @@
   const handleConfirm = async (): Promise<void> => {
     try {
       loading = true
-      const res = await ofetch.raw("/api/v1/bookmarks", {
+      const res = await fetch("/api/v1/bookmarks", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: [
+        body: JSON.stringify([
           {
             url,
             userId: $page.data.session?.user?.id,
           },
-        ],
+        ]),
       })
 
       if (res.ok) {
@@ -60,6 +59,6 @@
   {/snippet}
   <div>
     <div>Are you sure you want to add this URL?</div>
-    <div class="mt-2 font-bold break-all line-clamp-2">{url}</div>
+    <div class="mt-2 line-clamp-2 break-all font-bold">{url}</div>
   </div>
 </Dialog>

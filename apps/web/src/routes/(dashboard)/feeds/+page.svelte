@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { ofetch } from "ofetch"
   import { watch } from "runed"
   import { onDestroy } from "svelte"
   import { InfiniteLoader, loaderState } from "svelte-infinite"
@@ -82,10 +81,14 @@
           },
         }
       }
-      const { data, count } = await ofetch("/api/v1/search", {
+      const searchResponse = await fetch("/api/v1/search", {
         method: "POST",
-        body,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
       })
+      const { data, count } = await searchResponse.json()
       return {
         data,
         count,

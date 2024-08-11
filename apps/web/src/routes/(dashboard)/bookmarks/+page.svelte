@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { ofetch } from "ofetch"
   import { watch } from "runed"
   import { getContext, onDestroy, onMount } from "svelte"
   import { InfiniteLoader, loaderState } from "svelte-infinite"
@@ -74,10 +73,14 @@
           },
         } as { archived: boolean } & Record<string, any>
       }
-      const { data, count } = await ofetch("/api/v1/search", {
+      const searchResponse = await fetch("/api/v1/search", {
         method: "POST",
-        body,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
       })
+      const { data, count } = await searchResponse.json()
       return {
         data,
         count,
@@ -191,7 +194,7 @@
 
 <Navbar />
 <main
-  class="align-start outline-none overflow-y-scroll flex flex-col justify-start gap-2"
+  class="align-start flex flex-col justify-start gap-2 overflow-y-scroll outline-none"
   bind:this={rootElement}
 >
   <FilterBar />
@@ -209,17 +212,17 @@
   {:else}
     <EmptyState />
     <ul
-      class="p-12 mx-auto mt-6 space-y-8 w-full list-none text-left md:p-8 md:px-0 md:w-1/2 text-muted-foreground"
+      class="text-muted-foreground mx-auto mt-6 w-full list-none space-y-8 p-12 text-left md:w-1/2 md:p-8 md:px-0"
     >
       <li class="relative">
         <span
-          class="absolute -left-5 -top-8 text-6xl font-bold -z-10 text-neutral-500/10 dark:text-neutral-700/30"
+          class="absolute -left-5 -top-8 -z-10 text-6xl font-bold text-neutral-500/10 dark:text-neutral-700/30"
         >
           1
         </span>
         Open the quick add form with the add button (
         <svg
-          class="inline p-1 rounded-md size-7 bg-neutral-300 text-neutral-800 dark:bg-neutral-600 dark:text-neutral-100"
+          class="size-7 inline rounded-md bg-neutral-300 p-1 text-neutral-800 dark:bg-neutral-600 dark:text-neutral-100"
           data-slot="icon"
           fill="none"
           stroke-width="1.5"
@@ -241,7 +244,7 @@
       </li>
       <li class="relative">
         <span
-          class="absolute -left-6 -top-8 text-6xl font-bold -z-10 text-neutral-500/10 dark:text-neutral-700/30"
+          class="absolute -left-6 -top-8 -z-10 text-6xl font-bold text-neutral-500/10 dark:text-neutral-700/30"
         >
           2
         </span>
@@ -249,7 +252,7 @@
       </li>
       <li class="relative">
         <span
-          class="absolute -left-6 -top-8 text-6xl font-bold -z-10 text-neutral-500/10 dark:text-neutral-700/30"
+          class="absolute -left-6 -top-8 -z-10 text-6xl font-bold text-neutral-500/10 dark:text-neutral-700/30"
         >
           3
         </span>

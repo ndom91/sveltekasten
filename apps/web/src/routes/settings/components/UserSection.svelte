@@ -1,6 +1,5 @@
 <script lang="ts">
   import { format } from "@formkit/tempo"
-  import { ofetch } from "ofetch"
   import { toast } from "svelte-sonner"
   import { parseChromeBookmarks, parsePocketBookmarks } from "../import"
   import {
@@ -42,9 +41,12 @@
   }
 
   const updateUser = async (userSettings: UpdateUserSettingsArgs) => {
-    await ofetch("/api/v1/user", {
+    await fetch("/api/v1/user", {
       method: "PUT",
-      body: {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
         data: {
           settings: {
             personal: {
@@ -65,7 +67,7 @@
             },
           },
         },
-      },
+      }),
     })
     // TODO: Reenable when not running onMount
     toast.success("Settings updated")
@@ -178,15 +180,15 @@
   }
 </script>
 
-<div class="flex flex-col gap-2 justify-start items-start h-full">
-  <Card.Root class="w-full shadow-none rounded-md bg-transparent">
-    <Card.Header class="bg-neutral-100 dark:bg-neutral-800 rounded-t-md">
-      <Card.Title class="flex justify-between items-center w-full">
+<div class="flex h-full flex-col items-start justify-start gap-2">
+  <Card.Root class="w-full rounded-md bg-transparent shadow-none">
+    <Card.Header class="rounded-t-md bg-neutral-100 dark:bg-neutral-800">
+      <Card.Title class="flex w-full items-center justify-between">
         <span class="font-normal">General</span>
       </Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
-      <div class="flex flex-col gap-2 items-start md:flex-row md:items-center">
+      <div class="flex flex-col items-start gap-2 md:flex-row md:items-center">
         <span>
           For use in the <a
             href="https://docs.briefkastenhq.com"
@@ -198,12 +200,12 @@
           you can use the following token:
         </span>
         <div
-          class="flex justify-between items-center p-2 font-mono rounded-md bg-neutral-100 dark:bg-neutral-700"
+          class="flex items-center justify-between rounded-md bg-neutral-100 p-2 font-mono dark:bg-neutral-700"
         >
           {$page.data?.session?.user?.id}
           <button
             use:clipboard={$page.data?.session?.user?.id ?? ""}
-            class="p-1 h-8 bg-transparent rounded-md outline-none focus:ring-2 focus:outline-none focus:ring-neutral-300"
+            class="h-8 rounded-md bg-transparent p-1 outline-none focus:outline-none focus:ring-2 focus:ring-neutral-300"
           >
             <svg
               class="size-4"
@@ -225,8 +227,8 @@
         </div>
       </div>
       <Separator class="my-5" />
-      <div class="flex flex-col gap-2 items-start md:flex-row md:items-center">
-        <div class="flex gap-4 items-start">
+      <div class="flex flex-col items-start gap-2 md:flex-row md:items-center">
+        <div class="flex items-start gap-4">
           <Checkbox
             id="summarization"
             class="mt-1"
@@ -245,15 +247,15 @@
       </div>
     </Card.Content>
   </Card.Root>
-  <Card.Root class="w-full shadow-none rounded-md bg-transparent">
-    <Card.Header class="bg-neutral-100 dark:bg-neutral-800 rounded-t-md">
-      <Card.Title class="flex justify-between items-center w-full">
+  <Card.Root class="w-full rounded-md bg-transparent shadow-none">
+    <Card.Header class="rounded-t-md bg-neutral-100 dark:bg-neutral-800">
+      <Card.Title class="flex w-full items-center justify-between">
         <span class="font-normal">AI Settings</span>
         <Badge class="text-sm">Experimental</Badge>
       </Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
-      <div class="flex flex-col gap-4 items-start">
+      <div class="flex flex-col items-start gap-4">
         <p>
           You can manage all of your AI features here. All of these AI features that run in the
           browser are enabled by the <a
@@ -273,8 +275,8 @@
           inference times. So be aware, the AI features are all in an experimental stage, but we
           really wanted to share them with you all already anyway!
         </p>
-        <div class="flex flex-col gap-4 items-start">
-          <div class="flex gap-4 items-start">
+        <div class="flex flex-col items-start gap-4">
+          <div class="flex items-start gap-4">
             <Checkbox
               id="summarization"
               class="mt-1"
@@ -292,7 +294,7 @@
               </label>
             </div>
           </div>
-          <div class="flex gap-4 items-start">
+          <div class="flex items-start gap-4">
             <Checkbox
               class="mt-1"
               id="tts"
@@ -321,12 +323,12 @@
                   </p>
                 </label>
                 <div
-                  class="flex flex-col gap-2 justify-start items-start md:flex-row md:items-center"
+                  class="flex flex-col items-start justify-start gap-2 md:flex-row md:items-center"
                 >
-                  <div class="flex flex-col gap-2 w-56">
+                  <div class="flex w-56 flex-col gap-2">
                     <label
                       for="ttsLocation"
-                      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 data-invalid:text-destructive text-neutral-800 dark:text-neutral-50"
+                      class="data-invalid:text-destructive text-sm font-medium leading-none text-neutral-800 peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-neutral-50"
                       >Method</label
                     >
                     <Select.Root
@@ -345,7 +347,7 @@
                       }}
                     >
                       <Select.Trigger
-                        class="w-full disabled:cursor-not-allowed enabled:bg-neutral-100 enabled:dark:bg-neutral-900 disabled:dark:bg-neutral-700"
+                        class="w-full enabled:bg-neutral-100 disabled:cursor-not-allowed enabled:dark:bg-neutral-900 disabled:dark:bg-neutral-700"
                       >
                         <Select.Value placeholder="TTS Inference Location" />
                       </Select.Trigger>
@@ -357,10 +359,10 @@
                       </Select.Content>
                     </Select.Root>
                   </div>
-                  <div class="flex flex-col gap-2 w-56">
+                  <div class="flex w-56 flex-col gap-2">
                     <label
                       for="ttsSpeaker"
-                      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 data-invalid:text-destructive text-neutral-800 dark:text-neutral-50"
+                      class="data-invalid:text-destructive text-sm font-medium leading-none text-neutral-800 peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-neutral-50"
                     >
                       Voice
                     </label>
@@ -384,7 +386,7 @@
                       }}
                     >
                       <Select.Trigger
-                        class="w-full disabled:cursor-not-allowed enabled:bg-neutral-100 enabled:dark:bg-neutral-900 disabled:dark:bg-neutral-700"
+                        class="w-full enabled:bg-neutral-100 disabled:cursor-not-allowed enabled:dark:bg-neutral-900 disabled:dark:bg-neutral-700"
                       >
                         <Select.Value placeholder="Speaker" />
                       </Select.Trigger>
@@ -418,14 +420,14 @@
       </div>
     </Card.Content>
   </Card.Root>
-  <Card.Root class="w-full shadow-none rounded-md bg-transparent">
-    <Card.Header class="bg-neutral-100 dark:bg-neutral-800 rounded-t-md">
-      <Card.Title class="flex justify-between items-center w-full">
+  <Card.Root class="w-full rounded-md bg-transparent shadow-none">
+    <Card.Header class="rounded-t-md bg-neutral-100 dark:bg-neutral-800">
+      <Card.Title class="flex w-full items-center justify-between">
         <span class="font-normal">Import</span>
       </Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
-      <div class="flex flex-col gap-4 items-start">
+      <div class="flex flex-col items-start gap-4">
         <p>
           Upload a bookmarks HTML file exported from another tool, or your browser. After the file
           has been uploaded and its name appears in the upload widget, you can press Import to start
@@ -435,23 +437,23 @@
           accept="text/html"
           id="import-bookmarks"
           type="file"
-          class="flex py-2 px-3 w-72 text-sm bg-neutral-100 dark:bg-neutral-900 rounded-md border hover:cursor-pointer focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-input ring-offset-background file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-ring"
+          class="border-input ring-offset-background file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring flex w-72 rounded-md border bg-neutral-100 px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium hover:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-neutral-900"
           bind:files={importFile}
         />
       </div>
       {#if parsedBookmarks.length > 1}
-        <div class="flex flex-col gap-4 mt-4 rounded-sm bg-neutral-50 dark:bg-neutral-900">
+        <div class="mt-4 flex flex-col gap-4 rounded-sm bg-neutral-50 dark:bg-neutral-900">
           <div
-            class="flex gap-1 justify-between items-center p-4 rounded-t-sm bg-neutral-100 dark:bg-neutral-800"
+            class="flex items-center justify-between gap-1 rounded-t-sm bg-neutral-100 p-4 dark:bg-neutral-800"
           >
             <h3>Preview</h3>
             <div>{parsedBookmarks.length} bookmarks detected</div>
           </div>
-          <div class="p-4 rounded-sm">
+          <div class="rounded-sm p-4">
             <Table.Root class="rounded-sm border dark:border-neutral-800">
               <Table.Header>
                 <Table.Row class="hover:!bg-transparent">
-                  <Table.Head class="w-1/4 min-w-48">Title</Table.Head>
+                  <Table.Head class="min-w-48 w-1/4">Title</Table.Head>
                   <Table.Head>URL</Table.Head>
                   <Table.Head class="text-right">Created At</Table.Head>
                 </Table.Row>
@@ -476,14 +478,14 @@
       {/if}
     </Card.Content>
   </Card.Root>
-  <Card.Root class="w-full shadow-none rounded-md bg-transparent">
-    <Card.Header class="bg-neutral-100 dark:bg-neutral-800 rounded-t-md">
-      <Card.Title class="flex justify-between items-center w-full">
+  <Card.Root class="w-full rounded-md bg-transparent shadow-none">
+    <Card.Header class="rounded-t-md bg-neutral-100 dark:bg-neutral-800">
+      <Card.Title class="flex w-full items-center justify-between">
         <span>Export</span>
       </Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
-      <div class="flex flex-col gap-4 items-start">
+      <div class="flex flex-col items-start gap-4">
         <p>
           Save your bookmarks from Briefkasten to an html file. This is a standardized bookmarks
           format which you can use to import your saved items to any other bookmarks manager or

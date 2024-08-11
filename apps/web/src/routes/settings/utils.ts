@@ -1,4 +1,3 @@
-import { ofetch } from "ofetch"
 import { toast } from "svelte-sonner"
 
 export interface ParsedBookmark {
@@ -68,9 +67,12 @@ export const parseImportFile = (file: string) => {
 
 export const importBookmarks = async (bookmarks: ParsedBookmark[], userId: string) => {
   try {
-    const bulkCreateData = await ofetch("/api/v1/bookmarks", {
+    const bulkCreateData = await fetch("/api/v1/bookmarks", {
       method: "POST",
-      body: bookmarks.map((importedBookmarks) => {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(bookmarks.map((importedBookmarks) => {
         const bookmark: ParsedBookmark = {
           title: importedBookmarks.title,
           url: importedBookmarks.url,
@@ -78,7 +80,7 @@ export const importBookmarks = async (bookmarks: ParsedBookmark[], userId: strin
           userId,
         }
 
-        if (importedBookmarks.tags.length) {
+        if (importedBookmarks.tags?.length) {
           bookmark.tags = importedBookmarks.tags.map((tag: string) => ({
             create: {
               tag: {
@@ -100,7 +102,7 @@ export const importBookmarks = async (bookmarks: ParsedBookmark[], userId: strin
           }))
         }
         return bookmark
-      }),
+      })),
     })
 
     if (bulkCreateData.count === bookmarks.length) {

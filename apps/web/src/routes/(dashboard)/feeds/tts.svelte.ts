@@ -1,4 +1,3 @@
-import { ofetch } from "ofetch"
 import ttsWorkerUrl from "$lib/transformers/tts-worker?url"
 import { TTSLocation, useInterface } from "$state/ui.svelte"
 
@@ -67,15 +66,18 @@ export const handleGenerateSpeech = async (text: string) => {
     return
   }
   if (ui.aiFeaturesPreferences.tts.location === TTSLocation.Server) {
-    const blobData = await ofetch("/api/v1/tts", {
+    const ttsResponse = await fetch("/api/v1/tts", {
       method: "POST",
-      body: {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
         speaker: ui.aiFeaturesPreferences.tts.speaker,
         text,
-      },
-      responseType: "blob",
+      })
     })
-    const blobUrl = URL.createObjectURL(blobData)
+    const ttsBlob = await ttsResponse.blob()
+    const blobUrl = URL.createObjectURL(ttsBlob)
     ui.textToSpeechAudioBlob = blobUrl
     return
   }

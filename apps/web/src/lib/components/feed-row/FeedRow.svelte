@@ -1,7 +1,6 @@
 <script lang="ts">
   import { format } from "@formkit/tempo"
   import dompurify from "isomorphic-dompurify"
-  import { ofetch } from "ofetch"
   import { watch } from "runed"
   import FeedActions from "./FeedActions.svelte"
   import MobileFeedActions from "./MobileFeedActions.svelte"
@@ -46,9 +45,12 @@
       ...feedEntry,
       unread: target ?? !feedEntry.unread,
     }
-    await ofetch(`/api/v1/feeds`, {
+    await fetch("/api/v1/feeds", {
       method: "PUT",
-      body: { feedEntry },
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ feedEntry }),
     })
   }
 

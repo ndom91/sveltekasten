@@ -1,6 +1,5 @@
 <script lang="ts">
   import { format } from "@formkit/tempo"
-  import { ofetch } from "ofetch"
   import BookmarkActions from "./BookmarkActions.svelte"
   import DeleteDialog from "./DeleteDialog.svelte"
   import MobileBookmarkActions from "./MobileBookmarkActions.svelte"
@@ -34,9 +33,15 @@
   }
 
   const handleArchive = async () => {
-    await ofetch(`/api/v1/bookmarks`, {
+    await fetch(`/api/v1/bookmarks`, {
       method: "PUT",
-      body: { id: bookmark.id, update: { archived: true } },
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: bookmark.id,
+        update: { archived: true },
+      }),
     })
     await invalidateAll()
   }

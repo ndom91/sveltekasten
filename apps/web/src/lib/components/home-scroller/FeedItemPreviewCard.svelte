@@ -1,6 +1,5 @@
 <script lang="ts">
   import { format } from "@formkit/tempo"
-  import { ofetch } from "ofetch"
   import { Button } from "$lib/components/ui/button"
   import * as Tooltip from "$lib/components/ui/tooltip"
   import { invalidateAll } from "$app/navigation"
@@ -13,9 +12,12 @@
       ...item,
       unread: false,
     }
-    await ofetch(`/api/v1/feeds`, {
+    await fetch("/api/v1/feeds", {
       method: "PUT",
-      body: { feedEntry },
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ feedEntry }),
     })
     await invalidateAll()
   }

@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { ofetch } from "ofetch"
   import { getContext, onDestroy } from "svelte"
   import { InfiniteLoader, loaderState } from "svelte-infinite"
   import { toast } from "svelte-sonner"
@@ -62,10 +61,14 @@
           },
         }
       }
-      const { data, count } = await ofetch("/api/v1/search", {
+      const searchResponse = await fetch("/api/v1/search", {
         method: "POST",
-        body,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
       })
+      const { data, count } = await searchResponse.json()
       return {
         data,
         count,
@@ -171,7 +174,7 @@
 <svelte:window onkeydown={handleKeyDown} />
 
 <Navbar />
-<main class="align-start outline-none overflow-y-scroll flex flex-col justify-start gap-2">
+<main class="align-start flex flex-col justify-start gap-2 overflow-y-scroll outline-none">
   {#if bookmarkStore.bookmarks?.length}
     <div class="h-full">
       <InfiniteLoader triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
@@ -187,7 +190,7 @@
     </div>
   {:else}
     <EmptyState showArrow={false} />
-    <div class="w-full text-center text-muted-foreground">
+    <div class="text-muted-foreground w-full text-center">
       Try archiving a <a class="underline underline-offset-4" href="/bookmarks">bookmark</a>
     </div>
   {/if}

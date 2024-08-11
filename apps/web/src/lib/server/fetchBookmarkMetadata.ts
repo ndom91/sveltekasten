@@ -9,7 +9,6 @@ import metascraperPublisher from "metascraper-publisher"
 import metascraperReadability from "metascraper-readability"
 import metascraperTitle from "metascraper-title"
 import metascraperUrl from "metascraper-url"
-import { ofetch } from "ofetch"
 import { getThumbhash } from "$lib/server/thumbhash"
 
 const metascraperClient = metascraper([
@@ -26,7 +25,8 @@ const metascraperClient = metascraper([
 ])
 
 export const fetchBookmarkMetadata = async (url: string) => {
-  const bookmarkPageText = await ofetch(url)
+  const targetPageResponse = await fetch(url)
+  const bookmarkPageText = await targetPageResponse.text()
   const metadata = await metascraperClient({ html: bookmarkPageText, url })
   let b64Thumbhash = ""
 
@@ -37,7 +37,7 @@ export const fetchBookmarkMetadata = async (url: string) => {
   }
 
   return {
-    imageUrl,
+    imageUrl: metadata.image,
     imageBlur: b64Thumbhash,
     metadata,
   }

@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { ofetch } from "ofetch"
   import { Badge } from "$lib/components/ui/badge"
   import { Button } from "$lib/components/ui/button"
   import { Checkbox } from "$lib/components/ui/checkbox"
@@ -13,47 +12,50 @@
   const { data: feeds } = $page.data.feeds as PageServerLoad.feeds.data
 
   const handleMarkAllRead = async (feed: Feed) => {
-    await ofetch("/api/v1/feeds/mark-all-read", {
+    await fetch("/api/v1/feeds/mark-all-read", {
       method: "POST",
-      body: {
-        feedId: feed.id,
+      headers: {
+        "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        feedId: feed.id,
+      }),
     })
   }
 </script>
 
-<div class="flex gap-4 justify-start items-center h-full">
-  <div class="flex flex-col gap-4 p-6 h-full">
-    <div class="flex justify-between items-center">
+<div class="flex h-full items-center justify-start gap-4">
+  <div class="flex h-full flex-col gap-4 p-6">
+    <div class="flex items-center justify-between">
       <h2>Filters</h2>
     </div>
-    <div class="grid gap-y-4 justify-start grid-cols-[30px_1fr]">
-      <div class="flex justify-center items-start pt-1">
+    <div class="grid grid-cols-[30px_1fr] justify-start gap-y-4">
+      <div class="flex items-start justify-center pt-1">
         <Checkbox id="unread-only" bind:checked={ui.showUnreadOnly} />
       </div>
-      <label for="unread-only" class="flex flex-col gap-2 items-start">Unread Only</label>
+      <label for="unread-only" class="flex flex-col items-start gap-2">Unread Only</label>
     </div>
-    <div class="grid gap-y-4 justify-start grid-cols-[30px_1fr]">
+    <div class="grid grid-cols-[30px_1fr] justify-start gap-y-4">
       {#each feeds as feed}
-        <div class="flex justify-center items-start pt-1">
+        <div class="flex items-start justify-center pt-1">
           <Checkbox id={new URL(feed.url).host} bind:checked={feed.visible} />
         </div>
-        <div class="flex flex-col gap-2 items-start">
-          <label for={new URL(feed.url).host} class="flex gap-2 justify-start items-center">
+        <div class="flex flex-col items-start gap-2">
+          <label for={new URL(feed.url).host} class="flex items-center justify-start gap-2">
             <span> {new URL(feed.url).host} </span>
             <img
               src={`https://favicon.yandex.net/favicon/${new URL(feed.url).hostname}`}
               alt="URL Favicon"
-              class="rounded-full size-6"
+              class="size-6 rounded-full"
             />
           </label>
           <div class="line-clamp-2 dark:text-neutral-600">
             {feed.description}
           </div>
-          <div class="flex gap-2 justify-start items-center">
-            <Badge variant="outline" title="Unread" class="py-0 px-2 h-8">
+          <div class="flex items-center justify-start gap-2">
+            <Badge variant="outline" title="Unread" class="h-8 px-2 py-0">
               <svg
-                class="mr-2 size-4"
+                class="size-4 mr-2"
                 data-slot="icon"
                 fill="none"
                 stroke-width="1.5"
@@ -72,10 +74,10 @@
             </Badge>
             <Button
               onclick={() => handleMarkAllRead(feed)}
-              class="py-0 px-2 h-8 text-xs rounded-full"
+              class="h-8 rounded-full px-2 py-0 text-xs"
             >
               <svg
-                class="mr-2 size-4"
+                class="size-4 mr-2"
                 data-slot="icon"
                 fill="none"
                 stroke-width="1.5"
