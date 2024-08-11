@@ -92,12 +92,14 @@ export const POST: RequestHandler = async (event) => {
       skipDuplicates: true,
     })
 
+    console.log("BACKEND.HEADERS", event.request.headers)
     // Add bookmark to queue for fetching screenshot
     if (PUBLIC_WORKER_URL) {
       const res = await event.fetch(`${PUBLIC_WORKER_URL}/v1/bookmark`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "cookie": event.request.headers.get("cookie") ?? ""
         },
         body: JSON.stringify({ data: bookmarkData.filter((bookmark) => !bookmark.image) }),
       })
