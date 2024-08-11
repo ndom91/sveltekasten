@@ -42,6 +42,9 @@ export const createScreenshot = async (data: CreateScreenshot) => {
 
   // Visit URL and take screenshot with playwright-core
   const image = await screenshotUrl({ url })
+  if (!image) {
+    return
+  }
 
   // Upload image to storage
   const publicImageUrl = await uploadImage({
@@ -96,7 +99,7 @@ const screenshotUrl = async ({ url }: ScreenshotArgs) => {
   })
   await page.goto(url)
 
-  // Finding and accepting cookie banners
+  // Finding and clicking away cookie banners
   const selectors = [
     "[id*=cookie] a",
     "[class*=consent] button",
@@ -107,18 +110,29 @@ const screenshotUrl = async ({ url }: ScreenshotArgs) => {
   const cookieSelectors = page.locator(selectors.join(", "))
 
   const btnRegex = new RegExp(
-    /(Accept all|I agree|Accept|Agree|Agree all|Ich stimme zu|Okay|OK)/,
+    /(Accept all|Accept all cookies|I agree|Accept|Agree|Agree all|Ich stimme zu|Okay|OK)/,
     "gi",
   )
   const cookieBtnLocator = page.getByRole("button", { name: btnRegex })
 
-  // Handler if one of these selectors appears
-  await page.addLocatorHandler(cookieSelectors, async () => {
-    await cookieBtnLocator.click()
+  await cookieBtnLocator.first().click()
+  await page.addLocatorHandler(cookieSelectors, async (locator) => {
+    await locator.first().click()
   })
 
-  // Snap screenshot
-  const buffer = await page.screenshot({ type: "png", scale: "css" })
+  // Screenshot
+  let buffer
+  if (url.includes('x.com') || url.includes('twitter.com')) {
+    await page.getByTestId('xMigrationBottomBar').click();
+    await page.waitForTimeout(2500);
+
+    const tweetElement = page.getByTestId('tweet')
+    if (tweetElement) {
+      buffer = await tweetElement.screenshot({ type: "png", scale: "css" })
+    }
+  } else {
+    buffer = await page.screenshot({ type: "png", scale: "css" })
+  }
 
   await page.close()
   await browser.close()
