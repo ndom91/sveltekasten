@@ -20,7 +20,6 @@ export async function feedWorker(arg: Task): Promise<void> {
 
 export async function screenshotWorker(arg: Task): Promise<void> {
   try {
-    console.log("SCREENSHOT ARGS", arg.data)
     await createScreenshot(arg.data as unknown as CreateScreenshot)
   } catch (error) {
     debugScreenshot("Error creating Screenshot", error)
