@@ -33,7 +33,7 @@ declare global {
   })
   type LoadBookmark = Prisma.BookmarkGetPayload<typeof bookmarksWithRelationships>
   type FlatTags = Prisma.TagGetPayload<object>
-  type LoadBookmarkFlatTags = Omit<LoadBookmark, "tags"> & { tags: FlatTags[] }
+  type LoadBookmarkFlatTags = Omit<LoadBookmark, "tags"> & { tags: FlatTags[] } & { metadata: Record<string, string> }
 
   type LoadFeedEntry = Prisma.FeedEntryGetPayload<{
     include: { feed: true; feedMedia: true }

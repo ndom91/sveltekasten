@@ -1,26 +1,35 @@
 <script lang="ts">
   import { format } from "@formkit/tempo"
+  import { PUBLIC_WORKER_URL } from "$env/static/public"
 
   const { item }: { item: LoadBookmark } = $props()
+
+  const imageUrl = $derived.by(() => {
+    if (item.image) {
+      return `${PUBLIC_WORKER_URL}/img/s_256x144/${item.image}`
+    } else {
+      return `${PUBLIC_WORKER_URL}/img/_/https://picsum.photos/seed/${encodeURIComponent(item.id)}/256/144.webp`
+    }
+  })
 </script>
 
 <div
   id="dashboard-bookmark-row"
-  class="flex flex-col gap-2 p-4 rounded-md h-fit snap-start max-w-72 bg-neutral-200 dark:bg-neutral-800"
+  class="max-w-72 flex h-fit snap-start flex-col gap-2 rounded-md bg-neutral-200 p-4 dark:bg-neutral-800"
 >
   <a href={item.url} target="_blank" class="">
     <img
-      src={item.image}
+      src={imageUrl}
       alt={item.title}
-      class="w-64 mb-1 rounded-sm object-top object-cover bg-neutral-800 dark:bg-white aspect-video"
+      class="mb-1 aspect-video w-64 rounded-sm bg-neutral-800 object-cover object-top dark:bg-white"
     />
   </a>
-  <div class="flex flex-col gap-1 w-64">
+  <div class="flex w-64 flex-col gap-1">
     <div class="flex justify-between">
       <img
-        src={`https://favicon.yandex.net/favicon/${new URL(item.url).hostname}`}
+        src={`https://favicon.im/${new URL(item.url).hostname}`}
         alt="URL Favicon"
-        class="rounded-full size-5"
+        class="size-5 rounded-full"
       />
       <span class="dark:text-neutral-400">
         {format(item.createdAt, { date: "medium", time: "short" })}

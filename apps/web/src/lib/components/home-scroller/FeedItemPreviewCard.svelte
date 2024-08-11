@@ -4,6 +4,7 @@
   import { Button } from "$lib/components/ui/button"
   import * as Tooltip from "$lib/components/ui/tooltip"
   import { invalidateAll } from "$app/navigation"
+  import { PUBLIC_WORKER_URL } from "$env/static/public"
 
   const { item }: { item: LoadFeedEntry } = $props()
 
@@ -18,6 +19,14 @@
     })
     await invalidateAll()
   }
+
+  const imageUrl = $derived.by(() => {
+    if (item.feedMedia?.[0]?.href) {
+      return `${PUBLIC_WORKER_URL}/img/s_256x144/${item.feedMedia[0].href}`
+    } else {
+      return `${PUBLIC_WORKER_URL}/img/_/https://picsum.photos/seed/${encodeURIComponent(item.id)}/256/144.webp`
+    }
+  })
 </script>
 
 <div
@@ -56,15 +65,14 @@
     </Tooltip.Content>
   </Tooltip.Root>
   <img
-    src={item.feedMedia?.[0]?.href ??
-      `https://picsum.photos/seed/${encodeURIComponent(item.id)}/240/153.webp`}
+    src={imageUrl}
     alt={item.title}
     class="mb-1 aspect-video rounded-sm object-cover object-center"
   />
   <div class="flex w-64 flex-col gap-1 overflow-hidden">
     <div class="flex justify-between">
       <img
-        src={`https://favicon.yandex.net/favicon/${new URL(item.link).hostname}`}
+        src={`https://favicon.im/${new URL(item.link).hostname}`}
         alt="URL Favicon"
         class="size-5 rounded-full"
       />

@@ -156,7 +156,7 @@
     <div
       bind:this={feedBodyElement}
       class={cn(
-        "prose max-w-screen-lg origin-top prose-img:!w-full dark:prose-blockquote:text-neutral-200 prose-img:!h-auto prose-img:max-w-screen-md prose-img:object-contain prose-video:aspect-video prose-video:max-w-screen-sm dark:text-neutral-100 dark:prose-headings:text-neutral-100 dark:prose-a:text-neutral-200 dark:prose-strong:text-neutral-100 transition-all h-0 opacity-0",
+        "prose prose-img:!w-full dark:prose-blockquote:text-neutral-200 prose-img:!h-auto prose-img:max-w-screen-md prose-img:object-contain prose-video:aspect-video prose-video:max-w-screen-sm dark:prose-headings:text-neutral-100 dark:prose-a:text-neutral-200 dark:prose-strong:text-neutral-100 h-0 max-w-screen-lg origin-top opacity-0 transition-all dark:text-neutral-100",
         cardOpen ? "h-fit" : "h-0",
       )}
     >
@@ -173,7 +173,7 @@
     <div class="text-muted mt-2 flex items-center justify-start gap-2 text-sm">
       {#if feedEntry.link}
         <img
-          src={`https://favicon.yandex.net/favicon/${new URL(feedEntry.link).hostname}`}
+          src={`https://favicon.im/${new URL(feedEntry.link).hostname}`}
           alt="URL Favicon"
           class="size-4 rounded-full"
         />

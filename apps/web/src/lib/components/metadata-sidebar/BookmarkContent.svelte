@@ -60,6 +60,16 @@
   const { form, errors, constraints, enhance, submitting, delayed } = superformInstance
 
   let selectOpen = $state(false)
+
+  const faviconUrl = $derived.by(() => {
+    let iconUrl = ""
+    try {
+      iconUrl = `https://favicon.im/${new URL($form.url as string).hostname}`
+    } catch {
+      iconUrl = "https://raw.githubusercontent.com/hustcc/placeholder.js/master/favicon.ico"
+    }
+    return iconUrl
+  })
 </script>
 
 <form
@@ -160,18 +170,11 @@
             aria-invalid={$errors.url ? "true" : undefined}
             {...$constraints.url}
             class={cn(
-              "flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-              ui.metadataSidebarData.bookmark.metadata?.logo && "pl-10",
-              !isEditMode ? "cursor-default text-muted" : "bg-neutral-100 dark:bg-neutral-950",
+              "border-input ring-offset-background file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border bg-transparent px-3 py-2 pl-10 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
+              !isEditMode ? "text-muted cursor-default" : "bg-neutral-100 dark:bg-neutral-950",
             )}
           />
-          {#if ui.metadataSidebarData.bookmark.metadata?.logo}
-            <img
-              class="size-4 absolute left-3 top-3"
-              src={ui.metadataSidebarData.bookmark.metadata?.logo}
-              alt="URL Favicon"
-            />
-          {/if}
+          <img class="size-4 absolute left-3 top-3" src={faviconUrl} alt="URL Favicon" />
         </div>
         {#if $errors.url}<span class="text-xs text-red-400">{$errors.title}</span>{/if}
       </div>
@@ -185,8 +188,8 @@
           aria-invalid={$errors.description ? "true" : undefined}
           {...$constraints.description}
           class={cn(
-            "flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-            !isEditMode ? "cursor-default text-muted" : "bg-neutral-100 dark:bg-neutral-950",
+            "border-input ring-offset-background file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring flex w-full rounded-md border bg-transparent px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
+            !isEditMode ? "text-muted cursor-default" : "bg-neutral-100 dark:bg-neutral-950",
           )}
         ></textarea>
         {#if $errors.description}<span class="text-xs text-red-400">{$errors.title}</span>{/if}
@@ -200,7 +203,7 @@
               "w-full justify-between bg-transparent",
               !$form.category && "text-muted-foreground",
               !isEditMode
-                ? "cursor-default pointer-events-none text-muted"
+                ? "text-muted pointer-events-none cursor-default"
                 : "bg-neutral-100 dark:bg-neutral-950",
             )}
             role="combobox"
@@ -295,7 +298,8 @@
           <span class="font-bold">Language</span>
           <span>
             {ui.metadataSidebarData.bookmark.metadata?.lang
-              ? countryMaps[ui.metadataSidebarData.bookmark.metadata?.lang.toUpperCase()]
+              ? // @ts-expect-error - fix up enum lookup
+                countryMaps[ui.metadataSidebarData.bookmark.metadata?.lang.toUpperCase()]
               : "Unknown"}
           </span>
         </div>
