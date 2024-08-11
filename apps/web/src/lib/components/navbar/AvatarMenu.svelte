@@ -21,16 +21,16 @@
 
   onMount(() => {
     window.addEventListener("beforeinstallprompt", (event) => {
-      console.log("beforeinstallprompt", { offerInstall })
       event.preventDefault()
       installPrompt = event
       offerInstall = true
+      console.log("beforeinstallprompt", { offerInstall })
     })
 
     window.addEventListener("appinstalled", () => {
-      console.log("appinstalled", { offerInstall })
       installPrompt = null
       offerInstall = false
+      console.log("appinstalled", { offerInstall })
     })
   })
 
@@ -41,7 +41,7 @@
 
     // @ts-expect-error TODO: find exact type for beforeinstallprompt Event
     const result = await installPrompt.prompt()
-    console.log("Install prompt", result.outcome)
+    console.log("prompt.result", result.outcome)
 
     installPrompt = null
     offerInstall = false
@@ -50,7 +50,7 @@
 
 <DropdownMenu.Root>
   <DropdownMenu.Trigger
-    class="rounded-full transition duration-300 outline-none focus:ring-2 focus:outline-none dark:focus:ring-zinc-500 focus:ring-zinc-200"
+    class="rounded-full outline-none transition duration-300 focus:outline-none focus:ring-2 focus:ring-zinc-200 dark:focus:ring-zinc-500"
   >
     <Avatar.Root>
       <Avatar.Image
@@ -59,7 +59,7 @@
         class="rounded"
         alt="User Avatar"
       />
-      <Avatar.Fallback><Skeleton class="w-full h-full rounded-full" /></Avatar.Fallback>
+      <Avatar.Fallback><Skeleton class="h-full w-full rounded-full" /></Avatar.Fallback>
     </Avatar.Root>
   </DropdownMenu.Trigger>
   <DropdownMenu.Content
@@ -68,7 +68,7 @@
     sideOffset={8}
   >
     <DropdownMenu.Group>
-      <DropdownMenu.Label class="justify-start w-full max-w-32">
+      <DropdownMenu.Label class="max-w-32 w-full justify-start">
         <div class="truncate">
           {$page.data.session?.user?.name ?? $page.data.session?.user?.email}
         </div>
@@ -76,7 +76,7 @@
       </DropdownMenu.Label>
       <DropdownMenu.Separator class="bg-neutral-100 dark:bg-neutral-800" />
       <DropdownMenu.CheckboxItem
-        class="justify-start hover:cursor-pointer before:content-[''] before:absolute before:left-1 before:bg-neutral-200 before:size-[1.35rem] before:rounded-sm data-[state=checked]:before:bg-neutral-800 [&_svg]:size-4"
+        class="before:size-[1.35rem] [&_svg]:size-4 justify-start before:absolute before:left-1 before:rounded-sm before:bg-neutral-200 before:content-[''] hover:cursor-pointer data-[state=checked]:before:bg-neutral-800"
         onCheckedChange={toggleMode}
         checked={isDarkMode}
       >

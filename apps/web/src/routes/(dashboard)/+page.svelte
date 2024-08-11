@@ -21,7 +21,6 @@
   $effect(() => {
     bookmarkService.bookmarks = $page.data.bookmarks.data
   })
-  $inspect("inspect.BOOKMARKS", bookmarkService.bookmarks)
 </script>
 
 <svelte:head>

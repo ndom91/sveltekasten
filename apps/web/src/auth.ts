@@ -80,7 +80,6 @@ export const { signIn, signOut, handle } = SvelteKitAuth({
   },
   callbacks: {
     async jwt({ token, profile, account, user, trigger }) {
-      console.log("args", { token, profile, account, user, trigger })
       if (account) {
         // Initial user profile
         const userProfile: User = {

@@ -148,14 +148,13 @@ export const actions: Actions = {
 
       // Add bookmark to queue for fetching screenshot
       if (PUBLIC_WORKER_URL) {
-        const res = await event.fetch(`${PUBLIC_WORKER_URL}/v1/bookmark`, {
+        await event.fetch(`${PUBLIC_WORKER_URL}/v1/bookmark`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ data: [{ url }] }),
         })
-        console.log("bookmarks.workerRes", res)
       }
 
       return message(form, {
@@ -163,11 +162,7 @@ export const actions: Actions = {
         text: "Bookmark Added!",
       })
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message)
-      } else {
-        console.error(error)
-      }
+      console.error(String(error))
       fail(500, { type: "error", message: "Failed to add bookmark" })
     }
   },
