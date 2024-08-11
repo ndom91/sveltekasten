@@ -42,13 +42,13 @@
   style="grid-template: 'container';"
   class={cn(
     "relative grid flex-shrink-0 place-content-center place-items-center overflow-hidden rounded-md border border-neutral-100 dark:border-neutral-800",
-    "max-h-36 w-48 md:w-64",
+    "h-36 w-48 md:w-64",
     className,
   )}
 >
   <img
     style="grid-area: container;"
-    class="aspect-video h-auto w-full rounded-md object-cover opacity-0 transition duration-500"
+    class="aspect-video h-36 w-full rounded-md object-cover opacity-0 transition duration-500"
     class:srcImageLoaded={loaded}
     use:onload
     alt={alt ?? "Bookmark Image"}
@@ -59,7 +59,7 @@
     style="grid-area: container;"
     src={placeholderURL}
     alt="Thumbhash Placeholder"
-    class="pointer-events-none h-full w-full rounded-md object-fill object-left-top transition duration-500"
+    class="pointer-events-none h-36 w-full rounded-md object-fill object-left-top transition duration-500"
     class:loaded
   />
 </div>
