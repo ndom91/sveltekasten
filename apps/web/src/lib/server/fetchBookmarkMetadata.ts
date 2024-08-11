@@ -25,10 +25,17 @@ const metascraperClient = metascraper([
 ])
 
 export const fetchBookmarkMetadata = async (url: string) => {
+  let b64Thumbhash = ""
   const targetPageResponse = await fetch(url)
   const bookmarkPageText = await targetPageResponse.text()
   const metadata = await metascraperClient({ html: bookmarkPageText, url })
-  let b64Thumbhash = ""
+  if (!metadata.image) {
+    return {
+      imageUrl: undefined,
+      imageBlur: undefined,
+      metadata,
+    }
+  }
 
   try {
     b64Thumbhash = await getThumbhash(metadata.image)
