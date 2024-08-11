@@ -53,7 +53,7 @@
     if (bookmark.image) {
       return `${PUBLIC_WORKER_URL}/img/s_260x144/${bookmark.image}`
     } else {
-      return `${PUBLIC_WORKER_URL}/img/_/https://source.unsplash.com/random/260x144?sig=${bookmark.url}`
+      return `${PUBLIC_WORKER_URL}/img/_/https://picsum.photos/seed/${btoa(bookmark.url).substring(0, 16)}/256/144.webp`
     }
   })
 
