@@ -23,7 +23,7 @@ sw.addEventListener("fetch", (event: FetchEvent) => {
   event.respondWith(Response.redirect("./?shared=true"))
 
   event.waitUntil(
-    (async function () {
+    (async function() {
       const textParam = url.searchParams.get("text")
       const urlParam = url.searchParams.get("link")
 
@@ -79,7 +79,6 @@ const cacheKeys = {
 }
 
 sw.addEventListener("message", (event) => {
-  console.log("sw.global.message", JSON.stringify(event), event)
   if (event.data && event.data.type === "SKIP_WAITING") {
     sw.skipWaiting()
   }
@@ -91,18 +90,24 @@ const fontAssetRoute = new Route(
   },
   new CacheFirst({
     cacheName: cacheKeys.fonts,
+    plugins: [
+      new ExpirationPlugin({
+        // Only cache requests for 24hrs
+        maxAgeSeconds: 24 * 60 * 60,
+      }),
+    ],
   }),
 )
 const imageAssetRoute = new Route(
   ({ request, url }) => {
-    return request.destination === "image" && !url.hostname.includes("logo.clearbit.com")
+    return request.destination === "image" && !url.hostname.includes("api-dev.briefkastenhq.com")
   },
   new CacheFirst({
     cacheName: cacheKeys.images,
     plugins: [
       new ExpirationPlugin({
-        // Only cache requests for a week
-        maxAgeSeconds: 7 * 24 * 60 * 60,
+        // Only cache requests for 24hrs
+        maxAgeSeconds: 24 * 60 * 60,
       }),
     ],
   }),
