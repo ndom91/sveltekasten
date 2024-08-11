@@ -29,7 +29,7 @@ export async function saveBookmark(bookmarks: { url?: string }[]) {
 
   // Add bookmark to queue for fetching screenshot
   if (PUBLIC_WORKER_URL) {
-    await fetch(`${PUBLIC_WORKER_URL}/bookmark`, {
+    await fetch(`${PUBLIC_WORKER_URL}/v1/bookmark`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

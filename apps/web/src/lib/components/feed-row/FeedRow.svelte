@@ -35,9 +35,9 @@
 
   const imageUrl = $derived.by(() => {
     if (feedEntry.feedMedia?.[0]?.href) {
-      return `${env.PUBLIC_IMG_URL}/s_160x96/${feedEntry.feedMedia?.[0]?.href}`
+      return `${env.PUBLIC_WORKER_URL}/img/s_160x96/${feedEntry.feedMedia?.[0]?.href}`
     } else {
-      return `${env.PUBLIC_IMG_URL}/https://picsum.photos/seed/${encodeURIComponent(feedEntry.id)}/240/153.webp`
+      return `${env.PUBLIC_WORKER_URL}/img/s_160x96/https://picsum.photos/seed/${encodeURIComponent(feedEntry.id)}/240/153.webp`
     }
   })
 

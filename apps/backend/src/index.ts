@@ -29,7 +29,7 @@ if (process.env.NODE_ENV === "production") {
   }))
 }
 
-const BASE_PATH = "/worker/v1"
+const BASE_PATH = "/v1"
 app.route(`${BASE_PATH}/bookmark`, bookmark)
 app.route(`${BASE_PATH}/feed`, feed)
 

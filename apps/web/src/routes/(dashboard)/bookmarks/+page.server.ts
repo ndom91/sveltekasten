@@ -51,13 +51,13 @@ export const actions: Actions = {
           image: form.data.image,
           category: form.data.category
             ? {
-                connect: {
-                  id: form.data.category,
-                },
-              }
-            : {
-                disconnect: true,
+              connect: {
+                id: form.data.category,
               },
+            }
+            : {
+              disconnect: true,
+            },
           tags: {
             deleteMany: {},
             connectOrCreate: form.data.tags.map((tag: Tag) => ({
@@ -127,28 +127,28 @@ export const actions: Actions = {
           },
           tags: tags
             ? {
-                create: tags.map((tag: Tag) => ({
-                  tag: {
-                    connect: {
-                      id: tag.id,
-                    },
+              create: tags.map((tag: Tag) => ({
+                tag: {
+                  connect: {
+                    id: tag.id,
                   },
-                })),
-              }
+                },
+              })),
+            }
             : {},
           category: categoryId
             ? {
-                connect: {
-                  id: categoryId,
-                },
-              }
+              connect: {
+                id: categoryId,
+              },
+            }
             : {},
         },
       })
 
       // Add bookmark to queue for fetching screenshot
       if (PUBLIC_WORKER_URL) {
-        const res = await event.fetch(`${PUBLIC_WORKER_URL}/bookmark`, {
+        const res = await event.fetch(`${PUBLIC_WORKER_URL}/v1/bookmark`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

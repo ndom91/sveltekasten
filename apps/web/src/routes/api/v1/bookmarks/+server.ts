@@ -94,7 +94,7 @@ export const POST: RequestHandler = async (event) => {
 
     // Add bookmark to queue for fetching screenshot
     if (PUBLIC_WORKER_URL) {
-      await event.fetch(`${PUBLIC_WORKER_URL}/bookmark`, {
+      await event.fetch(`${PUBLIC_WORKER_URL}/v1/bookmark`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

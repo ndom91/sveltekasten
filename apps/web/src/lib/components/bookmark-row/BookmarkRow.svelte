@@ -46,9 +46,9 @@
 
   const imageUrl = $derived.by(() => {
     if (bookmark.image) {
-      return `${env.PUBLIC_IMG_URL}/s_260x144/${bookmark.image}`
+      return `${env.PUBLIC_WORKER_URL}/img/s_260x144/${bookmark.image}`
     } else {
-      return `${env.PUBLIC_IMG_URL}/https://source.unsplash.com/random/240x144?sig=${bookmark.url}`
+      return `${env.PUBLIC_WORKER_URL}/img/s_260x144/https://source.unsplash.com/random/240x144?sig=${bookmark.url}`
     }
   })
 
