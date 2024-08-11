@@ -1,4 +1,4 @@
-import { useInterface } from "$lib/state/ui.svelte"
+import { TTSLocation, useInterface } from "$lib/state/ui.svelte"
 import ttsWorkerUrl from "$lib/transformers/tts-worker?url"
 
 const ui = useInterface()
@@ -9,7 +9,7 @@ export const registerTtsWorker = () => {
   $effect(() => {
     if (
       !ui.aiFeaturesPreferences.tts.enabled
-      || ui.aiFeaturesPreferences.tts.location !== uiSvelte.TTSLocation.Browser
+      || ui.aiFeaturesPreferences.tts.location !== TTSLocation.Browser
     ) {
       return
     }
@@ -65,7 +65,7 @@ export const handleGenerateSpeech = async (text: string) => {
   if (!ui.aiFeaturesPreferences.tts.enabled) {
     return
   }
-  if (ui.aiFeaturesPreferences.tts.location === uiSvelte.TTSLocation.Server) {
+  if (ui.aiFeaturesPreferences.tts.location === TTSLocation.Server) {
     const ttsResponse = await fetch("/api/v1/tts", {
       method: "POST",
       headers: {
@@ -85,7 +85,7 @@ export const handleGenerateSpeech = async (text: string) => {
   if (
     !ttsWorker
     || !ui.aiFeaturesPreferences.tts.enabled
-    || ui.aiFeaturesPreferences.tts.location !== uiSvelte.TTSLocation.Browser
+    || ui.aiFeaturesPreferences.tts.location !== TTSLocation.Browser
   ) {
     return
   }
