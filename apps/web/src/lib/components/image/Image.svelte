@@ -42,13 +42,13 @@
   style="grid-template: 'container';"
   class={cn(
     "relative grid flex-shrink-0 place-content-center place-items-center overflow-hidden rounded-md border border-neutral-100 dark:border-neutral-800",
-    "h-36 w-48 md:w-64",
+    "h-24 w-32 sm:h-36 sm:w-48 md:w-64",
     className,
   )}
 >
   <img
     style="grid-area: container;"
-    class="aspect-video h-36 w-full rounded-md object-cover opacity-0 transition duration-500"
+    class="aspect-video h-24 w-full rounded-md object-cover object-left-top opacity-0 transition duration-500 sm:h-36"
     class:srcImageLoaded={loaded}
     use:onload
     alt={alt ?? "Bookmark Image"}

@@ -84,8 +84,8 @@
     <span class="truncate pr-10 text-xl font-semibold md:pr-0" title={bookmark.title}>
       {bookmark.title}
     </span>
-    <p class="line-clamp-2 pr-10 md:pr-0">{bookmark.desc}</p>
-    <div class="text-muted flex items-center justify-start gap-2 text-sm">
+    <p class="line-clamp-2 hidden pr-10 sm:[display:-webkit-box] md:pr-0">{bookmark.desc}</p>
+    <div class="text-muted flex items-center justify-start gap-2 pr-10 text-sm md:pr-0">
       <img
         src={`${PUBLIC_WORKER_URL}/img/_/https://favicon.yandex.net/favicon/${new URL(bookmark.url).hostname}`}
         alt="URL Favicon"
@@ -94,12 +94,12 @@
       <a
         target="_blank"
         href={bookmark.url}
-        class="line-clamp-1 text-clip pr-8 text-neutral-500 md:pr-0"
+        class="truncate text-neutral-500"
       >
         {bookmark.url}
       </a>
     </div>
-    <span class="flex flex-wrap gap-2">
+    <span class="flex flex-wrap gap-2 pr-10 md:pr-0">
       <Badge variant="default">
         {format(bookmark.createdAt, { date: "medium", time: "short" })}
       </Badge>
