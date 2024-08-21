@@ -12,14 +12,12 @@
   import { Navbar } from "$lib/components/navbar"
 
   import { FeedEntriesService } from "$lib/state/feedEntries.svelte"
-  // import { FeedsService } from "$lib/state/feeds.svelte"
   import { useInterface } from "$lib/state/ui.svelte"
   import { getContext } from "$lib/utils/context"
   import { documentVisibilityStore } from "$lib/utils/documentVisibility"
   import { invalidateAll } from "$app/navigation"
   import { page } from "$app/stores"
 
-  // const feedsService = getContext(FeedsService)
   const feedEntriesService = getContext(FeedEntriesService)
 
   let innerWidth = $state(1000)
@@ -122,7 +120,7 @@
       }
 
       if (searchResults.data.length) {
-        feedEntriesService.append(searchResults.data)
+        feedEntriesService.add(searchResults.data)
       }
 
       if (feedEntriesService.feedEntries.length >= searchResults.count) {
