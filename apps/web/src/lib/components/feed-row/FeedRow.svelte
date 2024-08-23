@@ -36,7 +36,7 @@
     if (feedEntry.feedMedia?.[0]?.href) {
       return `${PUBLIC_WORKER_URL}/img/s_160x96/${feedEntry.feedMedia?.[0]?.href}`
     } else {
-      return `${PUBLIC_WORKER_URL}/img/_/https://picsum.photos/seed/${btoa(feedEntry.link).substring(0, 16)}/160/96.webp`
+      return `${PUBLIC_WORKER_URL}/img/_/https://picsum.photos/seed/${btoa(feedEntry.link).substring(feedEntry.link.length - 32, feedEntry.link.length)}/160/96.webp`
     }
   })
 
