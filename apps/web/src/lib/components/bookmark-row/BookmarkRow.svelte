@@ -87,15 +87,11 @@
     <p class="line-clamp-2 hidden pr-10 sm:[display:-webkit-box] md:pr-0">{bookmark.desc}</p>
     <div class="text-muted flex items-center justify-start gap-2 pr-10 text-sm md:pr-0">
       <img
-        src={`${PUBLIC_WORKER_URL}/img/_/https://favicon.yandex.net/favicon/${new URL(bookmark.url).hostname}`}
+        src={`${PUBLIC_WORKER_URL}/img/_/https://favicon.controld.com/${new URL(bookmark.url).hostname}`}
         alt="URL Favicon"
         class="size-4 rounded-full"
       />
-      <a
-        target="_blank"
-        href={bookmark.url}
-        class="truncate text-neutral-500"
-      >
+      <a target="_blank" href={bookmark.url} class="truncate text-neutral-500">
         {bookmark.url}
       </a>
     </div>

@@ -69,7 +69,7 @@
           >
             <Checkbox id={item.id} bind:checked={item.visible} />
             <img
-              src={`${PUBLIC_WORKER_URL}/img/_/https://favicon.yandex.net/favicon/${new URL(item.url).hostname}`}
+              src={`${PUBLIC_WORKER_URL}/img/_/https://favicon.controld.com/${new URL(item.url).hostname}`}
               alt="URL Favicon"
               class="size-4 m-2 rounded-full"
             />

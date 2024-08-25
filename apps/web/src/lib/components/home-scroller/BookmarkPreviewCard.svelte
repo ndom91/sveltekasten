@@ -27,7 +27,7 @@
   <div class="flex w-64 flex-col gap-1">
     <div class="flex justify-between">
       <img
-        src={`${PUBLIC_WORKER_URL}/img/_/https://favicon.yandex.net/favicon/${new URL(item.url).hostname}`}
+        src={`${PUBLIC_WORKER_URL}/img/_/https://favicon.controld.com/${new URL(item.url).hostname}`}
         alt="URL Favicon"
         class="size-5 rounded-full"
       />

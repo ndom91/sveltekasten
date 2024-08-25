@@ -45,7 +45,7 @@
           <label for={new URL(feed.url).host} class="flex items-center justify-start gap-2">
             <span> {new URL(feed.url).host} </span>
             <img
-              src={`${PUBLIC_WORKER_URL}/img/_/https://favicon.yandex.net/favicon/${new URL(feed.url).hostname}`}
+              src={`${PUBLIC_WORKER_URL}/img/_/https://favicon.controld.com/${new URL(feed.url).hostname}`}
               alt="URL Favicon"
               class="size-6 rounded-full"
             />
