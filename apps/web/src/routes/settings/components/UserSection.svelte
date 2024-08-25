@@ -115,7 +115,11 @@
         parsedBookmarks = parsePocketBookmarks(parsedFile.doc)
       } else if (parsedFile.type === bookmarkTypes.CHROME) {
         // Default Chrome format
-        parsedBookmarks = parseChromeBookmarks(parsedFile.doc)
+        const chromeBookmarks = parseChromeBookmarks(parsedFile.doc)
+        if (!chromeBookmarks?.[0]?.title) {
+          return
+        }
+        parsedBookmarks = chromeBookmarks
       }
     }
   })
@@ -131,7 +135,7 @@
       parsedBookmarks = []
     } catch (error) {
       console.error(error)
-      toast.error(`Import failed ${error}`)
+      toast.error(`Import failed ${String(error)}`)
     } finally {
       importLoading = false
     }
@@ -143,9 +147,9 @@
     exportLoading = false
   }
 
-  const handleSummarizationToggle = () => {
+  async function handleSummarizationToggle() {
     summarizationEnabled = !summarizationEnabled
-    updateUser({
+    await updateUser({
       ttsEnabled,
       ttsSpeaker: ttsSpeaker.trim(),
       ttsLocation: ttsLocation.trim(),
@@ -155,9 +159,9 @@
     })
   }
 
-  const handleTTSToggle = () => {
+  async function handleTTSToggle() {
     ttsEnabled = !ttsEnabled
-    updateUser({
+    await updateUser({
       ttsEnabled,
       ttsSpeaker: ttsSpeaker.trim(),
       ttsLocation: ttsLocation.trim(),
@@ -167,9 +171,9 @@
     })
   }
 
-  function toggleSetting(setting: string) {
+  async function toggleSetting(setting: string) {
     personalSettings[setting] = !personalSettings[setting]
-    updateUser({
+    await updateUser({
       ttsEnabled,
       ttsSpeaker: ttsSpeaker.trim(),
       ttsLocation: ttsLocation.trim(),
@@ -230,13 +234,13 @@
       <div class="flex flex-col items-start gap-2 md:flex-row md:items-center">
         <div class="flex items-start gap-4">
           <Checkbox
-            id="summarization"
+            id="compact"
             class="mt-1"
             checked={personalSettings?.compact ?? false}
             onCheckedChange={() => toggleSetting("compact")}
           />
           <div>
-            <label for="summarization" class="">
+            <label for="compact" class="">
               <div class="text-lg hover:cursor-pointer">Compact Mode</div>
               <div class="text-neutral-500">
                 In mobile view, remove bookmark images and paddings, etc.
@@ -335,9 +339,9 @@
                       name="ttsLocation"
                       items={ttsLocationItems}
                       selected={{ value: ttsLocation, label: ttsLocation }}
-                      onSelectedChange={(selected) => {
+                      onSelectedChange={async (selected) => {
                         ttsLocation = selected?.value
-                        updateUser({
+                        await updateUser({
                           ttsEnabled,
                           ttsSpeaker: ttsSpeaker.trim(),
                           ttsLocation: ttsLocation.trim(),
@@ -374,9 +378,9 @@
                       }))}
                       disabled={ttsLocation !== TTSLocation.Server}
                       selected={{ value: ttsSpeaker, label: ttsSpeaker }}
-                      onSelectedChange={(selected) => {
+                      onSelectedChange={async (selected) => {
                         ttsSpeaker = selected?.value
-                        updateUser({
+                        await updateUser({
                           ttsEnabled,
                           ttsSpeaker: ttsSpeaker.trim(),
                           ttsLocation: ttsLocation.trim(),
@@ -441,7 +445,7 @@
           bind:files={importFile}
         />
       </div>
-      {#if parsedBookmarks.length > 1}
+      {#if parsedBookmarks && parsedBookmarks.length > 1}
         <div class="mt-4 flex flex-col gap-4 rounded-sm bg-neutral-50 dark:bg-neutral-900">
           <div
             class="flex items-center justify-between gap-1 rounded-t-sm bg-neutral-100 p-4 dark:bg-neutral-800"
@@ -464,7 +468,7 @@
                     <Table.Cell class="font-medium">{bookmark.title}</Table.Cell>
                     <Table.Cell>{bookmark.url}</Table.Cell>
                     <Table.Cell class="text-right">
-                      {format(bookmark.createdAt, "medium")}
+                      {format(String(bookmark.createdAt), "medium")}
                     </Table.Cell>
                   </Table.Row>
                 {/each}
@@ -472,7 +476,7 @@
             </Table.Root>
           </div>
           <Button disabled={importLoading} class="mx-auto mb-4 w-96" onclick={handleImport}>
-            Looks good, Import all {parsedBookmarks.length}!
+            Looks good, Import all {parsedBookmarks?.length}!
           </Button>
         </div>
       {/if}
