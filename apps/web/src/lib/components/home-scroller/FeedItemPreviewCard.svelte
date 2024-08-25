@@ -26,7 +26,7 @@
     if (item.feedMedia?.[0]?.href) {
       return `${PUBLIC_WORKER_URL}/img/s_256x144/${item.feedMedia[0].href}`
     } else {
-      return `${PUBLIC_WORKER_URL}/img/_/https://picsum.photos/seed/${btoa(item.link).substring(0, 16)}/256/144.webp`
+      return `${PUBLIC_WORKER_URL}/img/_/https://picsum.photos/seed/${btoa(item.link).substring(item.link.length - 32, item.link.length)}/256/144.webp`
     }
   })
 </script>
