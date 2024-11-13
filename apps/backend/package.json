@@ -18,33 +18,33 @@
     "db:generate": "prisma generate"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.627.0",
+    "@aws-sdk/client-s3": "^3.689.0",
     "@formkit/tempo": "^0.1.2",
-    "@hono/node-server": "^1.12.0",
-    "@hono/zod-validator": "^0.2.2",
+    "@hono/node-server": "^1.13.7",
+    "@hono/zod-validator": "^0.4.1",
     "@panva/hkdf": "^1.2.1",
-    "@prisma/client": "5.18.0",
-    "@rowanmanning/feed-parser": "^1.0.1",
-    "croner": "^8.1.1",
-    "debug": "^4.3.6",
+    "@prisma/client": "5.22.0",
+    "@rowanmanning/feed-parser": "^1.1.0",
+    "croner": "^9.0.0",
+    "debug": "^4.3.7",
     "fastq": "^1.17.1",
-    "hono": "^4.5.4",
+    "hono": "^4.6.10",
     "hono-rate-limiter": "^0.4.0",
     "ipx": "^3.0.1",
-    "jose": "^5.6.3",
-    "lru-cache": "^11.0.0",
-    "playwright-chromium": "^1.44.0",
+    "jose": "^5.9.6",
+    "lru-cache": "^11.0.2",
+    "playwright-chromium": "^1.47.0",
     "rss-parser": "^3.13.0",
-    "sharp": "^0.33.4",
+    "sharp": "^0.33.5",
     "thumbhash": "^0.1.1",
     "zod": "^3.23.8",
     "zod-prisma-types": "^3.1.8"
   },
   "devDependencies": {
     "@types/debug": "^4.1.12",
-    "@types/node": "^22.2.0",
+    "@types/node": "^22.9.0",
     "@types/xml2js": "^0.4.14",
-    "prisma": "5.18.0",
-    "tsx": "^4.17.0"
+    "prisma": "5.22.0",
+    "tsx": "^4.19.2"
   }
 }
