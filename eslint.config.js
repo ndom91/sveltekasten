@@ -20,29 +20,7 @@ export default ts.config(
       },
       parserOptions: {
         projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
-  },
-  {
-    files: ["apps/web/**/*.svelte"],
-    languageOptions: {
-      parser: svelteParser,
-      parserOptions: {
-        project: ["./apps/web/tsconfig.json", "./apps/web/.svelte-kit/tsconfig.json"],
         extraFileExtensions: [".svelte"],
-        parser: ts.parser,
-      },
-    },
-  },
-  {
-    // files: ['**/*.ts'],
-    languageOptions: {
-      parser: svelteParser,
-      parserOptions: {
-        project: ["./apps/*/tsconfig.json", "./apps/web/.svelte-kit/tsconfig.json"],
-        extraFileExtensions: [".svelte"],
-        parser: ts.parser,
       },
     },
     settings: {
@@ -66,6 +44,7 @@ export default ts.config(
       "import-x": pluginImportX,
     },
     rules: {
+      'no-undef': 'off',
       "@typescript-eslint/no-unused-vars": "off",
       "@typescript-eslint/no-unsafe-call": ["off", "never"],
       "@typescript-eslint/no-unsafe-argument": ["off", "never"],
@@ -101,6 +80,37 @@ export default ts.config(
       "import-x/no-relative-packages": "error", // Don't allow packages to have relative imports between each other
     },
   },
+	{
+		files: ['**/*.svelte'],
+		languageOptions: {
+			parserOptions: {
+				parser: ts.parser
+			}
+		}
+	},
+  // {
+  //   files: ["apps/web/**/*.svelte"],
+  //   languageOptions: {
+  //     parser: svelteParser,
+  //     parserOptions: {
+  //       // project: ["./apps/web/tsconfig.json", "./apps/web/.svelte-kit/tsconfig.json"],
+  //       projectService: true,
+  //       extraFileExtensions: [".svelte"],
+  //       parser: ts.parser,
+  //     },
+  //   },
+  // },
+  // {
+  //   // files: ['**/*.ts'],
+  //   languageOptions: {
+  //     parser: svelteParser,
+  //     parserOptions: {
+  //       project: ["./apps/*/tsconfig.json", "./apps/web/.svelte-kit/tsconfig.json"],
+  //       extraFileExtensions: [".svelte"],
+  //       parser: ts.parser,
+  //     },
+  //   },
+  // },
   {
     ignores: [
       "**/build/",
@@ -119,3 +129,4 @@ export default ts.config(
   //   ...ts.configs.disableTypeChecked,
   // },
 )
+

@@ -4,13 +4,16 @@
 
   const { item }: { item: LoadBookmarkFlatTags } = $props()
 
-  const imageUrl = $derived.by(() => {
-    if (item.image) {
-      return `${PUBLIC_WORKER_URL}/img/s_256x144/${item.image}`
-    } else {
-      return `${PUBLIC_WORKER_URL}/img/_/https://picsum.photos/seed/${btoa(item.url).substring(item.url.length - 32, item.url.length)}/256/144.webp`
-    }
-  })
+  const imageUrl = `${PUBLIC_WORKER_URL}/img/s_256x144/${item.image}`
+  // $derived.by(() => {
+  //   if (item.image) {
+  //     return `${PUBLIC_WORKER_URL}/img/s_256x144/${item.image}`
+  //   } else {
+  //     return `${PUBLIC_WORKER_URL}/img/_/https://picsum.photos/seed/${Math.random() * 100000}/256/144.webp`
+  //   }
+  // })
+
+  const createdDate = $derived(format(item.createdAt, { date: "medium", time: "short" }))
 </script>
 
 <div
@@ -32,7 +35,7 @@
         class="size-5 rounded-full"
       />
       <span class="dark:text-neutral-400">
-        {format(item.createdAt, { date: "medium", time: "short" })}
+        {createdDate}
       </span>
     </div>
     <a

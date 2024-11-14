@@ -8,7 +8,7 @@ import type { Feed } from "../lib/types/zod/index.js"
 const debug = debugFactory("backend:cron")
 
 // Run every 10 min
-export const updateJob = Cron(
+export const updateJob = new Cron(
   "* */10 * * * *",
   {
     timezone: "Europe/London",
