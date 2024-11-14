@@ -32,13 +32,13 @@
   const limitLoadCount = 20
   const logger = new Logger({ level: loggerLevels.DEBUG })
 
-  $effect(() => {
-    if ($page.data.bookmarks.data.length) {
-      $page.data.bookmarks.data.forEach((bk: LoadBookmarkFlatTags) => {
-        bookmarkService.update(bk)
-      })
-    }
-  })
+  // $effect(() => {
+  //   if ($page.data.bookmarks.data.length) {
+  //     $page.data.bookmarks.data.forEach((bk: LoadBookmarkFlatTags) => {
+  //       bookmarkService.update(bk)
+  //     })
+  //   }
+  // })
 
   if ($page.data.error) {
     logger.error(String($page.data.error))

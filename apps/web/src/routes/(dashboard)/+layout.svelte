@@ -24,24 +24,25 @@
   const feedsService = new FeedsService($page.data.feeds.data)
   const feedEntriesService = new FeedEntriesService($page.data.feedEntries.data)
   const bookmarksService = new BookmarksService($page.data.bookmarks.data)
+
   setContext(FeedsService, feedsService)
   setContext(FeedEntriesService, feedEntriesService)
   setContext(BookmarksService, bookmarksService)
 
-  $effect(() => {
-    // Deal with invalidated and re-run 'Load' functions
-    if ($page.data.bookmarks.data.length) {
-      // Add newly created to state
-      if (!bookmarksService.find($page.data.bookmarks.data[0])) {
-        bookmarksService.add($page.data.bookmarks.data[0])
-      }
-
-      // Update any potentially changed bookmarks
-      $page.data.bookmarks.data.forEach((bk: LoadBookmarkFlatTags) => {
-        bookmarksService.update(bk)
-      })
-    }
-  })
+  // $effect(() => {
+  //   // Deal with invalidated and re-run 'Load' functions
+  //   if ($page.data.bookmarks.data.length) {
+  //     // Add newly created to state
+  //     if (!bookmarksService.find($page.data.bookmarks.data[0])) {
+  //       bookmarksService.add($page.data.bookmarks.data[0])
+  //     }
+  //
+  //     // Update any potentially changed bookmarks
+  //     $page.data.bookmarks.data.forEach((bk: LoadBookmarkFlatTags) => {
+  //       bookmarksService.update(bk)
+  //     })
+  //   }
+  // })
 
   const ui = useInterface()
 
@@ -65,7 +66,7 @@
 
   onMount(() => {
     if (browser && "serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/service-worker.js", {
+      void navigator.serviceWorker.register("/service-worker.js", {
         type: dev ? "module" : "classic",
       })
     }

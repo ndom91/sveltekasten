@@ -35,13 +35,13 @@
   const limitLoadCount = 20
 
   // Reset feed items on load invalidation
-  $effect(() => {
-    if ($page.data.feedEntries.data.length) {
-      $page.data.feedEntries.data.forEach((feedEntry: LoadFeedEntry) => {
-        feedEntriesService.update(feedEntry)
-      })
-    }
-  })
+  // $effect(() => {
+  //   if ($page.data.feedEntries.data.length) {
+  //     $page.data.feedEntries.data.forEach((feedEntry: LoadFeedEntry) => {
+  //       feedEntriesService.update(feedEntry)
+  //     })
+  //   }
+  // })
 
   registerTtsWorker()
   registerSummarizationWorker()
