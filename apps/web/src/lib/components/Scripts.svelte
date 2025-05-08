@@ -19,15 +19,10 @@
   {#if !dev && $page.url.hostname === "dev.briefkastenhq.com"}
     <script>
       partytown = {
-        forward: ["plausible"],
+        forward: ["rybbit"],
       }
     </script>
 
-    <script
-      type="text/partytown"
-      src="/p.js"
-      data-domain="dev.briefkastenhq.com"
-      data-api="/add/event"
-    ></script>
+    <script type="text/partytown" src="r.js" data-site-id="4" defer></script>
   {/if}
 </svelte:head>
