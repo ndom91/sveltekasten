@@ -23,6 +23,6 @@
       }
     </script>
 
-    <script type="text/partytown" src="r.js" data-site-id="4" defer></script>
+    <script type="text/partytown" src="/r.js" data-site-id="4" defer></script>
   {/if}
 </svelte:head>
