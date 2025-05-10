@@ -9,7 +9,7 @@
   // TODO: Refactor using reactive set/map
   import { Combobox } from "bits-ui"
   import { type FormPathLeaves, type SuperForm, formFieldProxy } from "sveltekit-superforms"
-  import type { Tag as RawTag } from "$lib/types/zod"
+  import type { Tag as RawTag } from "$lib/types/zod.js"
   import { Badge } from "$lib/components/ui/badge"
   import { flyAndScale } from "$lib/utils/style"
 

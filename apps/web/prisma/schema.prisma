@@ -13,12 +13,12 @@ generator client {
   moduleFormat           = "esm"
 }
 
-generator zod {
-  provider          = "pnpm dlx zod-prisma-types"
-  output            = "../src/lib/types/zod"
-  // prismaClientPath  = "../../../../node_modules/@prisma-web/client/index.js"
-  useTypeAssertions = true
-}
+// generator zod {
+//   provider          = "pnpm dlx zod-prisma-types"
+//   output            = "../src/lib/types/zod"
+//   prismaClientPath  = "../../../prisma-client/client.js"
+//   useTypeAssertions = true
+// }
 
 model Account {
   id                String   @id @default(cuid())

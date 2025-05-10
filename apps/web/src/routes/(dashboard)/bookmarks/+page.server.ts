@@ -1,14 +1,14 @@
 import { fail, redirect } from "@sveltejs/kit"
 import { message, superValidate } from "sveltekit-superforms"
 import { zod } from "sveltekit-superforms/adapters"
+import type { Tag } from "$lib/types/zod.js"
+import type { Actions, PageServerLoad } from "./$types"
+import { PUBLIC_WORKER_URL } from "$env/static/public"
 import { isAuthenticated } from "$lib/auth"
 import { db } from "$lib/prisma"
 import { fetchBookmarkMetadata } from "$lib/server/fetchBookmarkMetadata"
 import { formSchema as metadataSchema } from "$schemas/metadata-sidebar"
 import { formSchema as quickAddSchema } from "$schemas/quick-add"
-import type { Tag } from "$lib/types/zod"
-import type { Actions, PageServerLoad } from "./$types"
-import { PUBLIC_WORKER_URL } from "$env/static/public"
 
 export const actions: Actions = {
   deleteBookmark: async (event) => {
@@ -51,13 +51,13 @@ export const actions: Actions = {
           image: form.data.image,
           category: form.data.category
             ? {
-              connect: {
-                id: form.data.category,
-              },
-            }
+                connect: {
+                  id: form.data.category,
+                },
+              }
             : {
-              disconnect: true,
-            },
+                disconnect: true,
+              },
           tags: {
             deleteMany: {},
             connectOrCreate: form.data.tags.map((tag: Tag) => ({
@@ -127,21 +127,21 @@ export const actions: Actions = {
           },
           tags: tags
             ? {
-              create: tags.map((tag: Tag) => ({
-                tag: {
-                  connect: {
-                    id: tag.id,
+                create: tags.map((tag: Tag) => ({
+                  tag: {
+                    connect: {
+                      id: tag.id,
+                    },
                   },
-                },
-              })),
-            }
+                })),
+              }
             : {},
           category: categoryId
             ? {
-              connect: {
-                id: categoryId,
-              },
-            }
+                connect: {
+                  id: categoryId,
+                },
+              }
             : {},
         },
       })

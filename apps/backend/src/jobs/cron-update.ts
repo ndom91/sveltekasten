@@ -1,11 +1,11 @@
-import { format } from "@formkit/tempo"
-import { Cron } from "croner"
-import debugFactory from "../lib/log.js"
-import { updateFeed } from "../lib/update-feed.js"
-import { db } from "../plugins/prisma.js"
-import type { Feed } from "../lib/types/zod/index.js"
+import { format } from "@formkit/tempo";
+import { Cron } from "croner";
+import debugFactory from "../lib/log.js";
+import { updateFeed } from "../lib/update-feed.js";
+import { db } from "../plugins/prisma.js";
+import type { Feed } from "../lib/types/zod.js";
 
-const debug = debugFactory("backend:cron")
+const debug = debugFactory("backend:cron");
 
 // Run every 10 min
 export const updateJob = new Cron(
@@ -18,31 +18,31 @@ export const updateJob = new Cron(
   },
   async (cron: Cron) => {
     // TODO: Think of some way to dedupe feed updates across multiple users effectively.
-    debug("Refreshing feeds")
+    debug("Refreshing feeds");
     try {
-      const oneHourAgo = new Date()
-      oneHourAgo.setHours(oneHourAgo.getHours() - 1)
+      const oneHourAgo = new Date();
+      oneHourAgo.setHours(oneHourAgo.getHours() - 1);
       const feeds: Feed[] = await db.feed.findMany({
         where: {
           lastFetched: {
             lte: oneHourAgo,
           },
         },
-      })
+      });
       if (!feeds.length) {
-        debug("0 feeds to refresh")
+        debug("0 feeds to refresh");
         debug(
           `Next run: ${format(cron.nextRun() ?? "", { date: "medium", time: "long" })}`,
-        )
-        return
+        );
+        return;
       }
 
-      debug(`${feeds.length} feeds to refresh`)
+      debug(`${feeds.length} feeds to refresh`);
 
       await Promise.allSettled(
         feeds.map(async (feed) => {
-          debug(`Updating feed - ${feed.url}`)
-          await updateFeed(feed)
+          debug(`Updating feed - ${feed.url}`);
+          await updateFeed(feed);
 
           // After successfully updating all new FeedEntry items, bump feed.lastFetched
           await db.feed.update({
@@ -52,14 +52,14 @@ export const updateJob = new Cron(
             data: {
               lastFetched: new Date().toISOString(),
             },
-          })
+          });
         }),
-      )
+      );
       debug(
         `Next run: ${format(cron.nextRun() ?? "", { date: "medium", time: "long" })}`,
-      )
+      );
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   },
-)
+);

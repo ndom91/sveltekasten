@@ -2,7 +2,7 @@ import Prisma from "@prisma/client"
 import { fail, redirect } from "@sveltejs/kit"
 import type { Actions, PageServerLoad } from "./$types"
 import { db } from "$lib/prisma"
-import { CategoryCreateInputSchema } from "$lib/types/zod"
+import { CategoryCreateInputSchema } from "$lib/types/zod.js"
 
 export const load: PageServerLoad = async ({ locals, url }) => {
   const session = await locals.auth()

@@ -7,25 +7,25 @@
   import { toast } from "svelte-sonner"
   import DeleteDialog from "./DeleteDialog.svelte"
   import DataTableActions from "./feed-data-table-actions.svelte"
+  import type { Feed } from "$lib/types/zod.js"
+  import { enhance } from "$app/forms"
+  import { invalidateAll } from "$app/navigation"
+  import { page } from "$app/state"
   import { Button, buttonVariants } from "$lib/components/ui/button"
   import * as Card from "$lib/components/ui/card"
   import * as Table from "$lib/components/ui/table"
   import { handleActionResults } from "$lib/utils/form-action"
-  import type { Feed } from "$lib/types/zod"
-  import { enhance } from "$app/forms"
-  import { invalidateAll } from "$app/navigation"
-  import { page } from "$app/stores"
 
   let isDeleteDialogOpen = $state(false)
   let targetFeed = $state<Feed>()
 
   const handleToggleDeleteDialog = (feedId: string) => {
-    targetFeed = $page.data.feeds?.data.find((feed: Feed) => feed.id === feedId)
+    targetFeed = page.data.feeds?.data.find((feed: Feed) => feed.id === feedId)
     isDeleteDialogOpen = !isDeleteDialogOpen
   }
 
   const checkQueueResults = () => {
-    tick().then(() =>
+    void tick().then(() =>
       toast.promise(invalidateAll, {
         loading: "Loading..",
         success: "Feed Added",
@@ -34,11 +34,11 @@
     )
   }
 
-  const feedsStore = writable($page.data.feeds?.data)
+  const feedsStore = writable(page.data.feeds?.data)
 
   $effect(() => {
-    if ($page.data?.feeds?.data) {
-      feedsStore.set($page.data.feeds.data)
+    if (page.data?.feeds?.data) {
+      feedsStore.set(page.data.feeds.data)
     }
   })
 
@@ -69,7 +69,7 @@
     }),
     table.column({
       // @ts-expect-error feedEntries is number
-      accessor: ({ _count }) => _count.feedEntries,
+      accessor: ({ _count }) => _count.feedEntries as number,
       id: "count",
       header: "Entries",
     }),
@@ -106,7 +106,7 @@
   const { headerRows, pageRows, tableAttrs, tableBodyAttrs } = table.createViewModel(columns)
 </script>
 
-<DeleteDialog form={$page.form} bind:open={isDeleteDialogOpen} feed={targetFeed!} />
+<DeleteDialog form={page.form} bind:open={isDeleteDialogOpen} feed={targetFeed!} />
 <div class="flex flex-col gap-2 justify-start items-start">
   <Card.Root class="w-full rounded-md shadow-none bg-transparent">
     <Card.Header class="bg-neutral-100 dark:bg-neutral-800 rounded-t-md">

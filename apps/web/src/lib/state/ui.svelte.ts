@@ -1,4 +1,4 @@
-import type { Category, Tag } from "$lib/types/zod"
+import type { Category, Tag } from "$lib/types/zod.js"
 
 export const TTSLocation = {
   Browser: "Browser",

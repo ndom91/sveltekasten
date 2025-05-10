@@ -9,6 +9,7 @@
     "moduleDetection": "force",
     "isolatedModules": true,
     "strict": true,
+    "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
     "forceConsistentCasingInFileNames": true,
     "useUnknownInCatchVariables": true,

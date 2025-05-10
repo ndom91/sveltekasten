@@ -4,14 +4,13 @@
   import { watch } from "runed"
   import FeedActions from "./FeedActions.svelte"
   import MobileFeedActions from "./MobileFeedActions.svelte"
+  import type { Feed, FeedEntry, FeedEntryMedia } from "$lib/types/zod.js"
+  import { page } from "$app/state"
+  import { PUBLIC_WORKER_URL } from "$env/static/public"
   import MediaQuery from "$lib/components/MediaQuery.svelte"
   import { Badge } from "$lib/components/ui/badge"
   import { useInterface } from "$lib/state/ui.svelte"
   import { cn } from "$lib/utils/style"
-  import type { Feed, FeedEntry, FeedEntryMedia } from "$lib/types/zod"
-  // import { page } from "$app/stores"
-  import { page } from "$app/state"
-  import { PUBLIC_WORKER_URL } from "$env/static/public"
 
   const ui = useInterface()
 

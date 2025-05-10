@@ -1,11 +1,11 @@
 import { json, text } from "@sveltejs/kit"
 import z from "zod"
+import type { RequestHandler } from "./$types"
+import { PUBLIC_WORKER_URL } from "$env/static/public"
 import { isAuthenticated } from "$lib/auth"
 import { db } from "$lib/prisma"
 import { fetchBookmarkMetadata } from "$lib/server/fetchBookmarkMetadata"
-import { BookmarkUncheckedCreateInputSchema } from "$lib/types/zod"
-import type { RequestHandler } from "./$types"
-import { PUBLIC_WORKER_URL } from "$env/static/public"
+import { BookmarkUncheckedCreateInputSchema } from "$lib/types/zod.js"
 
 // Get more Bookmarks
 export const GET: RequestHandler = async (event) => {
@@ -98,7 +98,7 @@ export const POST: RequestHandler = async (event) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "cookie": event.request.headers.get("cookie") ?? ""
+          cookie: event.request.headers.get("cookie") ?? "",
         },
         body: JSON.stringify({ data: bookmarkData.filter((bookmark) => !bookmark.image) }),
       })

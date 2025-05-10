@@ -3,14 +3,14 @@
   import BookmarkActions from "./BookmarkActions.svelte"
   import DeleteDialog from "./DeleteDialog.svelte"
   import MobileBookmarkActions from "./MobileBookmarkActions.svelte"
+  import type { Category } from "$lib/types/zod.js"
+  import { invalidateAll } from "$app/navigation"
+  import { page } from "$app/state"
+  import { PUBLIC_WORKER_URL } from "$env/static/public"
   import MediaQuery from "$lib/components/MediaQuery.svelte"
   import { Image } from "$lib/components/image"
   import { Badge } from "$lib/components/ui/badge"
   import { useInterface } from "$lib/state/ui.svelte"
-  import type { Category } from "$lib/types/zod"
-  import { invalidateAll } from "$app/navigation"
-  import { page } from "$app/stores"
-  import { PUBLIC_WORKER_URL } from "$env/static/public"
 
   type CategoryVisible = Category & { visible: boolean }
 
@@ -25,8 +25,8 @@
   const handleMetadataSidebarOpen = () => {
     ui.setMetadataSidebarData({
       bookmark,
-      categories: $page.data.categories,
-      tags: $page.data.tags,
+      categories: page.data.categories,
+      tags: page.data.tags,
     })
     ui.toggleMetadataSidebar(true)
     ui.toggleMetadataSidebarEditMode(false)
@@ -46,7 +46,7 @@
     await invalidateAll()
   }
 
-  const categories = $state($page.data.categories)
+  const categories = $state(page.data.categories)
   let isBookmarkCategoryHidden = $state(false)
 
   const imageUrl = $derived.by(() => {

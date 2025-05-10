@@ -1,16 +1,16 @@
 <script lang="ts">
+  import type { Feed } from "$lib/types/zod.js"
+  import type { PageServerLoad } from "./$types"
+  import { page } from "$app/state"
+  import { PUBLIC_WORKER_URL } from "$env/static/public"
   import { Badge } from "$lib/components/ui/badge"
   import { Button } from "$lib/components/ui/button"
   import { Checkbox } from "$lib/components/ui/checkbox"
   import { useInterface } from "$lib/state/ui.svelte"
-  import type { Feed } from "$lib/types/zod"
-  import type { PageServerLoad } from "./$types"
-  import { page } from "$app/stores"
-  import { PUBLIC_WORKER_URL } from "$env/static/public"
 
   const ui = useInterface()
 
-  const { data: feeds } = $page.data.feeds as PageServerLoad.feeds.data
+  const { data: feeds } = page.data.feeds as PageServerLoad.feeds.data
 
   const handleMarkAllRead = async (feed: Feed) => {
     await fetch("/api/v1/feeds/mark-all-read", {

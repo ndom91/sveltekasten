@@ -1,4 +1,4 @@
-import type { Category } from "$lib/types/zod"
+import type { Category } from "$lib/types/zod.js"
 
 export class CatagoryService {
   categories = $state<Category[]>([])

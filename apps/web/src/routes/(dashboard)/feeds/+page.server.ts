@@ -1,7 +1,8 @@
-import { fail, redirect } from "@sveltejs/kit"
-import { db } from "$lib/prisma"
-import type { Feed } from "$lib/types/zod"
+import { redirect } from "@sveltejs/kit"
 import type { PageServerLoad } from "./$types"
+// import { fail, redirect } from "@sveltejs/kit"
+// import type { Feed } from "$lib/types/zod.js"
+// import { db } from "$lib/prisma"
 
 export const load: PageServerLoad = async ({ locals, url, depends }) => {
   depends("app:feeds")
