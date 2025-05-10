@@ -235,7 +235,7 @@
     </button>
 
     {#if windowWidth < 768}
-      <button onclick={() => (ui.textToSpeechAudioBlob = "")}>
+      <button aria-label="Stop" onclick={() => (ui.textToSpeechAudioBlob = "")}>
         <svg
           class="size-6"
           data-slot="icon"

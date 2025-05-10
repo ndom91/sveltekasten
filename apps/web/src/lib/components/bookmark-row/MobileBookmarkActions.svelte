@@ -36,7 +36,7 @@
   class="flex absolute -top-3 -right-1 flex-col justify-start mt-2"
   bind:this={actionMenuWrapperElement}
 >
-  <a href={url} target="_blank" class="flex justify-center p-3">
+  <a aria-label="Open URL" href={url} target="_blank" class="flex justify-center p-3">
     <svg
       class="size-5 text-neutral-900 dark:text-neutral-100"
       xmlns="http://www.w3.org/2000/svg"
@@ -70,6 +70,7 @@
     >
   </a>
   <button
+    aria-label="Toggle Popover"
     class="flex justify-center p-3"
     popovertarget={`bookmark-menu-${id}`}
     style={`anchor-name: --a-${id}`}

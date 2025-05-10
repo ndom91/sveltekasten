@@ -1,15 +1,15 @@
 <script lang="ts">
   import { fade } from "svelte/transition"
+  import { page } from "$app/state"
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
   import { useInterface } from "$lib/state/ui.svelte"
-  import { page } from "$app/stores"
 
   const ui = useInterface()
 
   // TODO: Refactor a bit when popover anchor API is more widely available
   let open = $state(false)
 
-  const enableSummary = $page.data.session?.user?.settings?.ai?.summarization.enabled ?? false
+  const enableSummary = page.data.session?.user?.settings?.ai?.summarization.enabled ?? false
   const enableTTS = ui.aiFeaturesPreferences.tts.enabled
 
   const {
@@ -48,7 +48,7 @@
   class="absolute right-0 top-0 mt-2 flex h-full flex-col justify-start"
   bind:this={actionMenuWrapperElement}
 >
-  <button class="flex justify-center p-3" onclick={handleToggleCardOpen}>
+  <button aria-label="Toggle Card" class="flex justify-center p-3" onclick={handleToggleCardOpen}>
     <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
       <rect width="256" height="256" fill="none" /><path
         d="M128,88a32,32,0,0,1,32-32h64a8,8,0,0,1,8,8V192a8,8,0,0,1-8,8H160a32,32,0,0,0-32,32"
@@ -98,6 +98,7 @@
     >
   </button>
   <button
+    aria-label="Toggle Popover"
     class="flex justify-center p-3"
     popovertarget={`feed-menu-${id}`}
     style={`anchor-name: --a-${id}`}

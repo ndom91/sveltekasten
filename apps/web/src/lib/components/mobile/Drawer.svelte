@@ -16,6 +16,7 @@
 
 <Drawer.Root direction="left" bind:open={drawerOpen}>
   <button
+    aria-label="Toggle Drawer"
     onclick={() => (drawerOpen = !drawerOpen)}
     class="size-12 fixed left-3 top-3 z-20 flex items-center justify-center"
   >

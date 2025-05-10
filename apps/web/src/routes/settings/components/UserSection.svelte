@@ -10,6 +10,7 @@
     parseImportFile,
   } from "../utils"
   import { Badge } from "$/lib/components/ui/badge"
+  import { page } from "$app/stores"
   import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
   import { Button } from "$lib/components/ui/button"
   import * as Card from "$lib/components/ui/card"
@@ -19,7 +20,6 @@
   import * as Table from "$lib/components/ui/table"
   import { TTSLocation, defaultAISettings } from "$lib/state/ui.svelte"
   import { clipboard } from "$lib/utils/clipboard"
-  import { page } from "$app/stores"
 
   let exportLoading = $state(false)
   let importLoading = $state(false)
@@ -208,6 +208,7 @@
         >
           {$page.data?.session?.user?.id}
           <button
+            aria-label="Copy"
             use:clipboard={$page.data?.session?.user?.id ?? ""}
             class="h-8 rounded-md bg-transparent p-1 outline-none focus:outline-none focus:ring-2 focus:ring-neutral-300"
           >
@@ -357,7 +358,7 @@
                       </Select.Trigger>
                       <Select.Input />
                       <Select.Content>
-                        {#each ttsLocationItems as location}
+                        {#each ttsLocationItems as location (location.value)}
                           <Select.Item value={location.value}>{location.label}</Select.Item>
                         {/each}
                       </Select.Content>
@@ -396,7 +397,7 @@
                       </Select.Trigger>
                       <Select.Input />
                       <Select.Content>
-                        {#each speakers as speaker}
+                        {#each speakers as speaker (speaker)}
                           <Select.Item value={speaker}>{speaker}</Select.Item>
                         {/each}
                       </Select.Content>

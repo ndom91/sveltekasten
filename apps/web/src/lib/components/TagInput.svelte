@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   export type Tag = {
     label: string
     value: string
@@ -9,9 +9,9 @@
   // TODO: Refactor using reactive set/map
   import { Combobox } from "bits-ui"
   import { type FormPathLeaves, type SuperForm, formFieldProxy } from "sveltekit-superforms"
+  import type { Tag as RawTag } from "$lib/types/zod"
   import { Badge } from "$lib/components/ui/badge"
   import { flyAndScale } from "$lib/utils/style"
-  import type { Tag as RawTag } from "$lib/types/zod"
 
   const {
     form,
@@ -28,14 +28,14 @@
   let inputValue = $state("")
   const { form: formInstance } = form
   let selectedValues = $state<Tag[]>(
-    ($formInstance.tags as RawTag[])?.map(tag => ({ value: tag.id, label: tag.name })) ?? [],
+    ($formInstance.tags as RawTag[])?.map((tag) => ({ value: tag.id, label: tag.name })) ?? [],
   )
 
   const tagValues = $derived(tags.map((tag: RawTag) => ({ value: tag.id, label: tag.name })))
 
   const filteredTags = $derived(
     inputValue
-      ? tagValues.filter(tag => tag.label.toLowerCase().includes(inputValue.toLowerCase()))
+      ? tagValues.filter((tag) => tag.label.toLowerCase().includes(inputValue.toLowerCase()))
       : tagValues,
   )
 
@@ -51,10 +51,10 @@
   onSelectedChange={(selectedTags) => {
     // TODO: Cleanup hacky combobox tag input changeHandler
     if (selectedTags) {
-      $value
-        = selectedTags
+      $value =
+        selectedTags
           ?.map((t) => {
-            return tags.find(tag => tag.id === t.value)
+            return tags.find((tag) => tag.id === t.value)
           })
           .filter(Boolean) ?? []
       selectedValues = selectedTags

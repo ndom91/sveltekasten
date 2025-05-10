@@ -10,8 +10,9 @@
     <div class="flex justify-between">
       <h2 class="text-2xl font-bold">Keyboard Shortcuts</h2>
       <button
+        aria-label="Cancel"
         class="flex justify-center items-center rounded-full transition outline-none hover:ring-2 focus:ring-2 ring-neutral-300 size-7 dark:ring-neutral-600"
-        onclick={() => cancelAction()}
+        onclick={cancelAction}
       >
         <svg
           class="rounded-full size-5"

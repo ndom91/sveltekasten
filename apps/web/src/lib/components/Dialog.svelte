@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { cn } from "$lib/utils/style"
   import type { Snippet } from "svelte"
+  import { cn } from "$lib/utils/style"
 
   const ModalSize = {
     sm: "sm",
