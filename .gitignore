@@ -13,6 +13,7 @@ data/
 dist/
 build/
 generated-prisma/
+prisma-client/
 
 *.mp3
 

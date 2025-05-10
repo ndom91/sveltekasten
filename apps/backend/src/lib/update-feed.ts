@@ -1,48 +1,55 @@
-import { fetchFeed } from "./feed.js"
-import debugFactory from "./log.js"
-import { db } from "../plugins/prisma.js"
-import type { Feed } from "./types/zod/index.js"
+import { fetchFeed } from "./feed.js";
+import debugFactory from "./log.js";
+import { db } from "../plugins/prisma.js";
+import type { Feed } from "./types/zod/index.js";
 
-const debug = debugFactory("backend:update-feed")
+interface MatchedFeedEntries {
+  guid: string | null;
+}
+
+const debug = debugFactory("backend:update-feed");
 
 export const updateFeed = async (feed: Feed) => {
-  const parsedFeed = await fetchFeed({ url: feed.url, lastFetched: feed.lastFetched })
+  const parsedFeed = await fetchFeed({
+    url: feed.url,
+    lastFetched: feed.lastFetched,
+  });
   if (!parsedFeed) {
-    debug(`No feed data: ${feed.url}`)
-    return
+    debug(`No feed data: ${feed.url}`);
+    return;
   }
 
   // Find pre-existing feed entries
-  const matchedFeedEntries = await db.feedEntry.findMany({
+  const matchedFeedEntries: MatchedFeedEntries[] = await db.feedEntry.findMany({
     select: {
       guid: true,
     },
     where: {
       guid: {
-        in: parsedFeed.items.map(item => item.id).filter(Boolean) as string[],
+        in: parsedFeed.items.map((item) => item.id).filter(Boolean) as string[],
       },
       feedId: feed.id,
       userId: feed.userId,
     },
-  })
+  });
 
   // Diff pre-existing feed entries and new feed parsed items
   const newItems = parsedFeed.items.filter(
-    item => !matchedFeedEntries.some(entry => entry.guid === item.id),
-  )
+    (item) => !matchedFeedEntries.some((entry) => entry.guid === item.id),
+  );
 
   // If no new items, return
   if (!newItems.length) {
-    debug(`0 new items in ${feed.url}`)
-    return
+    debug(`0 new items in ${feed.url}`);
+    return;
   }
 
-  debug(`${newItems.length} new items ${feed.url}`)
+  debug(`${newItems.length} new items ${feed.url}`);
 
   // If we have new items to insert, insert their FeedEntry and FeedEntryMedia
   await Promise.allSettled(
     newItems.map((item) => {
-      debug(`Inserting ${item.url}`)
+      debug(`Inserting ${item.url}`);
       return db.feedEntry.create({
         data: {
           title: item.title ?? "",
@@ -53,7 +60,10 @@ export const updateFeed = async (feed: Feed) => {
           contentSnippet: item.description,
           ingested: new Date().toISOString(),
           published: item.published,
-          categories: item.categories.map(category => category.label).filter((label) => !label?.includes('|')).filter(Boolean) as string[],
+          categories: item.categories
+            .map((category) => category.label)
+            .filter((label) => !label?.includes("|"))
+            .filter(Boolean) as string[],
           user: {
             connect: {
               id: feed.userId,
@@ -65,19 +75,23 @@ export const updateFeed = async (feed: Feed) => {
             },
           },
           feedMedia: {
-            create: item.media?.filter(media => media.type === "image" && !!media.title && !!media.url).map(media => ({
-              href: media.url,
-              title: media.title,
-              user: {
-                connect: {
-                  id: feed.userId,
+            create: item.media
+              ?.filter(
+                (media) =>
+                  media.type === "image" && !!media.title && !!media.url,
+              )
+              .map((media) => ({
+                href: media.url,
+                title: media.title,
+                user: {
+                  connect: {
+                    id: feed.userId,
+                  },
                 },
-              },
-            }),
-            ),
+              })),
           },
         },
-      })
+      });
     }),
-  )
-}
+  );
+};

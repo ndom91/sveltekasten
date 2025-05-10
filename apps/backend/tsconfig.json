@@ -2,7 +2,6 @@
   "compilerOptions": {
     "outDir": "./dist",
     "strict": true,
-    "strictNullChecks": true,
     "skipLibCheck": true,
     "noUncheckedIndexedAccess": true,
 
@@ -11,8 +10,8 @@
       "dom"
     ],
     "target": "es2022",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "module": "NodeNext",
+    "moduleDetection": "force",
     "esModuleInterop": true,
 
     "resolveJsonModule": true,
@@ -20,12 +19,13 @@
 
     "types": [
       "node"
-    ],
+    ]
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "prisma.d.ts"
   ],
   "exclude": [
     "node_modules"
-  ],
+  ]
 }

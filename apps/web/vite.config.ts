@@ -29,7 +29,7 @@ export default defineConfig({
   plugins: [
     sveltekit(),
     partytownVite({
-      dest: join(__dirname, "build", "client", "~partytown"),
+      dest: join(import.meta.dirname, "build", "client", "~partytown"),
     }),
   ],
   server: {

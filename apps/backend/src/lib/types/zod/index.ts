@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { Prisma } from '../../../../node_modules/@prisma-backend/client';
+import { Prisma } from '@prisma/client';
 
 /////////////////////////////////////////
 // HELPER FUNCTIONS

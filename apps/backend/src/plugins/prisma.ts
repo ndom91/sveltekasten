@@ -1,6 +1,6 @@
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "@prisma-backend/client";
 import debugFactory from "../lib/log.js";
+import { PrismaClient } from "../prisma-client/index.js";
 import process from "node:process";
 
 const debug = debugFactory("backend:db");

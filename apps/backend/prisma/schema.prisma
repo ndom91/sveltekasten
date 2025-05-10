@@ -5,14 +5,18 @@ datasource db {
 }
 
 generator client {
-  provider        = "prisma-client-js"
+  provider        = "prisma-client"
   previewFeatures = ["fullTextSearch", "queryCompiler", "driverAdapters"]
-  output          = "../node_modules/@prisma-backend/client"
+  output          = "../src/prisma-client"
+
+  runtime                = "nodejs"
+  moduleFormat           = "esm"
 }
 
 generator zod {
   provider          = "pnpm dlx zod-prisma-types"
   output            = "../src/lib/types/zod"
+  // prismaClientPath  = "../../../../node_modules/@prisma-backend/client/index.js"
   useTypeAssertions = true
 }
 
