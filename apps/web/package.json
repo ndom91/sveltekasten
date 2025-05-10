@@ -82,6 +82,6 @@
     "vaul-svelte": "^0.3.2",
     "ws": "^8.18.0",
     "zod": "^3.23.8",
-    "zod-prisma-types": "^3.1.8"
+    "zod-prisma-types": "^3.2.4"
   }
 }
