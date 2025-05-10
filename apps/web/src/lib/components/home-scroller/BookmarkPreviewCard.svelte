@@ -13,7 +13,12 @@
   //   }
   // })
 
-  const createdDate = $derived(format(item.createdAt, { date: "medium", time: "short" }))
+  const createdDate = $derived(
+    format(item.createdAt instanceof Date ? item.createdAt : new Date(), {
+      date: "medium",
+      time: "short",
+    }),
+  )
 </script>
 
 <div

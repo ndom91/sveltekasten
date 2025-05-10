@@ -79,7 +79,10 @@
         class="size-5 rounded-full"
       />
       <span class="dark:text-neutral-400">
-        {format(item.published!, { date: "medium", time: "short" })}
+        {format(item.published instanceof Date ? item.published : new Date(), {
+          date: "medium",
+          time: "short",
+        })}
       </span>
     </div>
     <a

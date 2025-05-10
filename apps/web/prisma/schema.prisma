@@ -6,7 +6,8 @@ datasource db {
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch"]
+  previewFeatures = ["fullTextSearch", "queryCompiler", "driverAdapters"]
+  output          = "../node_modules/@prisma-web/client"
 }
 
 generator zod {

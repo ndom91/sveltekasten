@@ -10,7 +10,7 @@
   import { version } from "$app/environment"
   import { page } from "$app/stores"
 
-  const isDarkMode = $derived($mode === "dark")
+  const isDarkMode = $derived(mode.current === "dark")
   let element = $state<HTMLDialogElement | undefined>()
   let installPrompt: Event | null = $state(null)
   let offerInstall = $state(false)

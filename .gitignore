@@ -12,6 +12,7 @@ data/
 
 dist/
 build/
+generated-prisma/
 
 *.mp3
 

@@ -1,9 +1,11 @@
+import { PrismaPg } from "@prisma/adapter-pg"
 import { Prisma } from "@prisma/client"
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient } from "@prisma-web/client"
+
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
 
 // TODO: Reimplement singleton for prod
-
-const db = new PrismaClient().$extends({
+const db = new PrismaClient({ adapter }).$extends({
   name: "findManyAndCount",
   model: {
     $allModels: {

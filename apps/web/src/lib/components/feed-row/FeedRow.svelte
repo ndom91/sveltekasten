@@ -9,7 +9,8 @@
   import { useInterface } from "$lib/state/ui.svelte"
   import { cn } from "$lib/utils/style"
   import type { Feed, FeedEntry, FeedEntryMedia } from "$lib/types/zod"
-  import { page } from "$app/stores"
+  // import { page } from "$app/stores"
+  import { page } from "$app/state"
   import { PUBLIC_WORKER_URL } from "$env/static/public"
 
   const ui = useInterface()
@@ -111,7 +112,7 @@
   )
 
   const isFeedVisible = $derived(
-    !!$page.data.feeds.data?.find((feed: Feed) => feed.id === feedEntry.feed.id).visible,
+    page.data.feeds.data?.find((feed: Feed) => feed.id === feedEntry?.feedId)?.visible,
   )
 
   const hideUnread = $derived.by(() => {
@@ -120,6 +121,11 @@
     }
     return false
   })
+
+  const feedCategories: string[] =
+    typeof feedEntry.categories === "string"
+      ? feedEntry.categories.replaceAll(" ", "").split(",")
+      : feedEntry.categories
 </script>
 
 <svelte:window onkeydown={handleKeyDown} />
@@ -191,10 +197,13 @@
     </div>
     <span class="mt-3 flex flex-wrap gap-2">
       <Badge variant="secondary">
-        {format(feedEntry.createdAt, { date: "medium", time: "short" })}
+        {format(feedEntry.createdAt instanceof Date ? feedEntry.createdAt : new Date(), {
+          date: "medium",
+          time: "short",
+        })}
       </Badge>
-      {#if feedEntry.categories}
-        {#each feedEntry.categories as category}
+      {#if feedCategories}
+        {#each feedCategories as category (category)}
           <Badge variant="outline">
             {category}
           </Badge>

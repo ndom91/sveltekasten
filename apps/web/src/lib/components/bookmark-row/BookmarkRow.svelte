@@ -97,7 +97,10 @@
     </div>
     <span class="flex flex-wrap gap-2 pr-10 md:pr-0">
       <Badge variant="default">
-        {format(bookmark.createdAt, { date: "medium", time: "short" })}
+        {format(bookmark.createdAt instanceof Date ? bookmark.createdAt : new Date(), {
+          date: "medium",
+          time: "short",
+        })}
       </Badge>
       {#if bookmark.category?.name}
         <Badge variant="secondary">
