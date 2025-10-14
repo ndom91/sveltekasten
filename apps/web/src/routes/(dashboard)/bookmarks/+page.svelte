@@ -1,194 +1,202 @@
 <script lang="ts">
-  import { watch } from "runed"
-  import { onDestroy, onMount } from "svelte"
-  import { InfiniteLoader, loaderState } from "svelte-infinite"
-  import { toast } from "svelte-sonner"
-  import FilterBar from "./FilterBar.svelte"
-  import EmptyState from "$lib/components/EmptyState.svelte"
-  import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
-  import { BookmarkRow } from "$lib/components/bookmark-row"
-  import { Navbar } from "$lib/components/navbar"
-  import { BookmarksService } from "$lib/state/bookmarks.svelte"
-  import { useInterface } from "$lib/state/ui.svelte"
-  import { getContext } from "$lib/utils/context"
-  import { Logger, loggerLevels } from "$lib/utils/logger"
-  import { goto } from "$app/navigation"
-  import { page } from "$app/stores"
+import { watch } from "runed";
+import { onDestroy, onMount } from "svelte";
+import { InfiniteLoader, LoaderState } from "svelte-infinite";
+import { toast } from "svelte-sonner";
+import FilterBar from "./FilterBar.svelte";
+import EmptyState from "$lib/components/EmptyState.svelte";
+import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte";
+import { BookmarkRow } from "$lib/components/bookmark-row";
+import { Navbar } from "$lib/components/navbar";
+import { BookmarksService } from "$lib/state/bookmarks.svelte";
+import { useInterface } from "$lib/state/ui.svelte";
+import { getContext } from "$lib/utils/context";
+import { Logger, loggerLevels } from "$lib/utils/logger";
+import { goto } from "$app/navigation";
+import { resolve } from "$app/paths";
+import { page } from "$app/state";
 
-  const ui = useInterface()
-  const bookmarkService = getContext(BookmarksService)
+const ui = useInterface();
+const bookmarkService = getContext(BookmarksService);
 
-  onMount(async () => {
-    const showQuickAdd = $page.url.searchParams.get("quickAdd")
-    if (showQuickAdd === "true") {
-      await goto("/bookmarks")
-      ui.toggleQuickAdd()
-    }
-  })
-
-  let pageNumber = $state(0)
-  let rootElement = $state<HTMLElement>()
-
-  const limitLoadCount = 20
-  const logger = new Logger({ level: loggerLevels.DEBUG })
-
-  // $effect(() => {
-  //   if ($page.data.bookmarks.data.length) {
-  //     $page.data.bookmarks.data.forEach((bk: LoadBookmarkFlatTags) => {
-  //       bookmarkService.update(bk)
-  //     })
-  //   }
-  // })
-
-  if ($page.data.error) {
-    logger.error(String($page.data.error))
+onMount(async () => {
+  const showQuickAdd = page.url.searchParams.get("quickAdd");
+  if (showQuickAdd === "true") {
+    await goto(resolve("/bookmarks"));
+    ui.toggleQuickAdd();
   }
+});
 
-  const fetchSearchResults = async ({
-    limit = limitLoadCount,
-    skip = 0,
-  }: {
-    limit?: number
-    skip?: number
-  }) => {
-    try {
-      const body = {
-        type: "bookmark",
-        skip,
-        limit,
-        orderBy: { createdAt: "desc" },
-        include: {
-          category: true,
-          tags: { include: { tag: true } },
-        },
-        where: {
-          archived: false,
-        },
-      }
-      if (ui.searchQuery) {
-        body.where = {
-          archived: false,
-          title: {
-            search: ui.searchQuery.split(" ").join(" & "),
-          },
-          url: {
-            search: ui.searchQuery.split(" ").join(" & "),
-          },
-          desc: {
-            search: ui.searchQuery.split(" ").join(" & "),
-          },
-        } as { archived: boolean } & Record<string, any>
-      }
-      const searchResponse = await fetch("/api/v1/search", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      })
-      const { data, count } = await searchResponse.json()
-      return {
-        data,
-        count,
-      }
-    } catch (error) {
-      console.error(String(error))
-      toast.error(String(error))
-    }
-  }
+const loaderState = new LoaderState();
+let pageNumber = $state(0);
+let rootElement = $state<HTMLElement>();
 
-  // Load more items on infinite scroll
-  const loadMore = async () => {
-    try {
-      pageNumber += 1
-      const limit = limitLoadCount
-      const skip = limitLoadCount * pageNumber
+const limitLoadCount = 20;
+const logger = new Logger({ level: loggerLevels.DEBUG });
 
-      const searchResults = await fetchSearchResults({ limit, skip })
-      if (!searchResults?.data) {
-        pageNumber -= 1
-        return
-      }
+// $effect(() => {
+//   if ($page.data.bookmarks.data.length) {
+//     $page.data.bookmarks.data.forEach((bk: LoadBookmarkFlatTags) => {
+//       bookmarkService.update(bk)
+//     })
+//   }
+// })
 
-      if (searchResults.data.length) {
-        bookmarkService.append(searchResults.data)
-      }
+if (page.data.error) {
+  logger.error(String(page.data.error));
+}
 
-      if (bookmarkService.bookmarks.length >= searchResults.count) {
-        loaderState.complete()
-      } else {
-        loaderState.loaded()
-      }
-    } catch (error) {
-      console.error(String(error))
-
-      loaderState.error()
-      pageNumber -= 1
-    }
-  }
-
-  // Handle search input changes
-  // Reset and execute first search for new query
-  watch.pre(
-    () => ui.searchQuery,
-    () => {
-      loaderState.reset()
-      pageNumber = -1
-      // bookmarkStore.bookmarks = []
-      loadMore()
-    },
-  )
-
-  // Handle keyboard navigation of items
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.target instanceof HTMLInputElement) {
-      return
-    }
-
-    // Navigate up / down list of items
-    if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "j" || e.key === "k") {
-      e.preventDefault()
-      const currentActiveElement = e.target as HTMLElement
-      const currentActiveElementIndex = bookmarkService.bookmarks.findIndex(
-        (item) => item.id === currentActiveElement.dataset.id,
-      )
-
-      const nextIndex =
-        e.key === "ArrowDown" || e.key === "j"
-          ? currentActiveElementIndex + 1
-          : currentActiveElementIndex - 1
-
-      const nextElement = document.querySelector(
-        `[data-id="${bookmarkService.bookmarks[nextIndex]?.id}"]`,
-      ) as HTMLElement
-
-      if (nextElement) {
-        nextElement.focus()
-      }
-    }
-
-    // Open item in same tab
-    if (e.key === "o") {
-      e.preventDefault()
-      const currentActiveElement = e.target as HTMLElement
-      const currentActiveElementIndex = bookmarkService.bookmarks.findIndex(
-        (item) => item.id === currentActiveElement.dataset.id,
-      )
-      const targetLink = bookmarkService.bookmarks[currentActiveElementIndex]?.url
-      if (!targetLink) {
-        toast.error("No item selected")
-        return
-      }
-      window.open(targetLink, "_target")
-    }
-  }
-
-  // Reset state on unmount
-  onDestroy(() => {
+const fetchSearchResults = async ({
+  limit = limitLoadCount,
+  skip = 0,
+}: {
+  limit?: number;
+  skip?: number;
+}) => {
+  try {
+    const body = {
+      type: "bookmark",
+      skip,
+      limit,
+      orderBy: { createdAt: "desc" },
+      include: {
+        category: true,
+        tags: { include: { tag: true } },
+      },
+      where: {
+        archived: false,
+      },
+    };
     if (ui.searchQuery) {
-      ui.searchQuery = ""
+      body.where = {
+        archived: false,
+        title: {
+          search: ui.searchQuery.split(" ").join(" & "),
+        },
+        url: {
+          search: ui.searchQuery.split(" ").join(" & "),
+        },
+        desc: {
+          search: ui.searchQuery.split(" ").join(" & "),
+        },
+      } as { archived: boolean } & Record<string, any>;
     }
-  })
+    const searchResponse = await fetch("/api/v1/search", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+    const { data, count } = await searchResponse.json();
+    return {
+      data,
+      count,
+    };
+  } catch (error) {
+    console.error(String(error));
+    toast.error(String(error));
+  }
+};
+
+// Load more items on infinite scroll
+const loadMore = async () => {
+  try {
+    pageNumber += 1;
+    const limit = limitLoadCount;
+    const skip = limitLoadCount * pageNumber;
+
+    const searchResults = await fetchSearchResults({ limit, skip });
+    if (!searchResults?.data) {
+      pageNumber -= 1;
+      return;
+    }
+
+    if (searchResults.data.length) {
+      bookmarkService.append(searchResults.data);
+    }
+
+    if (bookmarkService.bookmarks.length >= searchResults.count) {
+      loaderState.complete();
+    } else {
+      loaderState.loaded();
+    }
+  } catch (error) {
+    console.error(String(error));
+
+    loaderState.error();
+    pageNumber -= 1;
+  }
+};
+
+// Handle search input changes
+// Reset and execute first search for new query
+watch.pre(
+  () => ui.searchQuery,
+  () => {
+    loaderState.reset();
+    pageNumber = -1;
+    // bookmarkStore.bookmarks = []
+    void loadMore();
+  },
+);
+
+// Handle keyboard navigation of items
+const handleKeyDown = (e: KeyboardEvent) => {
+  if (e.target instanceof HTMLInputElement) {
+    return;
+  }
+
+  // Navigate up / down list of items
+  if (
+    e.key === "ArrowDown" ||
+    e.key === "ArrowUp" ||
+    e.key === "j" ||
+    e.key === "k"
+  ) {
+    e.preventDefault();
+    const currentActiveElement = e.target as HTMLElement;
+    const currentActiveElementIndex = bookmarkService.bookmarks.findIndex(
+      (item) => item.id === currentActiveElement.dataset.id,
+    );
+
+    const nextIndex =
+      e.key === "ArrowDown" || e.key === "j"
+        ? currentActiveElementIndex + 1
+        : currentActiveElementIndex - 1;
+
+    const nextElement = document.querySelector(
+      `[data-id="${bookmarkService.bookmarks[nextIndex]?.id}"]`,
+    ) as HTMLElement;
+
+    if (nextElement) {
+      nextElement.focus();
+    }
+  }
+
+  // Open item in same tab
+  if (e.key === "o") {
+    e.preventDefault();
+    const currentActiveElement = e.target as HTMLElement;
+    const currentActiveElementIndex = bookmarkService.bookmarks.findIndex(
+      (item) => item.id === currentActiveElement.dataset.id,
+    );
+    const targetLink =
+      bookmarkService.bookmarks[currentActiveElementIndex]?.url;
+    if (!targetLink) {
+      toast.error("No item selected");
+      return;
+    }
+    window.open(targetLink, "_target");
+  }
+};
+
+// Reset state on unmount
+onDestroy(() => {
+  if (ui.searchQuery) {
+    ui.searchQuery = "";
+  }
+});
 </script>
 
 <svelte:head>
@@ -205,7 +213,7 @@
 >
   <FilterBar />
   {#if bookmarkService.bookmarks?.length}
-    <InfiniteLoader triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
+    <InfiniteLoader {loaderState} triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
       {#each bookmarkService.bookmarks as item (item.id)}
         <BookmarkRow bookmark={item} />
       {/each}

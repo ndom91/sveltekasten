@@ -1,7 +1,6 @@
 <script lang="ts">
 import { ModeWatcher } from "mode-watcher";
 import { useDebounce } from "runed";
-import { blur } from "svelte/transition";
 import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte";
 import { AudioPlayer } from "$lib/components/audio-player";
 import { Breadcrumbs, QuickAddForm } from "$lib/components/navbar";
@@ -31,12 +30,12 @@ const handleKeyDown = (event: KeyboardEvent) => {
   }
 };
 
-const handleSearchInput = (event: KeyboardEvent) => {
+const handleSearchInput = async (event: KeyboardEvent) => {
   const query = (event.target as HTMLInputElement).value;
   // Reset when deleting query
   if (ui.searchQuery !== "" && query === "") {
-    invalidate("app:feeds");
-    invalidate("app:bookmarks");
+    await invalidate("app:feeds");
+    await invalidate("app:bookmarks");
   }
   ui.searchQuery = query;
 };
@@ -87,16 +86,19 @@ const handleSearchInput = (event: KeyboardEvent) => {
       </div>
     {/if}
     {#if showQuickAdd}
+        <Tooltip.Provider>
       <Popover.Root bind:open={ui.quickAddOpen}>
+
         <Tooltip.Root>
-          <Popover.Trigger tabindex={-1} />
-          <Tooltip.Trigger asChild let:builder={tooltipBuilder}>
+          <Tooltip.Trigger >
+          {#snippet child({ props })}
+          <div>
+          <Popover.Trigger tabindex={-1} {...props}>
             <div
               class="rounded-full transition duration-300 focus-within:rounded-full focus-within:outline-none focus-within:ring-2 focus-within:ring-zinc-300 dark:focus-within:ring-zinc-800"
             >
               <Button
-                builders={[tooltipBuilder]}
-                on:click={() => ui.toggleQuickAdd()}
+                onclick={() => ui.toggleQuickAdd()}
                 variant="outline"
                 class={cn(
                   ui.quickAddOpen ? "ring-2 ring-zinc-400" : "",
@@ -122,6 +124,9 @@ const handleSearchInput = (event: KeyboardEvent) => {
                 </svg>
               </Button>
             </div>
+            </Popover.Trigger>
+            </div>
+            {/snippet}
           </Tooltip.Trigger>
           <Tooltip.Content>
             <p class="flex items-center justify-center">
@@ -129,8 +134,6 @@ const handleSearchInput = (event: KeyboardEvent) => {
             </p>
           </Tooltip.Content>
           <Popover.Content
-            transition={blur}
-            transitionConfig={{ delay: 0, duration: 250 }}
             sideOffset={30}
             class="w-[calc(100%-16px)] sm:w-auto"
           >
@@ -138,21 +141,22 @@ const handleSearchInput = (event: KeyboardEvent) => {
           </Popover.Content>
         </Tooltip.Root>
       </Popover.Root>
+        </Tooltip.Provider>
     {/if}
     {#if showSidebar}
       <div
         class="rounded-full transition duration-300 focus-within:rounded-full focus-within:outline-none focus-within:ring-2 focus-within:ring-zinc-300 dark:focus-within:ring-zinc-800"
       >
+        <Tooltip.Provider>
         <Tooltip.Root>
-          <Tooltip.Trigger asChild let:builder={tooltipBuilder}>
+          <Tooltip.Trigger>
             <Button
-              builders={[tooltipBuilder]}
               variant="outline"
               class={cn(
                 ui.metadataSidebarOpen ? "ring-2 ring-zinc-400" : "",
                 "p-0 rounded-full size-11 transition",
               )}
-              on:click={() => ui.toggleMetadataSidebar()}
+              onclick={() => ui.toggleMetadataSidebar()}
             >
               {#if ui.metadataSidebarOpen}
                 <svg
@@ -198,6 +202,7 @@ const handleSearchInput = (event: KeyboardEvent) => {
             </p>
           </Tooltip.Content>
         </Tooltip.Root>
+        </Tooltip.Provider>
       </div>
     {/if}
   </div>

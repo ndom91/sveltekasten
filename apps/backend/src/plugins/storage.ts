@@ -7,11 +7,7 @@ interface UploadImageArgs {
   userId: string
 }
 
-if (
-  !process.env.BUCKET_ACCESS_KEY
-  || !process.env.BUCKET_SECRET_KEY
-  || !process.env.BUCKET_URL
-) {
+if (!process.env.BUCKET_ACCESS_KEY || !process.env.BUCKET_SECRET_KEY || !process.env.BUCKET_URL) {
   throw new Error("Object store credentials missing!")
 }
 

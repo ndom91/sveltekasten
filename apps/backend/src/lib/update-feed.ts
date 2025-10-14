@@ -1,22 +1,22 @@
-import { fetchFeed } from "./feed.js";
-import debugFactory from "./log.js";
-import { db } from "../plugins/prisma.js";
-import type { Feed } from "./types/zod.js";
+import { fetchFeed } from "./feed.js"
+import debugFactory from "./log.js"
+import { db } from "../plugins/prisma.js"
+import type { Feed } from "./types/zod.js"
 
 interface MatchedFeedEntries {
-  guid: string | null;
+  guid: string | null
 }
 
-const debug = debugFactory("backend:update-feed");
+const debug = debugFactory("backend:update-feed")
 
 export const updateFeed = async (feed: Feed) => {
   const parsedFeed = await fetchFeed({
     url: feed.url,
     lastFetched: feed.lastFetched,
-  });
+  })
   if (!parsedFeed) {
-    debug(`No feed data: ${feed.url}`);
-    return;
+    debug(`No feed data: ${feed.url}`)
+    return
   }
 
   // Find pre-existing feed entries
@@ -31,25 +31,25 @@ export const updateFeed = async (feed: Feed) => {
       feedId: feed.id,
       userId: feed.userId,
     },
-  });
+  })
 
   // Diff pre-existing feed entries and new feed parsed items
   const newItems = parsedFeed.items.filter(
-    (item) => !matchedFeedEntries.some((entry) => entry.guid === item.id),
-  );
+    (item) => !matchedFeedEntries.some((entry) => entry.guid === item.id)
+  )
 
   // If no new items, return
   if (!newItems.length) {
-    debug(`0 new items in ${feed.url}`);
-    return;
+    debug(`0 new items in ${feed.url}`)
+    return
   }
 
-  debug(`${newItems.length} new items ${feed.url}`);
+  debug(`${newItems.length} new items ${feed.url}`)
 
   // If we have new items to insert, insert their FeedEntry and FeedEntryMedia
   await Promise.allSettled(
     newItems.map((item) => {
-      debug(`Inserting ${item.url}`);
+      debug(`Inserting ${item.url}`)
       return db.feedEntry.create({
         data: {
           title: item.title ?? "",
@@ -76,10 +76,7 @@ export const updateFeed = async (feed: Feed) => {
           },
           feedMedia: {
             create: item.media
-              ?.filter(
-                (media) =>
-                  media.type === "image" && !!media.title && !!media.url,
-              )
+              ?.filter((media) => media.type === "image" && !!media.title && !!media.url)
               .map((media) => ({
                 href: media.url,
                 title: media.title,
@@ -91,7 +88,7 @@ export const updateFeed = async (feed: Feed) => {
               })),
           },
         },
-      });
-    }),
-  );
-};
+      })
+    })
+  )
+}

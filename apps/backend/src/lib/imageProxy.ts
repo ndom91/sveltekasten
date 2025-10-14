@@ -1,11 +1,6 @@
 import { type Context } from "hono"
-import {
-  createIPX,
-  createIPXWebServer,
-  ipxFSStorage,
-  ipxHttpStorage,
-} from 'ipx';
-import { LRUCache } from "lru-cache";
+import { createIPX, createIPXWebServer, ipxFSStorage, ipxHttpStorage } from "ipx"
+import { LRUCache } from "lru-cache"
 
 const ipx = createIPX({
   storage: ipxFSStorage(),
@@ -13,11 +8,11 @@ const ipx = createIPX({
     allowAllDomains: true,
     ignoreCacheControl: true,
   }),
-});
+})
 
 const cache = new LRUCache({
   max: 500,
-});
+})
 
 export const imageProxyHandler = async (c: Context) => {
   const targetUrl = c.req.raw.url.replace(/\/img/, "")
@@ -31,7 +26,7 @@ export const imageProxyHandler = async (c: Context) => {
         "x-cache": "HIT",
         "x-image-proxy": "0.0.1",
         "Content-Type": cachedResponse.type,
-        'cache-control': 'max-age=31536000, public, s-maxage=31536000',
+        "cache-control": "max-age=31536000, public, s-maxage=31536000",
       },
     })
   }
@@ -49,9 +44,11 @@ export const imageProxyHandler = async (c: Context) => {
     if (extractedFaviconUrl?.[1]) {
       const rawFaviconResponse = await fetch(extractedFaviconUrl[1], {
         headers: {
-          "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-          "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        }
+          "User-Agent":
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+          Accept:
+            "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        },
       })
       const clonedRawFaviconResponse = rawFaviconResponse.clone()
 
@@ -73,7 +70,7 @@ export const imageProxyHandler = async (c: Context) => {
       "x-cache": "MISS",
       "x-image-proxy": "0.0.1",
       "Content-Type": data.type,
-      'cache-control': 'max-age=31536000, public, s-maxage=31536000',
-    }
+      "cache-control": "max-age=31536000, public, s-maxage=31536000",
+    },
   })
 }

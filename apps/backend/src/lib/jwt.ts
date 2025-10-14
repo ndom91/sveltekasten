@@ -21,20 +21,18 @@ interface JWTDecodeParams {
 
 async function getDerivedEncryptionKey(
   keyMaterial: Parameters<typeof hkdf>[1],
-  salt: Parameters<typeof hkdf>[2],
+  salt: Parameters<typeof hkdf>[2]
 ) {
   return await hkdf(
     "sha256",
     keyMaterial,
     salt,
     `Auth.js Generated Encryption Key (${salt as string})`,
-    64,
+    64
   )
 }
 
-export async function decode<Payload = JWT>(
-  params: JWTDecodeParams,
-): Promise<Payload | null> {
+export async function decode<Payload = JWT>(params: JWTDecodeParams): Promise<Payload | null> {
   const { token, secret, salt } = params
   if (!token) {
     return null
@@ -53,10 +51,8 @@ export async function verifyJwt(token: string) {
     throw new Error("JWT_SECRET not set")
   }
 
-  const salt
-    = process.env.NODE_ENV !== "production"
-      ? "authjs.session-token"
-      : "__Secure-authjs.session-token"
+  const salt =
+    process.env.NODE_ENV !== "production" ? "authjs.session-token" : "__Secure-authjs.session-token"
 
   try {
     return await decode({

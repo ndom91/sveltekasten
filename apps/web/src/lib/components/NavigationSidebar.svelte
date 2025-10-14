@@ -30,9 +30,11 @@ const mutate = () => {
 watch.pre(
   () => ui.userSidebarOpen,
   () => {
-    document.startViewTransition
-      ? document.startViewTransition(() => mutate())
-      : mutate();
+    if (document.startViewTransition) {
+      document.startViewTransition(() => mutate());
+    } else {
+      mutate();
+    }
   },
 );
 
@@ -48,19 +50,19 @@ let windowWidth: number = $state(1000);
     bind:this={userSidebarElement}
     class="flex h-full flex-col justify-start border-r border-r-neutral-200 bg-neutral-50 transition-all duration-100 dark:border-r-neutral-800/60 dark:bg-neutral-900"
   >
-    <div class="m-4 flex items-center justify-start">
+    <div class="m-4 flex items-center justify-center">
       <Button
-        class="flex justify-start transition focus:outline-none focus:ring-2 focus:dark:ring-neutral-700"
+        class="flex justify-start transition focus:outline-none"
         size="icon"
         variant="link"
-        on:click={ui.toggleUserSidebar}
+        onclick={ui.toggleUserSidebar}
       >
         <Logo class="size-10!" />
       </Button>
       <span
         class={cn(
           "transition-all text-xl font-light mx-auto",
-          ui.userSidebarOpen ? "opacity-100" : "opacity-0 duration-0 pointer-events-none w-0",
+          ui.userSidebarOpen ? "opacity-100" : "hidden",
         )}
       >
         BriefButler

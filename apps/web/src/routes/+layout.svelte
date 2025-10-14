@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { Toaster } from "svelte-sonner"
-  import Shortcuts from "$lib/components/GlobalShortcuts.svelte"
-  import MediaQuery from "$lib/components/MediaQuery.svelte"
-  import Scripts from "$lib/components/Scripts.svelte"
-  import type { Snippet } from "svelte"
-  import "$lib/styles/global.css"
+import { Toaster } from "svelte-sonner"
+import Shortcuts from "$lib/components/GlobalShortcuts.svelte"
+import MediaQuery from "$lib/components/MediaQuery.svelte"
+import Scripts from "$lib/components/Scripts.svelte"
+import type { Snippet } from "svelte"
+import "$lib/styles/global.css"
 
-  const { children }: { children: Snippet } = $props()
+const { children }: { children: Snippet } = $props()
 </script>
 
 <svelte:head>

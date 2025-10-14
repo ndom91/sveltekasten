@@ -9,7 +9,10 @@ interface FetchFeed {
   lastFetched?: Date | null
 }
 
-export const fetchFeed = async ({ url, lastFetched = null }: FetchFeed): Promise<Feed | undefined> => {
+export const fetchFeed = async ({
+  url,
+  lastFetched = null,
+}: FetchFeed): Promise<Feed | undefined> => {
   // Disable TLS verification for RSS feeds that changed domains and redirect
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
 

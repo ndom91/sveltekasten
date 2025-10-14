@@ -18,15 +18,12 @@ export const parseCookiesToObject = (cookie: string, name?: string): Cookie => {
     }
 
     const cookieName = pairStr.substring(0, valueStartPos).trim()
-    if (
-      (name && name !== cookieName)
-      || !validCookieNameRegEx.test(cookieName)
-    ) {
+    if ((name && name !== cookieName) || !validCookieNameRegEx.test(cookieName)) {
       return parsedCookie
     }
 
     let cookieValue = pairStr.substring(valueStartPos + 1).trim()
-    if (cookieValue.startsWith("\"") && cookieValue.endsWith("\"")) {
+    if (cookieValue.startsWith('"') && cookieValue.endsWith('"')) {
       cookieValue = cookieValue.slice(1, -1)
     }
     if (validCookieValueRegEx.test(cookieValue)) {

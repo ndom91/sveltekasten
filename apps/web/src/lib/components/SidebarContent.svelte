@@ -31,7 +31,7 @@ const activePath = $derived(page.url.pathname);
           variant="ghost"
           data-sveltekit-preload-data="hover"
           class={cn(
-            "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:ring-offset-0 dark:focus:ring-neutral-800",
+            "relative flex align-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:ring-offset-0 dark:focus:ring-neutral-800",
             activePath === "/" && "active",
           )}
           onclickcapture={() => toggleAndNavigate("/")}
@@ -58,7 +58,7 @@ const activePath = $derived(page.url.pathname);
               "text-lg font-normal transition-all",
               ui.userSidebarOpen || open
                 ? "opacity-100 w-min ml-4"
-                : "opacity-0 duration-0 pointer-events-none w-0 ml-0",
+                : "hidden",
             )}
           >
             Home
@@ -104,7 +104,7 @@ const activePath = $derived(page.url.pathname);
               "text-lg font-normal transition-all",
               ui.userSidebarOpen || open
                 ? "opacity-100 ml-4"
-                : "opacity-0 duration-0 pointer-events-none w-0 ml-0",
+                : "hidden",
             )}
           >
             Bookmarks
@@ -151,7 +151,7 @@ const activePath = $derived(page.url.pathname);
               "text-lg font-normal transition-all",
               ui.userSidebarOpen || open
                 ? "opacity-100 ml-4"
-                : "opacity-0 duration-0 pointer-events-none w-0 ml-0",
+                : "hidden",
             )}
           >
             Feeds
@@ -197,7 +197,7 @@ const activePath = $derived(page.url.pathname);
               "text-lg font-normal transition-all",
               ui.userSidebarOpen || open
                 ? "opacity-100 ml-4"
-                : "opacity-0 duration-0 pointer-events-none w-0 ml-0",
+                : "hidden",
             )}
           >
             Archive
@@ -244,7 +244,7 @@ const activePath = $derived(page.url.pathname);
               "text-lg font-normal transition-all",
               ui.userSidebarOpen || open
                 ? "opacity-100 ml-4"
-                : "opacity-0 duration-0 pointer-events-none w-0 ml-0",
+                : "hidden",
             )}
           >
             Categories
@@ -292,7 +292,7 @@ const activePath = $derived(page.url.pathname);
               "text-lg font-normal transition-all",
               ui.userSidebarOpen || open
                 ? "opacity-100 ml-4"
-                : "opacity-0 duration-0 pointer-events-none w-0 ml-0",
+                : "hidden",
             )}
           >
             Tags
@@ -310,12 +310,12 @@ const activePath = $derived(page.url.pathname);
 </div>
 </Tooltip.Provider>
 <div class="flex w-full flex-col items-start justify-center self-end p-4">
-  <div class="flex w-full items-center justify-between">
+  <div class="flex w-full items-center justify-center">
     <AvatarMenu />
     <span
       class={cn(
         "transition-all mx-auto text-md truncate",
-        ui.userSidebarOpen || open ? "opacity-100" : "opacity-0 duration-0 pointer-events-none w-0",
+        ui.userSidebarOpen || open ? "opacity-100" : "hidden",
       )}
     >
       {page.data.session?.user?.name ?? ""}

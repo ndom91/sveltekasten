@@ -22,8 +22,8 @@ const debug = debugFactory("backend:auth")
 
 export async function getUserId(c: Context) {
   try {
-    const cookieName
-      = process.env.NODE_ENV !== "production"
+    const cookieName =
+      process.env.NODE_ENV !== "production"
         ? "authjs.session-token"
         : "__Secure-authjs.session-token"
 

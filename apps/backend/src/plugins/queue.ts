@@ -11,20 +11,11 @@ export interface Task {
   action: keyof typeof actions
 }
 
-const QUEUE_WORKERS = process.env.QUEUE_WORKERS
-  ? Number.parseInt(process.env.QUEUE_WORKERS)
-  : 1
+const QUEUE_WORKERS = process.env.QUEUE_WORKERS ? Number.parseInt(process.env.QUEUE_WORKERS, 10) : 1
 
-export const screenshotQueue = fastq.promise(
-  screenshotWorker,
-  QUEUE_WORKERS,
-)
-export const feedQueue = fastq.promise(
-  feedWorker,
-  QUEUE_WORKERS,
-)
+export const screenshotQueue = fastq.promise(screenshotWorker, QUEUE_WORKERS)
+export const feedQueue = fastq.promise(feedWorker, QUEUE_WORKERS)
 
-// eslint-disable-next-line ts/no-misused-promises
 process.on("exit", async () => {
   debug("Cleaning up queue workers")
   await feedQueue.kill()
