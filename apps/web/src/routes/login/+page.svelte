@@ -124,7 +124,8 @@ if (browser && page.url.searchParams.get("verifyEmail")) {
             <button
               onclick={async() => {
                 await authClient.signIn.social({ 
-                  provider: 'github'
+                  provider: 'github',
+                  callbackURL: window.location.origin + "/dashboard"
                 })
               }}
               class="w-full *:w-full [&>button]:transition focus:[&>button]:outline-none focus:[&>button]:ring-2 focus:[&>button]:ring-offset-2 focus:[&>button]:ring-zinc-300 [&>button]:rounded-sm"
@@ -229,7 +230,18 @@ if (browser && page.url.searchParams.get("verifyEmail")) {
                 Sign up
               </button>
             </div>
+            {:else}
+              <button
+                class="flex overflow-hidden justify-center items-center px-4 space-x-2 w-full h-10 text-sm font-light text-white rounded-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 bg-neutral-700 ring-offset-background focus-visible:ring-zinc-300 hover:cursor-pointer"
+                onclick={async() => {
+                  await authClient.signOut({})
+                }}
+              >
+                Sign out
+              </button>
           {/if}
+
+
         </div>
 
         <!-- Back side - Sign Up -->

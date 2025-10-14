@@ -1,51 +1,51 @@
-import { fail, redirect } from "@sveltejs/kit"
-import { db } from "$lib/prisma"
-import type { Actions, PageServerLoad } from "./$types"
+import { fail, redirect } from "@sveltejs/kit";
+import { db } from "$lib/prisma";
+import type { Actions, PageServerLoad } from "./$types";
 
 export const actions: Actions = {
   deleteBookmark: async ({ request, locals }) => {
-    const session = await locals.auth()
-    if (!session?.user?.id) {
-      return fail(401, { type: "error", error: "Unauthenticated" })
+    const { session } = locals;
+    if (!session?.userId) {
+      return fail(401, { type: "error", error: "Unauthenticated" });
     }
-    const data = await request.formData()
-    const bookmarkId = data.get("bookmarkId")?.toString() || ""
+    const data = await request.formData();
+    const bookmarkId = data.get("bookmarkId")?.toString() || "";
 
     if (!bookmarkId) {
-      return fail(400)
+      return fail(400);
     }
 
     await db.bookmark.delete({
       where: {
         id: bookmarkId,
-        userId: session.user.id,
+        userId: session.userId,
       },
-    })
-    return { type: "success", message: "Deleted Bookmark" }
+    });
+    return { type: "success", message: "Deleted Bookmark" };
   },
-}
+};
 
 export const load: PageServerLoad = async (event) => {
-  const session = await event.locals?.auth()
+  const { session } = event.locals;
 
   if (!session && event.url.pathname !== "/login") {
-    const fromUrl = event.url.pathname + event.url.search
-    redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
+    const fromUrl = event.url.pathname + event.url.search;
+    redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`);
   }
   try {
-    const skip = Number(event.url.searchParams.get("skip") ?? "0")
-    const limit = Number(event.url.searchParams.get("limit") ?? "20")
+    const skip = Number(event.url.searchParams.get("skip") ?? "0");
+    const limit = Number(event.url.searchParams.get("limit") ?? "20");
 
-    const session = await event.locals.auth()
-    if (!session?.user?.id) {
-      return fail(401, { type: "error", error: "Unauthenticated" })
+    const session = await event.locals.auth();
+    if (!session?.userId) {
+      return fail(401, { type: "error", error: "Unauthenticated" });
     }
 
     const [data, count] = (await db.bookmark.findManyAndCount({
       take: limit + skip,
       skip,
       where: {
-        userId: session?.user?.id,
+        userId: session?.userId,
         archived: true,
       },
       include: {
@@ -53,11 +53,11 @@ export const load: PageServerLoad = async (event) => {
         tags: { include: { tag: true } },
       },
       orderBy: { createdAt: "desc" },
-    })) as unknown as [LoadBookmark[], number]
+    })) as unknown as [LoadBookmark[], number];
 
     const bookmarks = data.map((bookmark) => {
-      return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) }
-    })
+      return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) };
+    });
 
     return {
       session,
@@ -65,12 +65,12 @@ export const load: PageServerLoad = async (event) => {
         data: bookmarks,
         count,
       },
-    }
+    };
   } catch (error) {
     if (error instanceof Error) {
-      console.error(error.message)
+      console.error(error.message);
     } else {
-      console.error(error)
+      console.error(error);
     }
     return {
       bookmarks: {
@@ -79,6 +79,6 @@ export const load: PageServerLoad = async (event) => {
       },
       session,
       error,
-    }
+    };
   }
-}
+};
