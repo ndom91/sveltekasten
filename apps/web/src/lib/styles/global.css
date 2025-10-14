@@ -1,6 +1,7 @@
 @import "open-props/shadows";
 @import "open-props/easings";
 @import "open-props/animations";
+@reference "tailwindcss";
 
 @tailwind base;
 @tailwind components;
@@ -197,14 +198,6 @@
     font-weight: 200;
     src: url("/fonts/GT-America-Standard-Thin.woff2") format("woff2");
   }
-
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-  }
 }
 
 /* 2024 Reset */
@@ -257,7 +250,6 @@ html.dark ::-webkit-scrollbar-thumb {
   background: transparent;
   display: none !important;
 }
-
 
 /* RSS Feed Content */
 .prose iframe {
