@@ -1,2 +1,16 @@
 packages:
   - apps/*
+
+ignoredBuiltDependencies:
+  - re2
+
+onlyBuiltDependencies:
+  - '@prisma/client'
+  - '@prisma/engines'
+  - esbuild
+  - playwright-chromium
+  - prisma
+  - protobufjs
+  - re2
+  - sharp
+  - unrs-resolver

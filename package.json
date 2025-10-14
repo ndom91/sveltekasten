@@ -18,26 +18,26 @@
     "db:push": "pnpm run --filter sveltekasten-web db:push"
   },
   "devDependencies": {
-    "@eslint/js": "^9.26.0",
+    "@eslint/js": "^9.37.0",
     "@types/eslint": "^9.6.1",
     "@types/eslint-config-prettier": "^6.11.3",
     "@types/eslint__js": "^8.42.3",
-    "@typescript-eslint/parser": "^8.32.0",
-    "eslint": "9.26.0",
-    "eslint-config-prettier": "^10.1.3",
-    "eslint-import-resolver-typescript": "^4.3.4",
-    "eslint-plugin-import-x": "^4.11.0",
-    "eslint-plugin-svelte": "^3.5.1",
-    "globals": "^16.1.0",
-    "jiti": "^2.4.2",
-    "prettier": "3.5.3",
-    "svelte-eslint-parser": "^1.1.3",
-    "typescript": "5.8.3",
-    "typescript-eslint": "^8.32.0",
-    "vite": "6.3.5"
+    "@typescript-eslint/parser": "^8.46.1",
+    "eslint": "9.37.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import-x": "^4.16.1",
+    "eslint-plugin-svelte": "^3.12.4",
+    "globals": "^16.4.0",
+    "jiti": "^2.6.1",
+    "prettier": "3.6.2",
+    "svelte-eslint-parser": "^1.3.3",
+    "typescript": "5.9.3",
+    "typescript-eslint": "^8.46.1",
+    "vite": "7.1.9"
   },
   "engines": {
     "node": ">=20.11"
   },
-  "packageManager": "pnpm@9.3.0"
+  "packageManager": "pnpm@10.17.0"
 }
