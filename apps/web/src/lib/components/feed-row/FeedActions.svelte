@@ -1,32 +1,33 @@
 <script lang="ts">
-  import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
-  import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
-  import { Button } from "$lib/components/ui/button"
-  import * as Tooltip from "$lib/components/ui/tooltip"
-  import { useInterface } from "$lib/state/ui.svelte"
-  import { cn } from "$lib/utils/style"
-  import { page } from "$app/stores"
+import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte";
+import LoadingIndicator from "$lib/components/LoadingIndicator.svelte";
+import { Button } from "$lib/components/ui/button";
+import * as Tooltip from "$lib/components/ui/tooltip";
+import { useInterface } from "$lib/state/ui.svelte";
+import { cn } from "$lib/utils";
+import { page } from "$app/state";
 
-  const ui = useInterface()
+const ui = useInterface();
 
-  const enableSummary = $page.data.session?.user?.settings?.ai?.summarization.enabled ?? false
-  const enableTTS = ui.aiFeaturesPreferences.tts.enabled
+const enableSummary =
+  page.data.session?.user?.settings?.ai?.summarization.enabled ?? false;
+const enableTTS = ui.aiFeaturesPreferences.tts.enabled;
 
-  const {
-    isOptionsOpen,
-    url,
-    handleToggleCardOpen,
-    handleMarkAsUnread,
-    handleSetTextToSpeechContent,
-    handleStartTextSummarization,
-  }: {
-    isOptionsOpen: boolean
-    url: string
-    handleToggleCardOpen: () => void
-    handleMarkAsUnread: (targetState?: boolean) => void
-    handleSetTextToSpeechContent: () => void
-    handleStartTextSummarization: () => void
-  } = $props()
+const {
+  isOptionsOpen,
+  url,
+  handleToggleCardOpen,
+  handleMarkAsUnread,
+  handleSetTextToSpeechContent,
+  handleStartTextSummarization,
+}: {
+  isOptionsOpen: boolean;
+  url: string;
+  handleToggleCardOpen: () => void;
+  handleMarkAsUnread: (targetState?: boolean) => void;
+  handleSetTextToSpeechContent: () => void;
+  handleStartTextSummarization: () => void;
+} = $props();
 </script>
 
 <div

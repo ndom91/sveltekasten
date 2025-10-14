@@ -1,69 +1,74 @@
 <script lang="ts">
-  import { format } from "@formkit/tempo"
-  import { toast } from "svelte-sonner"
-  import SuperDebug, { defaults, superForm } from "sveltekit-superforms"
-  import { zodClient } from "sveltekit-superforms/adapters"
-  import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
-  import TagInput from "$lib/components/TagInput.svelte"
-  import { Button, buttonVariants } from "$lib/components/ui/button"
-  import * as Command from "$lib/components/ui/command"
-  import { Label } from "$lib/components/ui/label"
-  import * as Popover from "$lib/components/ui/popover"
-  import * as Tooltip from "$lib/components/ui/tooltip"
-  import { useInterface } from "$lib/state/ui.svelte"
-  import { countryMaps } from "$lib/utils/countries"
-  import { cn } from "$lib/utils/style"
-  import { formSchema as metadataSchema } from "$schemas/metadata-sidebar"
-  import { dev } from "$app/environment"
-  import { invalidateAll } from "$app/navigation"
-  import { page } from "$app/stores"
-  import { PUBLIC_WORKER_URL } from "$env/static/public"
+import { format } from "@formkit/tempo";
+import { toast } from "svelte-sonner";
+import SuperDebug, { defaults, superForm } from "sveltekit-superforms";
+import { zodClient } from "sveltekit-superforms/adapters";
+import LoadingIndicator from "$lib/components/LoadingIndicator.svelte";
+import TagInput from "$lib/components/TagInput.svelte";
+import { Button, buttonVariants } from "$lib/components/ui/button";
+import * as Command from "$lib/components/ui/command";
+import { Label } from "$lib/components/ui/label";
+import * as Popover from "$lib/components/ui/popover";
+import * as Tooltip from "$lib/components/ui/tooltip";
+import { useInterface } from "$lib/state/ui.svelte";
+import { cn } from "$lib/utils";
+import { countryMaps } from "$lib/utils/countries";
+import { formSchema as metadataSchema } from "$schemas/metadata-sidebar";
+import { dev } from "$app/environment";
+import { invalidateAll } from "$app/navigation";
+import { page } from "$app/state";
+import { PUBLIC_WORKER_URL } from "$env/static/public";
 
-  const ui = useInterface()
+const ui = useInterface();
 
-  const isEditMode = $derived(ui.metadataSidebarEditMode === true)
+const isEditMode = $derived(ui.metadataSidebarEditMode === true);
 
-  const defaultData = {
-    id: ui.metadataSidebarData.bookmark?.id,
-    url: ui.metadataSidebarData.bookmark?.url,
-    title: ui.metadataSidebarData.bookmark?.title,
-    description: ui.metadataSidebarData.bookmark?.desc,
-    image: ui.metadataSidebarData.bookmark?.image,
-    category: ui.metadataSidebarData.bookmark?.category?.id,
-    tags: ui.metadataSidebarData.bookmark?.tags,
-  }
+const defaultData = {
+  id: ui.metadataSidebarData.bookmark?.id,
+  url: ui.metadataSidebarData.bookmark?.url,
+  title: ui.metadataSidebarData.bookmark?.title,
+  description: ui.metadataSidebarData.bookmark?.desc,
+  image: ui.metadataSidebarData.bookmark?.image,
+  category: ui.metadataSidebarData.bookmark?.category?.id,
+  tags: ui.metadataSidebarData.bookmark?.tags,
+};
 
-  // @ts-expect-error TODO figure out wtf this default fn wants as arg
-  const superformInstance = superForm(defaults(defaultData, zodClient(metadataSchema)), {
+// @ts-expect-error TODO figure out wtf this default fn wants as arg
+const superformInstance = superForm(
+  defaults(defaultData, zodClient(metadataSchema)),
+  {
     resetForm: false,
     dataType: "json",
     validators: zodClient(metadataSchema),
     onUpdated: async ({ form }) => {
       if (form.valid) {
-        await invalidateAll()
-        toast.success("Bookmark Updated")
-        ui.toggleMetadataSidebarEditMode()
+        await invalidateAll();
+        toast.success("Bookmark Updated");
+        ui.toggleMetadataSidebarEditMode();
       }
     },
     onError: ({ result }) => {
       if (result.type === "error") {
-        toast.error(result.error.message)
+        toast.error(result.error.message);
       }
     },
-  })
-  const { form, errors, constraints, enhance, submitting, delayed } = superformInstance
+  },
+);
+const { form, errors, constraints, enhance, submitting, delayed } =
+  superformInstance;
 
-  let selectOpen = $state(false)
+let selectOpen = $state(false);
 
-  const faviconUrl = $derived.by(() => {
-    let iconUrl = ""
-    try {
-      iconUrl = `${PUBLIC_WORKER_URL}/img/_/https://favicon.controld.com/${new URL($form.url as string).hostname}`
-    } catch {
-      iconUrl = "https://raw.githubusercontent.com/hustcc/placeholder.js/master/favicon.ico"
-    }
-    return iconUrl
-  })
+const faviconUrl = $derived.by(() => {
+  let iconUrl = "";
+  try {
+    iconUrl = `${PUBLIC_WORKER_URL}/img/_/https://favicon.controld.com/${new URL($form.url as string).hostname}`;
+  } catch {
+    iconUrl =
+      "https://raw.githubusercontent.com/hustcc/placeholder.js/master/favicon.ico";
+  }
+  return iconUrl;
+});
 </script>
 
 <form
@@ -265,7 +270,7 @@
         <Label for="category">Tags</Label>
         <TagInput
           form={superformInstance}
-          tags={$page.data.tags}
+          tags={page.data.tags}
           field="tags"
           disabled={!isEditMode}
         />

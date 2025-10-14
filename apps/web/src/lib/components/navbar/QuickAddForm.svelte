@@ -1,39 +1,46 @@
 <script lang="ts">
-  import { toast } from "svelte-sonner"
-  import SuperDebug, { fieldProxy, superForm } from "sveltekit-superforms"
-  import { zodClient } from "sveltekit-superforms/adapters"
+import { toast } from "svelte-sonner";
+import SuperDebug, { fieldProxy, superForm } from "sveltekit-superforms";
+import { zodClient } from "sveltekit-superforms/adapters";
 
-  import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
-  import TagInput from "$lib/components/TagInput.svelte"
-  import { Button } from "$lib/components/ui/button"
-  import { Label } from "$lib/components/ui/label"
-  import * as Select from "$lib/components/ui/select"
-  import { useInterface } from "$lib/state/ui.svelte"
-  import { cn } from "$lib/utils/style"
-  import { formSchema } from "$schemas/quick-add"
-  import { dev } from "$app/environment"
-  import { page } from "$app/stores"
+import LoadingIndicator from "$lib/components/LoadingIndicator.svelte";
+import TagInput from "$lib/components/TagInput.svelte";
+import { Button } from "$lib/components/ui/button";
+import { Label } from "$lib/components/ui/label";
+import * as Select from "$lib/components/ui/select";
+import { useInterface } from "$lib/state/ui.svelte";
+import { cn } from "$lib/utils";
+import { formSchema } from "$schemas/quick-add";
+import { dev } from "$app/environment";
+import { page } from "$app/state";
 
-  const ui = useInterface()
+const ui = useInterface();
 
-  const form = superForm($page.data.quickAddForm, {
-    dataType: "json",
-    customValidity: true,
-    validators: zodClient(formSchema),
-    onUpdated: ({ form }) => {
-      if (form.valid) {
-        toast.success("Bookmark Added")
-        ui.toggleMetadataSidebarEditMode()
-      }
-    },
-    onError: ({ result }) => {
-      if (result.type === "error") {
-        toast.error(result.error.message)
-      }
-    },
-  })
-  const { form: formData, errors, constraints, enhance, submitting, delayed } = form
-  const categoryProxy = fieldProxy(form, "categoryId", {})
+const form = superForm(page.data.quickAddForm, {
+  dataType: "json",
+  customValidity: true,
+  validators: zodClient(formSchema),
+  onUpdated: ({ form }) => {
+    if (form.valid) {
+      toast.success("Bookmark Added");
+      ui.toggleMetadataSidebarEditMode();
+    }
+  },
+  onError: ({ result }) => {
+    if (result.type === "error") {
+      toast.error(result.error.message);
+    }
+  },
+});
+const {
+  form: formData,
+  errors,
+  constraints,
+  enhance,
+  submitting,
+  delayed,
+} = form;
+const categoryProxy = fieldProxy(form, "categoryId", {});
 </script>
 
 <form
@@ -85,7 +92,7 @@
     <Select.Root
       name="categoryId"
       onSelectedChange={(e) => ($categoryProxy = e?.value)}
-      items={$page.data?.categories?.map((cat: { id: string; name: string }) => ({
+      items={page.data?.categories?.map((cat: { id: string; name: string }) => ({
         value: cat.id,
         label: cat.name,
       }))}
@@ -96,7 +103,7 @@
         <Select.Value placeholder="Choose a category" />
       </Select.Trigger>
       <Select.Content>
-        {#each $page.data?.categories as category (category.id)}
+        {#each page.data?.categories as category (category.id)}
           <Select.Item value={category.id}>{category.name}</Select.Item>
         {/each}
       </Select.Content>
@@ -108,7 +115,7 @@
   <div class="align-start flex flex-col gap-2">
     <Label for="tags">Tags</Label>
     <!-- @ts-ignore -->
-    <TagInput {form} tags={$page.data.tags} field="tags" />
+    <TagInput {form} tags={page.data.tags} field="tags" />
   </div>
 
   <div class="align-start flex flex-col gap-2">

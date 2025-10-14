@@ -1,13 +1,10 @@
-import { StaticShadows } from "open-props/src/shadows"
-import { fontFamily } from "tailwindcss/defaultTheme"
+import { StaticShadows } from "open-props/src/shadows";
+import tailwindcssAnimate from "tailwindcss-animate";
+import type { Config } from "tailwindcss";
 
-/** @type {import('tailwindcss').Config} */
-const config = {
-  darkMode: ["class"],
+const config: Config = {
   content: ["./src/**/*.{html,js,svelte,ts}"],
-  safelist: ["dark"],
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  plugins: [require("@tailwindcss/typography")],
+  plugins: [tailwindcssAnimate],
   theme: {
     extend: {
       boxShadow: {
@@ -29,6 +26,6 @@ const config = {
       },
     },
   },
-}
+};
 
-export default config
+export default config;

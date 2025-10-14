@@ -1,53 +1,53 @@
 <script lang="ts">
-  import { watch } from "runed"
-  import { tick } from "svelte"
-  import AudioVisualizer from "./AudioVisualizer.svelte"
-  import { cn } from "$/lib/utils/style"
-  import { useInterface } from "$lib/state/ui.svelte"
+import { watch } from "runed";
+import { tick } from "svelte";
+import AudioVisualizer from "./AudioVisualizer.svelte";
+import { cn } from "$/lib/utils";
+import { useInterface } from "$lib/state/ui.svelte";
 
-  const { src }: { src: string } = $props()
+const { src }: { src: string } = $props();
 
-  const ui = useInterface()
+const ui = useInterface();
 
-  let paused = $state(false)
-  let currentTime = $state(0)
-  let playbackRate = $state(1)
-  let ended = $state(false)
+let paused = $state(false);
+let currentTime = $state(0);
+let playbackRate = $state(1);
+let ended = $state(false);
 
-  watch(
-    () => ended,
-    () => {
-      if (ended) {
-        ui.textToSpeechAudioBlob = ""
-      }
-    },
-  )
-
-  const togglePlaybackRate = () => {
-    if (playbackRate === 1) {
-      playbackRate = 1.2
-    } else if (playbackRate === 1.2) {
-      playbackRate = 1.5
-    } else if (playbackRate === 1.5) {
-      playbackRate = 0.8
-    } else {
-      playbackRate = 1
+watch(
+  () => ended,
+  () => {
+    if (ended) {
+      ui.textToSpeechAudioBlob = "";
     }
-  }
+  },
+);
 
-  let windowWidth: number = $state(1000)
-
-  const seek = (dur: number) => {
-    paused = true
-    tick()
-      .then(() => {
-        currentTime = currentTime + dur
-      })
-      .then(() => {
-        paused = false
-      })
-      .catch((err) => console.error(err))
+const togglePlaybackRate = () => {
+  if (playbackRate === 1) {
+    playbackRate = 1.2;
+  } else if (playbackRate === 1.2) {
+    playbackRate = 1.5;
+  } else if (playbackRate === 1.5) {
+    playbackRate = 0.8;
+  } else {
+    playbackRate = 1;
   }
+};
+
+let windowWidth: number = $state(1000);
+
+const seek = (dur: number) => {
+  paused = true;
+  tick()
+    .then(() => {
+      currentTime = currentTime + dur;
+    })
+    .then(() => {
+      paused = false;
+    })
+    .catch((err) => console.error(err));
+};
 </script>
 
 <svelte:window bind:innerWidth={windowWidth} />

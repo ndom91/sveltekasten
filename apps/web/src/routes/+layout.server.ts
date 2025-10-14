@@ -3,7 +3,6 @@ import type { LayoutServerLoad } from "./$types";
 
 export const load: LayoutServerLoad = (event) => {
   const { session } = event.locals;
-  console.log("LayoutServerLoad.session", session);
 
   if (!session?.userId && event.url.pathname !== "/login") {
     const fromUrl = event.url.pathname + event.url.search;

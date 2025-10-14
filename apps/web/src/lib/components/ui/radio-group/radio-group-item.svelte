@@ -1,35 +1,31 @@
 <script lang="ts">
-  import { RadioGroup as RadioGroupPrimitive } from "bits-ui"
-  import { cn } from "$lib/utils/style"
+	import { RadioGroup as RadioGroupPrimitive } from "bits-ui";
+	import CircleIcon from "@lucide/svelte/icons/circle";
+	import { cn, type WithoutChildrenOrChild } from "$lib/utils.js";
 
-  type $$Props = RadioGroupPrimitive.ItemProps
-  type $$Events = RadioGroupPrimitive.ItemEvents
-
-  let className: $$Props["class"] = undefined
-  export let value: $$Props["value"]
-  export { className as class }
+	let {
+		ref = $bindable(null),
+		class: className,
+		...restProps
+	}: WithoutChildrenOrChild<RadioGroupPrimitive.ItemProps> = $props();
 </script>
 
 <RadioGroupPrimitive.Item
-  {value}
-  class={cn(
-    "aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-    className,
-  )}
-  {...$$restProps}
-  on:click
+	bind:ref
+	data-slot="radio-group-item"
+	class={cn(
+		"border-input text-primary focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 shadow-xs aspect-square size-4 shrink-0 rounded-full border outline-none transition-[color,box-shadow] focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
+		className
+	)}
+	{...restProps}
 >
-  <div class="flex justify-center items-center">
-    <RadioGroupPrimitive.ItemIndicator>
-      <svg
-        class="w-2.5 h-2.5 text-current fill-current"
-        fill="currentColor"
-        viewBox="0 0 16 16"
-        height="1em"
-        width="1em"
-      >
-        <path d="M8 15A7 7 0 118 1a7 7 0 010 14zm0 1A8 8 0 108 0a8 8 0 000 16z" />
-      </svg>
-    </RadioGroupPrimitive.ItemIndicator>
-  </div>
+	{#snippet children({ checked })}
+		<div data-slot="radio-group-indicator" class="relative flex items-center justify-center">
+			{#if checked}
+				<CircleIcon
+					class="fill-primary absolute left-1/2 top-1/2 size-2 -translate-x-1/2 -translate-y-1/2"
+				/>
+			{/if}
+		</div>
+	{/snippet}
 </RadioGroupPrimitive.Item>

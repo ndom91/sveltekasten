@@ -36,7 +36,6 @@ export const load: PageServerLoad = async (event) => {
     const skip = Number(event.url.searchParams.get("skip") ?? "0");
     const limit = Number(event.url.searchParams.get("limit") ?? "20");
 
-    const session = await event.locals.auth();
     if (!session?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" });
     }

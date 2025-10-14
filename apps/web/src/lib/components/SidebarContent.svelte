@@ -1,31 +1,34 @@
 <script lang="ts">
-  import { AvatarMenu } from "$lib/components/navbar"
-  import { Button } from "$lib/components/ui/button"
-  import * as Tooltip from "$lib/components/ui/tooltip"
-  import { useInterface } from "$lib/state/ui.svelte"
-  import { cn, flyAndScale } from "$lib/utils/style"
-  import { goto } from "$app/navigation"
-  import { page } from "$app/stores"
+import { AvatarMenu } from "$lib/components/navbar";
+import { Button } from "$lib/components/ui/button";
+import * as Tooltip from "$lib/components/ui/tooltip";
+import { useInterface } from "$lib/state/ui.svelte";
+import { cn } from "$lib/utils";
+import { goto } from "$app/navigation";
+import { page } from "$app/state";
 
-  const ui = useInterface()
+const ui = useInterface();
 
-  const { open = false, toggleDrawer }: { open?: boolean; toggleDrawer?: () => void } = $props()
+const {
+  open = false,
+  toggleDrawer,
+}: { open?: boolean; toggleDrawer?: () => void } = $props();
 
-  const toggleAndNavigate = async (target: string) => {
-    toggleDrawer?.()
-    await goto(target)
-  }
+const toggleAndNavigate = async (target: string) => {
+  toggleDrawer?.();
+  await goto(target);
+};
 
-  const activePath = $derived($page.url.pathname)
+const activePath = $derived(page.url.pathname);
 </script>
 
+<Tooltip.Provider>
 <div class="grow p-4">
   <nav class="flex flex-col items-start gap-2">
     <Tooltip.Root>
-      <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
+      <Tooltip.Trigger   class="outline-none">
         <Button
           variant="ghost"
-          builders={[tooltipBuilder]}
           data-sveltekit-preload-data="hover"
           class={cn(
             "relative flex items-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:ring-offset-0 dark:focus:ring-neutral-800",
@@ -64,18 +67,15 @@
       </Tooltip.Trigger>
       <Tooltip.Content
         side="right"
-        transition={flyAndScale}
-        transitionConfig={{ y: 8, duration: 150 }}
         sideOffset={8}
       >
         <p>Dashboard</p>
       </Tooltip.Content>
     </Tooltip.Root>
     <Tooltip.Root>
-      <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
+      <Tooltip.Trigger   class="outline-none">
         <Button
           variant="ghost"
-          builders={[tooltipBuilder]}
           data-sveltekit-preload-data="hover"
           class={cn(
             "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
@@ -113,18 +113,15 @@
       </Tooltip.Trigger>
       <Tooltip.Content
         side="right"
-        transition={flyAndScale}
-        transitionConfig={{ y: 8, duration: 150 }}
         sideOffset={8}
       >
         <p>Bookmarks</p>
       </Tooltip.Content>
     </Tooltip.Root>
     <Tooltip.Root>
-      <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
+      <Tooltip.Trigger  class="outline-none">
         <Button
           variant="ghost"
-          builders={[tooltipBuilder]}
           data-sveltekit-preload-data="hover"
           class={cn(
             "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
@@ -163,18 +160,15 @@
       </Tooltip.Trigger>
       <Tooltip.Content
         side="right"
-        transition={flyAndScale}
-        transitionConfig={{ y: 8, duration: 150 }}
         sideOffset={8}
       >
         <p>RSS Feeds</p>
       </Tooltip.Content>
     </Tooltip.Root>
     <Tooltip.Root>
-      <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
+      <Tooltip.Trigger  class="outline-none">
         <Button
           variant="ghost"
-          builders={[tooltipBuilder]}
           data-sveltekit-preload-data="hover"
           class={cn(
             "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
@@ -212,18 +206,15 @@
       </Tooltip.Trigger>
       <Tooltip.Content
         side="right"
-        transition={flyAndScale}
-        transitionConfig={{ y: 8, duration: 150 }}
         sideOffset={8}
       >
         <p>Archives</p>
       </Tooltip.Content>
     </Tooltip.Root>
     <Tooltip.Root>
-      <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
+      <Tooltip.Trigger class="outline-none">
         <Button
           variant="ghost"
-          builders={[tooltipBuilder]}
           data-sveltekit-preload-data="hover"
           class={cn(
             "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
@@ -262,18 +253,15 @@
       </Tooltip.Trigger>
       <Tooltip.Content
         side="right"
-        transition={flyAndScale}
-        transitionConfig={{ y: 8, duration: 150 }}
         sideOffset={8}
       >
         <p>Categories</p>
       </Tooltip.Content>
     </Tooltip.Root>
     <Tooltip.Root>
-      <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
+      <Tooltip.Trigger class="outline-none">
         <Button
           variant="ghost"
-          builders={[tooltipBuilder]}
           data-sveltekit-preload-data="hover"
           class={cn(
             "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
@@ -313,8 +301,6 @@
       </Tooltip.Trigger>
       <Tooltip.Content
         side="right"
-        transition={flyAndScale}
-        transitionConfig={{ y: 8, duration: 150 }}
         sideOffset={8}
       >
         <p>Tags</p>
@@ -322,6 +308,7 @@
     </Tooltip.Root>
   </nav>
 </div>
+</Tooltip.Provider>
 <div class="flex w-full flex-col items-start justify-center self-end p-4">
   <div class="flex w-full items-center justify-between">
     <AvatarMenu />
@@ -331,16 +318,18 @@
         ui.userSidebarOpen || open ? "opacity-100" : "opacity-0 duration-0 pointer-events-none w-0",
       )}
     >
-      {$page.data.session?.user?.name ?? ""}
+      {page.data.session?.user?.name ?? ""}
     </span>
   </div>
 </div>
 
 <style>
-  :global(button.active) {
-    @apply ring-2 ring-offset-transparent ring-neutral-400;
-  }
-  :global(html.dark button.active) {
-    @apply ring-neutral-800;
-  }
+@reference "tailwindcss";
+
+:global(button.active) {
+  @apply ring-2 ring-offset-transparent ring-neutral-400;
+}
+:global(html.dark button.active) {
+  @apply ring-neutral-800;
+}
 </style>

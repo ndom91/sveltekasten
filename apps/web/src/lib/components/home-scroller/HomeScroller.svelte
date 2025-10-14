@@ -1,28 +1,28 @@
 <script lang="ts">
-  import { watch } from "runed"
-  import BookmarkPreviewCard from "./BookmarkPreviewCard.svelte"
-  import FeedItemPreviewCard from "./FeedItemPreviewCard.svelte"
-  import Bell from "$lib/assets/bell.png"
-  import Browser from "$lib/assets/browser.png"
-  import { ScrollerTypes } from "$lib/types"
-  import { capitalize } from "$lib/utils"
+import { watch } from "runed";
+import BookmarkPreviewCard from "./BookmarkPreviewCard.svelte";
+import FeedItemPreviewCard from "./FeedItemPreviewCard.svelte";
+import Bell from "$lib/assets/bell.png";
+import Browser from "$lib/assets/browser.png";
+import { ScrollerTypes } from "$lib/types";
+import { capitalize } from "$lib/utils/text";
 
-  type Props = {
-    type: keyof typeof ScrollerTypes
-    items: LoadBookmarkFlatTags[] | LoadFeedEntry[]
-    count: number
-  }
+type Props = {
+  type: keyof typeof ScrollerTypes;
+  items: LoadBookmarkFlatTags[] | LoadFeedEntry[];
+  count: number;
+};
 
-  const { type, items, count }: Props = $props()
+const { type, items, count }: Props = $props();
 
-  let element = $state<HTMLElement | undefined>()
+let element = $state<HTMLElement | undefined>();
 
-  watch(
-    () => items,
-    () => {
-      element?.scrollTo(0, 0)
-    },
-  )
+watch(
+  () => items,
+  () => {
+    element?.scrollTo(0, 0);
+  },
+);
 </script>
 
 <section

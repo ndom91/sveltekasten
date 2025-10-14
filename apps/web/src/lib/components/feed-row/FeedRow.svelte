@@ -1,130 +1,133 @@
 <script lang="ts">
-  import { format } from "@formkit/tempo"
-  import dompurify from "isomorphic-dompurify"
-  import { watch } from "runed"
-  import FeedActions from "./FeedActions.svelte"
-  import MobileFeedActions from "./MobileFeedActions.svelte"
-  import type { Feed, FeedEntry, FeedEntryMedia } from "$lib/types/zod.js"
-  import { page } from "$app/state"
-  import { PUBLIC_WORKER_URL } from "$env/static/public"
-  import MediaQuery from "$lib/components/MediaQuery.svelte"
-  import { Badge } from "$lib/components/ui/badge"
-  import { useInterface } from "$lib/state/ui.svelte"
-  import { cn } from "$lib/utils/style"
+import { format } from "@formkit/tempo";
+import dompurify from "isomorphic-dompurify";
+import { watch } from "runed";
+import FeedActions from "./FeedActions.svelte";
+import MobileFeedActions from "./MobileFeedActions.svelte";
+import MediaQuery from "$lib/components/MediaQuery.svelte";
+import { Badge } from "$lib/components/ui/badge";
+import { useInterface } from "$lib/state/ui.svelte";
+import { cn } from "$lib/utils";
+import type { Feed, FeedEntry, FeedEntryMedia } from "$lib/types/zod.js";
+import { page } from "$app/state";
+import { PUBLIC_WORKER_URL } from "$env/static/public";
 
-  const ui = useInterface()
+const ui = useInterface();
 
-  let {
-    feedEntry,
-    handleGenerateSpeech,
-    handleSummarizeText,
-  }: {
-    feedEntry: FeedEntry & {
-      feedMedia: FeedEntryMedia[]
-      feed: Feed
-    }
-    handleGenerateSpeech: (text: string) => Promise<void>
-    handleSummarizeText: (text: string) => void
-  } = $props()
+let {
+  feedEntry,
+  handleGenerateSpeech,
+  handleSummarizeText,
+}: {
+  feedEntry: FeedEntry & {
+    feedMedia: FeedEntryMedia[];
+    feed: Feed;
+  };
+  handleGenerateSpeech: (text: string) => Promise<void>;
+  handleSummarizeText: (text: string) => void;
+} = $props();
 
-  let showFeedActions = $state(false)
-  let card = $state<HTMLElement>()
-  let cardOpen = $state(false)
-  let feedBodyElement = $state<HTMLElement>()!
+let showFeedActions = $state(false);
+let card = $state<HTMLElement>();
+let cardOpen = $state(false);
+let feedBodyElement = $state<HTMLElement>()!;
 
-  const imageUrl = $derived.by(() => {
-    if (feedEntry.feedMedia?.[0]?.href) {
-      return `${PUBLIC_WORKER_URL}/img/s_160x96/${feedEntry.feedMedia?.[0]?.href}`
-    } else {
-      return `${PUBLIC_WORKER_URL}/img/_/https://picsum.photos/seed/${btoa(feedEntry.link).substring(feedEntry.link.length - 32, feedEntry.link.length)}/160/96.webp`
-    }
-  })
-
-  const handleMarkAsUnread = async (target: boolean | null = null) => {
-    feedEntry = {
-      ...feedEntry,
-      unread: target ?? !feedEntry.unread,
-    }
-    await fetch("/api/v1/feeds", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ feedEntry }),
-    })
+const imageUrl = $derived.by(() => {
+  if (feedEntry.feedMedia?.[0]?.href) {
+    return `${PUBLIC_WORKER_URL}/img/s_160x96/${feedEntry.feedMedia?.[0]?.href}`;
+  } else {
+    return `${PUBLIC_WORKER_URL}/img/_/https://picsum.photos/seed/${btoa(feedEntry.link).substring(feedEntry.link.length - 32, feedEntry.link.length)}/160/96.webp`;
   }
+});
 
-  const handleToggleCardOpen = async () => {
-    cardOpen = !cardOpen
-
-    if (feedEntry.unread === true) {
-      await handleMarkAsUnread(false)
-    }
-  }
-
-  const handleKeyDown = async (e: KeyboardEvent) => {
-    if (e.repeat || e.target instanceof HTMLInputElement) {
-      return
-    }
-    if (e.key === "\\" && e.target === card) {
-      e.preventDefault()
-      await handleToggleCardOpen()
-    }
-    if (e.key === "u" && e.target === card) {
-      e.preventDefault()
-      await handleMarkAsUnread()
-    }
-  }
-
-  const handleSetTextToSpeechContent = async () => {
-    ui.textToSpeechAudioBlob = ""
-    // Hack to quickly get text content from HTML String
-    const tmp = document.createElement("div")
-    tmp.innerHTML = feedEntry.content!
-    await handleGenerateSpeech(tmp.textContent!)
-  }
-
-  const handleStartTextSummarization = () => {
-    handleSummarizeText(feedEntry.content ?? "")
-  }
-
-  const mutate = () => {
-    return new Promise<void>((resolve) => {
-      if (cardOpen) {
-        feedBodyElement.style.opacity = "1.0"
-        feedBodyElement.style.height = "fit-content"
-        feedBodyElement.style.transform = "scaleY(100%)"
-      } else {
-        feedBodyElement.style.opacity = "0"
-        feedBodyElement.style.height = "0px"
-        feedBodyElement.style.transform = "scaleY(0)"
-      }
-      resolve()
-    })
-  }
-
-  watch.pre(
-    () => cardOpen,
-    () => {
-      void (document.startViewTransition ? document.startViewTransition(() => mutate()) : mutate())
+const handleMarkAsUnread = async (target: boolean | null = null) => {
+  feedEntry = {
+    ...feedEntry,
+    unread: target ?? !feedEntry.unread,
+  };
+  await fetch("/api/v1/feeds", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
     },
-  )
+    body: JSON.stringify({ feedEntry }),
+  });
+};
 
-  const isFeedVisible = $derived(
-    page.data.feeds.data?.find((feed: Feed) => feed.id === feedEntry?.feedId)?.visible,
-  )
+const handleToggleCardOpen = async () => {
+  cardOpen = !cardOpen;
 
-  const hideUnread = $derived.by(() => {
-    if (ui.showUnreadOnly) {
-      return !feedEntry.unread
+  if (feedEntry.unread === true) {
+    await handleMarkAsUnread(false);
+  }
+};
+
+const handleKeyDown = async (e: KeyboardEvent) => {
+  if (e.repeat || e.target instanceof HTMLInputElement) {
+    return;
+  }
+  if (e.key === "\\" && e.target === card) {
+    e.preventDefault();
+    await handleToggleCardOpen();
+  }
+  if (e.key === "u" && e.target === card) {
+    e.preventDefault();
+    await handleMarkAsUnread();
+  }
+};
+
+const handleSetTextToSpeechContent = async () => {
+  ui.textToSpeechAudioBlob = "";
+  // Hack to quickly get text content from HTML String
+  const tmp = document.createElement("div");
+  tmp.innerHTML = feedEntry.content!;
+  await handleGenerateSpeech(tmp.textContent);
+};
+
+const handleStartTextSummarization = () => {
+  handleSummarizeText(feedEntry.content ?? "");
+};
+
+const mutate = () => {
+  return new Promise<void>((resolve) => {
+    if (cardOpen) {
+      feedBodyElement.style.opacity = "1.0";
+      feedBodyElement.style.height = "fit-content";
+      feedBodyElement.style.transform = "scaleY(100%)";
+    } else {
+      feedBodyElement.style.opacity = "0";
+      feedBodyElement.style.height = "0px";
+      feedBodyElement.style.transform = "scaleY(0)";
     }
-    return false
-  })
+    resolve();
+  });
+};
 
-  const feedCategories: string[] =
-    typeof feedEntry.categories === "string"
-      ? feedEntry.categories.replaceAll(" ", "").split(",")
-      : feedEntry.categories
+watch.pre(
+  () => cardOpen,
+  () => {
+    void (document.startViewTransition
+      ? document.startViewTransition(() => mutate())
+      : mutate());
+  },
+);
+
+const isFeedVisible = $derived(
+  page.data.feeds.data?.find((feed: Feed) => feed.id === feedEntry?.feedId)
+    ?.visible,
+);
+
+const hideUnread = $derived.by(() => {
+  if (ui.showUnreadOnly) {
+    return !feedEntry.unread;
+  }
+  return false;
+});
+
+const feedCategories: string[] =
+  typeof feedEntry.categories === "string"
+    ? feedEntry.categories.replaceAll(" ", "").split(",")
+    : feedEntry.categories;
 </script>
 
 <svelte:window onkeydown={handleKeyDown} />

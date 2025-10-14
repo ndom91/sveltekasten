@@ -1,31 +1,31 @@
 <script lang="ts">
-  import type { Feed } from "$lib/types/zod.js"
-  import type { ActionData } from "./$types"
-  import { cn } from "$/lib/utils/style"
-  import { dev } from "$app/environment"
-  import { enhance } from "$app/forms"
-  import * as AlertDialog from "$lib/components/ui/alert-dialog"
-  import { buttonVariants } from "$lib/components/ui/button"
-  import { handleActionResults } from "$lib/utils/form-action"
+import { cn } from "$/lib/utils";
+import * as AlertDialog from "$lib/components/ui/alert-dialog";
+import { buttonVariants } from "$lib/components/ui/button";
+import { handleActionResults } from "$lib/utils/form-action";
+import type { Feed } from "$lib/types/zod.js";
+import type { ActionData } from "./$types";
+import { dev } from "$app/environment";
+import { enhance } from "$app/forms";
 
-  let {
-    form,
-    open = $bindable(),
-    feed,
-  }: {
-    open: boolean
-    feed: Feed
-    form?: ActionData
-  } = $props()
+let {
+  form,
+  open = $bindable(),
+  feed,
+}: {
+  open: boolean;
+  feed: Feed;
+  form?: ActionData;
+} = $props();
 
-  $effect(() => {
-    if (form?.type === "success") {
-      open = false
-      if (dev) {
-        console.log("form.type === 'success'", { open })
-      }
+$effect(() => {
+  if (form?.type === "success") {
+    open = false;
+    if (dev) {
+      console.log("form.type === 'success'", { open });
     }
-  })
+  }
+});
 </script>
 
 <AlertDialog.Root bind:open closeOnOutsideClick closeOnEscape>

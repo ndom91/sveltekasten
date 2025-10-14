@@ -1,15 +1,15 @@
-import { redirect } from "@sveltejs/kit"
-import type { PageServerLoad } from "./$types"
+import { redirect } from "@sveltejs/kit";
+import type { PageServerLoad } from "./$types";
 // import { fail, redirect } from "@sveltejs/kit"
 // import type { Feed } from "$lib/types/zod.js"
 // import { db } from "$lib/prisma"
 
 export const load: PageServerLoad = async ({ locals, url, depends }) => {
-  depends("app:feeds")
-  const session = await locals.auth()
+  depends("app:feeds");
+  const session = await locals.session;
   if (!session && url.pathname !== "/login") {
-    const fromUrl = url.pathname + url.search
-    redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
+    const fromUrl = url.pathname + url.search;
+    redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`);
   }
 
   try {
@@ -67,9 +67,9 @@ export const load: PageServerLoad = async ({ locals, url, depends }) => {
       //   }) as unknown as (Feed & { visible: boolean })[],
       //   count: feedCount ?? 0,
       // },
-    }
+    };
   } catch (error) {
-    console.error(String(error))
+    console.error(String(error));
     return {
       feedEntries: {
         data: {},
@@ -81,6 +81,6 @@ export const load: PageServerLoad = async ({ locals, url, depends }) => {
       },
       error,
       session,
-    }
+    };
   }
-}
+};

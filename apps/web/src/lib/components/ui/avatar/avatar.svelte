@@ -1,21 +1,19 @@
 <script lang="ts">
 	import { Avatar as AvatarPrimitive } from "bits-ui";
-	import { cn } from "$lib/utils/style";
+	import { cn } from "$lib/utils.js";
 
-	type $$Props = AvatarPrimitive.Props;
-
-	let className: $$Props["class"] = undefined;
-	export let delayMs: $$Props["delayMs"] = undefined;
-	export { className as class };
+	let {
+		ref = $bindable(null),
+		loadingStatus = $bindable("loading"),
+		class: className,
+		...restProps
+	}: AvatarPrimitive.RootProps = $props();
 </script>
 
 <AvatarPrimitive.Root
-	{delayMs}
-	class={cn(
-		"relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
-		className
-	)}
-	{...$$restProps}
->
-	<slot />
-</AvatarPrimitive.Root>
+	bind:ref
+	bind:loadingStatus
+	data-slot="avatar"
+	class={cn("relative flex size-8 shrink-0 overflow-hidden rounded-full", className)}
+	{...restProps}
+/>

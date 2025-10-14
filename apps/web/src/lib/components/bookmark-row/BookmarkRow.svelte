@@ -1,74 +1,74 @@
 <script lang="ts">
-  import { format } from "@formkit/tempo"
-  import BookmarkActions from "./BookmarkActions.svelte"
-  import DeleteDialog from "./DeleteDialog.svelte"
-  import MobileBookmarkActions from "./MobileBookmarkActions.svelte"
-  import type { Category } from "$lib/types/zod.js"
-  import { invalidateAll } from "$app/navigation"
-  import { page } from "$app/state"
-  import { PUBLIC_WORKER_URL } from "$env/static/public"
-  import MediaQuery from "$lib/components/MediaQuery.svelte"
-  import { Image } from "$lib/components/image"
-  import { Badge } from "$lib/components/ui/badge"
-  import { useInterface } from "$lib/state/ui.svelte"
+import { format } from "@formkit/tempo";
+import BookmarkActions from "./BookmarkActions.svelte";
+import DeleteDialog from "./DeleteDialog.svelte";
+import MobileBookmarkActions from "./MobileBookmarkActions.svelte";
+import type { Category } from "$lib/types/zod.js";
+import { invalidateAll } from "$app/navigation";
+import { page } from "$app/state";
+import { PUBLIC_WORKER_URL } from "$env/static/public";
+import MediaQuery from "$lib/components/MediaQuery.svelte";
+import { Image } from "$lib/components/image";
+import { Badge } from "$lib/components/ui/badge";
+import { useInterface } from "$lib/state/ui.svelte";
 
-  type CategoryVisible = Category & { visible: boolean }
+type CategoryVisible = Category & { visible: boolean };
 
-  let deleteElement = $state<HTMLDialogElement>()
+let deleteElement = $state<HTMLDialogElement>();
 
-  const ui = useInterface()
+const ui = useInterface();
 
-  const { bookmark = $bindable() }: { bookmark: LoadBookmarkFlatTags } = $props()
+const { bookmark = $bindable() }: { bookmark: LoadBookmarkFlatTags } = $props();
 
-  let isOptionsOpen = $state(false)
+let isOptionsOpen = $state(false);
 
-  const handleMetadataSidebarOpen = () => {
-    ui.setMetadataSidebarData({
-      bookmark,
-      categories: page.data.categories,
-      tags: page.data.tags,
-    })
-    ui.toggleMetadataSidebar(true)
-    ui.toggleMetadataSidebarEditMode(false)
+const handleMetadataSidebarOpen = () => {
+  ui.setMetadataSidebarData({
+    bookmark,
+    categories: page.data.categories,
+    tags: page.data.tags,
+  });
+  ui.toggleMetadataSidebar(true);
+  ui.toggleMetadataSidebarEditMode(false);
+};
+
+const handleArchive = async () => {
+  await fetch(`/api/v1/bookmarks`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id: bookmark.id,
+      update: { archived: true },
+    }),
+  });
+  await invalidateAll();
+};
+
+const categories = $state(page.data.categories);
+let isBookmarkCategoryHidden = $state(false);
+
+const imageUrl = $derived.by(() => {
+  if (bookmark.image) {
+    return `${PUBLIC_WORKER_URL}/img/s_260x144,pos_top/${bookmark.image}`;
+  } else {
+    return `${PUBLIC_WORKER_URL}/img/_/https://picsum.photos/seed/${btoa(bookmark.url).substring(bookmark.url.length - 32, bookmark.url.length)}/256/144.webp`;
   }
+});
 
-  const handleArchive = async () => {
-    await fetch(`/api/v1/bookmarks`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: bookmark.id,
-        update: { archived: true },
-      }),
-    })
-    await invalidateAll()
-  }
-
-  const categories = $state(page.data.categories)
-  let isBookmarkCategoryHidden = $state(false)
-
-  const imageUrl = $derived.by(() => {
-    if (bookmark.image) {
-      return `${PUBLIC_WORKER_URL}/img/s_260x144,pos_top/${bookmark.image}`
-    } else {
-      return `${PUBLIC_WORKER_URL}/img/_/https://picsum.photos/seed/${btoa(bookmark.url).substring(bookmark.url.length - 32, bookmark.url.length)}/256/144.webp`
-    }
-  })
-
-  $effect(() => {
-    isBookmarkCategoryHidden = !!categories
-      .filter((cat: CategoryVisible) => cat.visible === false)
-      .find((cat: CategoryVisible) => cat.id === bookmark?.category?.id)
-  })
+$effect(() => {
+  isBookmarkCategoryHidden = !!categories
+    .filter((cat: CategoryVisible) => cat.visible === false)
+    .find((cat: CategoryVisible) => cat.id === bookmark?.category?.id);
+});
 </script>
 
 <div
   tabindex={0}
   data-id={bookmark.id}
   role="row"
-  class="bookmark-row relative mx-2 flex max-w-full gap-4 rounded-lg rounded-l-none border-l-4 border-transparent p-4 outline-none transition-all duration-500 ease-(--ease-spring-3) focus:border-zinc-500 focus:bg-neutral-100 dark:focus:bg-neutral-800/40 md:mx-4"
+  class="bookmark-row relative mx-2 flex max-w-full gap-4 rounded-lg rounded-l-none border-l-4 border-transparent p-4 outline-none transition-all duration-500 ease-(--ease-spring-3) focus:border-zinc-500 focus:bg-neutral-100 dark:focus:bg-neutral-800/40 md:mx-4 starting:-translate-y-2 starting:opacity-0;"
   class:hidden={isBookmarkCategoryHidden}
   onpointerleave={() => (isOptionsOpen = false)}
   onpointerenter={() => (isOptionsOpen = true)}
@@ -109,7 +109,7 @@
       {/if}
       {#if bookmark.tags?.length}
         <span class="flex flex-wrap gap-2">
-          {#each bookmark.tags as tag}
+          {#each bookmark.tags as tag (tag.name)}
             <Badge variant="outline">
               {tag.name}
             </Badge>
@@ -139,11 +139,3 @@
     </MediaQuery>
   </div>
 </div>
-
-<style>
-  .bookmark-row {
-    @starting-style {
-      @apply -translate-y-2 opacity-0;
-    }
-  }
-</style>

@@ -1,17 +1,16 @@
 <script lang="ts" module>
-  export type Tag = {
-    label: string
-    value: string
-  }
+export type Tag = {
+  label: string;
+  value: string;
+};
 </script>
 
 <script lang="ts" generics="T extends Record<string, unknown>">
   // TODO: Refactor using reactive set/map
   import { Combobox } from "bits-ui"
   import { type FormPathLeaves, type SuperForm, formFieldProxy } from "sveltekit-superforms"
-  import type { Tag as RawTag } from "$lib/types/zod.js"
   import { Badge } from "$lib/components/ui/badge"
-  import { flyAndScale } from "$lib/utils/style"
+  import type { Tag as RawTag } from "$lib/types/zod.js"
 
   const {
     form,
@@ -113,7 +112,6 @@
   </div>
   <Combobox.Content
     class="p-2 w-full rounded-md border outline-none border-neutral-50 bg-background shadow-popover dark:border-neutral-700"
-    transition={flyAndScale}
     sideOffset={8}
   >
     {#each filteredTags as tag (tag.value)}

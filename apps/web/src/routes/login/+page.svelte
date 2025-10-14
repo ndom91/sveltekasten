@@ -125,7 +125,6 @@ if (browser && page.url.searchParams.get("verifyEmail")) {
               onclick={async() => {
                 await authClient.signIn.social({ 
                   provider: 'github',
-                  callbackURL: window.location.origin + "/dashboard"
                 })
               }}
               class="w-full *:w-full [&>button]:transition focus:[&>button]:outline-none focus:[&>button]:ring-2 focus:[&>button]:ring-offset-2 focus:[&>button]:ring-zinc-300 [&>button]:rounded-sm"

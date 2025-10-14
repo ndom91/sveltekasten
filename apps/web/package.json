@@ -20,6 +20,7 @@
   },
   "type": "module",
   "devDependencies": {
+    "@lucide/svelte": "^0.544.0",
     "@playwright/test": "^1.56.0",
     "@sveltejs/adapter-node": "^5.3.3",
     "@sveltejs/kit": "2.46.5",
@@ -36,7 +37,6 @@
     "prisma-zod-generator": "1.28.3",
     "svelte": "5.39.12",
     "svelte-check": "4.3.3",
-    "svelte-headless-table": "^0.18.3",
     "tailwindcss": "^4.1.14",
     "typescript-svelte-plugin": "^0.3.50",
     "workbox-expiration": "^7.3.0",
@@ -56,7 +56,6 @@
     "better-auth": "1.3.27",
     "bits-ui": "^2.11.5",
     "clsx": "^2.1.1",
-    "cmdk-sv": "^0.0.19",
     "formsnap": "^2.0.1",
     "isomorphic-dompurify": "^2.29.0",
     "metascraper": "^5.49.4",
@@ -79,8 +78,9 @@
     "sveltekit-superforms": "^2.27.3",
     "tailwind-merge": "^3.3.1",
     "tailwind-variants": "^3.1.1",
+    "tailwindcss-animate": "1.0.7",
     "thumbhash": "^0.1.1",
-    "vaul-svelte": "^0.3.2",
+    "vaul-svelte": "1.0.0-next.7",
     "ws": "^8.18.3",
     "zod": "^4.1.12"
   }

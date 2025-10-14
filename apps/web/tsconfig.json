@@ -19,7 +19,7 @@
       "dom.iterable",
       "es2022",
       "webworker"
-    ],
+    ]
   },
   "include": [
     ".svelte-kit/ambient.d.ts",
@@ -27,6 +27,7 @@
     ".svelte-kit/types/**/$types.d.ts",
     "vite.config.js",
     "vite.config.ts",
+    "tailwind.config.ts",
     "src/ambient.d.ts",
     "src/**/*.js",
     "src/**/*.ts",
@@ -34,5 +35,5 @@
     "tests/**/*.js",
     "tests/**/*.ts",
     "tests/**/*.svelte"
-  ],
+  ]
 }

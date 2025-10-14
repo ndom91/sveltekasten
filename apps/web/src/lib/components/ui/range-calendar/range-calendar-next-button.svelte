@@ -1,35 +1,31 @@
 <script lang="ts">
-  import { RangeCalendar as RangeCalendarPrimitive } from "bits-ui"
-  import { buttonVariants } from "$lib/components/ui/button/index.js"
-  import { cn } from "$lib/utils/style"
+	import { RangeCalendar as RangeCalendarPrimitive } from "bits-ui";
+	import ChevronRightIcon from "@lucide/svelte/icons/chevron-right";
+	import { buttonVariants, type ButtonVariant } from "$lib/components/ui/button/index.js";
+	import { cn } from "$lib/utils.js";
 
-  type $$Props = RangeCalendarPrimitive.NextButtonProps
-  type $$Events = RangeCalendarPrimitive.NextButtonEvents
-
-  let className: $$Props["class"] = undefined
-  export { className as class }
+	let {
+		ref = $bindable(null),
+		class: className,
+		children,
+		variant = "ghost",
+		...restProps
+	}: RangeCalendarPrimitive.NextButtonProps & {
+		variant?: ButtonVariant;
+	} = $props();
 </script>
 
+{#snippet Fallback()}
+	<ChevronRightIcon class="size-4" />
+{/snippet}
+
 <RangeCalendarPrimitive.NextButton
-  on:click
-  class={cn(
-    buttonVariants({ variant: "outline" }),
-    "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
-    className,
-  )}
-  {...$$restProps}
-  let:builder
->
-  <slot {builder}>
-    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"
-      ><rect width="256" height="256" fill="none" /><polyline
-        points="96 48 176 128 96 208"
-        fill="none"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="16"
-      /></svg
-    >k
-  </slot>
-</RangeCalendarPrimitive.NextButton>
+	bind:ref
+	class={cn(
+		buttonVariants({ variant }),
+		"size-(--cell-size) select-none bg-transparent p-0 disabled:opacity-50 rtl:rotate-180",
+		className
+	)}
+	children={children || Fallback}
+	{...restProps}
+/>

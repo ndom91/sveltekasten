@@ -1,40 +1,42 @@
 <script lang="ts">
-  import { watch } from "runed"
-  import Logo from "$lib/assets/Logo.svelte"
-  import SidebarContent from "$lib/components/SidebarContent.svelte"
-  import Drawer from "$lib/components/mobile/Drawer.svelte"
-  import { Button } from "$lib/components/ui/button"
-  import { useInterface } from "$lib/state/ui.svelte"
-  import { cn } from "$lib/utils/style"
+import { watch } from "runed";
+import Logo from "$lib/assets/Logo.svelte";
+import SidebarContent from "$lib/components/SidebarContent.svelte";
+import Drawer from "$lib/components/mobile/Drawer.svelte";
+import { Button } from "$lib/components/ui/button";
+import { useInterface } from "$lib/state/ui.svelte";
+import { cn } from "$lib/utils";
 
-  const ui = useInterface()
-  let userSidebarElement = $state<HTMLElement>()!
+const ui = useInterface();
+let userSidebarElement = $state<HTMLElement>()!;
 
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.repeat || event.target instanceof HTMLInputElement) {
-      return
-    }
-    if (event.code === "BracketLeft") {
-      ui.toggleUserSidebar()
-    }
+const handleKeyDown = (event: KeyboardEvent) => {
+  if (event.repeat || event.target instanceof HTMLInputElement) {
+    return;
   }
-
-  const mutate = () => {
-    if (ui.userSidebarOpen) {
-      userSidebarElement.style.minWidth = "210px"
-    } else {
-      userSidebarElement.style.minWidth = "72px"
-    }
+  if (event.code === "BracketLeft") {
+    ui.toggleUserSidebar();
   }
+};
 
-  watch.pre(
-    () => ui.userSidebarOpen,
-    () => {
-      document.startViewTransition ? document.startViewTransition(() => mutate()) : mutate()
-    },
-  )
+const mutate = () => {
+  if (ui.userSidebarOpen) {
+    userSidebarElement.style.minWidth = "210px";
+  } else {
+    userSidebarElement.style.minWidth = "72px";
+  }
+};
 
-  let windowWidth: number = $state(1000)
+watch.pre(
+  () => ui.userSidebarOpen,
+  () => {
+    document.startViewTransition
+      ? document.startViewTransition(() => mutate())
+      : mutate();
+  },
+);
+
+let windowWidth: number = $state(1000);
 </script>
 
 <svelte:window onkeydown={handleKeyDown} bind:innerWidth={windowWidth} />

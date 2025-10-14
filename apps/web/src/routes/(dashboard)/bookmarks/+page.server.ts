@@ -108,8 +108,8 @@ export const actions: Actions = {
     }
 
     try {
-      const session = await event.locals.auth();
-      if (!session?.user?.id) {
+      const session = await event.locals.session;
+      if (!session?.userId) {
         return fail(401, { type: "error", error: "Unauthenticated" });
       }
       const { title, url, description, categoryId, tags } = form.data;
@@ -126,7 +126,7 @@ export const actions: Actions = {
           metadata: bookmarkMetadata.metadata,
           user: {
             connect: {
-              id: session.user?.id,
+              id: session.userId,
             },
           },
           tags: tags
@@ -174,7 +174,7 @@ export const actions: Actions = {
 
 export const load: PageServerLoad = async (event) => {
   event.depends("app:bookmarks");
-  const session = await event.locals?.auth();
+  const session = await event.locals?.session;
 
   if (!session && event.url.pathname !== "/login") {
     const fromUrl = event.url.pathname + event.url.search;
@@ -185,8 +185,7 @@ export const load: PageServerLoad = async (event) => {
     // const skip = Number(event.url.searchParams.get("skip") ?? "0")
     // const limit = Number(event.url.searchParams.get("limit") ?? "20")
 
-    const session = await event.locals.auth();
-    if (!session?.user?.id) {
+    if (!session?.userId) {
       return fail(401, { type: "error", error: "Unauthenticated" });
     }
 
@@ -194,7 +193,7 @@ export const load: PageServerLoad = async (event) => {
     //   take: limit + skip,
     //   skip,
     //   where: {
-    //     userId: session?.user?.id,
+    //     userId: session?.userId,
     //     archived: false,
     //   },
     //   include: {

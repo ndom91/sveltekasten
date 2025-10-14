@@ -1,46 +1,45 @@
 <script lang="ts">
-  import { ModeWatcher } from "mode-watcher"
-  import { useDebounce } from "runed"
-  import { blur } from "svelte/transition"
-  import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
-  import { AudioPlayer } from "$lib/components/audio-player"
-  import { Breadcrumbs, QuickAddForm } from "$lib/components/navbar"
-  import { Button } from "$lib/components/ui/button"
-  import * as Popover from "$lib/components/ui/popover"
-  import * as Tooltip from "$lib/components/ui/tooltip"
-  import { useInterface } from "$lib/state/ui.svelte"
-  import { cn } from "$lib/utils/style"
-  import { flyAndScale } from "$lib/utils/style"
-  import { invalidate } from "$app/navigation"
+import { ModeWatcher } from "mode-watcher";
+import { useDebounce } from "runed";
+import { blur } from "svelte/transition";
+import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte";
+import { AudioPlayer } from "$lib/components/audio-player";
+import { Breadcrumbs, QuickAddForm } from "$lib/components/navbar";
+import { Button } from "$lib/components/ui/button";
+import * as Popover from "$lib/components/ui/popover";
+import * as Tooltip from "$lib/components/ui/tooltip";
+import { useInterface } from "$lib/state/ui.svelte";
+import { cn } from "$lib/utils";
+import { invalidate } from "$app/navigation";
 
-  const { showSearch = true, showQuickAdd = true, showSidebar = true } = $props()
-  const ui = useInterface()
-  let searchInputEl = $state<HTMLInputElement>()
+const { showSearch = true, showQuickAdd = true, showSidebar = true } = $props();
+const ui = useInterface();
+let searchInputEl = $state<HTMLInputElement>();
 
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.repeat || event.target instanceof HTMLInputElement) {
-      return
-    }
-
-    if (event.altKey && event.key === "n") {
-      event.preventDefault()
-      ui.toggleQuickAdd()
-    }
-    if (event.key === "/") {
-      event.preventDefault()
-      searchInputEl?.focus()
-    }
+const handleKeyDown = (event: KeyboardEvent) => {
+  if (event.repeat || event.target instanceof HTMLInputElement) {
+    return;
   }
 
-  const handleSearchInput = (event: KeyboardEvent) => {
-    const query = (event.target as HTMLInputElement).value
-    // Reset when deleting query
-    if (ui.searchQuery !== "" && query === "") {
-      invalidate("app:feeds")
-      invalidate("app:bookmarks")
-    }
-    ui.searchQuery = query
+  if (event.altKey && event.key === "n") {
+    event.preventDefault();
+    ui.toggleQuickAdd();
   }
+  if (event.key === "/") {
+    event.preventDefault();
+    searchInputEl?.focus();
+  }
+};
+
+const handleSearchInput = (event: KeyboardEvent) => {
+  const query = (event.target as HTMLInputElement).value;
+  // Reset when deleting query
+  if (ui.searchQuery !== "" && query === "") {
+    invalidate("app:feeds");
+    invalidate("app:bookmarks");
+  }
+  ui.searchQuery = query;
+};
 </script>
 
 <svelte:window onkeydown={handleKeyDown} />
@@ -193,7 +192,7 @@
               {/if}
             </Button>
           </Tooltip.Trigger>
-          <Tooltip.Content transition={flyAndScale}>
+          <Tooltip.Content>
             <p class="flex items-center justify-center">
               Toggle Sidebar <KeyboardIndicator key="]" class="ml-2 text-xs" />
             </p>

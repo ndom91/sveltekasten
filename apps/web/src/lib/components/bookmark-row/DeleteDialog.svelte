@@ -1,23 +1,23 @@
 <script lang="ts">
-  import { cn } from "$/lib/utils/style"
-  import Dialog from "$lib/components/Dialog.svelte"
-  import { buttonVariants } from "$lib/components/ui/button"
-  import { BookmarksService } from "$lib/state/bookmarks.svelte"
-  import { getContext } from "$lib/utils/context"
-  import { handleActionResults } from "$lib/utils/form-action"
-  import { enhance } from "$app/forms"
+import { cn } from "$/lib/utils";
+import Dialog from "$lib/components/Dialog.svelte";
+import { buttonVariants } from "$lib/components/ui/button";
+import { BookmarksService } from "$lib/state/bookmarks.svelte";
+import { getContext } from "$lib/utils/context";
+import { handleActionResults } from "$lib/utils/form-action";
+import { enhance } from "$app/forms";
 
-  const bookmarksService = getContext(BookmarksService)
+const bookmarksService = getContext(BookmarksService);
 
-  let {
-    dialogElement = $bindable(),
-    bookmarkId,
-  }: {
-    dialogElement: HTMLDialogElement | undefined
-    bookmarkId: string
-  } = $props()
+let {
+  dialogElement = $bindable(),
+  bookmarkId,
+}: {
+  dialogElement: HTMLDialogElement | undefined;
+  bookmarkId: string;
+} = $props();
 
-  const bookmark = $derived(bookmarksService.find(bookmarkId))
+const bookmark = $derived(bookmarksService.find(bookmarkId));
 </script>
 
 <Dialog footer={false} id="delete-bookmark" bind:element={dialogElement}>
