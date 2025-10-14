@@ -6,11 +6,12 @@ datasource db {
 
 generator client {
   provider        = "prisma-client"
-  previewFeatures = ["fullTextSearch", "queryCompiler", "driverAdapters"]
+  previewFeatures = ["fullTextSearchPostgres"]
   output          = "../src/prisma-client"
+  engineType      = "client" // enable Prisma ORM without Rust
 
-  runtime                = "nodejs"
-  moduleFormat           = "esm"
+  // runtime                = "nodejs"
+  // moduleFormat           = "esm"
 }
 
 // generator zod {
@@ -20,6 +21,11 @@ generator client {
 //   useTypeAssertions = true
 //   writeNullishInModelTypes = true
 // }
+
+generator zod {
+  provider = "prisma-zod-generator"
+  pureModels = true
+}
 
 model Account {
   id                String   @id @default(cuid())
