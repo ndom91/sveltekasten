@@ -1,43 +1,42 @@
 <script lang="ts">
-  // debugger
-  import { SignIn } from "@auth/sveltekit/components"
-  import { tick } from "svelte"
-  import { toast } from "svelte-sonner"
-  import { twJoin } from "tailwind-merge"
-  import ProviderIcons from "./ProviderIcons.svelte"
-  import LoginPattern from "$lib/assets/LoginPattern.svelte"
-  import { browser } from "$app/environment"
-  import { goto } from "$app/navigation"
-  import { page } from "$app/stores"
+import { SignIn } from "@auth/sveltekit/components";
+import { tick } from "svelte";
+import { toast } from "svelte-sonner";
+import { twJoin } from "tailwind-merge";
+import ProviderIcons from "./ProviderIcons.svelte";
+import LoginPattern from "$lib/assets/LoginPattern.svelte";
+import { browser } from "$app/environment";
+// import { goto } from "$app/navigation";
+import { page } from "$app/state";
 
-  const providerButtonStyles = (provider: string): string => {
-    switch (provider) {
-      case "github":
-        return "bg-neutral-700 text-white"
-      case "google":
-        return "bg-white focus:ring-blue-700 text-blue-600 border border-gray-300"
-      case "azure-ad":
-        return "bg-blue-700 hover:bg-blue-900 focus:ring-blue-700 text-white"
-      case "authentik":
-        return "bg-orange-600 hover:bg-orange-800 text-white"
-      case "keycloak":
-        return "bg-gray-600 hover:bg-gray-800 text-white"
-      default:
-        return "bg-gray-600 hover:bg-gray-800 text-white"
-    }
+const providerButtonStyles = (provider: string): string => {
+  switch (provider) {
+    case "github":
+      return "bg-neutral-700 text-white";
+    case "google":
+      return "bg-white focus:ring-blue-700 text-blue-600 border border-gray-300";
+    case "azure-ad":
+      return "bg-blue-700 hover:bg-blue-900 focus:ring-blue-700 text-white";
+    case "authentik":
+      return "bg-orange-600 hover:bg-orange-800 text-white";
+    case "keycloak":
+      return "bg-gray-600 hover:bg-gray-800 text-white";
+    default:
+      return "bg-gray-600 hover:bg-gray-800 text-white";
   }
+};
 
-  if (browser && $page.url.searchParams.get("verifyEmail")) {
-    tick().then(() => {
-      toast.success("Email sent, please check your inbox!", {
-        position: "top-left",
-        classes: {
-          toast: "bg-neutral-700/20 text-white border-gray-400/10",
-        },
-      })
-      goto("?")
-    })
-  }
+if (browser && page.url.searchParams.get("verifyEmail")) {
+  void tick().then(() => {
+    toast.success("Email sent, please check your inbox!", {
+      position: "top-left",
+      classes: {
+        toast: "bg-neutral-700/20 text-white border-gray-400/10",
+      },
+    });
+    // void goto("#");
+  });
+}
 </script>
 
 <div class="flex overflow-hidden relative w-full h-full">
@@ -74,14 +73,14 @@
         <span class="text-4xl font-medium text-white">BriefButler</span>
       </h2>
       <div class="flex flex-col gap-2 p-6 m-8 w-full bg-white rounded shadow-lg">
-        {#if !$page.data.session?.user}
-          {#if $page.data.providers.find((p: any) => p.id === "sendgrid")}
+        {#if !page.data.session?.user}
+          {#if page.data.providers.find((p: any) => p.id === "sendgrid")}
             <SignIn
               provider="sendgrid"
               signInPage="signin"
               options={{
-                redirectTo: $page.data.redirectTo
-                  ? `/${decodeURIComponent($page.data.redirectTo).slice(1)}`
+                redirectTo: page.data.redirectTo
+                  ? `/${decodeURIComponent(page.data.redirectTo).slice(1)}`
                   : `/`,
               }}
               class="flex flex-col justify-center items-stretch space-y-2 w-full focus:outline-none [&>button]:transition focus:[&>button]:outline-none focus:[&>button]:ring-2 focus:[&>button]:ring-offset-2 focus:[&>button]:ring-zinc-300 [&>button]:rounded-sm"
@@ -110,13 +109,13 @@
               <div class="flex-1 bg-neutral-300 h-px"></div>
             </div>
           {/if}
-          {#each $page.data.providers.filter((p: any) => p.id !== "sendgrid") as provider}
+          {#each page.data.providers.filter((p: any) => p.id !== "sendgrid") as provider (provider.id)}
             <SignIn
               provider={provider.id}
               signInPage="signin"
               options={{
-                redirectTo: $page.data.redirectTo
-                  ? `/${decodeURIComponent($page.data.redirectTo).slice(1)}`
+                redirectTo: page.data.redirectTo
+                  ? `/${decodeURIComponent(page.data.redirectTo).slice(1)}`
                   : `/`,
               }}
               class="w-full *:w-full [&>button]:transition focus:[&>button]:outline-none focus:[&>button]:ring-2 focus:[&>button]:ring-offset-2 focus:[&>button]:ring-zinc-300 [&>button]:rounded-sm"
@@ -170,3 +169,8 @@
     </div>
   </div>
 </div>
+
+<!-- <style lang="postcss"> -->
+<!--   @reference "tailwindcss"; -->
+<!--   @reference "../../lib/styles/global.css"; -->
+<!-- </style> -->

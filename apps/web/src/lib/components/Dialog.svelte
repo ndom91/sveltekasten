@@ -1,52 +1,52 @@
 <script lang="ts">
-  import type { Snippet } from "svelte"
-  import { cn } from "$lib/utils/style"
+import { cn } from "$lib/utils/style";
+import type { Snippet } from "svelte";
 
-  const ModalSize = {
-    sm: "sm",
-    md: "md",
-    lg: "lg",
-    xl: "xl",
-    "2xl": "2xl",
-  } as const
+const ModalSize = {
+  sm: "sm",
+  md: "md",
+  lg: "lg",
+  xl: "xl",
+  "2xl": "2xl",
+} as const;
 
-  interface Props {
-    id: string
-    children: Snippet
-    element: HTMLDialogElement | undefined
-    footer?: boolean
-    class?: string
-    header?: Snippet<[{ cancelAction: () => void }]>
-    popoverState?: "auto" | "manual"
-    confirmAction?: () => void
-    cancelAction?: () => void
-    confirmLabel?: Snippet
-    cancelLabel?: Snippet
-    size?: keyof typeof ModalSize
-  }
+interface Props {
+  id: string;
+  children: Snippet;
+  element: HTMLDialogElement | undefined;
+  footer?: boolean;
+  class?: string;
+  header?: Snippet<[{ cancelAction: () => void }]>;
+  popoverState?: "auto" | "manual";
+  confirmAction?: () => void;
+  cancelAction?: () => void;
+  confirmLabel?: Snippet;
+  cancelLabel?: Snippet;
+  size?: keyof typeof ModalSize;
+}
 
-  let {
-    id,
-    footer = true,
-    element = $bindable(),
-    confirmAction = () => null,
-    cancelAction = () => element?.close(),
-    class: className,
-    children,
-    header,
-    confirmLabel,
-    cancelLabel,
-    size = ModalSize.md,
-    ...rest
-  }: Props = $props()
+let {
+  id,
+  footer = true,
+  element = $bindable(),
+  confirmAction = () => null,
+  cancelAction = () => element?.close(),
+  class: className,
+  children,
+  header,
+  confirmLabel,
+  cancelLabel,
+  size = ModalSize.md,
+  ...rest
+}: Props = $props();
 
-  const modalSizeWidths = {
-    sm: "max-w-sm",
-    md: "max-w-md",
-    lg: "max-w-lg",
-    xl: "max-w-xl",
-    "2xl": "max-w-2xl",
-  }
+const modalSizeWidths = {
+  sm: "max-w-sm",
+  md: "max-w-md",
+  lg: "max-w-lg",
+  xl: "max-w-xl",
+  "2xl": "max-w-2xl",
+};
 </script>
 
 <dialog
@@ -88,6 +88,8 @@
 </dialog>
 
 <style>
+@reference "tailwindcss";
+
   :root {
     --duration: 0.2;
     --speed: calc(var(--duration) * 1s);
@@ -194,7 +196,7 @@
 
   .secondary-button,
   .primary-button {
-    @apply h-10 px-4 py-2 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+    @apply h-10 px-4 py-2 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50;
   }
 
   .secondary-button {
