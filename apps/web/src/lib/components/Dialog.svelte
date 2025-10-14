@@ -69,14 +69,21 @@ const modalSizeWidths = {
   </div>
   {#if footer}
     <footer class="flex justify-end py-2 space-x-2">
-      <button class="primary-button" onclick={() => confirmAction()}>
+      <button
+        class="h-10 px-4 py-2 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90"
+        onclick={() => confirmAction()}
+      >
         {#if confirmLabel}
           {@render confirmLabel()}
         {:else}
           Confirm
         {/if}
       </button>
-      <button type="button" class="secondary-button" onclick={() => cancelAction()}>
+      <button
+        type="button"
+        class="h-10 px-4 py-2 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80"
+        onclick={() => cancelAction()}
+      >
         {#if cancelLabel}
           {@render cancelLabel()}
         {:else}
@@ -88,7 +95,7 @@ const modalSizeWidths = {
 </dialog>
 
 <style>
-@reference "tailwindcss";
+  @reference "tailwindcss";
 
   :root {
     --duration: 0.2;
@@ -192,17 +199,5 @@ const modalSizeWidths = {
     dialog[open]::backdrop {
       --present: 0;
     }
-  }
-
-  .secondary-button,
-  .primary-button {
-    @apply h-10 px-4 py-2 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50;
-  }
-
-  .secondary-button {
-    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
-  }
-  .primary-button {
-    @apply bg-primary text-primary-foreground hover:bg-primary/90;
   }
 </style>

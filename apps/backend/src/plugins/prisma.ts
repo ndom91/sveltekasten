@@ -1,4 +1,4 @@
-import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaNeon } from "@prisma/adapter-neon";
 import debugFactory from "../lib/log.js";
 import { PrismaClient } from "../prisma-client/client.js";
 import process from "node:process";
@@ -6,9 +6,10 @@ import process from "node:process";
 const debug = debugFactory("backend:db");
 
 const prismaClientSingleton = () => {
-  const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+  const adapter = new PrismaNeon({
+    connectionString: process.env.DATABASE_URL,
+  });
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return new PrismaClient({ adapter });
 };
 

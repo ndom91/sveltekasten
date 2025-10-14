@@ -1,13 +1,19 @@
 <script lang="ts">
-import { SignIn } from "@auth/sveltekit/components";
 import { tick } from "svelte";
 import { toast } from "svelte-sonner";
 import { twJoin } from "tailwind-merge";
 import ProviderIcons from "./ProviderIcons.svelte";
 import LoginPattern from "$lib/assets/LoginPattern.svelte";
+import { authClient } from "$lib/auth-client";
 import { browser } from "$app/environment";
-// import { goto } from "$app/navigation";
 import { page } from "$app/state";
+
+const session = authClient.useSession();
+
+let email = $state("");
+let password = $state("");
+let name = $state("");
+let isSignUp = $state(false);
 
 const providerButtonStyles = (provider: string): string => {
   switch (provider) {
@@ -40,8 +46,7 @@ if (browser && page.url.searchParams.get("verifyEmail")) {
 </script>
 
 <div class="flex overflow-hidden relative w-full h-full">
-  <svelte:component
-    this={LoginPattern}
+  <LoginPattern 
     class="object-cover fixed top-0 right-0 min-w-full min-h-full bg-white z-5"
   />
   <div
@@ -72,59 +77,62 @@ if (browser && page.url.searchParams.get("verifyEmail")) {
         </svg>
         <span class="text-4xl font-medium text-white">BriefButler</span>
       </h2>
-      <div class="flex flex-col gap-2 p-6 m-8 w-full bg-white rounded shadow-lg">
-        {#if !page.data.session?.user}
-          {#if page.data.providers.find((p: any) => p.id === "sendgrid")}
-            <SignIn
-              provider="sendgrid"
-              signInPage="signin"
-              options={{
-                redirectTo: page.data.redirectTo
-                  ? `/${decodeURIComponent(page.data.redirectTo).slice(1)}`
-                  : `/`,
-              }}
-              class="flex flex-col justify-center items-stretch space-y-2 w-full focus:outline-none [&>button]:transition focus:[&>button]:outline-none focus:[&>button]:ring-2 focus:[&>button]:ring-offset-2 focus:[&>button]:ring-zinc-300 [&>button]:rounded-sm"
-            >
-              <div slot="email">
-                <input
-                  id="sendgrid"
-                  type="email"
-                  name="email"
-                  placeholder="user@company.com"
-                  class="flex py-2 px-3 w-full text-sm bg-transparent rounded-sm border ring-offset-white transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none border-neutral-300 placeholder:text-neutral-400 text-neutral-900 focus-visible:ring-zinc-300"
-                  required
-                />
-              </div>
+      <div class="flip-card m-8 w-full">
+        <div class="flip-card-inner" class:flipped={isSignUp}>
+          <!-- Front side - Sign In -->
+          <div class="flip-card-front flex flex-col gap-2 p-6 w-full bg-white rounded shadow-lg">
+            {#if !$session.data}
               <div
-                slot="submitButton"
-                class="flex overflow-hidden justify-center items-center px-4 space-x-2 w-full h-10 text-sm font-light text-white rounded-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 bg-neutral-700 ring-offset-background focus-visible:ring-zinc-300"
+                class="flex flex-col justify-center items-stretch space-y-2 w-full focus:outline-none [&>button]:transition focus:[&>button]:outline-none focus:[&>button]:ring-2 focus:[&>button]:ring-offset-2 focus:[&>button]:ring-zinc-300 [&>button]:rounded-sm"
+              >
+              <input
+                id="email"
+                type="email"
+                name="email"
+                bind:value={email}
+                placeholder="user@company.com"
+                class="flex py-2 px-3 w-full text-sm bg-transparent rounded-sm border ring-offset-white transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none border-neutral-300 placeholder:text-neutral-400 text-neutral-900 focus-visible:ring-zinc-300"
+                required
+              />
+              <input
+                id="password"
+                type="password"
+                name="password"
+                bind:value={password}
+                placeholder="p4assw0rd"
+                class="flex py-2 px-3 w-full text-sm bg-transparent rounded-sm border ring-offset-white transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none border-neutral-300 placeholder:text-neutral-400 text-neutral-900 focus-visible:ring-zinc-300"
+                required
+              />
+              <button
+                class="flex overflow-hidden justify-center items-center px-4 space-x-2 w-full h-10 text-sm font-light text-white rounded-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 bg-neutral-700 ring-offset-background focus-visible:ring-zinc-300 hover:cursor-pointer"
+                onclick={async() => {
+                  await authClient.signIn.email({
+                    email,
+                    password,
+                  })
+                }}
               >
                 Continue
-              </div>
-            </SignIn>
+              </button>
+            </div>
 
             <div class="flex gap-2 items-center my-2">
               <div class="flex-1 bg-neutral-300 h-px"></div>
               <span class="text-xs leading-4 uppercase text-neutral-500">or</span>
               <div class="flex-1 bg-neutral-300 h-px"></div>
             </div>
-          {/if}
-          {#each page.data.providers.filter((p: any) => p.id !== "sendgrid") as provider (provider.id)}
-            <SignIn
-              provider={provider.id}
-              signInPage="signin"
-              options={{
-                redirectTo: page.data.redirectTo
-                  ? `/${decodeURIComponent(page.data.redirectTo).slice(1)}`
-                  : `/`,
+            <button
+              onclick={async() => {
+                await authClient.signIn.social({ 
+                  provider: 'github'
+                })
               }}
               class="w-full *:w-full [&>button]:transition focus:[&>button]:outline-none focus:[&>button]:ring-2 focus:[&>button]:ring-offset-2 focus:[&>button]:ring-zinc-300 [&>button]:rounded-sm"
             >
               <div
-                slot="submitButton"
                 class={twJoin(
-                  "flex h-10 w-full items-center space-x-2 rounded px-4 text-base font-light transition focus:outline-none focus:ring-2 focus:ring-offset-2 group overflow-hidden focus-visible:ring-zinc-300",
-                  providerButtonStyles(provider.id),
+                  "flex h-10 w-full items-center space-x-2 rounded px-4 text-base font-light transition focus:outline-none focus:ring-2 focus:ring-offset-2 group overflow-hidden focus-visible:ring-zinc-300 hover:cursor-pointer",
+                  providerButtonStyles('github'),
                 )}
               >
                 <div
@@ -133,10 +141,10 @@ if (browser && page.url.searchParams.get("verifyEmail")) {
                   <div
                     class="absolute opacity-100 transition translate-x-0 group-hover:opacity-0 group-hover:-translate-x-6 group-focus-visible:-translate-x-6"
                   >
-                    <ProviderIcons provider={provider.id} />
+                    <ProviderIcons provider='github' />
                   </div>
                   <span class="flex justify-center w-full text-sm">
-                    Continue with {provider.name}
+                    Continue with GitHub
                   </span>
                   <div
                     class="absolute right-0 opacity-0 transition translate-x-12 group-hover:opacity-100 group-hover:translate-x-6 group-focus-visible:translate-x-6"
@@ -160,17 +168,166 @@ if (browser && page.url.searchParams.get("verifyEmail")) {
                   </div>
                 </div>
               </div>
-            </SignIn>
-          {:else}
-            <span>No Auth.js Providers found</span>
-          {/each}
-        {/if}
+            </button>
+            <button
+              onclick={async() => {
+                await authClient.signIn.social({ 
+                  provider: 'google'
+                })
+              }}
+              class="w-full *:w-full [&>button]:transition focus:[&>button]:outline-none focus:[&>button]:ring-2 focus:[&>button]:ring-offset-2 focus:[&>button]:ring-zinc-300 [&>button]:rounded-sm"
+            >
+              <div
+                class={twJoin(
+                  "flex h-10 w-full items-center space-x-2 rounded px-4 text-base font-light transition focus:outline-none focus:ring-2 focus:ring-offset-2 group overflow-hidden focus-visible:ring-zinc-300 hover:cursor-pointer",
+                  providerButtonStyles('google'),
+                )}
+              >
+                <div
+                  class="inline-flex relative items-center w-full transition -translate-x-0 group-hover:-translate-x-6 group-focus-visible:-translate-x-6"
+                >
+                  <div
+                    class="absolute opacity-100 transition translate-x-0 group-hover:opacity-0 group-hover:-translate-x-6 group-focus-visible:-translate-x-6"
+                  >
+                    <ProviderIcons provider='google' />
+                  </div>
+                  <span class="flex justify-center w-full text-sm">
+                    Continue with Google
+                  </span>
+                  <div
+                    class="absolute right-0 opacity-0 transition translate-x-12 group-hover:opacity-100 group-hover:translate-x-6 group-focus-visible:translate-x-6"
+                  >
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 15 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-5 h-5"
+                    >
+                      <path
+                        d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z"
+                        fill="currentColor"
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                      >
+                      </path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </button>
+
+            <!-- Toggle to Sign Up -->
+            <div class="flex justify-center items-center mt-4 text-sm">
+              <span class="text-neutral-600">Don't have an account?</span>
+              <button
+                type="button"
+                class="ml-2 text-neutral-900 font-medium hover:underline"
+                onclick={() => isSignUp = true}
+              >
+                Sign up
+              </button>
+            </div>
+          {/if}
+        </div>
+
+        <!-- Back side - Sign Up -->
+        <div class="flip-card-back flex flex-col gap-2 p-6 w-full bg-white rounded shadow-lg">
+          {#if !$session.data}
+            <h3 class="text-xl font-medium text-neutral-900 mb-2">Create Account</h3>
+            <div
+              class="flex flex-col justify-center items-stretch space-y-2 w-full focus:outline-none"
+            >
+              <input
+                id="signup-name"
+                type="text"
+                name="name"
+                bind:value={name}
+                placeholder="John Doe"
+                class="flex py-2 px-3 w-full text-sm bg-transparent rounded-sm border ring-offset-white transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none border-neutral-300 placeholder:text-neutral-400 text-neutral-900 focus-visible:ring-zinc-300"
+                required
+              />
+              <input
+                id="signup-email"
+                type="email"
+                name="email"
+                bind:value={email}
+                placeholder="user@company.com"
+                class="flex py-2 px-3 w-full text-sm bg-transparent rounded-sm border ring-offset-white transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none border-neutral-300 placeholder:text-neutral-400 text-neutral-900 focus-visible:ring-zinc-300"
+                required
+              />
+              <input
+                id="signup-password"
+                type="password"
+                name="password"
+                bind:value={password}
+                placeholder="p4assw0rd"
+                class="flex py-2 px-3 w-full text-sm bg-transparent rounded-sm border ring-offset-white transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none border-neutral-300 placeholder:text-neutral-400 text-neutral-900 focus-visible:ring-zinc-300"
+                required
+              />
+              <button
+                class="flex overflow-hidden justify-center items-center px-4 space-x-2 w-full h-10 text-sm font-light text-white rounded-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 bg-neutral-700 ring-offset-background focus-visible:ring-zinc-300 hover:cursor-pointer"
+                onclick={async() => {
+                  await authClient.signUp.email({
+                    name,
+                    email,
+                    password,
+                  })
+                }}
+              >
+                Sign Up
+              </button>
+            </div>
+
+            <!-- Toggle back to Sign In -->
+            <div class="flex justify-center items-center mt-4 text-sm">
+              <span class="text-neutral-600">Already have an account?</span>
+              <button
+                type="button"
+                class="ml-2 text-neutral-900 font-medium hover:underline"
+                onclick={() => isSignUp = false}
+              >
+                Sign in
+              </button>
+            </div>
+          {/if}
+        </div>
       </div>
     </div>
   </div>
 </div>
+</div>
 
-<!-- <style lang="postcss"> -->
-<!--   @reference "tailwindcss"; -->
-<!--   @reference "../../lib/styles/global.css"; -->
-<!-- </style> -->
+<style>
+  .flip-card {
+    perspective: 1000px;
+    min-height: 400px;
+  }
+
+  .flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+  }
+
+  .flip-card-inner.flipped {
+    transform: rotateY(180deg);
+  }
+
+  .flip-card-front,
+  .flip-card-back {
+    width: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .flip-card-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: rotateY(180deg);
+  }
+</style>

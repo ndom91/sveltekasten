@@ -154,6 +154,7 @@
 }
 
 @theme {
+  /* Colors - light mode values */
   --color-background: hsl(0 0% 100%);
   --color-foreground: hsl(240 10% 3.9%);
   --color-card: hsl(0 0% 100%);
@@ -174,7 +175,13 @@
   --color-input: hsl(240 5.9% 90%);
   --color-ring: hsl(240 5.9% 10%);
 
+  /* Typography */
   --font-sans: "GT America", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji";
+
+  /* Border radius */
+  --radius-sm: calc(0.5rem - 4px);
+  --radius-md: calc(0.5rem - 2px);
+  --radius-lg: 0.5rem;
 }
 
 @layer base {
