@@ -28,7 +28,7 @@
 <section
   class="relative mx-4 flex max-w-full flex-col overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-900"
 >
-  <div class="z-10 mx-4 mt-3 flex flex-grow justify-between">
+  <div class="z-10 mx-4 mt-3 flex grow justify-between">
     <h2 class="text-xl font-thin">
       {type === ScrollerTypes.FEEDS ? `Unread Feed Items (${count})` : capitalize(type)}
     </h2>
@@ -123,7 +123,7 @@
           <img
             src={Browser}
             alt="Empty State Browser"
-            class="pointer-events-none absolute -bottom-20 -right-4 w-72 max-w-md rotate-[18deg] opacity-20 grayscale dark:invert"
+            class="pointer-events-none absolute -bottom-20 -right-4 w-72 max-w-md rotate-18 opacity-20 grayscale dark:invert"
           />
         {:else if type === ScrollerTypes.FEEDS}
           <div class="z-10">
@@ -133,7 +133,7 @@
           <img
             src={Bell}
             alt="Empty State Browser"
-            class="pointer-events-none absolute -bottom-16 -right-4 w-64 max-w-md rotate-[10deg] opacity-20 grayscale dark:invert"
+            class="pointer-events-none absolute -bottom-16 -right-4 w-64 max-w-md rotate-10 opacity-20 grayscale dark:invert"
           />
         {/if}
       </div>

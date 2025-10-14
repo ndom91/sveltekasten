@@ -38,14 +38,14 @@
   <Tooltip.Root>
     <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
       <Button
-        class="absolute right-4 top-4 rounded-full border border-gray-300/40 border-neutral-100 bg-neutral-50 p-2 opacity-0 shadow-[0_4px_20px_rgba(0,_0,_0,_0.1)] backdrop-blur-[6px] transition duration-300 ease-in-out focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-0 group-hover:opacity-100 dark:border-gray-600/10 dark:border-neutral-800 dark:bg-neutral-900/50 dark:bg-neutral-950 focus:dark:ring-neutral-700"
+        class="absolute right-4 top-4 rounded-full border border-gray-300/40 border-neutral-100 bg-neutral-50 p-2 opacity-0 shadow-[0_4px_20px_rgba(0,0,0,0.1)] backdrop-blur-[6px] transition duration-300 ease-in-out focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-0 group-hover:opacity-100 dark:border-gray-600/10 dark:border-neutral-800 dark:bg-neutral-900/50 dark:bg-neutral-950 focus:dark:ring-neutral-700"
         builders={[tooltipBuilder]}
         variant="ghost"
         size="icon"
         on:click={handleMarkAsRead}
       >
         <svg
-          class="size-5 text-neutral-900 group-hover:animate-[var(--animation-shake-z)] dark:text-neutral-100"
+          class="size-5 text-neutral-900 group-hover:animate-(--animation-shake-z) dark:text-neutral-100"
           data-slot="icon"
           fill="none"
           stroke-width="1.5"

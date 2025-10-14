@@ -133,7 +133,7 @@
             transition={blur}
             transitionConfig={{ delay: 0, duration: 250 }}
             sideOffset={30}
-            class="w-[calc(100%_-_16px)] sm:w-auto"
+            class="w-[calc(100%-16px)] sm:w-auto"
           >
             <QuickAddForm />
           </Popover.Content>

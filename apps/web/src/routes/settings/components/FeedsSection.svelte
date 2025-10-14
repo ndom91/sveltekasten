@@ -117,7 +117,7 @@
         <Table.Header>
           {#each $headerRows as headerRow}
             <Subscribe rowAttrs={headerRow.attrs()}>
-              <Table.Row class="hover:!bg-transparent">
+              <Table.Row class="hover:bg-transparent!">
                 {#each headerRow.cells as cell (cell.id)}
                   <Subscribe attrs={cell.attrs()} let:attrs let:props props={cell.props()}>
                     <Table.Head {...attrs} class={cell.id === "id" ? "hidden lg:table-cell" : ""}>

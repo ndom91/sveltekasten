@@ -75,7 +75,7 @@
 
 <Navbar showSearch={false} showQuickAdd={false} showSidebar={false} />
 <main
-  class="p-4 outline-none align-start overflow-y-scroll flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-8"
+  class="p-4 outline-none align-start overflow-y-scroll flex max-h-[calc(100vh-80px)] w-full flex-col justify-start gap-8"
 >
   <fieldset class="grid gap-6 rounded-lg border p-4">
     <legend class="-ml-1 px-2 font-light"> Create New </legend>
@@ -100,7 +100,7 @@
     <Table.Header>
       {#each $headerRows as headerRow}
         <Subscribe rowAttrs={headerRow.attrs()}>
-          <Table.Row class="hover:!bg-transparent">
+          <Table.Row class="hover:bg-transparent!">
             {#each headerRow.cells as cell (cell.id)}
               <Subscribe attrs={cell.attrs()} let:attrs let:props props={cell.props()}>
                 <Table.Head {...attrs} class={cell.id === "id" ? "hidden lg:table-cell" : ""}>

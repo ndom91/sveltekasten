@@ -13,7 +13,7 @@
 
 <div class="flex items-center px-2 border-b" data-cmdk-input-wrapper="">
   {#if type === "command-input"}
-    <Logo class="!size-7 mr-2" />
+    <Logo class="size-7! mr-2" />
   {/if}
   <CommandPrimitive.Input
     class={cn(

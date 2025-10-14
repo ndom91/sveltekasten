@@ -53,7 +53,7 @@
         variant="link"
         on:click={ui.toggleUserSidebar}
       >
-        <Logo class="!size-10" />
+        <Logo class="size-10!" />
       </Button>
       <span
         class={cn(

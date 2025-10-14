@@ -457,7 +457,7 @@
           <div class="rounded-sm p-4">
             <Table.Root class="rounded-sm border dark:border-neutral-800">
               <Table.Header>
-                <Table.Row class="hover:!bg-transparent">
+                <Table.Row class="hover:bg-transparent!">
                   <Table.Head class="min-w-48 w-1/4">Title</Table.Head>
                   <Table.Head>URL</Table.Head>
                   <Table.Head class="text-right">Created At</Table.Head>
@@ -465,7 +465,7 @@
               </Table.Header>
               <Table.Body>
                 {#each parsedBookmarks.slice(0, 5) as bookmark (bookmark.url)}
-                  <Table.Row class=" hover:!bg-neutral-300/30 hover:dark:!bg-neutral-950/30">
+                  <Table.Row class=" hover:bg-neutral-300/30! hover:dark:bg-neutral-950/30!">
                     <Table.Cell class="font-medium">{bookmark.title}</Table.Cell>
                     <Table.Cell>{bookmark.url}</Table.Cell>
                     <Table.Cell class="text-right">

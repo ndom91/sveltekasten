@@ -144,7 +144,7 @@
 >
   <div
     class={cn(
-      "absolute transition-[var(--ease-in-out-3)] top-2 left-2 bg-emerald-400 rounded-full size-4",
+      "absolute transition-(--ease-in-out-3) top-2 left-2 bg-emerald-400 rounded-full size-4",
       feedEntry.unread ? "opacity-100" : "opacity-0",
     )}
   ></div>
@@ -163,7 +163,7 @@
     <div
       bind:this={feedBodyElement}
       class={cn(
-        "prose prose-img:!w-full dark:prose-blockquote:text-neutral-200 prose-img:!h-auto prose-img:max-w-screen-md prose-img:object-contain prose-video:aspect-video prose-video:max-w-screen-sm dark:prose-headings:text-neutral-100 dark:prose-a:text-neutral-200 dark:prose-strong:text-neutral-100 h-0 max-w-screen-lg origin-top opacity-0 transition-all dark:text-neutral-100",
+        "prose prose-img:!w-full dark:prose-blockquote:text-neutral-200 prose-img:!h-auto prose-img:max-w-screen-md prose-img:object-contain prose-video:aspect-video prose-video:max-w-screen-sm dark:prose-headings:text-neutral-100 dark:prose-a:text-neutral-200 dark:prose-strong:text-neutral-100 h-0 max-w-(--breakpoint-lg) origin-top opacity-0 transition-all dark:text-neutral-100",
         cardOpen ? "h-fit" : "h-0",
       )}
     >

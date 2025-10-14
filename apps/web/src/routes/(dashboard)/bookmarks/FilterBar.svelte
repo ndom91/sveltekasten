@@ -50,7 +50,7 @@
               <Checkbox id={item.id} bind:checked={item.visible} />
               <label
                 for={item.id}
-                class="flex hover:cursor-pointer flex-grow truncate items-center"
+                class="flex hover:cursor-pointer grow truncate items-center"
               >
                 <span class="ml-2 truncate">{item.name}</span>
               </label>

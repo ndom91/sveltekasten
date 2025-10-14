@@ -64,10 +64,10 @@
             <Command.Item class="flex" value={feed.name}>
               <Checkbox id={feed.id} bind:checked={feed.visible} />
               <label
-                class="flex w-fit max-w-full flex-grow items-center truncate hover:cursor-pointer"
+                class="flex w-fit max-w-full grow items-center truncate hover:cursor-pointer"
                 for={feed.id}
               >
-                <span class="mx-2 flex-grow truncate">{feed.name}</span>
+                <span class="mx-2 grow truncate">{feed.name}</span>
                 <img
                   src={`${PUBLIC_WORKER_URL}/img/_/https://favicon.controld.com/${new URL(feed.url).hostname}`}
                   alt="URL Favicon"

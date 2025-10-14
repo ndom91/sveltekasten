@@ -50,13 +50,13 @@
             variant="link"
             on:click={ui.toggleUserSidebar}
           >
-            <Logo class="!size-10" />
+            <Logo class="size-10!" />
           </Button>
           <span class="mx-auto text-xl font-light opacity-100 transition-all"> BriefButler </span>
         </div>
         <SidebarContent open={true} {toggleDrawer} />
       </div>
-      <div class="mx-2 mb-8 h-12 w-1.5 flex-shrink-0 self-center rounded-full bg-neutral-300"></div>
+      <div class="mx-2 mb-8 h-12 w-1.5 shrink-0 self-center rounded-full bg-neutral-300"></div>
     </Drawer.Content>
   </Drawer.Portal>
 </Drawer.Root>

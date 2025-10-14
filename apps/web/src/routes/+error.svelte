@@ -18,7 +18,7 @@
       <span class="">Error</span>
     </div>
   </nav>
-  <div class="flex flex-col gap-8 justify-center items-center px-4 mt-12 w-full max-w-screen-md">
+  <div class="flex flex-col gap-8 justify-center items-center px-4 mt-12 w-full max-w-(--breakpoint-md)">
     <img src="/img/confused-travolta.gif" alt="Lost Travolta" class="w-full" />
     <span class="text-xl font-normal text-center text-balance">
       Uh oh, something's gone wrong

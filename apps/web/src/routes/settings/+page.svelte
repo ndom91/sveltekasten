@@ -24,11 +24,11 @@
 <div class="flex h-full">
   <CommandBar />
   <Sidebar />
-  <div class="flex flex-col flex-grow items-start w-full">
+  <div class="flex flex-col grow items-start w-full">
     <Navbar showSearch={false} showQuickAdd={false} showSidebar={false} />
     <Tabs.Root
       value={tab ?? "user"}
-      class="flex flex-col flex-grow w-full max-w-screen-3xl"
+      class="flex flex-col grow w-full max-w-screen-3xl"
       onValueChange={handleTabChange}
     >
       <div class="p-4">
@@ -40,13 +40,13 @@
           <Tabs.Trigger class="data-[state=active]:shadow-none" value="about">About</Tabs.Trigger>
         </Tabs.List>
       </div>
-      <Tabs.Content value="user" class="overflow-y-scroll px-4 pr-2  max-h-[calc(100vh_-_168px)]">
+      <Tabs.Content value="user" class="overflow-y-scroll px-4 pr-2  max-h-[calc(100vh-168px)]">
         <UserSection />
       </Tabs.Content>
-      <Tabs.Content value="feeds" class="overflow-y-scroll px-4 pr-2  max-h-[calc(100vh_-_168px)]">
+      <Tabs.Content value="feeds" class="overflow-y-scroll px-4 pr-2  max-h-[calc(100vh-168px)]">
         <FeedsSection />
       </Tabs.Content>
-      <Tabs.Content value="about" class="overflow-y-scroll px-4 pr-2  max-h-[calc(100vh_-_168px)]">
+      <Tabs.Content value="about" class="overflow-y-scroll px-4 pr-2  max-h-[calc(100vh-168px)]">
         <AboutSection />
       </Tabs.Content>
     </Tabs.Root>

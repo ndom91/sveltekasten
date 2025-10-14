@@ -96,7 +96,7 @@
   {#if open}
     <div
       id={`feed-menu-${id}`}
-      class="right-2 z-[100] p-3 space-y-3 w-max rounded-md border transition top-[5.5rem] border-neutral-200 bg-neutral-200 dark:border-neutral-800 dark:bg-neutral-900"
+      class="right-2 z-100 p-3 space-y-3 w-max rounded-md border transition top-[5.5rem] border-neutral-200 bg-neutral-200 dark:border-neutral-800 dark:bg-neutral-900"
       in:fade={{ duration: 200 }}
       out:fade={{ duration: 150 }}
       style={`

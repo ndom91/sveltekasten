@@ -286,7 +286,7 @@
       <div
         class={cn("w-full rounded-full border-b-2 border-zinc-100 px-8 dark:border-zinc-800")}
       ></div>
-      <div class="mb-2 flex flex-grow flex-col items-start gap-2">
+      <div class="mb-2 flex grow flex-col items-start gap-2">
         <h2>Metadata</h2>
         <div class="flex w-full justify-between text-sm">
           <span class="font-bold">Language</span>

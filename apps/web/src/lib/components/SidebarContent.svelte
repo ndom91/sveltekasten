@@ -19,7 +19,7 @@
   const activePath = $derived($page.url.pathname)
 </script>
 
-<div class="flex-grow p-4">
+<div class="grow p-4">
   <nav class="flex flex-col items-start gap-2">
     <Tooltip.Root>
       <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">

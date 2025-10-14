@@ -43,11 +43,11 @@
 <div class="flex overflow-hidden relative w-full h-full">
   <svelte:component
     this={LoginPattern}
-    class="object-cover fixed top-0 right-0 min-w-full min-h-full bg-white z-[5]"
+    class="object-cover fixed top-0 right-0 min-w-full min-h-full bg-white z-5"
   />
   <div
     aria-label="Slate cover background"
-    class="absolute left-0 top-0 z-10 flex h-[275%] w-[150%] translate-x-[-70%] translate-y-[-28%] rotate-[30deg] items-center bg-neutral-950 md:translate-y-[-15%] md:rotate-[11deg]"
+    class="absolute left-0 top-0 z-10 flex h-[275%] w-[150%] translate-x-[-70%] translate-y-[-28%] rotate-30 items-center bg-neutral-950 md:translate-y-[-15%] md:rotate-11"
   ></div>
   <div class="h-dvh z-20 flex w-full items-center justify-center md:ml-[15%] md:w-[22rem]">
     <div class="flex flex-col justify-center items-center w-80 text-xl">
@@ -105,9 +105,9 @@
             </SignIn>
 
             <div class="flex gap-2 items-center my-2">
-              <div class="flex-1 bg-neutral-300 h-[1px]"></div>
+              <div class="flex-1 bg-neutral-300 h-px"></div>
               <span class="text-xs leading-4 uppercase text-neutral-500">or</span>
-              <div class="flex-1 bg-neutral-300 h-[1px]"></div>
+              <div class="flex-1 bg-neutral-300 h-px"></div>
             </div>
           {/if}
           {#each $page.data.providers.filter((p: any) => p.id !== "sendgrid") as provider}

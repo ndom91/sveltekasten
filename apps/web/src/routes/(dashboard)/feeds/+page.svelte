@@ -209,7 +209,7 @@
 
 <Navbar showSearch={true} showQuickAdd={false} showSidebar={false} />
 <main
-  class="align-start flex max-h-[calc(100vh_-_80px)] w-full flex-col justify-start gap-2 overflow-y-scroll outline-none"
+  class="align-start flex max-h-[calc(100vh-80px)] w-full flex-col justify-start gap-2 overflow-y-scroll outline-none"
   bind:this={rootElement}
 >
   <FilterBar />

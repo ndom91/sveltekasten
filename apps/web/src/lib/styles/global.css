@@ -1,11 +1,9 @@
-@import "open-props/shadows";
-@import "open-props/easings";
-@import "open-props/animations";
-@reference "tailwindcss";
+@import 'open-props/shadows' layer(base);
+@import 'open-props/easings' layer(base);
+@import 'open-props/animations' layer(base);
+@import 'tailwindcss';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@reference "tailwindcss";
 
 @layer base {
   /* :root { */
@@ -198,6 +196,13 @@
     font-weight: 200;
     src: url("/fonts/GT-America-Standard-Thin.woff2") format("woff2");
   }
+
+  * {
+    @apply border-border
+  }
+  body {
+    @apply bg-background text-foreground
+  }
 }
 
 /* 2024 Reset */
@@ -253,7 +258,7 @@ html.dark ::-webkit-scrollbar-thumb {
 
 /* RSS Feed Content */
 .prose iframe {
-  @apply !relative !aspect-video !max-w-screen-md;
+  @apply relative! aspect-video! max-w-(--breakpoint-md)!;
 }
 
 ::view-transition {
