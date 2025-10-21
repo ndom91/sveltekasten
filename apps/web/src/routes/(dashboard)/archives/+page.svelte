@@ -1,18 +1,19 @@
 <script lang="ts">
 import { onDestroy } from "svelte"
-import { InfiniteLoader, loaderState } from "svelte-infinite"
+import { InfiniteLoader, LoaderState } from "svelte-infinite"
 import { toast } from "svelte-sonner"
-import EmptyState from "$lib/components/EmptyState.svelte"
+import { page } from "$app/state"
 import { BookmarkRow } from "$lib/components/bookmark-row"
+import EmptyState from "$lib/components/EmptyState.svelte"
 import { Navbar } from "$lib/components/navbar"
 import { BookmarksService } from "$lib/state/bookmarks.svelte"
 import { useInterface } from "$lib/state/ui.svelte"
 import { getContext } from "$lib/utils/context"
 import { Logger, loggerLevels } from "$lib/utils/logger"
-import { page } from "$app/stores"
 
 const ui = useInterface()
 const bookmarksService = getContext(BookmarksService)
+const loaderState = new LoaderState()
 
 let pageNumber = $state(0)
 const rootElement = $state<HTMLElement>()
@@ -24,8 +25,8 @@ const logger = new Logger({ level: loggerLevels.DEBUG })
 //   bookmarkStore.bookmarks = $page.data.bookmarks.data
 // })
 
-if ($page.data.error) {
-  logger.error(String($page.data.error))
+if (page.data.error) {
+  logger.error(String(page.data.error))
 }
 
 const fetchSearchResults = async ({
@@ -179,7 +180,7 @@ onDestroy(() => {
 <main class="align-start flex flex-col justify-start gap-2 overflow-y-scroll outline-none">
   {#if bookmarksService.bookmarks?.length}
     <div class="h-full">
-      <InfiniteLoader triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
+      <InfiniteLoader {loaderState} triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
         {#each bookmarksService.bookmarks as item (item.id)}
           <BookmarkRow bookmark={item} />
         {/each}

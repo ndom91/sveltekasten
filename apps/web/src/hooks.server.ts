@@ -1,8 +1,8 @@
+import type { Handle } from "@sveltejs/kit"
 import { sequence } from "@sveltejs/kit/hooks"
 import { svelteKitHandler as handleAuth } from "better-auth/svelte-kit"
+import { building, dev } from "$app/environment"
 import { auth } from "./auth"
-import type { Handle } from "@sveltejs/kit"
-import { dev, building } from "$app/environment"
 
 function getStatusColor(statusCode: string): string {
   switch (true) {
@@ -51,16 +51,6 @@ const handleEmailVerifyRedirect: Handle = ({ event, resolve }) => {
   return resolve(event)
 }
 
-// const handleLoginProviders: Handle = async ({ event, resolve }) => {
-//   if (event.route.id === "/login") {
-//     event.locals.providers = providerMap.map((provider) => ({
-//       id: provider.id,
-//       name: provider.name,
-//     }));
-//   }
-//   return resolve(event);
-// };
-
 const rateLimitMap = new Map()
 
 const handleRateLimit: Handle = async ({ event, resolve }) => {
@@ -94,19 +84,16 @@ const handleRateLimit: Handle = async ({ event, resolve }) => {
   return resolve(event)
 }
 
-export const handle = sequence(
-  logger,
-  handleRateLimit,
-  handleEmailVerifyRedirect,
-  async ({ event, resolve }) => {
-    const session = await auth.api.getSession({
-      headers: event.request.headers,
-    })
+const handleBetterAuth: Handle = async ({ event, resolve }) => {
+  const session = await auth.api.getSession({
+    headers: event.request.headers,
+  })
 
-    if (session) {
-      event.locals.session = session.session
-      event.locals.user = session.user
-    }
-    return handleAuth({ event, resolve, auth, building })
+  if (session) {
+    event.locals.session = session.session
+    event.locals.user = session.user
   }
-)
+  return handleAuth({ event, resolve, auth, building })
+}
+
+export const handle = sequence(logger, handleRateLimit, handleEmailVerifyRedirect, handleBetterAuth)

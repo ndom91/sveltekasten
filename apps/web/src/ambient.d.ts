@@ -1,29 +1,8 @@
-import "@auth/sveltekit"
-import type { AIFeaturesPreferences } from "$lib/state/ui.svelte"
-import type { Prisma } from "./prisma-client/client.js"
 import type { SvelteMap } from "svelte"
-
-declare module "@auth/sveltekit" {
-  interface User {
-    id: string
-    settings?: {
-      ai?: AIFeaturesPreferences
-      personal?: Record<string, unknown>
-    }
-  }
-  interface Session {
-    user: User
-    error?: "RefreshAccessTokenError"
-  }
-  interface JWT {
-    access_token?: string
-    expires_at?: number
-    refresh_token?: string
-    error?: "RefreshAccessTokenError"
-  }
-}
+import type { Prisma } from "../prisma-client/client.js"
 
 declare global {
+  // biome-ignore lint: no-explicit-any
   type TODO = any
 
   type bk = Prisma.BookmarkGetPayload<object>

@@ -28,7 +28,7 @@ export const exportBookmarks = (bookmarks: LoadBookmarkFlatTags[]) => {
     <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
     <Title>Bookmarks</Title><H1>Bookmarks</H1>
 <DL><p>
-<DT><H3 FOLDED ADD_DATE="${(new Date().getTime() / 1000).toFixed(0)}">Briefkasten Bookmarks</H3>
+<DT><H3 FOLDED ADD_DATE="${(Date.now() / 1000).toFixed(0)}">Briefkasten Bookmarks</H3>
 <DL><p>`
 
   bookmarks.forEach((bookmark) => {
@@ -67,7 +67,7 @@ export const parseImportFile = (file: string) => {
 
 export const importBookmarks = async (bookmarks: ParsedBookmark[], userId: string) => {
   try {
-    const bulkCreateData = await fetch("/api/v1/bookmarks", {
+    const bulkCreateDataResponse = await fetch("/api/v1/bookmarks", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -107,13 +107,15 @@ export const importBookmarks = async (bookmarks: ParsedBookmark[], userId: strin
       ),
     })
 
-    if (bulkCreateData.count === bookmarks.length) {
+    const bulkCreateDataJson = await bulkCreateDataResponse.json()
+
+    if (bulkCreateDataJson.count === bookmarks.length) {
       toast.success(`Successfully imported ${bookmarks.length} bookmarks`)
-    } else if (bulkCreateData.count) {
-      console.warn(bulkCreateData)
+    } else if (bulkCreateDataJson.count) {
+      console.warn(bulkCreateDataResponse)
       toast.error(`Successfully imported only ${bookmarks.length} bookmarks`)
     } else {
-      console.error(bulkCreateData)
+      console.error(bulkCreateDataResponse)
       toast.error(`Error importing bookmarks`)
     }
   } catch (error: any) {

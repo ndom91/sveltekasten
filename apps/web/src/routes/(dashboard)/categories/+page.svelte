@@ -1,18 +1,18 @@
 <script lang="ts">
 import { format } from "@formkit/tempo"
 import { writable } from "svelte/store"
-import { Render, Subscribe, createRender, createTable } from "svelte-headless-table"
+import { createRender, createTable, Render, Subscribe } from "svelte-headless-table"
 import { addSortBy } from "svelte-headless-table/plugins"
-import DataTableActions from "./data-table-actions.svelte"
 import { Label } from "$/lib/components/ui/label"
+import { enhance } from "$app/forms"
 import { Navbar } from "$lib/components/navbar"
 import { Button } from "$lib/components/ui/button"
 import { Input } from "$lib/components/ui/input"
 import * as Table from "$lib/components/ui/table"
 import { handleActionResults } from "$lib/utils/form-action"
-import { enhance } from "$app/forms"
+import DataTableActions from "./data-table-actions.svelte"
 
-const { data }: { data: any } = $props()
+const { data } = $props()
 const categoryStore = writable(data.categories)
 
 $effect(() => {
@@ -26,7 +26,6 @@ const table = createTable(categoryStore, {
 })
 const columns = table.createColumns([
   table.column({
-    // @ts-expect-error string is allowed
     accessor: "id",
     header: "ID",
     plugins: {
@@ -36,17 +35,14 @@ const columns = table.createColumns([
     },
   }),
   table.column({
-    // @ts-expect-error string is allowed
     accessor: "name",
     header: "Name",
   }),
   table.column({
-    // @ts-expect-error string is allowed
     accessor: "description",
     header: "Description",
   }),
   table.column({
-    // @ts-expect-error string is allowed
     accessor: "createdAt",
     header: "Created",
     cell: ({ value }) => format(value, "medium"),
@@ -105,7 +101,7 @@ const { headerRows, pageRows, tableAttrs, tableBodyAttrs } = table.createViewMod
               <Subscribe attrs={cell.attrs()} let:attrs let:props props={cell.props()}>
                 <Table.Head {...attrs} class={cell.id === "id" ? "hidden lg:table-cell" : ""}>
                   {#if ["name", "description", "createdAt"].includes(cell.id)}
-                    <Button class="text-left" variant="ghost" on:click={props.sort.toggle}>
+                    <Button class="text-left" variant="ghost" onclick={props.sort.toggle}>
                       <Render of={cell.render()} />
                       <svg
                         class="ml-2 fill-neutral-800 size-4 dark:fill-white"

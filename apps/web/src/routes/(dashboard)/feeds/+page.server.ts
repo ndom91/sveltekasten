@@ -6,7 +6,8 @@ import type { PageServerLoad } from "./$types"
 
 export const load: PageServerLoad = async ({ locals, url, depends }) => {
   depends("app:feeds")
-  const session = await locals.session
+  const session = locals.session
+
   if (!session && url.pathname !== "/login") {
     const fromUrl = url.pathname + url.search
     redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)

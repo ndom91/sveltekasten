@@ -108,7 +108,7 @@ export const actions: Actions = {
     }
 
     try {
-      const session = await event.locals.session
+      const session = event.locals.session
       if (!session?.userId) {
         return fail(401, { type: "error", error: "Unauthenticated" })
       }
@@ -174,7 +174,7 @@ export const actions: Actions = {
 
 export const load: PageServerLoad = async (event) => {
   event.depends("app:bookmarks")
-  const session = await event.locals?.session
+  const session = event.locals?.session
 
   if (!session && event.url.pathname !== "/login") {
     const fromUrl = event.url.pathname + event.url.search
