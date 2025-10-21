@@ -30,8 +30,5 @@
   "engines": {
     "node": ">=20.11"
   },
-  "packageManager": "pnpm@10.5.2",
-  "dependencies": {
-    "svelte-headless-table": "0.18.3"
-  }
+  "packageManager": "pnpm@10.5.2"
 }

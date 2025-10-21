@@ -1,9 +1,6 @@
 <script lang="ts">
 import { format } from "@formkit/tempo"
 import { tick } from "svelte"
-import { writable } from "svelte/store"
-import { createRender, createTable, Render, Subscribe } from "svelte-headless-table"
-import { addSortBy } from "svelte-headless-table/plugins"
 import { toast } from "svelte-sonner"
 import { enhance } from "$app/forms"
 import { invalidateAll } from "$app/navigation"
@@ -16,11 +13,74 @@ import { handleActionResults } from "$lib/utils/form-action"
 import DeleteDialog from "./DeleteDialog.svelte"
 import DataTableActions from "./feed-data-table-actions.svelte"
 
+type FeedWithCount = Feed & {
+  _count: {
+    feedEntries: number
+  }
+}
+
+type SortColumn = "name" | "url" | "count" | "lastFetched" | "createdAt" | null
+type SortDirection = "asc" | "desc" | null
+
 let isDeleteDialogOpen = $state(false)
 let targetFeed = $state<Feed>()
+let feeds = $state<FeedWithCount[]>(page.data.feeds?.data ?? [])
+let sortColumn = $state<SortColumn>(null)
+let sortDirection = $state<SortDirection>(null)
+
+$effect(() => {
+  if (page.data?.feeds?.data) {
+    feeds = page.data.feeds.data
+  }
+})
+
+const sortedFeeds = $derived(() => {
+  if (!sortColumn || !sortDirection) {
+    return feeds
+  }
+
+  return [...feeds].sort((a, b) => {
+    let aVal: string | number | Date | null
+    let bVal: string | number | Date | null
+
+    if (sortColumn === "count") {
+      aVal = a._count.feedEntries
+      bVal = b._count.feedEntries
+    } else if (sortColumn) {
+      aVal = a[sortColumn]
+      bVal = b[sortColumn]
+    } else {
+      return 0
+    }
+
+    if (aVal == null && bVal == null) return 0
+    if (aVal == null) return sortDirection === "asc" ? 1 : -1
+    if (bVal == null) return sortDirection === "asc" ? -1 : 1
+
+    let comparison = 0
+    if (sortColumn === "lastFetched" || sortColumn === "createdAt") {
+      comparison = new Date(aVal).getTime() - new Date(bVal).getTime()
+    } else if (sortColumn === "count") {
+      comparison = Number(aVal) - Number(bVal)
+    } else {
+      comparison = String(aVal).localeCompare(String(bVal))
+    }
+
+    return sortDirection === "asc" ? comparison : -comparison
+  })
+})
+
+const toggleSort = (column: SortColumn) => {
+  if (sortColumn === column) {
+    sortDirection = sortDirection === "asc" ? "desc" : "asc"
+  } else {
+    sortColumn = column
+    sortDirection = "asc"
+  }
+}
 
 const handleToggleDeleteDialog = (feedId: string) => {
-  targetFeed = page.data.feeds?.data.find((feed: Feed) => feed.id === feedId)
+  targetFeed = feeds.find((feed: Feed) => feed.id === feedId)
   isDeleteDialogOpen = !isDeleteDialogOpen
 }
 
@@ -33,77 +93,6 @@ const checkQueueResults = () => {
     })
   )
 }
-
-const feedsStore = writable(page.data.feeds?.data)
-
-$effect(() => {
-  if (page.data?.feeds?.data) {
-    feedsStore.set(page.data.feeds.data)
-  }
-})
-
-const table = createTable(feedsStore, {
-  sort: addSortBy(),
-})
-
-const columns = table.createColumns([
-  table.column({
-    // @ts-expect-error string is allowed
-    accessor: "id",
-    header: "ID",
-    plugins: {
-      sort: {
-        disable: true,
-      },
-    },
-  }),
-  table.column({
-    // @ts-expect-error string is allowed
-    accessor: "name",
-    header: "Name",
-  }),
-  table.column({
-    // @ts-expect-error string is allowed
-    accessor: "url",
-    header: "URL",
-  }),
-  table.column({
-    // @ts-expect-error feedEntries is number
-    accessor: ({ _count }) => _count.feedEntries as number,
-    id: "count",
-    header: "Entries",
-  }),
-  table.column({
-    // @ts-expect-error string is allowed
-    accessor: "lastFetched",
-    header: "Last Fetched",
-    cell: ({ value }) => format(value, { date: "medium", time: "medium" }),
-  }),
-  table.column({
-    // @ts-expect-error string is allowed
-    accessor: "createdAt",
-    header: "Created",
-    cell: ({ value }) => format(value, "medium"),
-  }),
-  table.column({
-    // @ts-expect-error string is allowed
-    accessor: "actions",
-    header: "",
-    cell: (data) =>
-      createRender(DataTableActions, {
-        // @ts-expect-error - original does exist in this case
-        id: data.row.original.id,
-        toggleDeleteDialog: handleToggleDeleteDialog,
-      }),
-    plugins: {
-      sort: {
-        disable: true,
-      },
-    },
-  }),
-])
-
-const { headerRows, pageRows, tableAttrs, tableBodyAttrs } = table.createViewModel(columns)
 </script>
 
 <DeleteDialog form={page.form} bind:open={isDeleteDialogOpen} feed={targetFeed!} />
@@ -113,96 +102,125 @@ const { headerRows, pageRows, tableAttrs, tableBodyAttrs } = table.createViewMod
       <Card.Title>Manage Feeds</Card.Title>
     </Card.Header>
     <Card.Content class="p-4">
-      <Table.Root {...$tableAttrs}>
+      <Table.Root>
         <Table.Header>
-          {#each $headerRows as headerRow}
-            <Subscribe rowAttrs={headerRow.attrs()}>
-              <Table.Row class="hover:bg-transparent!">
-                {#each headerRow.cells as cell (cell.id)}
-                  <Subscribe attrs={cell.attrs()} let:attrs let:props props={cell.props()}>
-                    <Table.Head {...attrs} class={cell.id === "id" ? "hidden lg:table-cell" : ""}>
-                      {#if ["name", "createdAt", "count"].includes(cell.id)}
-                        <Button class="text-left" variant="ghost" onclick={props.sort.toggle}>
-                          <Render of={cell.render()} />
-                          <svg
-                            class="ml-2 fill-neutral-800 size-4 dark:fill-white"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 256 256"
-                            ><rect width="256" height="256" fill="none" /><polyline
-                              points="80 176 128 224 176 176"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="16"
-                            /><polyline
-                              points="80 80 128 32 176 80"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="16"
-                            /></svg
-                          >
-                        </Button>
-                      {:else}
-                        <div class="text-left">
-                          <Render of={cell.render()} />
-                        </div>
-                      {/if}
-                    </Table.Head>
-                  </Subscribe>
-                {/each}
-              </Table.Row>
-            </Subscribe>
-          {/each}
+          <Table.Row class="hover:bg-transparent!">
+            <Table.Head class="hidden lg:table-cell">
+              <div class="text-left">ID</div>
+            </Table.Head>
+            <Table.Head>
+              <Button class="text-left" variant="ghost" onclick={() => toggleSort("name")}>
+                Name
+                <svg
+                  class="ml-2 fill-neutral-800 size-4 dark:fill-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 256 256"
+                  ><rect width="256" height="256" fill="none" /><polyline
+                    points="80 176 128 224 176 176"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="16"
+                  /><polyline
+                    points="80 80 128 32 176 80"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="16"
+                  /></svg
+                >
+              </Button>
+            </Table.Head>
+            <Table.Head>
+              <div class="text-left">URL</div>
+            </Table.Head>
+            <Table.Head>
+              <Button class="text-left" variant="ghost" onclick={() => toggleSort("count")}>
+                Entries
+                <svg
+                  class="ml-2 fill-neutral-800 size-4 dark:fill-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 256 256"
+                  ><rect width="256" height="256" fill="none" /><polyline
+                    points="80 176 128 224 176 176"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="16"
+                  /><polyline
+                    points="80 80 128 32 176 80"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="16"
+                  /></svg
+                >
+              </Button>
+            </Table.Head>
+            <Table.Head>
+              <div class="text-left">Last Fetched</div>
+            </Table.Head>
+            <Table.Head>
+              <Button class="text-left" variant="ghost" onclick={() => toggleSort("createdAt")}>
+                Created
+                <svg
+                  class="ml-2 fill-neutral-800 size-4 dark:fill-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 256 256"
+                  ><rect width="256" height="256" fill="none" /><polyline
+                    points="80 176 128 224 176 176"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="16"
+                  /><polyline
+                    points="80 80 128 32 176 80"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="16"
+                  /></svg
+                >
+              </Button>
+            </Table.Head>
+            <Table.Head>
+              <div class="text-left"></div>
+            </Table.Head>
+          </Table.Row>
         </Table.Header>
-        <Table.Body {...$tableBodyAttrs}>
-          {#each $pageRows as row (row.id)}
-            <Subscribe rowAttrs={row.attrs()} let:rowAttrs>
-              <Table.Row {...rowAttrs} class="bg-transparent hover:dark:bg-neutral-900/20">
-                {#each row.cells as cell (cell.id)}
-                  <Subscribe attrs={cell.attrs()} let:attrs>
-                    {#if cell.id === ""}
-                      <Table.Cell class="text-right max-w-20" {...attrs}>
-                        <Render of={cell.render()} />
-                      </Table.Cell>
-                    {:else if cell.id === "count"}
-                      <Table.Cell class="text-center max-w-4" {...attrs}>
-                        <Render of={cell.render()} />
-                      </Table.Cell>
-                    {:else if cell.id === "name"}
-                      <Table.Cell class="max-w-48 truncate" title={String(row.original[cell.id])} {...attrs}>
-                        <Render of={cell.render()} />
-                      </Table.Cell>
-                    {:else if cell.id === "lastFetched"}
-                      <Table.Cell class="max-w-48 truncate" title={String(row.original[cell.id])} {...attrs}>
-                        <Render of={cell.render()} />
-                      </Table.Cell>
-                    {:else if cell.id === "url"}
-                      <Table.Cell class="max-w-48 truncate" title={String(row.original[cell.id])} {...attrs}>
-                        <Render of={cell.render()} />
-                      </Table.Cell>
-                    {:else if cell.id === "actions"}
-                      <Table.Cell class="w-32 max-w-32" {...attrs}>
-                        <Render of={cell.render()} />
-                      </Table.Cell>
-                    {:else if cell.id === "id"}
-                      <Table.Cell
-                        class="hidden lg:block lg:w-48 text-neutral-400 truncate lg:max-w-48 dark:text-neutral-600"
-                        {...attrs}
-                      >
-                        <Render of={cell.render()} />
-                      </Table.Cell>
-                    {:else}
-                      <Table.Cell class="" {...attrs}>
-                        <Render of={cell.render()} />
-                      </Table.Cell>
-                    {/if}
-                  </Subscribe>
-                {/each}
-              </Table.Row>
-            </Subscribe>
+        <Table.Body>
+          {#each sortedFeeds() as feed (feed.id)}
+            <Table.Row class="bg-transparent hover:dark:bg-neutral-900/20">
+              <Table.Cell
+                class="hidden lg:block lg:w-48 text-neutral-400 truncate lg:max-w-48 dark:text-neutral-600"
+              >
+                {feed.id}
+              </Table.Cell>
+              <Table.Cell class="max-w-48 truncate" title={feed.name}>
+                {feed.name}
+              </Table.Cell>
+              <Table.Cell class="max-w-48 truncate" title={feed.url}>
+                {feed.url}
+              </Table.Cell>
+              <Table.Cell class="text-center max-w-4">
+                {feed._count.feedEntries}
+              </Table.Cell>
+              <Table.Cell class="max-w-48 truncate" title={feed.lastFetched ? String(feed.lastFetched) : ""}>
+                {feed.lastFetched ? format(feed.lastFetched, { date: "medium", time: "medium" }) : "Never"}
+              </Table.Cell>
+              <Table.Cell>
+                {format(feed.createdAt, "medium")}
+              </Table.Cell>
+              <Table.Cell class="w-32 max-w-32">
+                <DataTableActions id={feed.id} toggleDeleteDialog={handleToggleDeleteDialog} />
+              </Table.Cell>
+            </Table.Row>
           {/each}
         </Table.Body>
       </Table.Root>
