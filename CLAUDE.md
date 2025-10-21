@@ -51,7 +51,7 @@ pnpm build        # Build for production
 pnpm test:e2e     # E2E tests
 pnpm lint:fix     # Lint code
 pnpm format:fix   # Format code
-pnpm check        # TypeScript check
+pnpm check --output machine  # TypeScript check
 ```
 
 
