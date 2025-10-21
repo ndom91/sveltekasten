@@ -122,7 +122,7 @@ const { headerRows, pageRows, tableAttrs, tableBodyAttrs } = table.createViewMod
                   <Subscribe attrs={cell.attrs()} let:attrs let:props props={cell.props()}>
                     <Table.Head {...attrs} class={cell.id === "id" ? "hidden lg:table-cell" : ""}>
                       {#if ["name", "createdAt", "count"].includes(cell.id)}
-                        <Button class="text-left" variant="ghost" on:click={props.sort.toggle}>
+                        <Button class="text-left" variant="ghost" onclick={props.sort.toggle}>
                           <Render of={cell.render()} />
                           <svg
                             class="ml-2 fill-neutral-800 size-4 dark:fill-white"
@@ -172,18 +172,15 @@ const { headerRows, pageRows, tableAttrs, tableBodyAttrs } = table.createViewMod
                         <Render of={cell.render()} />
                       </Table.Cell>
                     {:else if cell.id === "name"}
-                      <!-- @ts-expect-error -->
-                      <Table.Cell class="max-w-48 truncate" title={cell.value} {...attrs}>
+                      <Table.Cell class="max-w-48 truncate" title={String(row.original[cell.id])} {...attrs}>
                         <Render of={cell.render()} />
                       </Table.Cell>
                     {:else if cell.id === "lastFetched"}
-                      <!-- @ts-expect-error -->
-                      <Table.Cell class="max-w-48 truncate" title={cell.value} {...attrs}>
+                      <Table.Cell class="max-w-48 truncate" title={String(row.original[cell.id])} {...attrs}>
                         <Render of={cell.render()} />
                       </Table.Cell>
                     {:else if cell.id === "url"}
-                      <!-- @ts-expect-error -->
-                      <Table.Cell class="max-w-48 truncate" title={cell.value} {...attrs}>
+                      <Table.Cell class="max-w-48 truncate" title={String(row.original[cell.id])} {...attrs}>
                         <Render of={cell.render()} />
                       </Table.Cell>
                     {:else if cell.id === "actions"}

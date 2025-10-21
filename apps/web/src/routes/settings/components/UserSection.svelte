@@ -143,7 +143,7 @@ const handleImport = async () => {
 
 const handleBookmarkExport = () => {
   exportLoading = true
-  exportBookmarks($page.data.bookmarks.data)
+  exportBookmarks(page.data.bookmarks.data)
   exportLoading = false
 }
 
@@ -206,10 +206,10 @@ async function toggleSetting(setting: string) {
         <div
           class="flex items-center justify-between rounded-md bg-neutral-100 p-2 font-mono dark:bg-neutral-700"
         >
-          {$page.data?.session?.user?.id}
+          {page.data?.session?.user?.id}
           <button
             aria-label="Copy"
-            use:clipboard={$page.data?.session?.user?.id ?? ""}
+            use:clipboard={page.data?.session?.user?.id ?? ""}
             class="h-8 rounded-md bg-transparent p-1 outline-none focus:outline-none focus:ring-2 focus:ring-neutral-300"
           >
             <svg
@@ -338,10 +338,9 @@ async function toggleSetting(setting: string) {
                     >
                     <Select.Root
                       name="ttsLocation"
-                      items={ttsLocationItems}
-                      selected={{ value: ttsLocation, label: ttsLocation }}
-                      onSelectedChange={async (selected) => {
-                        ttsLocation = selected?.value
+                      type="single"
+                      onValueChange={async (v: string) => {
+                        ttsLocation = v
                         await updateUser({
                           ttsEnabled,
                           ttsSpeaker: ttsSpeaker.trim(),
@@ -354,15 +353,15 @@ async function toggleSetting(setting: string) {
                       <Select.Trigger
                         class="w-full enabled:bg-neutral-100 disabled:cursor-not-allowed enabled:dark:bg-neutral-900 disabled:dark:bg-neutral-700"
                       >
-                        <Select.Value placeholder="TTS Inference Location" />
+                        {ttsLocation || "TTS Inference Location"}
                       </Select.Trigger>
-                      <Select.Input />
                       <Select.Content>
                         {#each ttsLocationItems as location (location.value)}
                           <Select.Item value={location.value}>{location.label}</Select.Item>
                         {/each}
                       </Select.Content>
                     </Select.Root>
+                    <input type="hidden" name="ttsLocation" value={ttsLocation} />
                   </div>
                   <div class="flex w-56 flex-col gap-2">
                     <label
@@ -373,14 +372,10 @@ async function toggleSetting(setting: string) {
                     </label>
                     <Select.Root
                       name="ttsSpeaker"
-                      items={speakers.map((speaker) => ({
-                        value: speaker,
-                        label: speaker,
-                      }))}
+                      type="single"
                       disabled={ttsLocation !== TTSLocation.Server}
-                      selected={{ value: ttsSpeaker, label: ttsSpeaker }}
-                      onSelectedChange={async (selected) => {
-                        ttsSpeaker = selected?.value
+                      onValueChange={async (v: string) => {
+                        ttsSpeaker = v
                         await updateUser({
                           ttsEnabled,
                           ttsSpeaker: ttsSpeaker.trim(),
@@ -393,15 +388,15 @@ async function toggleSetting(setting: string) {
                       <Select.Trigger
                         class="w-full enabled:bg-neutral-100 disabled:cursor-not-allowed enabled:dark:bg-neutral-900 disabled:dark:bg-neutral-700"
                       >
-                        <Select.Value placeholder="Speaker" />
+                        {ttsSpeaker || "Speaker"}
                       </Select.Trigger>
-                      <Select.Input />
                       <Select.Content>
                         {#each speakers as speaker (speaker)}
                           <Select.Item value={speaker}>{speaker}</Select.Item>
                         {/each}
                       </Select.Content>
                     </Select.Root>
+                    <input type="hidden" name="ttsSpeaker" value={ttsSpeaker} />
                   </div>
                 </div>
               </div>

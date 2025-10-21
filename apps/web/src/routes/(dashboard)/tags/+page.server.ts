@@ -1,17 +1,15 @@
 import { fail, redirect } from "@sveltejs/kit"
 import { Prisma } from "$/prisma-client/client.js"
 import { db } from "$lib/prisma"
-import { TagCreateInputSchema } from "$lib/types/zod.js"
+import { TagCreateOneSchema } from "$lib/types/zod.js"
 import type { Actions, PageServerLoad } from "./$types"
 
 export const load: PageServerLoad = async ({ url, locals }) => {
   const { session } = locals
+
   if (!session && url.pathname !== "/login") {
     const fromUrl = url.pathname + url.search
     redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
-  }
-  if (!session?.user?.id) {
-    return fail(401, { type: "error", error: "Unauthenticated" })
   }
 
   const response = await db.tag.findMany({
@@ -19,7 +17,6 @@ export const load: PageServerLoad = async ({ url, locals }) => {
   })
 
   return {
-    session,
     tags: response,
   }
 }
@@ -34,11 +31,11 @@ export const actions: Actions = {
     const dataEntries = Object.fromEntries(formData.entries())
 
     try {
-      const parsedData = TagCreateInputSchema.parse(dataEntries)
+      const parsedData = TagCreateOneSchema.parse(dataEntries)
 
       await db.tag.create({
         data: {
-          name: parsedData.name,
+          name: parsedData.data.name,
           userId: session.userId,
         },
       })

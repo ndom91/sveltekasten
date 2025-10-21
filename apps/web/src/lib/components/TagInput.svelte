@@ -39,6 +39,17 @@ export type Tag = {
   )
 
   const { value, errors } = formFieldProxy(form, field)
+
+  $effect(() => {
+    if (selectedValues.length > 0) {
+      const mappedValues = selectedValues
+        .map((t: { value: string }) => {
+          return tags.find((tag) => tag.id === t.value)
+        })
+        .filter((tag): tag is RawTag => tag !== undefined)
+      $value = mappedValues as typeof $value
+    }
+  })
 </script>
 
 <Combobox.Root
@@ -46,17 +57,9 @@ export type Tag = {
   inputValue={inputValue}
   items={filteredTags}
   selected={selectedValues}
-  onSelectedChange={(selectedTags: typeof selectedValues) => {
-    // TODO: Cleanup hacky combobox tag input changeHandler
-    if (selectedTags) {
-      $value =
-        selectedTags
-          ?.map((t: { value: string }) => {
-            return tags.find((tag) => tag.id === t.value)
-          })
-          .filter(Boolean) ?? []
-      selectedValues = selectedTags
-    }
+  onInputValueChange={(v: string) => (inputValue = v)}
+  onSelectedChange={(v: Tag[] | undefined) => {
+    if (v) selectedValues = v
   }}
 >
   <div class="relative">

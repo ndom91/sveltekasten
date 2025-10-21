@@ -18,22 +18,21 @@ let dateRange = $state<DateRange>({
 const userLocale: string = $state(new Intl.NumberFormat().resolvedOptions().locale ?? "en-us")
 
 const items = [
-  { value: 3, label: "Last 3 Days" },
-  { value: 7, label: "Last Week" },
-  { value: 30, label: "Last Month" },
+  { value: "3", label: "Last 3 Days" },
+  { value: "7", label: "Last Week" },
+  { value: "30", label: "Last Month" },
 ]
 </script>
 
 <div class="grid gap-2 grow">
-  <Popover.Root openFocus>
-    <Popover.Trigger asChild let:builder>
+  <Popover.Root>
+    <Popover.Trigger>
       <Button
         variant="outline"
         class={cn(
           "w-fit justify-start text-left font-normal bg-neutral-100 dark:bg-neutral-900 ",
           !dateRange.start && !dateRange.end && "text-muted-foreground",
         )}
-        builders={[builder]}
       >
         <svg class="mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"
           ><rect width="256" height="256" fill="none" /><rect
@@ -98,16 +97,14 @@ const items = [
     </Popover.Trigger>
     <Popover.Content class="w-auto p-2 space-y-2" align="start">
       <Select.Root
-        {items}
-        selected={items[0]}
-        onSelectedChange={(v) => {
-          if (!v) return
-          dateRange.start = today(getLocalTimeZone()).subtract({ days: v.value })
+        type="single"
+        onValueChange={(v: string) => {
+          dateRange.start = today(getLocalTimeZone()).subtract({ days: Number(v) })
           dateRange.end = today(getLocalTimeZone())
         }}
       >
         <Select.Trigger>
-          <Select.Value placeholder="Select" />
+          {items[0].label}
         </Select.Trigger>
         <Select.Content>
           {#each items as item}

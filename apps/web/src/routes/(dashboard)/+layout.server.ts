@@ -1,14 +1,14 @@
 import { fail } from "@sveltejs/kit"
 import { superValidate } from "sveltekit-superforms"
 import { zod4 } from "sveltekit-superforms/adapters"
+import type { Tag } from "$/prisma-client/client"
 import { db } from "$lib/prisma"
 import { formSchema } from "$schemas/quick-add"
 import type { LayoutServerLoad } from "./$types"
 
 export const load: LayoutServerLoad = async ({ locals }) => {
-  let quickAddForm
   try {
-    quickAddForm = await superValidate(zod4(formSchema), {
+    const quickAddForm = await superValidate(zod4(formSchema), {
       id: "quickAddForm",
     })
     const session = locals.session
@@ -41,7 +41,7 @@ export const load: LayoutServerLoad = async ({ locals }) => {
     const bookmarks = bookmarkData.map((bookmark) => {
       return {
         ...bookmark,
-        tags: bookmark.tags.map((tag) => tag.tag),
+        tags: bookmark.tags.map((tag: { tag: Tag }) => tag.tag),
       }
     }) as LoadBookmarkFlatTags[]
 
@@ -108,7 +108,7 @@ export const load: LayoutServerLoad = async ({ locals }) => {
       categories: [],
       tags: [],
       error,
-      quickAddForm,
+      quickAddForm: undefined,
     }
   }
 }

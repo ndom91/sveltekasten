@@ -1,9 +1,12 @@
 <script lang="ts">
-import { signOut } from "@auth/sveltekit/client"
+import { redirect } from "@sveltejs/kit"
 import { mode, toggleMode } from "mode-watcher"
 import { onMount } from "svelte"
 import { version } from "$app/environment"
+import { goto } from "$app/navigation"
+import { resolve } from "$app/paths"
 import { page } from "$app/state"
+import { authClient } from "$lib/auth-client"
 import KeyboardShortcutsHelp from "$lib/components/KeyboardShortcutsHelp.svelte"
 import * as Avatar from "$lib/components/ui/avatar"
 import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
@@ -45,6 +48,8 @@ async function handleInstall() {
   installPrompt = null
   offerInstall = false
 }
+
+$inspect(page.data)
 </script>
 
 <DropdownMenu.Root>
@@ -85,7 +90,7 @@ async function handleInstall() {
       >
         Show Shortcuts
       </DropdownMenu.Item>
-      <DropdownMenu.Item href="/settings" class="justify-start hover:cursor-pointer">
+      <DropdownMenu.Item class="justify-start hover:cursor-pointer" onclick={() => goto(resolve('/settings'))}>
         Settings
       </DropdownMenu.Item>
       {#if offerInstall}
@@ -100,7 +105,13 @@ async function handleInstall() {
       <DropdownMenu.Separator class="bg-neutral-100 dark:bg-neutral-800" />
       <DropdownMenu.Item
         class="justify-start hover:cursor-pointer"
-        onclick={() => signOut({ redirectTo: "/login" })}
+        onclick={() => authClient.signOut({
+          fetchOptions: {
+            onSuccess: () => {
+              redirect(303, "/login");
+            },
+          }
+        })}
       >
         Sign Out
       </DropdownMenu.Item>

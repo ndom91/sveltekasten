@@ -15,22 +15,23 @@ const {
 } = $props()
 
 let open = $state(false)
+let triggerElement: HTMLButtonElement | undefined = $state()
 
 // We want to refocus the trigger button when the user selects
 // an item from the list so users can continue navigating the
 // rest of the form with the keyboard.
-function closeAndFocusTrigger(triggerId: string) {
+function closeAndFocusTrigger() {
   open = false
   tick().then(() => {
-    document.getElementById(triggerId)?.focus()
+    triggerElement?.focus()
   })
 }
 </script>
 
-<Popover.Root bind:open let:ids>
-  <Popover.Trigger asChild let:builder>
+<Popover.Root bind:open>
+  <Popover.Trigger>
     <Button
-      builders={[builder]}
+      bind:element={triggerElement}
       variant="outline"
       role="combobox"
       aria-expanded={open}
@@ -64,7 +65,7 @@ function closeAndFocusTrigger(triggerId: string) {
           <Command.Item
             value={item.name}
             onSelect={() => {
-              closeAndFocusTrigger(ids.trigger)
+              closeAndFocusTrigger()
             }}
           >
             <Checkbox id={item.id} bind:checked={item.visible} />

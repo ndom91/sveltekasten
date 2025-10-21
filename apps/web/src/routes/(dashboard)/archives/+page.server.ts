@@ -1,6 +1,7 @@
 import { fail, redirect } from "@sveltejs/kit"
 import { db } from "$lib/prisma"
 import type { Actions, PageServerLoad } from "./$types"
+import type { Tag } from "$/prisma-client/client"
 
 export const actions: Actions = {
   deleteBookmark: async ({ request, locals }) => {
@@ -55,7 +56,7 @@ export const load: PageServerLoad = async (event) => {
     })) as unknown as [LoadBookmark[], number]
 
     const bookmarks = data.map((bookmark) => {
-      return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) }
+      return { ...bookmark, tags: bookmark.tags.map((tag: { tag: Tag }) => tag.tag) }
     })
 
     return {

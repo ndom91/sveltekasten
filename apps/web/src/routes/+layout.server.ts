@@ -2,7 +2,7 @@ import { redirect } from "@sveltejs/kit"
 import type { LayoutServerLoad } from "./$types"
 
 export const load: LayoutServerLoad = (event) => {
-  const { session } = event.locals
+  const { session, user } = event.locals
 
   if (!session?.userId && event.url.pathname !== "/login") {
     const fromUrl = event.url.pathname + event.url.search
@@ -17,5 +17,6 @@ export const load: LayoutServerLoad = (event) => {
 
   return {
     session,
+    user,
   }
 }
