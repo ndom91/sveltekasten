@@ -1,22 +1,21 @@
 <script lang="ts">
 import { watch } from "runed"
 import { onDestroy } from "svelte"
-import { InfiniteLoader, loaderState } from "svelte-infinite"
+import { InfiniteLoader, LoaderState } from "svelte-infinite"
 import { toast } from "svelte-sonner"
-import FilterBar from "./FilterBar.svelte"
-import { handleSummarizeText, registerSummarizationWorker } from "./summarization.svelte"
-import { handleGenerateSpeech, registerTtsWorker } from "./tts.svelte"
+import { invalidateAll } from "$app/navigation"
+import { page } from "$app/stores"
 import Blob from "$lib/assets/blob1.png"
 import EmptyState from "$lib/components/EmptyState.svelte"
 import { FeedRow } from "$lib/components/feed-row"
 import { Navbar } from "$lib/components/navbar"
-
 import { FeedEntriesService } from "$lib/state/feedEntries.svelte"
 import { useInterface } from "$lib/state/ui.svelte"
 import { getContext } from "$lib/utils/context"
 import { documentVisibilityStore } from "$lib/utils/documentVisibility"
-import { invalidateAll } from "$app/navigation"
-import { page } from "$app/stores"
+import FilterBar from "./FilterBar.svelte"
+import { handleSummarizeText, registerSummarizationWorker } from "./summarization.svelte"
+import { handleGenerateSpeech, registerTtsWorker } from "./tts.svelte"
 
 const feedEntriesService = getContext(FeedEntriesService)
 
@@ -30,6 +29,7 @@ if ($page.data.error) {
   console.error($page.data.error)
 }
 
+const loaderState = new LoaderState()
 let pageNumber = $state(0)
 let rootElement = $state<HTMLElement>()
 const limitLoadCount = 20
@@ -212,9 +212,9 @@ onDestroy(() => {
   class="align-start flex max-h-[calc(100vh-80px)] w-full flex-col justify-start gap-2 overflow-y-scroll outline-none"
   bind:this={rootElement}
 >
-  <FilterBar />
   {#if feedEntriesService.feedEntries.length}
-    <InfiniteLoader triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
+    <FilterBar />
+    <InfiniteLoader {loaderState} triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
       {#each feedEntriesService.feedEntries as feedEntry (feedEntry.id)}
         <FeedRow {feedEntry} {handleSummarizeText} {handleGenerateSpeech} />
       {/each}
