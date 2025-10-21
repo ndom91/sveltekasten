@@ -1,36 +1,36 @@
 <script lang="ts">
-import { format } from "@formkit/tempo";
-import BookmarkActions from "./BookmarkActions.svelte";
-import DeleteDialog from "./DeleteDialog.svelte";
-import MobileBookmarkActions from "./MobileBookmarkActions.svelte";
-import type { Category } from "$lib/types/zod.js";
-import { invalidateAll } from "$app/navigation";
-import { page } from "$app/state";
-import { PUBLIC_WORKER_URL } from "$env/static/public";
-import MediaQuery from "$lib/components/MediaQuery.svelte";
-import { Image } from "$lib/components/image";
-import { Badge } from "$lib/components/ui/badge";
-import { useInterface } from "$lib/state/ui.svelte";
+import { format } from "@formkit/tempo"
+import BookmarkActions from "./BookmarkActions.svelte"
+import DeleteDialog from "./DeleteDialog.svelte"
+import MobileBookmarkActions from "./MobileBookmarkActions.svelte"
+import type { Category } from "$lib/types/zod.js"
+import { invalidateAll } from "$app/navigation"
+import { page } from "$app/state"
+import { PUBLIC_WORKER_URL } from "$env/static/public"
+import MediaQuery from "$lib/components/MediaQuery.svelte"
+import { Image } from "$lib/components/image"
+import { Badge } from "$lib/components/ui/badge"
+import { useInterface } from "$lib/state/ui.svelte"
 
-type CategoryVisible = Category & { visible: boolean };
+type CategoryVisible = Category & { visible: boolean }
 
-let deleteElement = $state<HTMLDialogElement>();
+let deleteElement = $state<HTMLDialogElement>()
 
-const ui = useInterface();
+const ui = useInterface()
 
-const { bookmark = $bindable() }: { bookmark: LoadBookmarkFlatTags } = $props();
+const { bookmark = $bindable() }: { bookmark: LoadBookmarkFlatTags } = $props()
 
-let isOptionsOpen = $state(false);
+let isOptionsOpen = $state(false)
 
 const handleMetadataSidebarOpen = () => {
   ui.setMetadataSidebarData({
     bookmark,
     categories: page.data.categories,
     tags: page.data.tags,
-  });
-  ui.toggleMetadataSidebar(true);
-  ui.toggleMetadataSidebarEditMode(false);
-};
+  })
+  ui.toggleMetadataSidebar(true)
+  ui.toggleMetadataSidebarEditMode(false)
+}
 
 const handleArchive = async () => {
   await fetch(`/api/v1/bookmarks`, {
@@ -42,26 +42,26 @@ const handleArchive = async () => {
       id: bookmark.id,
       update: { archived: true },
     }),
-  });
-  await invalidateAll();
-};
+  })
+  await invalidateAll()
+}
 
-const categories = $state(page.data.categories);
-let isBookmarkCategoryHidden = $state(false);
+const categories = $state(page.data.categories)
+let isBookmarkCategoryHidden = $state(false)
 
 const imageUrl = $derived.by(() => {
   if (bookmark.image) {
-    return `${PUBLIC_WORKER_URL}/img/s_260x144,pos_top/${bookmark.image}`;
+    return `${PUBLIC_WORKER_URL}/img/s_260x144,pos_top/${bookmark.image}`
   } else {
-    return `${PUBLIC_WORKER_URL}/img/_/https://picsum.photos/seed/${btoa(bookmark.url).substring(bookmark.url.length - 32, bookmark.url.length)}/256/144.webp`;
+    return `${PUBLIC_WORKER_URL}/img/_/https://picsum.photos/seed/${btoa(bookmark.url).substring(bookmark.url.length - 32, bookmark.url.length)}/256/144.webp`
   }
-});
+})
 
 $effect(() => {
   isBookmarkCategoryHidden = !!categories
     .filter((cat: CategoryVisible) => cat.visible === false)
-    .find((cat: CategoryVisible) => cat.id === bookmark?.category?.id);
-});
+    .find((cat: CategoryVisible) => cat.id === bookmark?.category?.id)
+})
 </script>
 
 <div

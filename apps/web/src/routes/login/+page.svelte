@@ -1,36 +1,36 @@
 <script lang="ts">
-import { tick } from "svelte";
-import { toast } from "svelte-sonner";
-import { twJoin } from "tailwind-merge";
-import ProviderIcons from "./ProviderIcons.svelte";
-import LoginPattern from "$lib/assets/LoginPattern.svelte";
-import { authClient } from "$lib/auth-client";
-import { browser } from "$app/environment";
-import { page } from "$app/state";
+import { tick } from "svelte"
+import { toast } from "svelte-sonner"
+import { twJoin } from "tailwind-merge"
+import ProviderIcons from "./ProviderIcons.svelte"
+import LoginPattern from "$lib/assets/LoginPattern.svelte"
+import { authClient } from "$lib/auth-client"
+import { browser } from "$app/environment"
+import { page } from "$app/state"
 
-const session = authClient.useSession();
+const session = authClient.useSession()
 
-let email = $state("");
-let password = $state("");
-let name = $state("");
-let isSignUp = $state(false);
+let email = $state("")
+let password = $state("")
+let name = $state("")
+let isSignUp = $state(false)
 
 const providerButtonStyles = (provider: string): string => {
   switch (provider) {
     case "github":
-      return "bg-neutral-700 text-white";
+      return "bg-neutral-700 text-white"
     case "google":
-      return "bg-white focus:ring-blue-700 text-blue-600 border border-gray-300";
+      return "bg-white focus:ring-blue-700 text-blue-600 border border-gray-300"
     case "azure-ad":
-      return "bg-blue-700 hover:bg-blue-900 focus:ring-blue-700 text-white";
+      return "bg-blue-700 hover:bg-blue-900 focus:ring-blue-700 text-white"
     case "authentik":
-      return "bg-orange-600 hover:bg-orange-800 text-white";
+      return "bg-orange-600 hover:bg-orange-800 text-white"
     case "keycloak":
-      return "bg-gray-600 hover:bg-gray-800 text-white";
+      return "bg-gray-600 hover:bg-gray-800 text-white"
     default:
-      return "bg-gray-600 hover:bg-gray-800 text-white";
+      return "bg-gray-600 hover:bg-gray-800 text-white"
   }
-};
+}
 
 if (browser && page.url.searchParams.get("verifyEmail")) {
   void tick().then(() => {
@@ -39,9 +39,9 @@ if (browser && page.url.searchParams.get("verifyEmail")) {
       classes: {
         toast: "bg-neutral-700/20 text-white border-gray-400/10",
       },
-    });
+    })
     // void goto("#");
-  });
+  })
 }
 </script>
 

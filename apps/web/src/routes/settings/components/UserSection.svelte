@@ -1,44 +1,44 @@
 <script lang="ts">
-import { format } from "@formkit/tempo";
-import { toast } from "svelte-sonner";
-import { parseChromeBookmarks, parsePocketBookmarks } from "../import";
+import { format } from "@formkit/tempo"
+import { toast } from "svelte-sonner"
+import { parseChromeBookmarks, parsePocketBookmarks } from "../import"
 import {
   type ParsedBookmark,
   bookmarkTypes,
   exportBookmarks,
   importBookmarks,
   parseImportFile,
-} from "../utils";
-import { Badge } from "$/lib/components/ui/badge";
-import LoadingIndicator from "$lib/components/LoadingIndicator.svelte";
-import { Button } from "$lib/components/ui/button";
-import * as Card from "$lib/components/ui/card";
-import { Checkbox } from "$lib/components/ui/checkbox";
-import * as Select from "$lib/components/ui/select";
-import { Separator } from "$lib/components/ui/separator";
-import * as Table from "$lib/components/ui/table";
-import { TTSLocation, defaultAISettings } from "$lib/state/ui.svelte";
-import { clipboard } from "$lib/utils/clipboard";
-import { page } from "$app/state";
+} from "../utils"
+import { Badge } from "$/lib/components/ui/badge"
+import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
+import { Button } from "$lib/components/ui/button"
+import * as Card from "$lib/components/ui/card"
+import { Checkbox } from "$lib/components/ui/checkbox"
+import * as Select from "$lib/components/ui/select"
+import { Separator } from "$lib/components/ui/separator"
+import * as Table from "$lib/components/ui/table"
+import { TTSLocation, defaultAISettings } from "$lib/state/ui.svelte"
+import { clipboard } from "$lib/utils/clipboard"
+import { page } from "$app/state"
 
-let exportLoading = $state(false);
-let importLoading = $state(false);
+let exportLoading = $state(false)
+let importLoading = $state(false)
 let {
   ai: {
     tts: { enabled: ttsEnabled, speaker: ttsSpeaker, location: ttsLocation },
     summarization: { enabled: summarizationEnabled },
   },
   personal: personalSettings,
-} = $state(page.data.user?.settings ?? { ai: { defaultAISettings } });
+} = $state(page.data.user?.settings ?? { ai: { defaultAISettings } })
 
 type UpdateUserSettingsArgs = {
-  ttsEnabled: boolean;
-  ttsSpeaker: string;
-  ttsLocation: string;
-  summarizationEnabled: boolean;
-  personal: Record<string, unknown>;
+  ttsEnabled: boolean
+  ttsSpeaker: string
+  ttsLocation: string
+  summarizationEnabled: boolean
+  personal: Record<string, unknown>
   // transcriptionEnabled: boolean
-};
+}
 
 const updateUser = async (userSettings: UpdateUserSettingsArgs) => {
   await fetch("/api/v1/user", {
@@ -68,10 +68,10 @@ const updateUser = async (userSettings: UpdateUserSettingsArgs) => {
         },
       },
     }),
-  });
+  })
   // TODO: Reenable when not running onMount
-  toast.success("Settings updated");
-};
+  toast.success("Settings updated")
+}
 
 const speakers = [
   "en-US-AriaNeural",
@@ -83,74 +83,72 @@ const speakers = [
   "en-US-MichelleNeural",
   "en-US-RogerNeural",
   "en-US-SteffanNeural",
-];
+]
 
 const ttsLocationItems = Object.values(TTSLocation).map((location) => ({
   value: location,
   label: location,
-}));
+}))
 
 // Import Bookmarks
-let importFile = $state<FileList | null>(null);
-let parsedBookmarks = $state<ParsedBookmark[] | undefined>([]);
+let importFile = $state<FileList | null>(null)
+let parsedBookmarks = $state<ParsedBookmark[] | undefined>([])
 
 $effect(() => {
   if (!importFile?.[0]) {
-    return;
+    return
   }
-  const fileReader = new FileReader();
-  fileReader.readAsText(importFile[0]);
+  const fileReader = new FileReader()
+  fileReader.readAsText(importFile[0])
   fileReader.onloadend = (e) => {
-    const htmlFile = e?.currentTarget?.result;
+    const htmlFile = e?.currentTarget?.result
     if (!htmlFile) {
-      return;
+      return
     }
 
-    const parsedFile = parseImportFile(htmlFile);
+    const parsedFile = parseImportFile(htmlFile)
     if (!parsedFile) {
-      return;
+      return
     }
 
     if (parsedFile.type === bookmarkTypes.POCKET) {
-      parsedBookmarks = parsePocketBookmarks(parsedFile.doc);
+      parsedBookmarks = parsePocketBookmarks(parsedFile.doc)
     } else if (parsedFile.type === bookmarkTypes.CHROME) {
       // Default Chrome format
-      const chromeBookmarks = parseChromeBookmarks(parsedFile.doc);
+      const chromeBookmarks = parseChromeBookmarks(parsedFile.doc)
       if (!chromeBookmarks?.[0]?.title) {
-        return;
+        return
       }
-      parsedBookmarks = chromeBookmarks;
+      parsedBookmarks = chromeBookmarks
     }
-  };
-});
+  }
+})
 
 const handleImport = async () => {
-  importLoading = true;
+  importLoading = true
   try {
     if (!parsedBookmarks?.length) {
-      toast.error(
-        `No bookmarks successfully parsed. See console for any potential errors.`,
-      );
-      return;
+      toast.error(`No bookmarks successfully parsed. See console for any potential errors.`)
+      return
     }
-    await importBookmarks(parsedBookmarks, page.data.session?.userId as string);
-    parsedBookmarks = [];
+    await importBookmarks(parsedBookmarks, page.data.session?.userId as string)
+    parsedBookmarks = []
   } catch (error) {
-    console.error(error);
-    toast.error(`Import failed ${String(error)}`);
+    console.error(error)
+    toast.error(`Import failed ${String(error)}`)
   } finally {
-    importLoading = false;
+    importLoading = false
   }
-};
+}
 
 const handleBookmarkExport = () => {
-  exportLoading = true;
-  exportBookmarks($page.data.bookmarks.data);
-  exportLoading = false;
-};
+  exportLoading = true
+  exportBookmarks($page.data.bookmarks.data)
+  exportLoading = false
+}
 
 async function handleSummarizationToggle() {
-  summarizationEnabled = !summarizationEnabled;
+  summarizationEnabled = !summarizationEnabled
   await updateUser({
     ttsEnabled,
     ttsSpeaker: ttsSpeaker.trim(),
@@ -158,11 +156,11 @@ async function handleSummarizationToggle() {
     summarizationEnabled,
     // transcriptionEnabled: transcriptionEnabled,
     personal: personalSettings,
-  });
+  })
 }
 
 async function handleTTSToggle() {
-  ttsEnabled = !ttsEnabled;
+  ttsEnabled = !ttsEnabled
   await updateUser({
     ttsEnabled,
     ttsSpeaker: ttsSpeaker.trim(),
@@ -170,11 +168,11 @@ async function handleTTSToggle() {
     summarizationEnabled,
     // transcriptionEnabled: transcriptionEnabled,
     personal: personalSettings,
-  });
+  })
 }
 
 async function toggleSetting(setting: string) {
-  personalSettings[setting] = !personalSettings[setting];
+  personalSettings[setting] = !personalSettings[setting]
   await updateUser({
     ttsEnabled,
     ttsSpeaker: ttsSpeaker.trim(),
@@ -182,7 +180,7 @@ async function toggleSetting(setting: string) {
     summarizationEnabled,
     // transcriptionEnabled: transcriptionEnabled,
     personal: personalSettings,
-  });
+  })
 }
 </script>
 

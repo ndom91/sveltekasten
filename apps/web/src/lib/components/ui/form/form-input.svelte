@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { getFormField } from "formsnap";
-	import { Input, type InputEvents } from "$lib/components/ui/input";
-	import type { HTMLInputAttributes } from "svelte/elements";
+import { getFormField } from "formsnap"
+import { Input, type InputEvents } from "$lib/components/ui/input"
+import type { HTMLInputAttributes } from "svelte/elements"
 
-	type $$Props = HTMLInputAttributes;
-	type $$Events = InputEvents;
+type $$Props = HTMLInputAttributes
+type $$Events = InputEvents
 
-	const { attrStore, value } = getFormField();
+const { attrStore, value } = getFormField()
 </script>
 
 <Input

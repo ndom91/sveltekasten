@@ -1,49 +1,49 @@
 <script lang="ts">
-import { signOut } from "@auth/sveltekit/client";
-import { mode, toggleMode } from "mode-watcher";
-import { onMount } from "svelte";
-import KeyboardShortcutsHelp from "$lib/components/KeyboardShortcutsHelp.svelte";
-import * as Avatar from "$lib/components/ui/avatar";
-import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
-import { Skeleton } from "$lib/components/ui/skeleton";
-import { version } from "$app/environment";
-import { page } from "$app/state";
+import { signOut } from "@auth/sveltekit/client"
+import { mode, toggleMode } from "mode-watcher"
+import { onMount } from "svelte"
+import KeyboardShortcutsHelp from "$lib/components/KeyboardShortcutsHelp.svelte"
+import * as Avatar from "$lib/components/ui/avatar"
+import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
+import { Skeleton } from "$lib/components/ui/skeleton"
+import { version } from "$app/environment"
+import { page } from "$app/state"
 
-const isDarkMode = $derived(mode.current === "dark");
-let element = $state<HTMLDialogElement | undefined>();
-let installPrompt: Event | null = $state(null);
-let offerInstall = $state(false);
+const isDarkMode = $derived(mode.current === "dark")
+let element = $state<HTMLDialogElement | undefined>()
+let installPrompt: Event | null = $state(null)
+let offerInstall = $state(false)
 
 const toggleKeyboardShorcuts = () => {
-  element?.showModal();
-};
+  element?.showModal()
+}
 
 onMount(() => {
   window.addEventListener("beforeinstallprompt", (event) => {
-    event.preventDefault();
-    installPrompt = event;
-    offerInstall = true;
-    console.log("beforeinstallprompt", { offerInstall });
-  });
+    event.preventDefault()
+    installPrompt = event
+    offerInstall = true
+    console.log("beforeinstallprompt", { offerInstall })
+  })
 
   window.addEventListener("appinstalled", () => {
-    installPrompt = null;
-    offerInstall = false;
-    console.log("appinstalled", { offerInstall });
-  });
-});
+    installPrompt = null
+    offerInstall = false
+    console.log("appinstalled", { offerInstall })
+  })
+})
 
 async function handleInstall() {
   if (!installPrompt) {
-    return;
+    return
   }
 
   // @ts-expect-error TODO: find exact type for beforeinstallprompt Event
-  const result = await installPrompt.prompt();
-  console.log("prompt.result", result.outcome);
+  const result = await installPrompt.prompt()
+  console.log("prompt.result", result.outcome)
 
-  installPrompt = null;
-  offerInstall = false;
+  installPrompt = null
+  offerInstall = false
 }
 </script>
 

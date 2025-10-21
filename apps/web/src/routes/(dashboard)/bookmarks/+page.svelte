@@ -1,38 +1,38 @@
 <script lang="ts">
-import { watch } from "runed";
-import { onDestroy, onMount } from "svelte";
-import { InfiniteLoader, LoaderState } from "svelte-infinite";
-import { toast } from "svelte-sonner";
-import FilterBar from "./FilterBar.svelte";
-import EmptyState from "$lib/components/EmptyState.svelte";
-import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte";
-import { BookmarkRow } from "$lib/components/bookmark-row";
-import { Navbar } from "$lib/components/navbar";
-import { BookmarksService } from "$lib/state/bookmarks.svelte";
-import { useInterface } from "$lib/state/ui.svelte";
-import { getContext } from "$lib/utils/context";
-import { Logger, loggerLevels } from "$lib/utils/logger";
-import { goto } from "$app/navigation";
-import { resolve } from "$app/paths";
-import { page } from "$app/state";
+import { watch } from "runed"
+import { onDestroy, onMount } from "svelte"
+import { InfiniteLoader, LoaderState } from "svelte-infinite"
+import { toast } from "svelte-sonner"
+import FilterBar from "./FilterBar.svelte"
+import EmptyState from "$lib/components/EmptyState.svelte"
+import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
+import { BookmarkRow } from "$lib/components/bookmark-row"
+import { Navbar } from "$lib/components/navbar"
+import { BookmarksService } from "$lib/state/bookmarks.svelte"
+import { useInterface } from "$lib/state/ui.svelte"
+import { getContext } from "$lib/utils/context"
+import { Logger, loggerLevels } from "$lib/utils/logger"
+import { goto } from "$app/navigation"
+import { resolve } from "$app/paths"
+import { page } from "$app/state"
 
-const ui = useInterface();
-const bookmarkService = getContext(BookmarksService);
+const ui = useInterface()
+const bookmarkService = getContext(BookmarksService)
 
 onMount(async () => {
-  const showQuickAdd = page.url.searchParams.get("quickAdd");
+  const showQuickAdd = page.url.searchParams.get("quickAdd")
   if (showQuickAdd === "true") {
-    await goto(resolve("/bookmarks"));
-    ui.toggleQuickAdd();
+    await goto(resolve("/bookmarks"))
+    ui.toggleQuickAdd()
   }
-});
+})
 
-const loaderState = new LoaderState();
-let pageNumber = $state(0);
-let rootElement = $state<HTMLElement>();
+const loaderState = new LoaderState()
+let pageNumber = $state(0)
+let rootElement = $state<HTMLElement>()
 
-const limitLoadCount = 20;
-const logger = new Logger({ level: loggerLevels.DEBUG });
+const limitLoadCount = 20
+const logger = new Logger({ level: loggerLevels.DEBUG })
 
 // $effect(() => {
 //   if ($page.data.bookmarks.data.length) {
@@ -43,15 +43,15 @@ const logger = new Logger({ level: loggerLevels.DEBUG });
 // })
 
 if (page.data.error) {
-  logger.error(String(page.data.error));
+  logger.error(String(page.data.error))
 }
 
 const fetchSearchResults = async ({
   limit = limitLoadCount,
   skip = 0,
 }: {
-  limit?: number;
-  skip?: number;
+  limit?: number
+  skip?: number
 }) => {
   try {
     const body = {
@@ -66,7 +66,7 @@ const fetchSearchResults = async ({
       where: {
         archived: false,
       },
-    };
+    }
     if (ui.searchQuery) {
       body.where = {
         archived: false,
@@ -79,7 +79,7 @@ const fetchSearchResults = async ({
         desc: {
           search: ui.searchQuery.split(" ").join(" & "),
         },
-      } as { archived: boolean } & Record<string, any>;
+      } as { archived: boolean } & Record<string, any>
     }
     const searchResponse = await fetch("/api/v1/search", {
       method: "POST",
@@ -87,116 +87,110 @@ const fetchSearchResults = async ({
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
-    });
-    const { data, count } = await searchResponse.json();
+    })
+    const { data, count } = await searchResponse.json()
     return {
       data,
       count,
-    };
+    }
   } catch (error) {
-    console.error(String(error));
-    toast.error(String(error));
+    console.error(String(error))
+    toast.error(String(error))
   }
-};
+}
 
 // Load more items on infinite scroll
 const loadMore = async () => {
   try {
-    pageNumber += 1;
-    const limit = limitLoadCount;
-    const skip = limitLoadCount * pageNumber;
+    pageNumber += 1
+    const limit = limitLoadCount
+    const skip = limitLoadCount * pageNumber
 
-    const searchResults = await fetchSearchResults({ limit, skip });
+    const searchResults = await fetchSearchResults({ limit, skip })
     if (!searchResults?.data) {
-      pageNumber -= 1;
-      return;
+      pageNumber -= 1
+      return
     }
 
     if (searchResults.data.length) {
-      bookmarkService.append(searchResults.data);
+      bookmarkService.append(searchResults.data)
     }
 
     if (bookmarkService.bookmarks.length >= searchResults.count) {
-      loaderState.complete();
+      loaderState.complete()
     } else {
-      loaderState.loaded();
+      loaderState.loaded()
     }
   } catch (error) {
-    console.error(String(error));
+    console.error(String(error))
 
-    loaderState.error();
-    pageNumber -= 1;
+    loaderState.error()
+    pageNumber -= 1
   }
-};
+}
 
 // Handle search input changes
 // Reset and execute first search for new query
 watch.pre(
   () => ui.searchQuery,
   () => {
-    loaderState.reset();
-    pageNumber = -1;
+    loaderState.reset()
+    pageNumber = -1
     // bookmarkStore.bookmarks = []
-    void loadMore();
-  },
-);
+    void loadMore()
+  }
+)
 
 // Handle keyboard navigation of items
 const handleKeyDown = (e: KeyboardEvent) => {
   if (e.target instanceof HTMLInputElement) {
-    return;
+    return
   }
 
   // Navigate up / down list of items
-  if (
-    e.key === "ArrowDown" ||
-    e.key === "ArrowUp" ||
-    e.key === "j" ||
-    e.key === "k"
-  ) {
-    e.preventDefault();
-    const currentActiveElement = e.target as HTMLElement;
+  if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "j" || e.key === "k") {
+    e.preventDefault()
+    const currentActiveElement = e.target as HTMLElement
     const currentActiveElementIndex = bookmarkService.bookmarks.findIndex(
-      (item) => item.id === currentActiveElement.dataset.id,
-    );
+      (item) => item.id === currentActiveElement.dataset.id
+    )
 
     const nextIndex =
       e.key === "ArrowDown" || e.key === "j"
         ? currentActiveElementIndex + 1
-        : currentActiveElementIndex - 1;
+        : currentActiveElementIndex - 1
 
     const nextElement = document.querySelector(
-      `[data-id="${bookmarkService.bookmarks[nextIndex]?.id}"]`,
-    ) as HTMLElement;
+      `[data-id="${bookmarkService.bookmarks[nextIndex]?.id}"]`
+    ) as HTMLElement
 
     if (nextElement) {
-      nextElement.focus();
+      nextElement.focus()
     }
   }
 
   // Open item in same tab
   if (e.key === "o") {
-    e.preventDefault();
-    const currentActiveElement = e.target as HTMLElement;
+    e.preventDefault()
+    const currentActiveElement = e.target as HTMLElement
     const currentActiveElementIndex = bookmarkService.bookmarks.findIndex(
-      (item) => item.id === currentActiveElement.dataset.id,
-    );
-    const targetLink =
-      bookmarkService.bookmarks[currentActiveElementIndex]?.url;
+      (item) => item.id === currentActiveElement.dataset.id
+    )
+    const targetLink = bookmarkService.bookmarks[currentActiveElementIndex]?.url
     if (!targetLink) {
-      toast.error("No item selected");
-      return;
+      toast.error("No item selected")
+      return
     }
-    window.open(targetLink, "_target");
+    window.open(targetLink, "_target")
   }
-};
+}
 
 // Reset state on unmount
 onDestroy(() => {
   if (ui.searchQuery) {
-    ui.searchQuery = "";
+    ui.searchQuery = ""
   }
-});
+})
 </script>
 
 <svelte:head>

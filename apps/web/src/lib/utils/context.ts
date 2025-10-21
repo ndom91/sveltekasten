@@ -5,25 +5,25 @@
 //
 // The functions below just give us a nicer way to express the lookups.
 
-import { setContext, getContext as svelteGetContext } from 'svelte';
-import { writable, type Readable, type Writable } from 'svelte/store';
+import { setContext, getContext as svelteGetContext } from "svelte"
+import { writable, type Readable, type Writable } from "svelte/store"
 
-type Class = new (...args: any) => any;
+type Class = new (...args: any) => any
 
 /**
  * Getter that returns an instance of the parameter type
  */
 export function getContext<T extends Class>(key: T): InstanceType<T> {
-  const instance = svelteGetContext<InstanceType<T> | undefined>(key);
-  if (!instance) throw new Error(`no instance of \`${key.name}\` in context`);
-  return instance;
+  const instance = svelteGetContext<InstanceType<T> | undefined>(key)
+  if (!instance) throw new Error(`no instance of \`${key.name}\` in context`)
+  return instance
 }
 
 /**
  * Optional getter that returns an instance of the parameter type
  */
 export function maybeGetContext<T extends Class>(key: T): InstanceType<T> | undefined {
-  return svelteGetContext<InstanceType<T> | undefined>(key);
+  return svelteGetContext<InstanceType<T> | undefined>(key)
 }
 
 /**
@@ -31,18 +31,18 @@ export function maybeGetContext<T extends Class>(key: T): InstanceType<T> | unde
  */
 export function getContextStore<
   T extends Class,
-  S extends Readable<InstanceType<T>> = Readable<InstanceType<T>>
+  S extends Readable<InstanceType<T>> = Readable<InstanceType<T>>,
 >(key: T): S {
-  const instance = svelteGetContext<S | undefined>(key);
-  if (!instance) throw new Error(`no instance of \`Readable<${key.name}>\` in context`);
-  return instance;
+  const instance = svelteGetContext<S | undefined>(key)
+  if (!instance) throw new Error(`no instance of \`Readable<${key.name}>\` in context`)
+  return instance
 }
 
 export function maybeGetContextStore<
   T extends Class,
-  S extends Readable<InstanceType<T>> = Readable<InstanceType<T>>
+  S extends Readable<InstanceType<T>> = Readable<InstanceType<T>>,
 >(key: T): S | undefined {
-  return svelteGetContext<S | undefined>(key);
+  return svelteGetContext<S | undefined>(key)
 }
 
 /**
@@ -54,13 +54,13 @@ export function createContextStore<T extends Class>(
   key: T | symbol,
   value: InstanceType<T> | undefined
 ): Writable<InstanceType<T> | undefined> {
-  const instance = svelteGetContext<Writable<InstanceType<T>> | undefined>(key);
+  const instance = svelteGetContext<Writable<InstanceType<T>> | undefined>(key)
   if (instance) {
-    throw new Error('Context store already defined for key: ' + key.toString());
+    throw new Error("Context store already defined for key: " + key.toString())
   }
-  const store = writable(value);
-  setContext(key, store);
-  return store;
+  const store = writable(value)
+  setContext(key, store)
+  return store
 }
 
 /**
@@ -79,15 +79,15 @@ export function createContextStore<T extends Class>(
 export function buildContextStore<T, S extends Readable<T> = Readable<T>>(
   name: string
 ): [() => S, (value: T | undefined) => Writable<T>] {
-  const identifier = Symbol(name);
+  const identifier = Symbol(name)
   return [
     () => {
-      return getContextStoreBySymbol<T, S>(identifier);
+      return getContextStoreBySymbol<T, S>(identifier)
     },
     (value: T | undefined) => {
-      return createContextStore(identifier, value);
-    }
-  ];
+      return createContextStore(identifier, value)
+    },
+  ]
 }
 
 /**
@@ -96,19 +96,19 @@ export function buildContextStore<T, S extends Readable<T> = Readable<T>>(
  * TODO: Make `UserSettings` a class rather than interface so we don't need this exported.
  */
 export function getContextStoreBySymbol<T, S extends Readable<T> = Readable<T>>(key: symbol): S {
-  const instance = svelteGetContext<S | undefined>(key);
-  if (!instance) throw new Error(`no instance of \`Readable<${key.toString()}[]>\` in context`);
-  return instance;
+  const instance = svelteGetContext<S | undefined>(key)
+  if (!instance) throw new Error(`no instance of \`Readable<${key.toString()}[]>\` in context`)
+  return instance
 }
 
 export function buildContext<T>(name: string): [() => T, (value: T | undefined) => void] {
-  const identifier = Symbol(name);
+  const identifier = Symbol(name)
   return [
     () => {
-      return svelteGetContext<T>(identifier);
+      return svelteGetContext<T>(identifier)
     },
     (value: T | undefined) => {
-      setContext(identifier, value);
-    }
-  ];
+      setContext(identifier, value)
+    },
+  ]
 }

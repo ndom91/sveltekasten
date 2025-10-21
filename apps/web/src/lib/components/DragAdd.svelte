@@ -1,86 +1,86 @@
 <script lang="ts">
-import { toast } from "svelte-sonner";
-import { z } from "zod";
-import { cn } from "$/lib/utils";
-import ConfirmAddDialog from "$lib/components/ConfirmAddDialog.svelte";
+import { toast } from "svelte-sonner"
+import { z } from "zod"
+import { cn } from "$/lib/utils"
+import ConfirmAddDialog from "$lib/components/ConfirmAddDialog.svelte"
 
 const parseData = (text: string | undefined): string | void => {
   try {
-    const rawUrl = z.string().url().parse(text);
-    return rawUrl;
+    const rawUrl = z.string().url().parse(text)
+    return rawUrl
   } catch (error) {
-    toast.error("Invalid URL");
+    toast.error("Invalid URL")
   }
-};
+}
 
-let isDragOver = $state(false);
-let showConfirmAddDialog: HTMLDialogElement | undefined = $state();
-let url = $state("");
+let isDragOver = $state(false)
+let showConfirmAddDialog: HTMLDialogElement | undefined = $state()
+let url = $state("")
 
 const handleDragEnter = (e: DragEvent) => {
-  e.preventDefault();
-  e.stopPropagation();
+  e.preventDefault()
+  e.stopPropagation()
 
   if (e.relatedTarget) {
-    return;
+    return
   }
-  isDragOver = true;
-};
+  isDragOver = true
+}
 
 const handleDrop = (e: DragEvent) => {
-  e.preventDefault();
-  e.stopPropagation();
-  isDragOver = false;
+  e.preventDefault()
+  e.stopPropagation()
+  isDragOver = false
 
-  const text = e.dataTransfer?.getData("text/plain");
-  const parsedUrl = parseData(text);
+  const text = e.dataTransfer?.getData("text/plain")
+  const parsedUrl = parseData(text)
   if (parsedUrl) {
-    const parsedHostname = new URL(parsedUrl).hostname;
+    const parsedHostname = new URL(parsedUrl).hostname
 
     // Ignore invalid URLs and URLs from the same domain
     if (!parsedHostname) {
-      return;
+      return
     }
     if (parsedHostname === location.hostname) {
-      return;
+      return
     }
 
-    url = parsedUrl;
-    showConfirmAddDialog?.showModal();
+    url = parsedUrl
+    showConfirmAddDialog?.showModal()
   }
-};
+}
 
 const handlePaste = (e: ClipboardEvent) => {
   if (e.target instanceof HTMLInputElement) {
-    return;
+    return
   }
-  const text = e.clipboardData?.getData("text/plain");
-  const parsedUrl = parseData(text);
+  const text = e.clipboardData?.getData("text/plain")
+  const parsedUrl = parseData(text)
   if (parsedUrl) {
-    url = parsedUrl;
-    showConfirmAddDialog?.showModal();
+    url = parsedUrl
+    showConfirmAddDialog?.showModal()
   }
-};
+}
 
 // Allow closing dropover backdrop with ESC
 const handleKeyDown = (e: KeyboardEvent) => {
   if (e.repeat || e.target instanceof HTMLInputElement) {
-    return;
+    return
   }
   if (e.key === "Escape" && showConfirmAddDialog) {
-    e.preventDefault();
-    showConfirmAddDialog.close();
+    e.preventDefault()
+    showConfirmAddDialog.close()
   }
-};
+}
 
 // Hide drop backdrop after 4s
 $effect(() => {
   if (isDragOver) {
     setTimeout(() => {
-      isDragOver = false;
-    }, 4000);
+      isDragOver = false
+    }, 4000)
   }
-});
+})
 </script>
 
 <svelte:window onkeydown={handleKeyDown} />

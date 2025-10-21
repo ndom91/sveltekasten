@@ -1,7 +1,7 @@
 <script lang="ts">
-import { cn } from "$lib/utils";
+import { cn } from "$lib/utils"
 
-const { class: className, ...restProps }: { class: string } = $props();
+const { class: className, ...restProps }: { class: string } = $props()
 </script>
 
 <svg

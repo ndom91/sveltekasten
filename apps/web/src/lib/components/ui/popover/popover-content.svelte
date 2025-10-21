@@ -1,17 +1,17 @@
 <script lang="ts">
-	import { cn } from "$lib/utils.js";
-	import { Popover as PopoverPrimitive } from "bits-ui";
+import { cn } from "$lib/utils.js"
+import { Popover as PopoverPrimitive } from "bits-ui"
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		sideOffset = 4,
-		align = "center",
-		portalProps,
-		...restProps
-	}: PopoverPrimitive.ContentProps & {
-		portalProps?: PopoverPrimitive.PortalProps;
-	} = $props();
+let {
+  ref = $bindable(null),
+  class: className,
+  sideOffset = 4,
+  align = "center",
+  portalProps,
+  ...restProps
+}: PopoverPrimitive.ContentProps & {
+  portalProps?: PopoverPrimitive.PortalProps
+} = $props()
 </script>
 
 <PopoverPrimitive.Portal {...portalProps}>

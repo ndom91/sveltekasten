@@ -1,28 +1,28 @@
 <script lang="ts">
-  import { onMount } from "svelte"
-  import { HomeScroller } from "$lib/components/home-scroller"
-  import { Navbar } from "$lib/components/navbar"
-  import { BookmarksService } from "$lib/state/bookmarks.svelte"
-  import { FeedEntriesService } from "$lib/state/feedEntries.svelte"
-  import { ScrollerTypes } from "$lib/types"
-  import { getContext } from "$lib/utils/context"
-  import { goto } from "$app/navigation"
-  import { page } from "$app/stores"
+import { onMount } from "svelte"
+import { HomeScroller } from "$lib/components/home-scroller"
+import { Navbar } from "$lib/components/navbar"
+import { BookmarksService } from "$lib/state/bookmarks.svelte"
+import { FeedEntriesService } from "$lib/state/feedEntries.svelte"
+import { ScrollerTypes } from "$lib/types"
+import { getContext } from "$lib/utils/context"
+import { goto } from "$app/navigation"
+import { page } from "$app/stores"
 
-  onMount(async () => {
-    // Share Target Redirect
-    const sharedSuccess = $page.url.searchParams.get("shared")
-    if (sharedSuccess === "true") {
-      await goto("/")
-    }
-  })
+onMount(async () => {
+  // Share Target Redirect
+  const sharedSuccess = $page.url.searchParams.get("shared")
+  if (sharedSuccess === "true") {
+    await goto("/")
+  }
+})
 
-  const bookmarkService = getContext(BookmarksService)
-  const feedEntriesService = getContext(FeedEntriesService)
+const bookmarkService = getContext(BookmarksService)
+const feedEntriesService = getContext(FeedEntriesService)
 
-  // $effect(() => {
-  //   bookmarkService.bookmarks = $page.data.bookmarks.data
-  // })
+// $effect(() => {
+//   bookmarkService.bookmarks = $page.data.bookmarks.data
+// })
 </script>
 
 <svelte:head>

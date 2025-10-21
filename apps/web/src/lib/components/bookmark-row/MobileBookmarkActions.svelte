@@ -1,33 +1,33 @@
 <script lang="ts">
-  import { fade } from "svelte/transition"
-  import { Separator } from "$lib/components/ui/separator"
+import { fade } from "svelte/transition"
+import { Separator } from "$lib/components/ui/separator"
 
-  // TODO: Refactor a bit when popover anchor API is more widely available
-  let open = $state(false)
+// TODO: Refactor a bit when popover anchor API is more widely available
+let open = $state(false)
 
-  type Props = {
-    url: string
-    handleMetadataSidebarOpen: () => void
-    handleDeleteDialogOpen: () => void
-    handleArchive: () => void
+type Props = {
+  url: string
+  handleMetadataSidebarOpen: () => void
+  handleDeleteDialogOpen: () => void
+  handleArchive: () => void
+}
+
+const { url, handleMetadataSidebarOpen, handleDeleteDialogOpen, handleArchive }: Props = $props()
+
+const id = crypto.randomUUID()
+
+const togglePopover = (e: MouseEvent) => {
+  e.stopPropagation()
+  open = !open
+}
+
+let actionMenuWrapperElement = $state<HTMLElement>()
+
+const handleClickOutside = (e: MouseEvent) => {
+  if (actionMenuWrapperElement && !actionMenuWrapperElement.contains(e.target as Node)) {
+    open = false
   }
-
-  const { url, handleMetadataSidebarOpen, handleDeleteDialogOpen, handleArchive }: Props = $props()
-
-  const id = crypto.randomUUID()
-
-  const togglePopover = (e: MouseEvent) => {
-    e.stopPropagation()
-    open = !open
-  }
-
-  let actionMenuWrapperElement = $state<HTMLElement>()
-
-  const handleClickOutside = (e: MouseEvent) => {
-    if (actionMenuWrapperElement && !actionMenuWrapperElement.contains(e.target as Node)) {
-      open = false
-    }
-  }
+}
 </script>
 
 <svelte:window on:click={handleClickOutside} />

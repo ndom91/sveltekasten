@@ -1,24 +1,24 @@
 <script lang="ts">
-  import { format } from "@formkit/tempo"
-  import { PUBLIC_WORKER_URL } from "$env/static/public"
+import { format } from "@formkit/tempo"
+import { PUBLIC_WORKER_URL } from "$env/static/public"
 
-  const { item }: { item: LoadBookmarkFlatTags } = $props()
+const { item }: { item: LoadBookmarkFlatTags } = $props()
 
-  const imageUrl = `${PUBLIC_WORKER_URL}/img/s_256x144/${item.image}`
-  // $derived.by(() => {
-  //   if (item.image) {
-  //     return `${PUBLIC_WORKER_URL}/img/s_256x144/${item.image}`
-  //   } else {
-  //     return `${PUBLIC_WORKER_URL}/img/_/https://picsum.photos/seed/${Math.random() * 100000}/256/144.webp`
-  //   }
-  // })
+const imageUrl = `${PUBLIC_WORKER_URL}/img/s_256x144/${item.image}`
+// $derived.by(() => {
+//   if (item.image) {
+//     return `${PUBLIC_WORKER_URL}/img/s_256x144/${item.image}`
+//   } else {
+//     return `${PUBLIC_WORKER_URL}/img/_/https://picsum.photos/seed/${Math.random() * 100000}/256/144.webp`
+//   }
+// })
 
-  const createdDate = $derived(
-    format(item.createdAt instanceof Date ? item.createdAt : new Date(), {
-      date: "medium",
-      time: "short",
-    }),
-  )
+const createdDate = $derived(
+  format(item.createdAt instanceof Date ? item.createdAt : new Date(), {
+    date: "medium",
+    time: "short",
+  })
+)
 </script>
 
 <div

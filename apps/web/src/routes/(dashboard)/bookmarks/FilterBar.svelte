@@ -1,14 +1,14 @@
 <script lang="ts">
-  import { Button } from "$lib/components/ui/button"
-  import { Checkbox } from "$lib/components/ui/checkbox"
-  import * as Command from "$lib/components/ui/command"
-  import * as Popover from "$lib/components/ui/popover"
-  import { page } from "$app/stores"
+import { Button } from "$lib/components/ui/button"
+import { Checkbox } from "$lib/components/ui/checkbox"
+import * as Command from "$lib/components/ui/command"
+import * as Popover from "$lib/components/ui/popover"
+import { page } from "$app/stores"
 
-  let open = $state(false)
+let open = $state(false)
 
-  const categories = $state($page.data.categories)
-  // $inspect({ categories })
+const categories = $state($page.data.categories)
+// $inspect({ categories })
 </script>
 
 <section class="p-4 border-l-4 md:px-8 border-l-transparent">

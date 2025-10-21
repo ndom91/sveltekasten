@@ -24,7 +24,7 @@ export const JsonValueSchema: z.ZodType<Prisma.JsonValue> = z.lazy(() =>
     z.literal(null),
     z.record(z.lazy(() => JsonValueSchema.optional())),
     z.array(z.lazy(() => JsonValueSchema)),
-  ]),
+  ])
 )
 
 export type JsonValueType = z.infer<typeof JsonValueSchema>
@@ -44,7 +44,7 @@ export const InputJsonValueSchema: z.ZodType<Prisma.InputJsonValue> = z.lazy(() 
     z.object({ toJSON: z.function(z.tuple([]), z.any()) }),
     z.record(z.lazy(() => z.union([InputJsonValueSchema, z.literal(null)]))),
     z.array(z.lazy(() => z.union([InputJsonValueSchema, z.literal(null)]))),
-  ]),
+  ])
 )
 
 export type InputJsonValueType = z.infer<typeof InputJsonValueSchema>
@@ -165,7 +165,7 @@ export const SortOrderSchema = z.enum(["asc", "desc"])
 export const NullableJsonNullValueInputSchema = z
   .enum(["DbNull", "JsonNull"])
   .transform((value) =>
-    value === "JsonNull" ? Prisma.JsonNull : value === "DbNull" ? Prisma.DbNull : value,
+    value === "JsonNull" ? Prisma.JsonNull : value === "DbNull" ? Prisma.DbNull : value
   )
 
 export const QueryModeSchema = z.enum(["default", "insensitive"])
@@ -195,7 +195,7 @@ export const JsonNullValueFilterSchema = z
         ? Prisma.JsonNull
         : value === "AnyNull"
           ? Prisma.AnyNull
-          : value,
+          : value
   )
 
 export const UserOrderByRelevanceFieldEnumSchema = z.enum(["id", "name", "email", "image"])
@@ -988,7 +988,7 @@ export const AccountWhereUniqueInputSchema: z.ZodType<Prisma.AccountWhereUniqueI
     z.object({
       id: z.string().cuid(),
       provider_providerAccountId: z.lazy(
-        () => AccountProviderProviderAccountIdCompoundUniqueInputSchema,
+        () => AccountProviderProviderAccountIdCompoundUniqueInputSchema
       ),
     }),
     z.object({
@@ -996,7 +996,7 @@ export const AccountWhereUniqueInputSchema: z.ZodType<Prisma.AccountWhereUniqueI
     }),
     z.object({
       provider_providerAccountId: z.lazy(
-        () => AccountProviderProviderAccountIdCompoundUniqueInputSchema,
+        () => AccountProviderProviderAccountIdCompoundUniqueInputSchema
       ),
     }),
   ])
@@ -1061,7 +1061,7 @@ export const AccountWhereUniqueInputSchema: z.ZodType<Prisma.AccountWhereUniqueI
           .union([z.lazy(() => UserScalarRelationFilterSchema), z.lazy(() => UserWhereInputSchema)])
           .optional(),
       })
-      .strict(),
+      .strict()
   ) as z.ZodType<Prisma.AccountWhereUniqueInput>
 
 export const AccountOrderByWithAggregationInputSchema: z.ZodType<Prisma.AccountOrderByWithAggregationInput> =
@@ -1284,7 +1284,7 @@ export const UserWhereUniqueInputSchema: z.ZodType<Prisma.UserWhereUniqueInput> 
         feedMedia: z.lazy(() => FeedEntryMediaListRelationFilterSchema).optional(),
         categories: z.lazy(() => CategoryListRelationFilterSchema).optional(),
       })
-      .strict(),
+      .strict()
   ) as z.ZodType<Prisma.UserWhereUniqueInput>
 
 export const UserOrderByWithAggregationInputSchema: z.ZodType<Prisma.UserOrderByWithAggregationInput> =
@@ -1428,7 +1428,7 @@ export const SessionWhereUniqueInputSchema: z.ZodType<Prisma.SessionWhereUniqueI
           .union([z.lazy(() => UserScalarRelationFilterSchema), z.lazy(() => UserWhereInputSchema)])
           .optional(),
       })
-      .strict(),
+      .strict()
   ) as z.ZodType<Prisma.SessionWhereUniqueInput>
 
 export const SessionOrderByWithAggregationInputSchema: z.ZodType<Prisma.SessionOrderByWithAggregationInput> =
@@ -1548,7 +1548,7 @@ export const VerificationTokenWhereUniqueInputSchema: z.ZodType<Prisma.Verificat
           identifier: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
           expires: z.union([z.lazy(() => DateTimeFilterSchema), z.coerce.date()]).optional(),
         })
-        .strict(),
+        .strict()
     ) as z.ZodType<Prisma.VerificationTokenWhereUniqueInput>
 
 export const VerificationTokenOrderByWithAggregationInputSchema: z.ZodType<Prisma.VerificationTokenOrderByWithAggregationInput> =
@@ -1761,7 +1761,7 @@ export const BookmarkWhereUniqueInputSchema: z.ZodType<Prisma.BookmarkWhereUniqu
           .optional()
           .nullable(),
       })
-      .strict(),
+      .strict()
   ) as z.ZodType<Prisma.BookmarkWhereUniqueInput>
 
 export const BookmarkOrderByWithAggregationInputSchema: z.ZodType<Prisma.BookmarkOrderByWithAggregationInput> =
@@ -1930,7 +1930,7 @@ export const TagsOnBookmarksWhereUniqueInputSchema: z.ZodType<Prisma.TagsOnBookm
             .union([z.lazy(() => TagScalarRelationFilterSchema), z.lazy(() => TagWhereInputSchema)])
             .optional(),
         })
-        .strict(),
+        .strict()
     ) as z.ZodType<Prisma.TagsOnBookmarksWhereUniqueInput>
 
 export const TagsOnBookmarksOrderByWithAggregationInputSchema: z.ZodType<Prisma.TagsOnBookmarksOrderByWithAggregationInput> =
@@ -2050,7 +2050,7 @@ export const TagWhereUniqueInputSchema: z.ZodType<Prisma.TagWhereUniqueInput> = 
           .optional()
           .nullable(),
       })
-      .strict(),
+      .strict()
   ) as z.ZodType<Prisma.TagWhereUniqueInput>
 
 export const TagOrderByWithAggregationInputSchema: z.ZodType<Prisma.TagOrderByWithAggregationInput> =
@@ -2204,7 +2204,7 @@ export const CategoryWhereUniqueInputSchema: z.ZodType<Prisma.CategoryWhereUniqu
           .optional()
           .nullable(),
       })
-      .strict(),
+      .strict()
   ) as z.ZodType<Prisma.CategoryWhereUniqueInput>
 
 export const CategoryOrderByWithAggregationInputSchema: z.ZodType<Prisma.CategoryOrderByWithAggregationInput> =
@@ -2380,7 +2380,7 @@ export const FeedWhereUniqueInputSchema: z.ZodType<Prisma.FeedWhereUniqueInput> 
           .optional(),
         feedEntries: z.lazy(() => FeedEntryListRelationFilterSchema).optional(),
       })
-      .strict(),
+      .strict()
   ) as z.ZodType<Prisma.FeedWhereUniqueInput>
 
 export const FeedOrderByWithAggregationInputSchema: z.ZodType<Prisma.FeedOrderByWithAggregationInput> =
@@ -2618,7 +2618,7 @@ export const FeedEntryWhereUniqueInputSchema: z.ZodType<Prisma.FeedEntryWhereUni
           .optional(),
         feedMedia: z.lazy(() => FeedEntryMediaListRelationFilterSchema).optional(),
       })
-      .strict(),
+      .strict()
   ) as z.ZodType<Prisma.FeedEntryWhereUniqueInput>
 
 export const FeedEntryOrderByWithAggregationInputSchema: z.ZodType<Prisma.FeedEntryOrderByWithAggregationInput> =
@@ -2819,7 +2819,7 @@ export const FeedEntryMediaWhereUniqueInputSchema: z.ZodType<Prisma.FeedEntryMed
             ])
             .optional(),
         })
-        .strict(),
+        .strict()
     ) as z.ZodType<Prisma.FeedEntryMediaWhereUniqueInput>
 
 export const FeedEntryMediaOrderByWithAggregationInputSchema: z.ZodType<Prisma.FeedEntryMediaOrderByWithAggregationInput> =

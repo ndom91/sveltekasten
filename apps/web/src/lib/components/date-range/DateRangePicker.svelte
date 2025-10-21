@@ -1,33 +1,27 @@
 <script lang="ts">
-import {
-  DateFormatter,
-  getLocalTimeZone,
-  today,
-} from "@internationalized/date";
-import { Button } from "$lib/components/ui/button/index.js";
-import * as Popover from "$lib/components/ui/popover/index.js";
-import { RangeCalendar } from "$lib/components/ui/range-calendar/index.js";
-import * as Select from "$lib/components/ui/select/index.js";
-import { cn } from "$lib/utils";
-import type { DateRange } from "bits-ui";
+import { DateFormatter, getLocalTimeZone, today } from "@internationalized/date"
+import { Button } from "$lib/components/ui/button/index.js"
+import * as Popover from "$lib/components/ui/popover/index.js"
+import { RangeCalendar } from "$lib/components/ui/range-calendar/index.js"
+import * as Select from "$lib/components/ui/select/index.js"
+import { cn } from "$lib/utils"
+import type { DateRange } from "bits-ui"
 
 const df = new DateFormatter("en-US", {
   dateStyle: "medium",
-});
+})
 
 let dateRange = $state<DateRange>({
   start: today(getLocalTimeZone()).subtract({ days: 3 }),
   end: today(getLocalTimeZone()),
-});
-const userLocale: string = $state(
-  new Intl.NumberFormat().resolvedOptions().locale ?? "en-us",
-);
+})
+const userLocale: string = $state(new Intl.NumberFormat().resolvedOptions().locale ?? "en-us")
 
 const items = [
   { value: 3, label: "Last 3 Days" },
   { value: 7, label: "Last Week" },
   { value: 30, label: "Last Month" },
-];
+]
 </script>
 
 <div class="grid gap-2 grow">

@@ -1,19 +1,19 @@
 <script lang="ts">
-  import { Button } from "$lib/components/ui/button"
-  import * as Tooltip from "$lib/components/ui/tooltip"
+import { Button } from "$lib/components/ui/button"
+import * as Tooltip from "$lib/components/ui/tooltip"
 
-  const {
-    id,
-    toggleDeleteDialog,
-  }: {
-    id: string
-    toggleDeleteDialog: (id: string) => void
-  } = $props()
+const {
+  id,
+  toggleDeleteDialog,
+}: {
+  id: string
+  toggleDeleteDialog: (id: string) => void
+} = $props()
 
-  const handleEdit = async () => {
-    // TODO: implement feed edit
-    console.log("Edit", id)
-  }
+const handleEdit = async () => {
+  // TODO: implement feed edit
+  console.log("Edit", id)
+}
 </script>
 
 <div class="flex gap-2">

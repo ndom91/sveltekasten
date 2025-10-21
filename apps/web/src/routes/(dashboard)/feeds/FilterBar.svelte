@@ -1,19 +1,19 @@
 <script lang="ts">
-  import DateRangePicker from "$lib/components/date-range/DateRangePicker.svelte"
-  import { Button } from "$lib/components/ui/button"
-  import { Checkbox } from "$lib/components/ui/checkbox"
-  import * as Command from "$lib/components/ui/command"
-  import { Label } from "$lib/components/ui/label"
-  import * as Popover from "$lib/components/ui/popover"
-  import { useInterface } from "$lib/state/ui.svelte"
-  import { page } from "$app/stores"
-  import { PUBLIC_WORKER_URL } from "$env/static/public"
+import DateRangePicker from "$lib/components/date-range/DateRangePicker.svelte"
+import { Button } from "$lib/components/ui/button"
+import { Checkbox } from "$lib/components/ui/checkbox"
+import * as Command from "$lib/components/ui/command"
+import { Label } from "$lib/components/ui/label"
+import * as Popover from "$lib/components/ui/popover"
+import { useInterface } from "$lib/state/ui.svelte"
+import { page } from "$app/stores"
+import { PUBLIC_WORKER_URL } from "$env/static/public"
 
-  const ui = useInterface()
-  let open = $state(false)
+const ui = useInterface()
+let open = $state(false)
 
-  const feeds = $state($page.data.feeds.data)
-  // $inspect({ feeds })
+const feeds = $state($page.data.feeds.data)
+// $inspect({ feeds })
 </script>
 
 <section

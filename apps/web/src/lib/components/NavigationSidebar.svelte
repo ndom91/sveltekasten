@@ -1,44 +1,44 @@
 <script lang="ts">
-import { watch } from "runed";
-import Logo from "$lib/assets/Logo.svelte";
-import SidebarContent from "$lib/components/SidebarContent.svelte";
-import Drawer from "$lib/components/mobile/Drawer.svelte";
-import { Button } from "$lib/components/ui/button";
-import { useInterface } from "$lib/state/ui.svelte";
-import { cn } from "$lib/utils";
+import { watch } from "runed"
+import Logo from "$lib/assets/Logo.svelte"
+import SidebarContent from "$lib/components/SidebarContent.svelte"
+import Drawer from "$lib/components/mobile/Drawer.svelte"
+import { Button } from "$lib/components/ui/button"
+import { useInterface } from "$lib/state/ui.svelte"
+import { cn } from "$lib/utils"
 
-const ui = useInterface();
-let userSidebarElement = $state<HTMLElement>()!;
+const ui = useInterface()
+let userSidebarElement = $state<HTMLElement>()!
 
 const handleKeyDown = (event: KeyboardEvent) => {
   if (event.repeat || event.target instanceof HTMLInputElement) {
-    return;
+    return
   }
   if (event.code === "BracketLeft") {
-    ui.toggleUserSidebar();
+    ui.toggleUserSidebar()
   }
-};
+}
 
 const mutate = () => {
   if (ui.userSidebarOpen) {
-    userSidebarElement.style.minWidth = "210px";
+    userSidebarElement.style.minWidth = "210px"
   } else {
-    userSidebarElement.style.minWidth = "72px";
+    userSidebarElement.style.minWidth = "72px"
   }
-};
+}
 
 watch.pre(
   () => ui.userSidebarOpen,
   () => {
     if (document.startViewTransition) {
-      document.startViewTransition(() => mutate());
+      document.startViewTransition(() => mutate())
     } else {
-      mutate();
+      mutate()
     }
-  },
-);
+  }
+)
 
-let windowWidth: number = $state(1000);
+let windowWidth: number = $state(1000)
 </script>
 
 <svelte:window onkeydown={handleKeyDown} bind:innerWidth={windowWidth} />

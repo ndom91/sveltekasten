@@ -17,7 +17,9 @@ export const parseChromeBookmarks = (doc: Document) => {
         return {
           title,
           url,
-          createdAt: Number.parseInt(date) ? new Date(Number.parseInt(date) * 1000).toISOString() : 0,
+          createdAt: Number.parseInt(date)
+            ? new Date(Number.parseInt(date) * 1000).toISOString()
+            : 0,
         }
       }
     })

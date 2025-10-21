@@ -1,8 +1,8 @@
 <script lang="ts" module>
 export type Tag = {
-  label: string;
-  value: string;
-};
+  label: string
+  value: string
+}
 </script>
 
 <script lang="ts" generics="T extends Record<string, unknown>">

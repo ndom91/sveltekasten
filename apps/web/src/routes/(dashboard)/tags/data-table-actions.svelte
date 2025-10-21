@@ -1,15 +1,15 @@
 <script lang="ts">
-  import { Button } from "$lib/components/ui/button"
-  import * as Tooltip from "$lib/components/ui/tooltip"
-  import { handleActionResults } from "$lib/utils/form-action"
-  import { enhance } from "$app/forms"
+import { Button } from "$lib/components/ui/button"
+import * as Tooltip from "$lib/components/ui/tooltip"
+import { handleActionResults } from "$lib/utils/form-action"
+import { enhance } from "$app/forms"
 
-  const { id }: { id: string } = $props()
+const { id }: { id: string } = $props()
 
-  const handleEdit = async () => {
-    // TODO: implement tag edit
-    console.log("Edit", id)
-  }
+const handleEdit = async () => {
+  // TODO: implement tag edit
+  console.log("Edit", id)
+}
 </script>
 
 <div class="flex gap-2">

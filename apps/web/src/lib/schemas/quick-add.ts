@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod"
 
 export const formSchema = z.object({
   title: z.string({ error: "A title is required" }).min(2).max(100),
@@ -12,8 +12,8 @@ export const formSchema = z.object({
       userId: z.string().min(2).max(50),
       createdAt: z.date(),
       updatedAt: z.date(),
-    }),
+    })
   ),
-});
+})
 
-export type FormSchema = z.infer<typeof formSchema>;
+export type FormSchema = z.infer<typeof formSchema>

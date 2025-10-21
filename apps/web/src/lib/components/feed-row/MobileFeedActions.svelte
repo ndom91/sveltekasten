@@ -1,45 +1,45 @@
 <script lang="ts">
-  import { fade } from "svelte/transition"
-  import { page } from "$app/state"
-  import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
-  import { useInterface } from "$lib/state/ui.svelte"
+import { fade } from "svelte/transition"
+import { page } from "$app/state"
+import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
+import { useInterface } from "$lib/state/ui.svelte"
 
-  const ui = useInterface()
+const ui = useInterface()
 
-  // TODO: Refactor a bit when popover anchor API is more widely available
-  let open = $state(false)
+// TODO: Refactor a bit when popover anchor API is more widely available
+let open = $state(false)
 
-  const enableSummary = page.data.session?.user?.settings?.ai?.summarization.enabled ?? false
-  const enableTTS = ui.aiFeaturesPreferences.tts.enabled
+const enableSummary = page.data.session?.user?.settings?.ai?.summarization.enabled ?? false
+const enableTTS = ui.aiFeaturesPreferences.tts.enabled
 
-  const {
-    url,
-    handleToggleCardOpen,
-    handleMarkAsUnread,
-    handleSetTextToSpeechContent,
-    handleStartTextSummarization,
-  }: {
-    url: string
-    handleToggleCardOpen: () => void
-    handleMarkAsUnread: (target?: boolean) => void
-    handleSetTextToSpeechContent: () => void
-    handleStartTextSummarization: () => void
-  } = $props()
+const {
+  url,
+  handleToggleCardOpen,
+  handleMarkAsUnread,
+  handleSetTextToSpeechContent,
+  handleStartTextSummarization,
+}: {
+  url: string
+  handleToggleCardOpen: () => void
+  handleMarkAsUnread: (target?: boolean) => void
+  handleSetTextToSpeechContent: () => void
+  handleStartTextSummarization: () => void
+} = $props()
 
-  const id = crypto.randomUUID()
+const id = crypto.randomUUID()
 
-  const togglePopover = (e: MouseEvent) => {
-    e.stopPropagation()
-    open = !open
+const togglePopover = (e: MouseEvent) => {
+  e.stopPropagation()
+  open = !open
+}
+
+let actionMenuWrapperElement = $state<HTMLElement>()
+
+const handleClickOutside = (e: MouseEvent) => {
+  if (actionMenuWrapperElement && !actionMenuWrapperElement.contains(e.target as Node)) {
+    open = false
   }
-
-  let actionMenuWrapperElement = $state<HTMLElement>()
-
-  const handleClickOutside = (e: MouseEvent) => {
-    if (actionMenuWrapperElement && !actionMenuWrapperElement.contains(e.target as Node)) {
-      open = false
-    }
-  }
+}
 </script>
 
 <svelte:window on:click={handleClickOutside} />

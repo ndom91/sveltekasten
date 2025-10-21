@@ -1,24 +1,24 @@
 <script lang="ts">
-  const initBars = Array.from({ length: 10 }, () => Math.random() * 0.8 + 0.2)
+const initBars = Array.from({ length: 10 }, () => Math.random() * 0.8 + 0.2)
 
-  const { paused }: { paused: boolean } = $props()
-  const bars = $state(initBars)
+const { paused }: { paused: boolean } = $props()
+const bars = $state(initBars)
 
-  let interval: number
-  $effect(() => {
-    if (interval) {
+let interval: number
+$effect(() => {
+  if (interval) {
+    return
+  }
+  interval = setInterval(() => {
+    if (paused) {
       return
     }
-    interval = setInterval(() => {
-      if (paused) {
-        return
-      }
-      bars.forEach((_, i) => {
-        bars[i] = Math.random() * 0.8 + 0.2
-      })
-    }, 150)
-    return () => clearInterval(interval)
-  })
+    bars.forEach((_, i) => {
+      bars[i] = Math.random() * 0.8 + 0.2
+    })
+  }, 150)
+  return () => clearInterval(interval)
+})
 </script>
 
 {#each bars as _, i}

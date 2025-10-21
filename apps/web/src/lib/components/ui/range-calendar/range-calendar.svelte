@@ -1,42 +1,42 @@
 <script lang="ts">
-	import { RangeCalendar as RangeCalendarPrimitive } from "bits-ui";
-	import * as RangeCalendar from "./index.js";
-	import { cn, type WithoutChildrenOrChild } from "$lib/utils.js";
-	import type { ButtonVariant } from "$lib/components/ui/button/index.js";
-	import type { Snippet } from "svelte";
-	import { isEqualMonth, type DateValue } from "@internationalized/date";
+import { RangeCalendar as RangeCalendarPrimitive } from "bits-ui"
+import * as RangeCalendar from "./index.js"
+import { cn, type WithoutChildrenOrChild } from "$lib/utils.js"
+import type { ButtonVariant } from "$lib/components/ui/button/index.js"
+import type { Snippet } from "svelte"
+import { isEqualMonth, type DateValue } from "@internationalized/date"
 
-	let {
-		ref = $bindable(null),
-		value = $bindable(),
-		placeholder = $bindable(),
-		weekdayFormat = "short",
-		class: className,
-		buttonVariant = "ghost",
-		captionLayout = "label",
-		locale = "en-US",
-		months: monthsProp,
-		years,
-		monthFormat: monthFormatProp,
-		yearFormat = "numeric",
-		day,
-		disableDaysOutsideMonth = false,
-		...restProps
-	}: WithoutChildrenOrChild<RangeCalendarPrimitive.RootProps> & {
-		buttonVariant?: ButtonVariant;
-		captionLayout?: "dropdown" | "dropdown-months" | "dropdown-years" | "label";
-		months?: RangeCalendarPrimitive.MonthSelectProps["months"];
-		years?: RangeCalendarPrimitive.YearSelectProps["years"];
-		monthFormat?: RangeCalendarPrimitive.MonthSelectProps["monthFormat"];
-		yearFormat?: RangeCalendarPrimitive.YearSelectProps["yearFormat"];
-		day?: Snippet<[{ day: DateValue; outsideMonth: boolean }]>;
-	} = $props();
+let {
+  ref = $bindable(null),
+  value = $bindable(),
+  placeholder = $bindable(),
+  weekdayFormat = "short",
+  class: className,
+  buttonVariant = "ghost",
+  captionLayout = "label",
+  locale = "en-US",
+  months: monthsProp,
+  years,
+  monthFormat: monthFormatProp,
+  yearFormat = "numeric",
+  day,
+  disableDaysOutsideMonth = false,
+  ...restProps
+}: WithoutChildrenOrChild<RangeCalendarPrimitive.RootProps> & {
+  buttonVariant?: ButtonVariant
+  captionLayout?: "dropdown" | "dropdown-months" | "dropdown-years" | "label"
+  months?: RangeCalendarPrimitive.MonthSelectProps["months"]
+  years?: RangeCalendarPrimitive.YearSelectProps["years"]
+  monthFormat?: RangeCalendarPrimitive.MonthSelectProps["monthFormat"]
+  yearFormat?: RangeCalendarPrimitive.YearSelectProps["yearFormat"]
+  day?: Snippet<[{ day: DateValue; outsideMonth: boolean }]>
+} = $props()
 
-	const monthFormat = $derived.by(() => {
-		if (monthFormatProp) return monthFormatProp;
-		if (captionLayout.startsWith("dropdown")) return "short";
-		return "long";
-	});
+const monthFormat = $derived.by(() => {
+  if (monthFormatProp) return monthFormatProp
+  if (captionLayout.startsWith("dropdown")) return "short"
+  return "long"
+})
 </script>
 
 <RangeCalendarPrimitive.Root

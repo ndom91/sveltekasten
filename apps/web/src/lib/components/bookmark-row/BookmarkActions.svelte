@@ -1,16 +1,16 @@
 <script lang="ts">
-import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte";
-import { Button } from "$lib/components/ui/button";
-import * as Tooltip from "$lib/components/ui/tooltip";
-import { cn } from "$lib/utils";
+import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
+import { Button } from "$lib/components/ui/button"
+import * as Tooltip from "$lib/components/ui/tooltip"
+import { cn } from "$lib/utils"
 
 type Props = {
-  isOptionsOpen: boolean;
-  url: string;
-  handleMetadataSidebarOpen: () => void;
-  handleDeleteDialogOpen: () => void;
-  handleArchive: () => void;
-};
+  isOptionsOpen: boolean
+  url: string
+  handleMetadataSidebarOpen: () => void
+  handleDeleteDialogOpen: () => void
+  handleArchive: () => void
+}
 
 const {
   isOptionsOpen,
@@ -18,7 +18,7 @@ const {
   handleMetadataSidebarOpen,
   handleDeleteDialogOpen,
   handleArchive,
-}: Props = $props();
+}: Props = $props()
 </script>
 
 <div

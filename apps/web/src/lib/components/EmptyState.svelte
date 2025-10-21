@@ -1,18 +1,18 @@
 <script lang="ts">
-import Arrow from "$lib/assets/arrow.svg?raw";
-import EmptyIllustration from "$lib/assets/new.png";
-import { cn } from "$lib/utils";
-import type { Snippet } from "svelte";
+import Arrow from "$lib/assets/arrow.svg?raw"
+import EmptyIllustration from "$lib/assets/new.png"
+import { cn } from "$lib/utils"
+import type { Snippet } from "svelte"
 
 const {
   showArrow = true,
   illustration,
   class: className,
 }: {
-  showArrow?: boolean;
-  illustration?: Snippet;
-  class?: string;
-} = $props();
+  showArrow?: boolean
+  illustration?: Snippet
+  class?: string
+} = $props()
 </script>
 
 {#if showArrow}

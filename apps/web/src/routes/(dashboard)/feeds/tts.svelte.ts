@@ -8,8 +8,8 @@ let ttsWorker = $state<Worker>()
 export const registerTtsWorker = () => {
   $effect(() => {
     if (
-      !ui.aiFeaturesPreferences.tts.enabled
-      || ui.aiFeaturesPreferences.tts.location !== TTSLocation.Browser
+      !ui.aiFeaturesPreferences.tts.enabled ||
+      ui.aiFeaturesPreferences.tts.location !== TTSLocation.Browser
     ) {
       return
     }
@@ -74,7 +74,7 @@ export const handleGenerateSpeech = async (text: string) => {
       body: JSON.stringify({
         speaker: ui.aiFeaturesPreferences.tts.speaker,
         text,
-      })
+      }),
     })
     const ttsBlob = await ttsResponse.blob()
     const blobUrl = URL.createObjectURL(ttsBlob)
@@ -83,9 +83,9 @@ export const handleGenerateSpeech = async (text: string) => {
   }
 
   if (
-    !ttsWorker
-    || !ui.aiFeaturesPreferences.tts.enabled
-    || ui.aiFeaturesPreferences.tts.location !== TTSLocation.Browser
+    !ttsWorker ||
+    !ui.aiFeaturesPreferences.tts.enabled ||
+    ui.aiFeaturesPreferences.tts.location !== TTSLocation.Browser
   ) {
     return
   }

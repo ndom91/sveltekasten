@@ -1,109 +1,109 @@
 <script lang="ts">
-  import { format } from "@formkit/tempo"
-  import { tick } from "svelte"
-  import { writable } from "svelte/store"
-  import { Render, Subscribe, createRender, createTable } from "svelte-headless-table"
-  import { addSortBy } from "svelte-headless-table/plugins"
-  import { toast } from "svelte-sonner"
-  import DeleteDialog from "./DeleteDialog.svelte"
-  import DataTableActions from "./feed-data-table-actions.svelte"
-  import type { Feed } from "$lib/types/zod.js"
-  import { enhance } from "$app/forms"
-  import { invalidateAll } from "$app/navigation"
-  import { page } from "$app/state"
-  import { Button, buttonVariants } from "$lib/components/ui/button"
-  import * as Card from "$lib/components/ui/card"
-  import * as Table from "$lib/components/ui/table"
-  import { handleActionResults } from "$lib/utils/form-action"
+import { format } from "@formkit/tempo"
+import { tick } from "svelte"
+import { writable } from "svelte/store"
+import { Render, Subscribe, createRender, createTable } from "svelte-headless-table"
+import { addSortBy } from "svelte-headless-table/plugins"
+import { toast } from "svelte-sonner"
+import DeleteDialog from "./DeleteDialog.svelte"
+import DataTableActions from "./feed-data-table-actions.svelte"
+import type { Feed } from "$lib/types/zod.js"
+import { enhance } from "$app/forms"
+import { invalidateAll } from "$app/navigation"
+import { page } from "$app/state"
+import { Button, buttonVariants } from "$lib/components/ui/button"
+import * as Card from "$lib/components/ui/card"
+import * as Table from "$lib/components/ui/table"
+import { handleActionResults } from "$lib/utils/form-action"
 
-  let isDeleteDialogOpen = $state(false)
-  let targetFeed = $state<Feed>()
+let isDeleteDialogOpen = $state(false)
+let targetFeed = $state<Feed>()
 
-  const handleToggleDeleteDialog = (feedId: string) => {
-    targetFeed = page.data.feeds?.data.find((feed: Feed) => feed.id === feedId)
-    isDeleteDialogOpen = !isDeleteDialogOpen
+const handleToggleDeleteDialog = (feedId: string) => {
+  targetFeed = page.data.feeds?.data.find((feed: Feed) => feed.id === feedId)
+  isDeleteDialogOpen = !isDeleteDialogOpen
+}
+
+const checkQueueResults = () => {
+  void tick().then(() =>
+    toast.promise(invalidateAll, {
+      loading: "Loading..",
+      success: "Feed Added",
+      error: "Error adding feed, please try again",
+    })
+  )
+}
+
+const feedsStore = writable(page.data.feeds?.data)
+
+$effect(() => {
+  if (page.data?.feeds?.data) {
+    feedsStore.set(page.data.feeds.data)
   }
+})
 
-  const checkQueueResults = () => {
-    void tick().then(() =>
-      toast.promise(invalidateAll, {
-        loading: "Loading..",
-        success: "Feed Added",
-        error: "Error adding feed, please try again",
+const table = createTable(feedsStore, {
+  sort: addSortBy(),
+})
+
+const columns = table.createColumns([
+  table.column({
+    // @ts-expect-error string is allowed
+    accessor: "id",
+    header: "ID",
+    plugins: {
+      sort: {
+        disable: true,
+      },
+    },
+  }),
+  table.column({
+    // @ts-expect-error string is allowed
+    accessor: "name",
+    header: "Name",
+  }),
+  table.column({
+    // @ts-expect-error string is allowed
+    accessor: "url",
+    header: "URL",
+  }),
+  table.column({
+    // @ts-expect-error feedEntries is number
+    accessor: ({ _count }) => _count.feedEntries as number,
+    id: "count",
+    header: "Entries",
+  }),
+  table.column({
+    // @ts-expect-error string is allowed
+    accessor: "lastFetched",
+    header: "Last Fetched",
+    cell: ({ value }) => format(value, { date: "medium", time: "medium" }),
+  }),
+  table.column({
+    // @ts-expect-error string is allowed
+    accessor: "createdAt",
+    header: "Created",
+    cell: ({ value }) => format(value, "medium"),
+  }),
+  table.column({
+    // @ts-expect-error string is allowed
+    accessor: "actions",
+    header: "",
+    cell: (data) =>
+      createRender(DataTableActions, {
+        // @ts-expect-error - original does exist in this case
+        id: data.row.original.id,
+        toggleDeleteDialog: handleToggleDeleteDialog,
       }),
-    )
-  }
-
-  const feedsStore = writable(page.data.feeds?.data)
-
-  $effect(() => {
-    if (page.data?.feeds?.data) {
-      feedsStore.set(page.data.feeds.data)
-    }
-  })
-
-  const table = createTable(feedsStore, {
-    sort: addSortBy(),
-  })
-
-  const columns = table.createColumns([
-    table.column({
-      // @ts-expect-error string is allowed
-      accessor: "id",
-      header: "ID",
-      plugins: {
-        sort: {
-          disable: true,
-        },
+    plugins: {
+      sort: {
+        disable: true,
       },
-    }),
-    table.column({
-      // @ts-expect-error string is allowed
-      accessor: "name",
-      header: "Name",
-    }),
-    table.column({
-      // @ts-expect-error string is allowed
-      accessor: "url",
-      header: "URL",
-    }),
-    table.column({
-      // @ts-expect-error feedEntries is number
-      accessor: ({ _count }) => _count.feedEntries as number,
-      id: "count",
-      header: "Entries",
-    }),
-    table.column({
-      // @ts-expect-error string is allowed
-      accessor: "lastFetched",
-      header: "Last Fetched",
-      cell: ({ value }) => format(value, { date: "medium", time: "medium" }),
-    }),
-    table.column({
-      // @ts-expect-error string is allowed
-      accessor: "createdAt",
-      header: "Created",
-      cell: ({ value }) => format(value, "medium"),
-    }),
-    table.column({
-      // @ts-expect-error string is allowed
-      accessor: "actions",
-      header: "",
-      cell: (data) =>
-        createRender(DataTableActions, {
-          // @ts-expect-error - original does exist in this case
-          id: data.row.original.id,
-          toggleDeleteDialog: handleToggleDeleteDialog,
-        }),
-      plugins: {
-        sort: {
-          disable: true,
-        },
-      },
-    }),
-  ])
+    },
+  }),
+])
 
-  const { headerRows, pageRows, tableAttrs, tableBodyAttrs } = table.createViewModel(columns)
+const { headerRows, pageRows, tableAttrs, tableBodyAttrs } = table.createViewModel(columns)
 </script>
 
 <DeleteDialog form={page.form} bind:open={isDeleteDialogOpen} feed={targetFeed!} />

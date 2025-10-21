@@ -1,34 +1,34 @@
 <script lang="ts">
-  import { format } from "@formkit/tempo"
-  import { Button } from "$lib/components/ui/button"
-  import * as Tooltip from "$lib/components/ui/tooltip"
-  import { invalidateAll } from "$app/navigation"
-  import { PUBLIC_WORKER_URL } from "$env/static/public"
+import { format } from "@formkit/tempo"
+import { Button } from "$lib/components/ui/button"
+import * as Tooltip from "$lib/components/ui/tooltip"
+import { invalidateAll } from "$app/navigation"
+import { PUBLIC_WORKER_URL } from "$env/static/public"
 
-  const { item }: { item: LoadFeedEntry } = $props()
+const { item }: { item: LoadFeedEntry } = $props()
 
-  const handleMarkAsRead = async () => {
-    const feedEntry = {
-      ...item,
-      unread: false,
-    }
-    await fetch("/api/v1/feeds", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ feedEntry }),
-    })
-    await invalidateAll()
+const handleMarkAsRead = async () => {
+  const feedEntry = {
+    ...item,
+    unread: false,
   }
-
-  const imageUrl = $derived.by(() => {
-    if (item.feedMedia?.[0]?.href) {
-      return `${PUBLIC_WORKER_URL}/img/s_256x144/${item.feedMedia[0].href}`
-    } else {
-      return `${PUBLIC_WORKER_URL}/img/_/https://picsum.photos/seed/${btoa(item.link).substring(item.link.length - 32, item.link.length)}/256/144.webp`
-    }
+  await fetch("/api/v1/feeds", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ feedEntry }),
   })
+  await invalidateAll()
+}
+
+const imageUrl = $derived.by(() => {
+  if (item.feedMedia?.[0]?.href) {
+    return `${PUBLIC_WORKER_URL}/img/s_256x144/${item.feedMedia[0].href}`
+  } else {
+    return `${PUBLIC_WORKER_URL}/img/_/https://picsum.photos/seed/${btoa(item.link).substring(item.link.length - 32, item.link.length)}/256/144.webp`
+  }
+})
 </script>
 
 <div

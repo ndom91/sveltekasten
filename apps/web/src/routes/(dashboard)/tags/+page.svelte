@@ -1,63 +1,63 @@
 <script lang="ts">
-  import { format } from "@formkit/tempo"
-  import { writable } from "svelte/store"
-  import { Render, Subscribe, createRender, createTable } from "svelte-headless-table"
-  import { addSortBy } from "svelte-headless-table/plugins"
-  import DataTableActions from "./data-table-actions.svelte"
-  import { Label } from "$/lib/components/ui/label"
-  import { Navbar } from "$lib/components/navbar"
-  import { Button } from "$lib/components/ui/button"
-  import { Input } from "$lib/components/ui/input"
-  import * as Table from "$lib/components/ui/table"
-  import { handleActionResults } from "$lib/utils/form-action"
-  import { enhance } from "$app/forms"
+import { format } from "@formkit/tempo"
+import { writable } from "svelte/store"
+import { Render, Subscribe, createRender, createTable } from "svelte-headless-table"
+import { addSortBy } from "svelte-headless-table/plugins"
+import DataTableActions from "./data-table-actions.svelte"
+import { Label } from "$/lib/components/ui/label"
+import { Navbar } from "$lib/components/navbar"
+import { Button } from "$lib/components/ui/button"
+import { Input } from "$lib/components/ui/input"
+import * as Table from "$lib/components/ui/table"
+import { handleActionResults } from "$lib/utils/form-action"
+import { enhance } from "$app/forms"
 
-  const { data } = $props()
-  const tagStore = writable(data.tags)
+const { data } = $props()
+const tagStore = writable(data.tags)
 
-  $effect(() => {
-    if (data.tags) {
-      tagStore.set(data.tags)
-    }
-  })
+$effect(() => {
+  if (data.tags) {
+    tagStore.set(data.tags)
+  }
+})
 
-  const table = createTable(tagStore, {
-    sort: addSortBy(),
-  })
-  const columns = table.createColumns([
-    table.column({
-      accessor: "id",
-      header: "ID",
-      plugins: {
-        sort: {
-          disable: true,
-        },
+const table = createTable(tagStore, {
+  sort: addSortBy(),
+})
+const columns = table.createColumns([
+  table.column({
+    accessor: "id",
+    header: "ID",
+    plugins: {
+      sort: {
+        disable: true,
       },
-    }),
-    table.column({
-      accessor: "name",
-      header: "Name",
-    }),
-    table.column({
-      accessor: "createdAt",
-      header: "Created",
-      cell: ({ value }) => format(value, "medium"),
-    }),
-    table.column({
-      // @ts-expect-error
-      accessor: "actions",
-      header: "",
-      // @ts-expect-error
-      cell: (data) => createRender(DataTableActions, { id: data.row.original.id }),
-      plugins: {
-        sort: {
-          disable: true,
-        },
+    },
+  }),
+  table.column({
+    accessor: "name",
+    header: "Name",
+  }),
+  table.column({
+    accessor: "createdAt",
+    header: "Created",
+    cell: ({ value }) => format(value, "medium"),
+  }),
+  table.column({
+    // @ts-expect-error
+    accessor: "actions",
+    header: "",
+    // @ts-expect-error
+    cell: (data) => createRender(DataTableActions, { id: data.row.original.id }),
+    plugins: {
+      sort: {
+        disable: true,
       },
-    }),
-  ])
+    },
+  }),
+])
 
-  const { headerRows, pageRows, tableAttrs, tableBodyAttrs } = table.createViewModel(columns)
+const { headerRows, pageRows, tableAttrs, tableBodyAttrs } = table.createViewModel(columns)
 </script>
 
 <svelte:head>

@@ -1,71 +1,71 @@
 <script lang="ts">
-  import { format } from "@formkit/tempo"
-  import { writable } from "svelte/store"
-  import { Render, Subscribe, createRender, createTable } from "svelte-headless-table"
-  import { addSortBy } from "svelte-headless-table/plugins"
-  import DataTableActions from "./data-table-actions.svelte"
-  import { Label } from "$/lib/components/ui/label"
-  import { Navbar } from "$lib/components/navbar"
-  import { Button } from "$lib/components/ui/button"
-  import { Input } from "$lib/components/ui/input"
-  import * as Table from "$lib/components/ui/table"
-  import { handleActionResults } from "$lib/utils/form-action"
-  import { enhance } from "$app/forms"
+import { format } from "@formkit/tempo"
+import { writable } from "svelte/store"
+import { Render, Subscribe, createRender, createTable } from "svelte-headless-table"
+import { addSortBy } from "svelte-headless-table/plugins"
+import DataTableActions from "./data-table-actions.svelte"
+import { Label } from "$/lib/components/ui/label"
+import { Navbar } from "$lib/components/navbar"
+import { Button } from "$lib/components/ui/button"
+import { Input } from "$lib/components/ui/input"
+import * as Table from "$lib/components/ui/table"
+import { handleActionResults } from "$lib/utils/form-action"
+import { enhance } from "$app/forms"
 
-  const { data }: { data: any } = $props()
-  const categoryStore = writable(data.categories)
+const { data }: { data: any } = $props()
+const categoryStore = writable(data.categories)
 
-  $effect(() => {
-    if (data.categories) {
-      categoryStore.set(data.categories)
-    }
-  })
+$effect(() => {
+  if (data.categories) {
+    categoryStore.set(data.categories)
+  }
+})
 
-  const table = createTable(categoryStore, {
-    sort: addSortBy(),
-  })
-  const columns = table.createColumns([
-    table.column({
-      // @ts-expect-error string is allowed
-      accessor: "id",
-      header: "ID",
-      plugins: {
-        sort: {
-          disable: true,
-        },
+const table = createTable(categoryStore, {
+  sort: addSortBy(),
+})
+const columns = table.createColumns([
+  table.column({
+    // @ts-expect-error string is allowed
+    accessor: "id",
+    header: "ID",
+    plugins: {
+      sort: {
+        disable: true,
       },
-    }),
-    table.column({
-      // @ts-expect-error string is allowed
-      accessor: "name",
-      header: "Name",
-    }),
-    table.column({
-      // @ts-expect-error string is allowed
-      accessor: "description",
-      header: "Description",
-    }),
-    table.column({
-      // @ts-expect-error string is allowed
-      accessor: "createdAt",
-      header: "Created",
-      cell: ({ value }) => format(value, "medium"),
-    }),
-    table.column({
-      // @ts-expect-error accessor is valid
-      accessor: "actions",
-      header: "",
-      // @ts-expect-error id is valid
-      cell: (data) => createRender(DataTableActions, { id: data.row.original.id }),
-      plugins: {
-        sort: {
-          disable: true,
-        },
+    },
+  }),
+  table.column({
+    // @ts-expect-error string is allowed
+    accessor: "name",
+    header: "Name",
+  }),
+  table.column({
+    // @ts-expect-error string is allowed
+    accessor: "description",
+    header: "Description",
+  }),
+  table.column({
+    // @ts-expect-error string is allowed
+    accessor: "createdAt",
+    header: "Created",
+    cell: ({ value }) => format(value, "medium"),
+  }),
+  table.column({
+    // @ts-expect-error accessor is valid
+    accessor: "actions",
+    header: "",
+    // @ts-expect-error id is valid
+    cell: (data) => createRender(DataTableActions, { id: data.row.original.id }),
+    plugins: {
+      sort: {
+        disable: true,
       },
-    }),
-  ])
+    },
+  }),
+])
 
-  const { headerRows, pageRows, tableAttrs, tableBodyAttrs } = table.createViewModel(columns)
+const { headerRows, pageRows, tableAttrs, tableBodyAttrs } = table.createViewModel(columns)
 </script>
 
 <svelte:head>

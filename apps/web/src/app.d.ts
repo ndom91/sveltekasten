@@ -3,8 +3,8 @@
 /// <reference types="vite/client" />
 
 interface Provider {
-  id: string;
-  name: string;
+  id: string
+  name: string
 }
 
 // See https://kit.svelte.dev/docs/types#app
@@ -13,9 +13,9 @@ interface Provider {
 declare global {
   declare namespace App {
     interface Locals {
-      providers: Provider[];
-      session: import("better-auth/svelte-kit").Session;
-      user: import("better-auth/svelte-kit").User;
+      providers: Provider[]
+      session: import("better-auth/svelte-kit").Session
+      user: import("better-auth/svelte-kit").User
     }
     // interface Platform {}
     // interface PrivateEnv {}

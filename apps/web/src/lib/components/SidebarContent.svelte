@@ -1,25 +1,22 @@
 <script lang="ts">
-import { AvatarMenu } from "$lib/components/navbar";
-import { Button } from "$lib/components/ui/button";
-import * as Tooltip from "$lib/components/ui/tooltip";
-import { useInterface } from "$lib/state/ui.svelte";
-import { cn } from "$lib/utils";
-import { goto } from "$app/navigation";
-import { page } from "$app/state";
+import { AvatarMenu } from "$lib/components/navbar"
+import { Button } from "$lib/components/ui/button"
+import * as Tooltip from "$lib/components/ui/tooltip"
+import { useInterface } from "$lib/state/ui.svelte"
+import { cn } from "$lib/utils"
+import { goto } from "$app/navigation"
+import { page } from "$app/state"
 
-const ui = useInterface();
+const ui = useInterface()
 
-const {
-  open = false,
-  toggleDrawer,
-}: { open?: boolean; toggleDrawer?: () => void } = $props();
+const { open = false, toggleDrawer }: { open?: boolean; toggleDrawer?: () => void } = $props()
 
 const toggleAndNavigate = async (target: string) => {
-  toggleDrawer?.();
-  await goto(target);
-};
+  toggleDrawer?.()
+  await goto(target)
+}
 
-const activePath = $derived(page.url.pathname);
+const activePath = $derived(page.url.pathname)
 </script>
 
 <Tooltip.Provider>

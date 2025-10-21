@@ -1,28 +1,28 @@
 <script lang="ts">
-  import type { Feed } from "$lib/types/zod.js"
-  import type { PageServerLoad } from "./$types"
-  import { page } from "$app/state"
-  import { PUBLIC_WORKER_URL } from "$env/static/public"
-  import { Badge } from "$lib/components/ui/badge"
-  import { Button } from "$lib/components/ui/button"
-  import { Checkbox } from "$lib/components/ui/checkbox"
-  import { useInterface } from "$lib/state/ui.svelte"
+import type { Feed } from "$lib/types/zod.js"
+import type { PageServerLoad } from "./$types"
+import { page } from "$app/state"
+import { PUBLIC_WORKER_URL } from "$env/static/public"
+import { Badge } from "$lib/components/ui/badge"
+import { Button } from "$lib/components/ui/button"
+import { Checkbox } from "$lib/components/ui/checkbox"
+import { useInterface } from "$lib/state/ui.svelte"
 
-  const ui = useInterface()
+const ui = useInterface()
 
-  const { data: feeds } = page.data.feeds as PageServerLoad.feeds.data
+const { data: feeds } = page.data.feeds as PageServerLoad.feeds.data
 
-  const handleMarkAllRead = async (feed: Feed) => {
-    await fetch("/api/v1/feeds/mark-all-read", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        feedId: feed.id,
-      }),
-    })
-  }
+const handleMarkAllRead = async (feed: Feed) => {
+  await fetch("/api/v1/feeds/mark-all-read", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      feedId: feed.id,
+    }),
+  })
+}
 </script>
 
 <div class="flex h-full items-center justify-start gap-4">

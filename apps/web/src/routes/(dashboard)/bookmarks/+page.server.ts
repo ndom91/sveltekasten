@@ -1,23 +1,23 @@
-import { fail, redirect } from "@sveltejs/kit";
-import { message, superValidate } from "sveltekit-superforms";
-import { zod } from "sveltekit-superforms/adapters";
-import { isAuthenticated } from "$lib/auth";
-import { db } from "$lib/prisma";
-import { fetchBookmarkMetadata } from "$lib/server/fetchBookmarkMetadata";
-import { formSchema as metadataSchema } from "$schemas/metadata-sidebar";
-import { formSchema as quickAddSchema } from "$schemas/quick-add";
-import type { Tag } from "$lib/types/zod.js";
-import type { Actions, PageServerLoad } from "./$types";
-import { PUBLIC_WORKER_URL } from "$env/static/public";
+import { fail, redirect } from "@sveltejs/kit"
+import { message, superValidate } from "sveltekit-superforms"
+import { zod } from "sveltekit-superforms/adapters"
+import { PUBLIC_WORKER_URL } from "$env/static/public"
+import { isAuthenticated } from "$lib/auth"
+import { db } from "$lib/prisma"
+import { fetchBookmarkMetadata } from "$lib/server/fetchBookmarkMetadata"
+import type { Tag } from "$lib/types/zod.js"
+import { formSchema as metadataSchema } from "$schemas/metadata-sidebar"
+import { formSchema as quickAddSchema } from "$schemas/quick-add"
+import type { Actions, PageServerLoad } from "./$types"
 
 export const actions: Actions = {
   deleteBookmark: async (event) => {
-    const { session } = isAuthenticated(event);
-    const data = await event.request.formData();
-    const bookmarkId = data.get("bookmarkId")?.toString() || "";
+    const { session } = isAuthenticated(event)
+    const data = await event.request.formData()
+    const bookmarkId = data.get("bookmarkId")?.toString() || ""
 
     if (!bookmarkId) {
-      return fail(400);
+      return fail(400)
     }
 
     await db.bookmark.delete({
@@ -25,26 +25,26 @@ export const actions: Actions = {
         id: bookmarkId,
         userId: session.userId,
       },
-    });
+    })
 
     // TODO: Delete Image from Object Storage
 
-    return { type: "success", message: "Deleted Bookmark" };
+    return { type: "success", message: "Deleted Bookmark" }
   },
   saveMetadata: async (event) => {
     const form = await superValidate(event.request, zod(metadataSchema), {
       id: "saveMetadataForm",
-    });
+    })
 
     try {
-      const { session } = isAuthenticated(event);
+      const { session } = isAuthenticated(event)
 
       if (!form.valid) {
         return fail(400, {
           type: "error",
           message: "Form invalid",
           metadataForm: form,
-        });
+        })
       }
 
       await db.bookmark.update({
@@ -85,36 +85,36 @@ export const actions: Actions = {
           id: form.data.id,
           userId: session.userId,
         },
-      });
+      })
 
       return message(form, {
         text: "Bookmark Updated",
-      });
+      })
     } catch (error) {
       if (error instanceof Error) {
-        console.error(error.message);
+        console.error(error.message)
       } else {
-        console.error(error);
+        console.error(error)
       }
-      return { form, type: "error", error };
+      return { form, type: "error", error }
     }
   },
   quickAdd: async (event) => {
-    const form = await superValidate(event.request, zod(quickAddSchema));
+    const form = await superValidate(event.request, zod(quickAddSchema))
     if (!form.valid) {
       return fail(400, {
         form,
-      });
+      })
     }
 
     try {
-      const session = await event.locals.session;
+      const session = await event.locals.session
       if (!session?.userId) {
-        return fail(401, { type: "error", error: "Unauthenticated" });
+        return fail(401, { type: "error", error: "Unauthenticated" })
       }
-      const { title, url, description, categoryId, tags } = form.data;
+      const { title, url, description, categoryId, tags } = form.data
 
-      const bookmarkMetadata = await fetchBookmarkMetadata(url);
+      const bookmarkMetadata = await fetchBookmarkMetadata(url)
 
       const bookmark = await db.bookmark.create({
         data: {
@@ -148,7 +148,7 @@ export const actions: Actions = {
               }
             : {},
         },
-      });
+      })
 
       // Add bookmark to queue for fetching screenshot
       if (PUBLIC_WORKER_URL) {
@@ -158,27 +158,27 @@ export const actions: Actions = {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ data: [{ url }] }),
-        });
+        })
       }
 
       return message(form, {
         bookmark,
         text: "Bookmark Added!",
-      });
+      })
     } catch (error) {
-      console.error(String(error));
-      fail(500, { type: "error", message: "Failed to add bookmark" });
+      console.error(String(error))
+      fail(500, { type: "error", message: "Failed to add bookmark" })
     }
   },
-};
+}
 
 export const load: PageServerLoad = async (event) => {
-  event.depends("app:bookmarks");
-  const session = await event.locals?.session;
+  event.depends("app:bookmarks")
+  const session = await event.locals?.session
 
   if (!session && event.url.pathname !== "/login") {
-    const fromUrl = event.url.pathname + event.url.search;
-    redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`);
+    const fromUrl = event.url.pathname + event.url.search
+    redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
   }
 
   try {
@@ -186,7 +186,7 @@ export const load: PageServerLoad = async (event) => {
     // const limit = Number(event.url.searchParams.get("limit") ?? "20")
 
     if (!session?.userId) {
-      return fail(401, { type: "error", error: "Unauthenticated" });
+      return fail(401, { type: "error", error: "Unauthenticated" })
     }
 
     // const [data, count] = (await db.bookmark.findManyAndCount({
@@ -213,9 +213,9 @@ export const load: PageServerLoad = async (event) => {
       //   count,
       // },
       session,
-    };
+    }
   } catch (error) {
-    console.error(String(error));
+    console.error(String(error))
 
     return {
       // bookmarks: {
@@ -224,6 +224,6 @@ export const load: PageServerLoad = async (event) => {
       // },
       session,
       error,
-    };
+    }
   }
-};
+}

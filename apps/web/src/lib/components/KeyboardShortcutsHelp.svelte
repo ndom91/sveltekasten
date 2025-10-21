@@ -1,8 +1,8 @@
 <script lang="ts">
-  import Dialog from "$lib/components/Dialog.svelte"
-  import Kbd from "$lib/components/KeyboardIndicator.svelte"
+import Dialog from "$lib/components/Dialog.svelte"
+import Kbd from "$lib/components/KeyboardIndicator.svelte"
 
-  let { dialogElement = $bindable() }: { dialogElement: HTMLDialogElement | undefined } = $props()
+let { dialogElement = $bindable() }: { dialogElement: HTMLDialogElement | undefined } = $props()
 </script>
 
 <Dialog id="keyboard-shortcuts" size="2xl" footer={false} bind:element={dialogElement}>

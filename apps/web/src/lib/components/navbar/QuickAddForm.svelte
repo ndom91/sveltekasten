@@ -1,20 +1,20 @@
 <script lang="ts">
-import { toast } from "svelte-sonner";
-import SuperDebug, { fieldProxy, superForm } from "sveltekit-superforms";
-import { zodClient } from "sveltekit-superforms/adapters";
+import { toast } from "svelte-sonner"
+import SuperDebug, { fieldProxy, superForm } from "sveltekit-superforms"
+import { zodClient } from "sveltekit-superforms/adapters"
 
-import LoadingIndicator from "$lib/components/LoadingIndicator.svelte";
-import TagInput from "$lib/components/TagInput.svelte";
-import { Button } from "$lib/components/ui/button";
-import { Label } from "$lib/components/ui/label";
-import * as Select from "$lib/components/ui/select";
-import { useInterface } from "$lib/state/ui.svelte";
-import { cn } from "$lib/utils";
-import { formSchema } from "$schemas/quick-add";
-import { dev } from "$app/environment";
-import { page } from "$app/state";
+import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
+import TagInput from "$lib/components/TagInput.svelte"
+import { Button } from "$lib/components/ui/button"
+import { Label } from "$lib/components/ui/label"
+import * as Select from "$lib/components/ui/select"
+import { useInterface } from "$lib/state/ui.svelte"
+import { cn } from "$lib/utils"
+import { formSchema } from "$schemas/quick-add"
+import { dev } from "$app/environment"
+import { page } from "$app/state"
 
-const ui = useInterface();
+const ui = useInterface()
 
 const form = superForm(page.data.quickAddForm, {
   dataType: "json",
@@ -22,25 +22,18 @@ const form = superForm(page.data.quickAddForm, {
   validators: zodClient(formSchema),
   onUpdated: ({ form }) => {
     if (form.valid) {
-      toast.success("Bookmark Added");
-      ui.toggleMetadataSidebarEditMode();
+      toast.success("Bookmark Added")
+      ui.toggleMetadataSidebarEditMode()
     }
   },
   onError: ({ result }) => {
     if (result.type === "error") {
-      toast.error(result.error.message);
+      toast.error(result.error.message)
     }
   },
-});
-const {
-  form: formData,
-  errors,
-  constraints,
-  enhance,
-  submitting,
-  delayed,
-} = form;
-const categoryProxy = fieldProxy(form, "categoryId", {});
+})
+const { form: formData, errors, constraints, enhance, submitting, delayed } = form
+const categoryProxy = fieldProxy(form, "categoryId", {})
 </script>
 
 <form

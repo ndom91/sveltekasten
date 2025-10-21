@@ -1,44 +1,44 @@
 <script lang="ts">
-import { ModeWatcher } from "mode-watcher";
-import { useDebounce } from "runed";
-import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte";
-import { AudioPlayer } from "$lib/components/audio-player";
-import { Breadcrumbs, QuickAddForm } from "$lib/components/navbar";
-import { Button } from "$lib/components/ui/button";
-import * as Popover from "$lib/components/ui/popover";
-import * as Tooltip from "$lib/components/ui/tooltip";
-import { useInterface } from "$lib/state/ui.svelte";
-import { cn } from "$lib/utils";
-import { invalidate } from "$app/navigation";
+import { ModeWatcher } from "mode-watcher"
+import { useDebounce } from "runed"
+import { invalidate } from "$app/navigation"
+import { AudioPlayer } from "$lib/components/audio-player"
+import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
+import { Breadcrumbs, QuickAddForm } from "$lib/components/navbar"
+import { Button } from "$lib/components/ui/button"
+import * as Popover from "$lib/components/ui/popover"
+import * as Tooltip from "$lib/components/ui/tooltip"
+import { useInterface } from "$lib/state/ui.svelte"
+import { cn } from "$lib/utils"
 
-const { showSearch = true, showQuickAdd = true, showSidebar = true } = $props();
-const ui = useInterface();
-let searchInputEl = $state<HTMLInputElement>();
+const { showSearch = true, showQuickAdd = true, showSidebar = true } = $props()
+const ui = useInterface()
+let searchInputEl = $state<HTMLInputElement>()
 
 const handleKeyDown = (event: KeyboardEvent) => {
   if (event.repeat || event.target instanceof HTMLInputElement) {
-    return;
+    return
   }
 
   if (event.altKey && event.key === "n") {
-    event.preventDefault();
-    ui.toggleQuickAdd();
+    event.preventDefault()
+    ui.toggleQuickAdd()
   }
   if (event.key === "/") {
-    event.preventDefault();
-    searchInputEl?.focus();
+    event.preventDefault()
+    searchInputEl?.focus()
   }
-};
+}
 
 const handleSearchInput = async (event: KeyboardEvent) => {
-  const query = (event.target as HTMLInputElement).value;
+  const query = (event.target as HTMLInputElement).value
   // Reset when deleting query
   if (ui.searchQuery !== "" && query === "") {
-    await invalidate("app:feeds");
-    await invalidate("app:bookmarks");
+    await invalidate("app:feeds")
+    await invalidate("app:bookmarks")
   }
-  ui.searchQuery = query;
-};
+  ui.searchQuery = query
+}
 </script>
 
 <svelte:window onkeydown={handleKeyDown} />
@@ -92,7 +92,6 @@ const handleSearchInput = async (event: KeyboardEvent) => {
         <Tooltip.Root>
           <Tooltip.Trigger >
           {#snippet child({ props })}
-          <div>
           <Popover.Trigger tabindex={-1} {...props}>
             <div
               class="rounded-full transition duration-300 focus-within:rounded-full focus-within:outline-none focus-within:ring-2 focus-within:ring-zinc-300 dark:focus-within:ring-zinc-800"
@@ -125,7 +124,6 @@ const handleSearchInput = async (event: KeyboardEvent) => {
               </Button>
             </div>
             </Popover.Trigger>
-            </div>
             {/snippet}
           </Tooltip.Trigger>
           <Tooltip.Content>

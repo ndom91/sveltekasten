@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      svelte-headless-table:
+        specifier: 0.18.3
+        version: 0.18.3(svelte@5.39.12)
     devDependencies:
       '@biomejs/biome':
         specifier: 2.2.6
@@ -4097,15 +4101,35 @@ packages:
       svelte: ^4.0.0 || ^5.0.0-next.0
       typescript: '>=5.0.0'
 
+  svelte-headless-table@0.18.3:
+    resolution: {integrity: sha512-1zVnqXW0dvn6ZceYa94k+ziK+w5Dj9nlWYTQGXBv2JhM0resj9w7CWpclZK1TJwAALfEeH4InPBPO87L5fr+nQ==}
+    peerDependencies:
+      svelte: ^4.0.0
+
   svelte-infinite@0.5.0:
     resolution: {integrity: sha512-3ZomRQcQzg8VWtnqO4MvPC0Jt3hvh1wmC47t64BcI+8UXTl0FJYVfB7ky4d1NJ3mf/KZZa+hcIZJPnV9cOt8gQ==}
     peerDependencies:
       svelte: ^5.0.0-0
 
+  svelte-keyed@2.0.0:
+    resolution: {integrity: sha512-7TeEn+QbJC2OJrHiuM0T8vMBkms3DNpTE+Ir+NtnVBnBMA78aL4f1ft9t0Hn/pBbD/TnIXi4YfjFRAgtN+DZ5g==}
+    peerDependencies:
+      svelte: ^4.0.0
+
+  svelte-render@2.0.1:
+    resolution: {integrity: sha512-RpB0SurwXm4xhjvHHtjeqMmvd645FURb79GFOotScOSqnKK5vpqBgoBPGC0pp+E/eZgDSQ9rRAdn/+N4ys1mXQ==}
+    peerDependencies:
+      svelte: ^4.0.0
+
   svelte-sonner@1.0.5:
     resolution: {integrity: sha512-9dpGPFqKb/QWudYqGnEz93vuY+NgCEvyNvxoCLMVGw6sDN/3oVeKV1xiEirW2E1N3vJEyj5imSBNOGltQHA7mg==}
     peerDependencies:
       svelte: ^5.0.0
+
+  svelte-subscribe@2.0.1:
+    resolution: {integrity: sha512-eKXIjLxB4C7eQWPqKEdxcGfNXm2g/qJ67zmEZK/GigCZMfrTR3m7DPY93R6MX+5uoqM1FRYxl8LZ1oy4URWi2A==}
+    peerDependencies:
+      svelte: ^4.0.0
 
   svelte-toolbelt@0.10.5:
     resolution: {integrity: sha512-8e+eWTgxw1aiLxhDE8Rb1X6AoLitqpJz+WhAul2W7W58C8KoLoJQf1TgQdFPBiCPJ0Jg5y0Zi1uyua9em4VS0w==}
@@ -9039,13 +9063,33 @@ snapshots:
     transitivePeerDependencies:
       - picomatch
 
+  svelte-headless-table@0.18.3(svelte@5.39.12):
+    dependencies:
+      svelte: 5.39.12
+      svelte-keyed: 2.0.0(svelte@5.39.12)
+      svelte-render: 2.0.1(svelte@5.39.12)
+      svelte-subscribe: 2.0.1(svelte@5.39.12)
+
   svelte-infinite@0.5.0(svelte@5.39.12):
     dependencies:
       svelte: 5.39.12
 
+  svelte-keyed@2.0.0(svelte@5.39.12):
+    dependencies:
+      svelte: 5.39.12
+
+  svelte-render@2.0.1(svelte@5.39.12):
+    dependencies:
+      svelte: 5.39.12
+      svelte-subscribe: 2.0.1(svelte@5.39.12)
+
   svelte-sonner@1.0.5(svelte@5.39.12):
     dependencies:
       runed: 0.28.0(svelte@5.39.12)
+      svelte: 5.39.12
+
+  svelte-subscribe@2.0.1(svelte@5.39.12):
+    dependencies:
       svelte: 5.39.12
 
   svelte-toolbelt@0.10.5(svelte@5.39.12):

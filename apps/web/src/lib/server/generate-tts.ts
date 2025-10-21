@@ -154,7 +154,7 @@ const prosodyTemplate = (input: string, { pitch, rate }: Pick<SsmlOptions, "pitc
     return input
   }
   return `<prosody pitch="${Math.floor((pitch || 1) * 100)}%" rate="${Math.floor(
-    (rate || 1) * 100,
+    (rate || 1) * 100
   )}%">${input}</prosody>`
 }
 const speackTemplate = (input: string) =>

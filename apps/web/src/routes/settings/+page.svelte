@@ -1,19 +1,19 @@
 <script lang="ts">
-  import AboutSection from "./components/AboutSection.svelte"
-  import FeedsSection from "./components/FeedsSection.svelte"
-  import UserSection from "./components/UserSection.svelte"
-  import Sidebar from "$lib/components/NavigationSidebar.svelte"
-  import { CommandBar } from "$lib/components/command-bar"
-  import { Navbar } from "$lib/components/navbar"
-  import * as Tabs from "$lib/components/ui/tabs"
-  import { goto } from "$app/navigation"
-  import { page } from "$app/stores"
+import AboutSection from "./components/AboutSection.svelte"
+import FeedsSection from "./components/FeedsSection.svelte"
+import UserSection from "./components/UserSection.svelte"
+import Sidebar from "$lib/components/NavigationSidebar.svelte"
+import { CommandBar } from "$lib/components/command-bar"
+import { Navbar } from "$lib/components/navbar"
+import * as Tabs from "$lib/components/ui/tabs"
+import { goto } from "$app/navigation"
+import { page } from "$app/stores"
 
-  const tab = $derived($page.url.searchParams.get("tab"))
+const tab = $derived($page.url.searchParams.get("tab"))
 
-  const handleTabChange = (data: string | undefined) => {
-    goto(`?tab=${data}`)
-  }
+const handleTabChange = (data: string | undefined) => {
+  goto(`?tab=${data}`)
+}
 </script>
 
 <svelte:head>

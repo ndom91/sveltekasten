@@ -1,6 +1,6 @@
 <script lang="ts">
-import { cn } from "$lib/utils";
-import type { Snippet } from "svelte";
+import { cn } from "$lib/utils"
+import type { Snippet } from "svelte"
 
 const ModalSize = {
   sm: "sm",
@@ -8,21 +8,21 @@ const ModalSize = {
   lg: "lg",
   xl: "xl",
   "2xl": "2xl",
-} as const;
+} as const
 
 interface Props {
-  id: string;
-  children: Snippet;
-  element: HTMLDialogElement | undefined;
-  footer?: boolean;
-  class?: string;
-  header?: Snippet<[{ cancelAction: () => void }]>;
-  popoverState?: "auto" | "manual";
-  confirmAction?: () => void;
-  cancelAction?: () => void;
-  confirmLabel?: Snippet;
-  cancelLabel?: Snippet;
-  size?: keyof typeof ModalSize;
+  id: string
+  children: Snippet
+  element: HTMLDialogElement | undefined
+  footer?: boolean
+  class?: string
+  header?: Snippet<[{ cancelAction: () => void }]>
+  popoverState?: "auto" | "manual"
+  confirmAction?: () => void
+  cancelAction?: () => void
+  confirmLabel?: Snippet
+  cancelLabel?: Snippet
+  size?: keyof typeof ModalSize
 }
 
 let {
@@ -38,7 +38,7 @@ let {
   cancelLabel,
   size = ModalSize.md,
   ...rest
-}: Props = $props();
+}: Props = $props()
 
 const modalSizeWidths = {
   sm: "max-w-sm",
@@ -46,7 +46,7 @@ const modalSizeWidths = {
   lg: "max-w-lg",
   xl: "max-w-xl",
   "2xl": "max-w-2xl",
-};
+}
 </script>
 
 <dialog

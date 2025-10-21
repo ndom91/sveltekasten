@@ -86,9 +86,9 @@ self.addEventListener("message", async (event) => {
   const speaker_embeddings_data = new Float32Array(
     await (
       await fetch(
-        "https://huggingface.co/datasets/Xenova/transformers.js-docs/resolve/main/speaker_embeddings.bin",
+        "https://huggingface.co/datasets/Xenova/transformers.js-docs/resolve/main/speaker_embeddings.bin"
       )
-    ).arrayBuffer(),
+    ).arrayBuffer()
   )
   const speaker_embeddings = new Tensor("float32", speaker_embeddings_data, [
     1,

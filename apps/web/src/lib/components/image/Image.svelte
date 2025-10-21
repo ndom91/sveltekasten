@@ -1,14 +1,14 @@
 <script lang="ts">
-import * as Thumbhash from "thumbhash";
-import { cn } from "$lib/utils";
+import * as Thumbhash from "thumbhash"
+import { cn } from "$lib/utils"
 
 const base64ToBinary = (base64: string) => {
   return new Uint8Array(
     atob(base64)
       .split("")
-      .map((x) => x.charCodeAt(0)),
-  );
-};
+      .map((x) => x.charCodeAt(0))
+  )
+}
 
 const {
   class: className,
@@ -17,25 +17,25 @@ const {
   thumbhash,
   ...rest
 }: {
-  src: string;
-  class?: string;
-  alt?: string;
-  thumbhash?: string;
-} = $props();
+  src: string
+  class?: string
+  alt?: string
+  thumbhash?: string
+} = $props()
 
-let loaded = $state(false);
+let loaded = $state(false)
 
 const placeholderURL = $derived.by(() => {
   if (!thumbhash) {
-    return "";
+    return ""
   }
 
-  return Thumbhash.thumbHashToDataURL(base64ToBinary(thumbhash));
-});
+  return Thumbhash.thumbHashToDataURL(base64ToBinary(thumbhash))
+})
 
 const onload = (_el: HTMLImageElement) => {
-  loaded = true;
-};
+  loaded = true
+}
 </script>
 
 <div

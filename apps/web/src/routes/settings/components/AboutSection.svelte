@@ -1,5 +1,5 @@
 <script lang="ts">
-  import * as Card from "$lib/components/ui/card"
+import * as Card from "$lib/components/ui/card"
 </script>
 
 <div class="flex flex-col gap-2 justify-start items-start">

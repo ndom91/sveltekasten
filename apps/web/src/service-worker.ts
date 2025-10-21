@@ -23,7 +23,7 @@ sw.addEventListener("fetch", (event: FetchEvent) => {
   event.respondWith(Response.redirect("./?shared=true"))
 
   event.waitUntil(
-    (async function() {
+    (async function () {
       const textParam = url.searchParams.get("text")
       const urlParam = url.searchParams.get("link")
 
@@ -54,7 +54,7 @@ sw.addEventListener("fetch", (event: FetchEvent) => {
           })
         }
       })
-    })(),
+    })()
   )
 })
 
@@ -96,7 +96,7 @@ const fontAssetRoute = new Route(
         maxAgeSeconds: 24 * 60 * 60,
       }),
     ],
-  }),
+  })
 )
 const imageAssetRoute = new Route(
   ({ request, url }) => {
@@ -110,7 +110,7 @@ const imageAssetRoute = new Route(
         maxAgeSeconds: 24 * 60 * 60,
       }),
     ],
-  }),
+  })
 )
 
 registerRoute(fontAssetRoute)

@@ -1,83 +1,83 @@
 <script lang="ts">
-  import { toggleMode } from "mode-watcher"
-  import Kbd from "$lib/components/KeyboardIndicator.svelte"
-  import * as Command from "$lib/components/ui/command"
-  import { useInterface } from "$lib/state/ui.svelte"
-  import { goto } from "$app/navigation"
+import { toggleMode } from "mode-watcher"
+import Kbd from "$lib/components/KeyboardIndicator.svelte"
+import * as Command from "$lib/components/ui/command"
+import { useInterface } from "$lib/state/ui.svelte"
+import { goto } from "$app/navigation"
 
-  function findNextItem(
-    currentElement: Element | HTMLElement,
-    direction: "k" | "j",
-  ): HTMLElement | undefined {
-    const directionMethod = direction === "k" ? "previousElementSibling" : "nextElementSibling"
-    let nextElement = currentElement?.[directionMethod] as HTMLElement | undefined
-    if (nextElement) {
-      return nextElement
-    }
-
-    nextElement =
-      currentElement.parentElement?.parentElement?.[directionMethod]?.[
-        directionMethod
-      ]?.querySelector("[data-cmdk-item]") ?? undefined
-
-    if (nextElement) {
-      return nextElement
-    }
+function findNextItem(
+  currentElement: Element | HTMLElement,
+  direction: "k" | "j"
+): HTMLElement | undefined {
+  const directionMethod = direction === "k" ? "previousElementSibling" : "nextElementSibling"
+  let nextElement = currentElement?.[directionMethod] as HTMLElement | undefined
+  if (nextElement) {
+    return nextElement
   }
 
-  const ui = useInterface()
-  // @ts-expect-error element will always be assigned
-  let element: HTMLDialogElement = $state()
-  let value: string = $state("")
+  nextElement =
+    currentElement.parentElement?.parentElement?.[directionMethod]?.[
+      directionMethod
+    ]?.querySelector("[data-cmdk-item]") ?? undefined
 
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.repeat) {
+  if (nextElement) {
+    return nextElement
+  }
+}
+
+const ui = useInterface()
+// @ts-expect-error element will always be assigned
+let element: HTMLDialogElement = $state()
+let value: string = $state("")
+
+const handleKeyDown = (event: KeyboardEvent) => {
+  if (event.repeat) {
+    return
+  }
+  if ((event.ctrlKey || event.metaKey) && event.code === "KeyK") {
+    value = ""
+    event.preventDefault()
+    element.showModal()
+  }
+
+  // Navigate up / down list of items
+  if (
+    ((event.ctrlKey || event.metaKey) && event.key === "j") ||
+    ((event.ctrlKey || event.metaKey) && event.key === "k")
+  ) {
+    event.preventDefault()
+    const currentElement = document.querySelector("[data-cmdk-item][data-selected]")
+    if (!currentElement) {
       return
     }
-    if ((event.ctrlKey || event.metaKey) && event.code === "KeyK") {
-      value = ""
-      event.preventDefault()
-      element.showModal()
-    }
+    const nextElement = findNextItem(currentElement, event.key)
 
-    // Navigate up / down list of items
-    if (
-      ((event.ctrlKey || event.metaKey) && event.key === "j") ||
-      ((event.ctrlKey || event.metaKey) && event.key === "k")
-    ) {
-      event.preventDefault()
-      const currentElement = document.querySelector("[data-cmdk-item][data-selected]")
-      if (!currentElement) {
-        return
-      }
-      const nextElement = findNextItem(currentElement, event.key)
-
-      if (nextElement) {
-        currentElement?.removeAttribute("data-selected")
-        currentElement?.removeAttribute("aria-selected")
-        nextElement.setAttribute("data-selected", "true")
-        nextElement.setAttribute("aria-selected", "true")
-        nextElement.focus()
-      }
+    if (nextElement) {
+      currentElement?.removeAttribute("data-selected")
+      currentElement?.removeAttribute("aria-selected")
+      nextElement.setAttribute("data-selected", "true")
+      nextElement.setAttribute("aria-selected", "true")
+      nextElement.focus()
     }
   }
+}
 
-  const navigateTo = async (path: string) => {
-    element?.close()
+const navigateTo = async (path: string) => {
+  element?.close()
 
-    await new Promise((resolve) => setTimeout(resolve, 200))
-    await goto(path)
-  }
+  await new Promise((resolve) => setTimeout(resolve, 200))
+  await goto(path)
+}
 
-  const openQuickAdd = () => {
-    element?.close()
-    ui.toggleQuickAdd()
-  }
+const openQuickAdd = () => {
+  element?.close()
+  ui.toggleQuickAdd()
+}
 
-  const toggleDarkMode = () => {
-    toggleMode()
-    element?.close()
-  }
+const toggleDarkMode = () => {
+  toggleMode()
+  element?.close()
+}
 </script>
 
 <svelte:window onkeydown={handleKeyDown} />

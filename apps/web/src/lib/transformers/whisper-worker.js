@@ -1,6 +1,5 @@
 // https://github.com/xenova/whisper-web/blob/main/src/worker.js
 
- 
 import { pipeline, env } from "@xenova/transformers"
 
 // Disable local models
@@ -46,7 +45,7 @@ self.addEventListener("message", async (event) => {
     message.multilingual,
     message.quantized,
     message.subtask,
-    message.language,
+    message.language
   )
   if (transcript === null) return
 

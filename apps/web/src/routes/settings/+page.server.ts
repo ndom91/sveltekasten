@@ -1,18 +1,18 @@
-import { fail, redirect } from "@sveltejs/kit";
-import { isAuthenticated } from "$/lib/auth";
-import { db } from "$lib/prisma";
-import type { Actions, PageServerLoad } from "./$types";
-import { PUBLIC_WORKER_URL } from "$env/static/public";
+import { fail, redirect } from "@sveltejs/kit"
+import { isAuthenticated } from "$/lib/auth"
+import { db } from "$lib/prisma"
+import type { Actions, PageServerLoad } from "./$types"
+import { PUBLIC_WORKER_URL } from "$env/static/public"
 
 export const actions: Actions = {
   deleteFeed: async (event) => {
-    const { session } = isAuthenticated(event);
+    const { session } = isAuthenticated(event)
 
-    const data = await event.request.formData();
-    const feedId = String(data.get("feedId"));
+    const data = await event.request.formData()
+    const feedId = String(data.get("feedId"))
 
     if (!feedId) {
-      return fail(400, { type: "error", message: "Missing Feed ID" });
+      return fail(400, { type: "error", message: "Missing Feed ID" })
     }
 
     await db.feed.delete({
@@ -20,20 +20,20 @@ export const actions: Actions = {
         id: feedId,
         userId: session.userId,
       },
-    });
-    return { type: "success", message: "Deleted Feed" };
+    })
+    return { type: "success", message: "Deleted Feed" }
   },
   addFeed: async (event) => {
     if (!PUBLIC_WORKER_URL) {
-      return fail(500, { type: "error", error: "Worker URL Not Configured!" });
+      return fail(500, { type: "error", error: "Worker URL Not Configured!" })
     }
     try {
-      isAuthenticated(event);
-      const data = await event.request.formData();
-      const feedUrl = String(data.get("feedUrl"));
+      isAuthenticated(event)
+      const data = await event.request.formData()
+      const feedUrl = String(data.get("feedUrl"))
 
       if (!feedUrl) {
-        return fail(400, { type: "error", message: "Feed URL Required" });
+        return fail(400, { type: "error", message: "Feed URL Required" })
       }
 
       const feedRes = await event.fetch(`${PUBLIC_WORKER_URL}/v1/feed`, {
@@ -45,29 +45,29 @@ export const actions: Actions = {
         body: JSON.stringify({
           feedUrl,
         }),
-      });
+      })
       if (!feedRes.ok) {
-        return fail(500, { type: "error", error: "Failed to add feed" });
+        return fail(500, { type: "error", error: "Failed to add feed" })
       }
 
-      return { type: "success", message: "Adding Feed" };
+      return { type: "success", message: "Adding Feed" }
     } catch (error) {
-      console.error(String(error));
+      console.error(String(error))
 
       return {
         type: "error",
         error,
-      };
+      }
     }
   },
-};
+}
 
 export const load: PageServerLoad = async (event) => {
   try {
-    const session = isAuthenticated(event);
+    const session = isAuthenticated(event)
     if (!session && event.url.pathname !== "/login") {
-      const fromUrl = event.url.pathname + event.url.search;
-      redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`);
+      const fromUrl = event.url.pathname + event.url.search
+      redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
     }
 
     const [feedData, feedCount] = await db.feed.findManyAndCount({
@@ -89,7 +89,7 @@ export const load: PageServerLoad = async (event) => {
         },
       },
       orderBy: { createdAt: "desc" },
-    });
+    })
 
     const [bookmarkData, bookmarkCount] = (await db.bookmark.findManyAndCount({
       where: {
@@ -100,11 +100,11 @@ export const load: PageServerLoad = async (event) => {
         tags: { include: { tag: true } },
       },
       orderBy: { createdAt: "desc" },
-    })) as unknown as [LoadBookmark[], number];
+    })) as unknown as [LoadBookmark[], number]
 
     const bookmarksFlatTags = bookmarkData.map((bookmark) => {
-      return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) };
-    });
+      return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) }
+    })
 
     const user = await db.user.findUnique({
       select: {
@@ -119,7 +119,7 @@ export const load: PageServerLoad = async (event) => {
       where: {
         id: session?.user?.id,
       },
-    });
+    })
 
     return {
       user,
@@ -132,14 +132,14 @@ export const load: PageServerLoad = async (event) => {
         data: bookmarksFlatTags,
         count: bookmarkCount,
       },
-    };
+    }
   } catch (error) {
-    console.error(String(error));
+    console.error(String(error))
 
     return {
       bookmarks: { count: 0, data: [] },
       feedEntries: { count: 0, data: [] },
       error,
-    };
+    }
   }
-};
+}

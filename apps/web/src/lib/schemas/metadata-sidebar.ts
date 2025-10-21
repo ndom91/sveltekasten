@@ -22,7 +22,7 @@ export const formSchema = z.object({
       userId: z.string(),
       createdAt: z.date(),
       updatedAt: z.date(),
-    }),
+    })
   ),
 })
 

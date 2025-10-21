@@ -1,12 +1,12 @@
-import { fail } from "@sveltejs/kit";
-import type { PageServerLoad } from "./$types";
+import { fail } from "@sveltejs/kit"
+import type { PageServerLoad } from "./$types"
 
 export const load: PageServerLoad = ({ locals, url }) => {
   if (!locals.session?.userId) {
-    return fail(401, { type: "error", error: "Unauthenticated" });
+    return fail(401, { type: "error", error: "Unauthenticated" })
   }
 
-  return locals;
+  return locals
   // if (!session && url.pathname !== "/login") {
   //   const fromUrl = url.pathname + url.search;
   //   redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`);
@@ -60,4 +60,4 @@ export const load: PageServerLoad = ({ locals, url }) => {
   //   }
   //   return { bookmarks: [], count: 0, error };
   // }
-};
+}

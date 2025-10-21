@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { partytownSnippet } from "@builder.io/partytown/integration"
-  import { onMount } from "svelte"
-  import { dev } from "$app/environment"
-  import { page } from "$app/stores"
+import { partytownSnippet } from "@builder.io/partytown/integration"
+import { onMount } from "svelte"
+import { dev } from "$app/environment"
+import { page } from "$app/stores"
 
-  // Set partykit script content
-  let scriptTag: HTMLScriptElement
-  onMount(() => {
-    if (!dev && $page.url.hostname === "dev.briefkastenhq.com") {
-      scriptTag.textContent = partytownSnippet()
-    }
-  })
+// Set partykit script content
+let scriptTag: HTMLScriptElement
+onMount(() => {
+  if (!dev && $page.url.hostname === "dev.briefkastenhq.com") {
+    scriptTag.textContent = partytownSnippet()
+  }
+})
 </script>
 
 <svelte:head>

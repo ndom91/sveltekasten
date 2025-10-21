@@ -27,7 +27,9 @@ export class FeedEntriesService {
   }
 
   update(feedEntry: FeedEntry) {
-    const feedEntryIndex = this.feedEntries.findIndex((saveFeedEntry) => saveFeedEntry.id === feedEntry.id)
+    const feedEntryIndex = this.feedEntries.findIndex(
+      (saveFeedEntry) => saveFeedEntry.id === feedEntry.id
+    )
     if (feedEntryIndex) {
       this.feedEntries[feedEntryIndex] = feedEntry
     }

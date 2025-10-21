@@ -1,48 +1,48 @@
 <script lang="ts">
-  import { toast } from "svelte-sonner"
-  import Dialog from "$lib/components/Dialog.svelte"
-  import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
-  import { invalidateAll } from "$app/navigation"
-  import { page } from "$app/stores"
+import { toast } from "svelte-sonner"
+import Dialog from "$lib/components/Dialog.svelte"
+import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
+import { invalidateAll } from "$app/navigation"
+import { page } from "$app/stores"
 
-  let {
-    dialogElement = $bindable(),
-    url,
-  }: {
-    dialogElement: HTMLDialogElement | undefined
-    url: string
-  } = $props()
+let {
+  dialogElement = $bindable(),
+  url,
+}: {
+  dialogElement: HTMLDialogElement | undefined
+  url: string
+} = $props()
 
-  let loading = $state(false)
+let loading = $state(false)
 
-  const handleConfirm = async (): Promise<void> => {
-    try {
-      loading = true
-      const res = await fetch("/api/v1/bookmarks", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+const handleConfirm = async (): Promise<void> => {
+  try {
+    loading = true
+    const res = await fetch("/api/v1/bookmarks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify([
+        {
+          url,
+          userId: $page.data.session?.user?.id,
         },
-        body: JSON.stringify([
-          {
-            url,
-            userId: $page.data.session?.user?.id,
-          },
-        ]),
-      })
+      ]),
+    })
 
-      if (res.ok) {
-        await invalidateAll()
-        toast.success(`Added "${url}"`)
-      }
-    } catch (error) {
-      console.error(error)
-      toast.error(String(error))
-    } finally {
-      loading = false
-      dialogElement?.close()
+    if (res.ok) {
+      await invalidateAll()
+      toast.success(`Added "${url}"`)
     }
+  } catch (error) {
+    console.error(error)
+    toast.error(String(error))
+  } finally {
+    loading = false
+    dialogElement?.close()
   }
+}
 </script>
 
 <Dialog id="confirm-add" bind:element={dialogElement} confirmAction={handleConfirm}>

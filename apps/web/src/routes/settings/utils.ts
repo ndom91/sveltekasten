@@ -72,37 +72,39 @@ export const importBookmarks = async (bookmarks: ParsedBookmark[], userId: strin
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(bookmarks.map((importedBookmarks) => {
-        const bookmark: ParsedBookmark = {
-          title: importedBookmarks.title,
-          url: importedBookmarks.url,
-          createdAt: importedBookmarks.createdAt,
-          userId,
-        }
+      body: JSON.stringify(
+        bookmarks.map((importedBookmarks) => {
+          const bookmark: ParsedBookmark = {
+            title: importedBookmarks.title,
+            url: importedBookmarks.url,
+            createdAt: importedBookmarks.createdAt,
+            userId,
+          }
 
-        if (importedBookmarks.tags?.length) {
-          bookmark.tags = importedBookmarks.tags.map((tag: string) => ({
-            create: {
-              tag: {
-                connectOrCreate: {
-                  where: {
-                    name_userId: {
+          if (importedBookmarks.tags?.length) {
+            bookmark.tags = importedBookmarks.tags.map((tag: string) => ({
+              create: {
+                tag: {
+                  connectOrCreate: {
+                    where: {
+                      name_userId: {
+                        name: tag,
+                        userId,
+                      },
+                    },
+                    data: {
                       name: tag,
                       userId,
                     },
                   },
-                  data: {
-                    name: tag,
-                    userId,
-                  },
                 },
               },
-            },
-            skipDuplicates: true,
-          }))
-        }
-        return bookmark
-      })),
+              skipDuplicates: true,
+            }))
+          }
+          return bookmark
+        })
+      ),
     })
 
     if (bulkCreateData.count === bookmarks.length) {

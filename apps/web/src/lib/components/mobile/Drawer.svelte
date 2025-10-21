@@ -1,17 +1,17 @@
 <script lang="ts">
-  import { Drawer } from "vaul-svelte"
-  import Logo from "$lib/assets/Logo.svelte"
-  import SidebarContent from "$lib/components/SidebarContent.svelte"
-  import { Button } from "$lib/components/ui/button"
-  import { useInterface } from "$lib/state/ui.svelte"
+import { Drawer } from "vaul-svelte"
+import Logo from "$lib/assets/Logo.svelte"
+import SidebarContent from "$lib/components/SidebarContent.svelte"
+import { Button } from "$lib/components/ui/button"
+import { useInterface } from "$lib/state/ui.svelte"
 
-  const ui = useInterface()
+const ui = useInterface()
 
-  let drawerOpen = $state(false)
+let drawerOpen = $state(false)
 
-  const toggleDrawer = () => {
-    drawerOpen = !drawerOpen
-  }
+const toggleDrawer = () => {
+  drawerOpen = !drawerOpen
+}
 </script>
 
 <Drawer.Root direction="left" bind:open={drawerOpen}>

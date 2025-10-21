@@ -1,6 +1,6 @@
 export type Action<T = any> = (
   node: HTMLElement,
-  parameters?: T,
+  parameters?: T
 ) => {
   update?: (parameters: T) => any | void
   destroy?: () => void
