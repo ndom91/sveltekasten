@@ -1,3 +1,4 @@
+import devtoolsJson from "vite-plugin-devtools-json";
 import { partytownVite } from "@builder.io/partytown/utils";
 import { sveltekit } from "@sveltejs/kit/vite";
 import tailwindcss from "@tailwindcss/vite";
@@ -12,20 +13,15 @@ function bumpManifestPlugin() {
     outputOptions(options: Rollup.OutputOptions) {
       // @ts-expect-error vite.config never built into CJS
       const cwd = import.meta.dirname;
-      const version = execSync("git rev-parse HEAD")
-        .toString()
-        .trim()
-        .substring(0, 7);
+      const version = execSync("git rev-parse HEAD").toString().trim().substring(0, 7);
       const manifestPath = join(cwd, "static", "manifest.webmanifest");
-
       const contentsStr = readFileSync(manifestPath).toString();
       const contents = JSON.parse(contentsStr);
+
       contents.id = `briefkasten-${version}`;
-
       writeFileSync(manifestPath, `${JSON.stringify(contents, null, 2)}\n`);
-
       return options;
-    },
+    }
   };
 }
 
@@ -33,16 +29,13 @@ export default defineConfig({
   plugins: [
     sveltekit(),
     partytownVite({
-      dest: join(import.meta.dirname, "build", "client", "~partytown"),
+      dest: join(import.meta.dirname, "build", "client", "~partytown")
     }),
     tailwindcss(),
+    devtoolsJson()
   ],
-  server: {
-    host: "0.0.0.0",
-  },
+  server: { host: "0.0.0.0" },
   build: {
-    rollupOptions: {
-      plugins: [bumpManifestPlugin()],
-    },
-  },
+    rollupOptions: { plugins: [bumpManifestPlugin()] }
+  }
 });

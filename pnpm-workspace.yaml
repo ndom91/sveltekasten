@@ -1,4 +1,5 @@
 resolutionMode: highest
 packages:
   - apps/*
-
+onlyBuiltDependencies:
+  - esbuild
