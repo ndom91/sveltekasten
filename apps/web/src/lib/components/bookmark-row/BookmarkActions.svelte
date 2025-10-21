@@ -28,8 +28,8 @@ const {
   )}
 >
   <Tooltip.Root>
-    <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
-      <Button builders={[tooltipBuilder]} variant="ghost" size="icon" href={url} target="_blank">
+    <Tooltip.Trigger class="outline-none">
+      <Button variant="ghost" size="icon" href={url} target="_blank">
         <svg
           class="size-5 text-neutral-900 dark:text-neutral-100"
           xmlns="http://www.w3.org/2000/svg"
@@ -71,12 +71,11 @@ const {
     </Tooltip.Content>
   </Tooltip.Root>
   <Tooltip.Root>
-    <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
+    <Tooltip.Trigger class="outline-none">
       <Button
-        builders={[tooltipBuilder]}
         variant="ghost"
         size="icon"
-        on:click={handleMetadataSidebarOpen}
+        onclick={handleMetadataSidebarOpen}
       >
         <svg
           class="size-5 text-neutral-900 dark:text-neutral-100"
@@ -101,8 +100,8 @@ const {
     </Tooltip.Content>
   </Tooltip.Root>
   <Tooltip.Root>
-    <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
-      <Button builders={[tooltipBuilder]} variant="ghost" size="icon" on:click={handleArchive}>
+    <Tooltip.Trigger class="outline-none">
+      <Button variant="ghost" size="icon" onclick={handleArchive}>
         <svg
           class="size-5 text-neutral-900 dark:text-neutral-100"
           data-slot="icon"
@@ -126,12 +125,11 @@ const {
     </Tooltip.Content>
   </Tooltip.Root>
   <Tooltip.Root>
-    <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
+    <Tooltip.Trigger class="outline-none">
       <Button
-        builders={[tooltipBuilder]}
         variant="ghost"
         size="icon"
-        on:click={handleDeleteDialogOpen}
+        onclick={handleDeleteDialogOpen}
       >
         <svg
           class="text-red-700 size-5"

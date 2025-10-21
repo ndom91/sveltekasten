@@ -42,17 +42,16 @@ export type Tag = {
 </script>
 
 <Combobox.Root
-  multiple
   {disabled}
-  bind:inputValue
+  inputValue={inputValue}
   items={filteredTags}
   selected={selectedValues}
-  onSelectedChange={(selectedTags) => {
+  onSelectedChange={(selectedTags: typeof selectedValues) => {
     // TODO: Cleanup hacky combobox tag input changeHandler
     if (selectedTags) {
       $value =
         selectedTags
-          ?.map((t) => {
+          ?.map((t: { value: string }) => {
             return tags.find((tag) => tag.id === t.value)
           })
           .filter(Boolean) ?? []
@@ -121,25 +120,11 @@ export type Tag = {
         label={tag.label}
       >
         {tag.label}
-        <Combobox.ItemIndicator class="ml-auto" asChild={false}>
-          <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
-            <rect width="256" height="256" fill="none" />
-            <polyline
-              points="40 144 96 200 224 72"
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="16"
-            />
-          </svg>
-        </Combobox.ItemIndicator>
       </Combobox.Item>
     {:else}
       <span class="block py-2 px-5 text-sm text-muted-foreground"> No results found </span>
     {/each}
   </Combobox.Content>
-  <Combobox.HiddenInput name="tags" />
 </Combobox.Root>
 {#if selectedValues.length}
   <div class="flex flex-wrap gap-2 mb-2">

@@ -36,12 +36,11 @@ const {
   )}
 >
   <Tooltip.Root>
-    <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
+    <Tooltip.Trigger class="outline-none">
       <Button
-        builders={[tooltipBuilder]}
         variant="ghost"
         size="icon"
-        on:click={handleToggleCardOpen}
+        onclick={handleToggleCardOpen}
       >
         <svg
           class="size-5 text-neutral-900 dark:text-neutral-100"
@@ -104,12 +103,11 @@ const {
     </Tooltip.Content>
   </Tooltip.Root>
   <Tooltip.Root>
-    <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
+    <Tooltip.Trigger class="outline-none">
       <Button
-        builders={[tooltipBuilder]}
         variant="ghost"
         size="icon"
-        on:click={() => handleMarkAsUnread()}
+        onclick={() => handleMarkAsUnread()}
       >
         <svg
           class="size-5 text-neutral-900 dark:text-neutral-100"
@@ -138,13 +136,12 @@ const {
   </Tooltip.Root>
   {#if enableSummary}
     <Tooltip.Root>
-      <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
+      <Tooltip.Trigger class="outline-none">
         <Button
-          builders={[tooltipBuilder]}
           variant="ghost"
           size="icon"
           disabled={ui.summarizationLoading}
-          on:click={handleStartTextSummarization}
+          onclick={handleStartTextSummarization}
         >
           {#if ui.summarizationLoading}
             <LoadingIndicator class="dark:text-white" />
@@ -207,13 +204,12 @@ const {
   {/if}
   {#if enableTTS}
     <Tooltip.Root>
-      <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
+      <Tooltip.Trigger class="outline-none">
         <Button
-          builders={[tooltipBuilder]}
           variant="ghost"
           size="icon"
           disabled={ui.textToSpeechLoading}
-          on:click={handleSetTextToSpeechContent}
+          onclick={handleSetTextToSpeechContent}
         >
           {#if ui.textToSpeechLoading}
             <LoadingIndicator class="dark:text-white" />
@@ -261,8 +257,8 @@ const {
     </Tooltip.Root>
   {/if}
   <Tooltip.Root>
-    <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
-      <Button builders={[tooltipBuilder]} variant="ghost" size="icon" href={url} target="_blank">
+    <Tooltip.Trigger class="outline-none">
+      <Button variant="ghost" size="icon" href={url} target="_blank">
         <svg
           class="size-5 text-neutral-900 dark:text-neutral-100"
           xmlns="http://www.w3.org/2000/svg"

@@ -1,4 +1,4 @@
-import { signIn } from "../../auth"
+import { auth } from "../../auth"
 import type { Actions } from "./$types"
 
-export const actions = { default: signIn } satisfies Actions
+export const actions = auth.api.getActions(["signIn"])

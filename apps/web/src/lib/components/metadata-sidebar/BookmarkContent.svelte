@@ -76,9 +76,8 @@ const faviconUrl = $derived.by(() => {
     <div class="flex items-center justify-between">
       <h2>Metadata</h2>
       <Tooltip.Root>
-        <Tooltip.Trigger asChild let:builder={tooltipBuilder}>
+        <Tooltip.Trigger>
           <Button
-            builders={[tooltipBuilder]}
             variant="outline"
             disabled={!ui.metadataSidebarData.bookmark}
             size="icon"

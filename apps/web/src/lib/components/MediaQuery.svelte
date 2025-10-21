@@ -30,7 +30,7 @@ $effect(() => {
 
 function addNewListener(query: string) {
   mql = window.matchMedia(query)
-  mqlListener = (v) => (matches = v.matches)
+  mqlListener = (v) => (matches = (v as MediaQueryListEvent).matches)
   mql.addEventListener("change", mqlListener)
   matches = mql.matches
 }

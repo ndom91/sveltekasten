@@ -83,24 +83,20 @@ const categoryProxy = fieldProxy(form, "categoryId", {})
     <Label for="category">Category</Label>
     <Select.Root
       name="categoryId"
-      onSelectedChange={(e) => ($categoryProxy = e?.value)}
-      items={page.data?.categories?.map((cat: { id: string; name: string }) => ({
-        value: cat.id,
-        label: cat.name,
-      }))}
+      onValueChange={(e: { value: string } | undefined) => ($categoryProxy = e?.value)}
     >
       <Select.Trigger
         class="border-input placeholder:text-foreground/50 focus:ring-foreground focus:ring-offset-background w-full truncate transition-shadow duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 enabled:bg-neutral-100 disabled:bg-transparent disabled:opacity-50 dark:enabled:bg-neutral-950"
       >
-        <Select.Value placeholder="Choose a category" />
+        Choose a category
       </Select.Trigger>
       <Select.Content>
         {#each page.data?.categories as category (category.id)}
           <Select.Item value={category.id}>{category.name}</Select.Item>
         {/each}
       </Select.Content>
-      <Select.Input class="bg-background" name="categoryId" />
     </Select.Root>
+    <input type="hidden" name="categoryId" value={$categoryProxy || ""} />
     {#if $errors.category}<span class="text-xs text-red-400">{$errors.category}</span>{/if}
   </div>
 

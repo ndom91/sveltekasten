@@ -2,8 +2,8 @@ import { z } from "zod"
 
 export const formSchema = z.object({
   id: z.string().cuid(),
-  title: z.string({ required_error: "A title is required" }).min(2),
-  url: z.string({ required_error: "A URL is required" }).url(),
+  title: z.string({ message: "A title is required" }).min(2),
+  url: z.string({ message: "A URL is required" }).url(),
   description: z.string().optional(),
   image: z.string().url().optional(),
   category: z.string().cuid().optional(),

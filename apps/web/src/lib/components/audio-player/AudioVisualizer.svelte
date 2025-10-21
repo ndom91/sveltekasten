@@ -4,7 +4,7 @@ const initBars = Array.from({ length: 10 }, () => Math.random() * 0.8 + 0.2)
 const { paused }: { paused: boolean } = $props()
 const bars = $state(initBars)
 
-let interval: number
+let interval: ReturnType<typeof setInterval>
 $effect(() => {
   if (interval) {
     return

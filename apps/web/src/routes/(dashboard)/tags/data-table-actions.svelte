@@ -14,8 +14,8 @@ const handleEdit = async () => {
 
 <div class="flex gap-2">
   <Tooltip.Root>
-    <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
-      <Button onclick={handleEdit} builders={[tooltipBuilder]} variant="ghost" size="icon">
+    <Tooltip.Trigger class="outline-none">
+      <Button onclick={handleEdit} variant="ghost" size="icon">
         <svg
           class="size-5 text-neutral-600 dark:text-neutral-500"
           xmlns="http://www.w3.org/2000/svg"
@@ -46,10 +46,10 @@ const handleEdit = async () => {
     </Tooltip.Content>
   </Tooltip.Root>
   <Tooltip.Root>
-    <Tooltip.Trigger asChild let:builder={tooltipBuilder} class="outline-none">
+    <Tooltip.Trigger class="outline-none">
       <form action="?/deleteTag" method="post" use:enhance={handleActionResults()}>
         <input type="hidden" name="id" value={id} />
-        <Button type="submit" builders={[tooltipBuilder]} variant="ghost" size="icon">
+        <Button type="submit" variant="ghost" size="icon">
           <svg
             class="text-red-600 size-5 dark:text-red-400/50"
             xmlns="http://www.w3.org/2000/svg"
