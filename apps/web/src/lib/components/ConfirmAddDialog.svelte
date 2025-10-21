@@ -1,9 +1,9 @@
 <script lang="ts">
 import { toast } from "svelte-sonner"
-import Dialog from "$lib/components/Dialog.svelte"
-import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
 import { invalidateAll } from "$app/navigation"
 import { page } from "$app/stores"
+import Dialog from "$lib/components/Dialog.svelte"
+import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
 
 let {
   dialogElement = $bindable(),

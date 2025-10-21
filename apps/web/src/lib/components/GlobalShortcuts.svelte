@@ -1,6 +1,6 @@
 <script lang="ts">
-import KeyboardShortcutsHelp from "$lib/components/KeyboardShortcutsHelp.svelte"
 import { goto } from "$app/navigation"
+import KeyboardShortcutsHelp from "$lib/components/KeyboardShortcutsHelp.svelte"
 
 let element = $state<HTMLDialogElement | undefined>()
 

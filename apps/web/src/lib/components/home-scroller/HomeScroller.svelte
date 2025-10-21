@@ -1,11 +1,11 @@
 <script lang="ts">
 import { watch } from "runed"
-import BookmarkPreviewCard from "./BookmarkPreviewCard.svelte"
-import FeedItemPreviewCard from "./FeedItemPreviewCard.svelte"
 import Bell from "$lib/assets/bell.png"
 import Browser from "$lib/assets/browser.png"
 import { ScrollerTypes } from "$lib/types"
 import { capitalize } from "$lib/utils/text"
+import BookmarkPreviewCard from "./BookmarkPreviewCard.svelte"
+import FeedItemPreviewCard from "./FeedItemPreviewCard.svelte"
 
 type Props = {
   type: keyof typeof ScrollerTypes

@@ -1,10 +1,10 @@
 <script lang="ts">
 import { tick } from "svelte"
+import { PUBLIC_WORKER_URL } from "$env/static/public"
 import { Button } from "$lib/components/ui/button"
 import { Checkbox } from "$lib/components/ui/checkbox"
 import * as Command from "$lib/components/ui/command"
 import * as Popover from "$lib/components/ui/popover"
-import { PUBLIC_WORKER_URL } from "$env/static/public"
 
 const {
   data: inputData,

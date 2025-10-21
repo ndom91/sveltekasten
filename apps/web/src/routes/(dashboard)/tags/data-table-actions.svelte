@@ -1,8 +1,8 @@
 <script lang="ts">
+import { enhance } from "$app/forms"
 import { Button } from "$lib/components/ui/button"
 import * as Tooltip from "$lib/components/ui/tooltip"
 import { handleActionResults } from "$lib/utils/form-action"
-import { enhance } from "$app/forms"
 
 const { id }: { id: string } = $props()
 

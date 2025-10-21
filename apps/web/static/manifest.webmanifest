@@ -8,9 +8,7 @@
   "theme_color": "#171717",
   "background_color": "#171717",
   "display": "standalone",
-  "display_override": [
-    "window-controls-overlay"
-  ],
+  "display_override": ["window-controls-overlay"],
   "start_url": "/",
   "share_target": {
     "action": "/api/v1/bookmarks/share",

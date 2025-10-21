@@ -1,7 +1,7 @@
 <script lang="ts">
+import type { Select as SelectPrimitive } from "bits-ui"
 import { getFormField } from "formsnap"
 import * as Select from "$lib/components/ui/select"
-import type { Select as SelectPrimitive } from "bits-ui"
 
 type $$Props = SelectPrimitive.TriggerProps & {
   placeholder?: string

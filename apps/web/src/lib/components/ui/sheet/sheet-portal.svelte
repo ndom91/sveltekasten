@@ -4,7 +4,7 @@ import { cn } from "$lib/utils"
 
 type $$Props = SheetPrimitive.PortalProps
 
-let className: $$Props["class"] = undefined
+let className: $$Props["class"]
 export { className as class }
 </script>
 

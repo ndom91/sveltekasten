@@ -1,6 +1,6 @@
 // https://github.com/xenova/whisper-web/blob/main/src/worker.js
 
-import { pipeline, env } from "@xenova/transformers"
+import { env, pipeline } from "@xenova/transformers"
 
 // Disable local models
 env.allowLocalModels = false
@@ -20,17 +20,17 @@ class PipelineFactory {
   }
 
   static async getInstance(progress_callback = null) {
-    if (this.instance === null) {
-      this.instance = pipeline(this.task, this.model, {
-        quantized: this.quantized,
+    if (PipelineFactory.instance === null) {
+      PipelineFactory.instance = pipeline(PipelineFactory.task, PipelineFactory.model, {
+        quantized: PipelineFactory.quantized,
         progress_callback,
 
         // For medium models, we need to load the `no_attentions` revision to avoid running out of memory
-        revision: this.model.includes("/whisper-medium") ? "no_attentions" : "main",
+        revision: PipelineFactory.model.includes("/whisper-medium") ? "no_attentions" : "main",
       })
     }
 
-    return this.instance
+    return PipelineFactory.instance
   }
 }
 
@@ -39,7 +39,7 @@ self.addEventListener("message", async (event) => {
 
   // Do some work...
   // TODO use message data
-  let transcript = await transcribe(
+  const transcript = await transcribe(
     message.audio,
     message.model,
     message.multilingual,
@@ -84,7 +84,7 @@ const transcribe = async (audio, model, multilingual, quantized, subtask, langua
   }
 
   // Load transcriber model
-  let transcriber = await p.getInstance((data) => {
+  const transcriber = await p.getInstance((data) => {
     self.postMessage(data)
   })
 
@@ -93,7 +93,7 @@ const transcribe = async (audio, model, multilingual, quantized, subtask, langua
     transcriber.model.config.max_source_positions
 
   // Storage for chunks to be processed. Initialise with an empty chunk.
-  let chunks_to_process = [
+  const chunks_to_process = [
     {
       tokens: [],
       finalised: false,
@@ -104,7 +104,7 @@ const transcribe = async (audio, model, multilingual, quantized, subtask, langua
   // let decoded_chunks = [];
 
   function chunk_callback(chunk) {
-    let last = chunks_to_process[chunks_to_process.length - 1]
+    const last = chunks_to_process[chunks_to_process.length - 1]
 
     // Overwrite last chunk with new info
     Object.assign(last, chunk)
@@ -121,14 +121,14 @@ const transcribe = async (audio, model, multilingual, quantized, subtask, langua
 
   // Inject custom callback function to handle merging of chunks
   function callback_function(item) {
-    let last = chunks_to_process[chunks_to_process.length - 1]
+    const last = chunks_to_process[chunks_to_process.length - 1]
 
     // Update tokens of last chunk
     last.tokens = [...item[0].output_token_ids]
 
     // Merge text chunks
     // TODO optimise so we don't have to decode all chunks every time
-    let data = transcriber.tokenizer._decode_asr(chunks_to_process, {
+    const data = transcriber.tokenizer._decode_asr(chunks_to_process, {
       time_precision: time_precision,
       return_timestamps: true,
       force_full_sequences: false,
@@ -142,7 +142,7 @@ const transcribe = async (audio, model, multilingual, quantized, subtask, langua
   }
 
   // Actually run transcription
-  let output = await transcriber(audio, {
+  const output = await transcriber(audio, {
     // Greedy
     top_k: 0,
     do_sample: false,

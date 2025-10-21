@@ -2,7 +2,7 @@
 
 export function encodeWAV(samples) {
   const pcm = true
-  let offset = 44
+  const offset = 44
 
   var format = pcm ? 1 : 3
   var numChannels = 1

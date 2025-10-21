@@ -2,11 +2,11 @@
 import { tick } from "svelte"
 import { toast } from "svelte-sonner"
 import { twJoin } from "tailwind-merge"
-import ProviderIcons from "./ProviderIcons.svelte"
-import LoginPattern from "$lib/assets/LoginPattern.svelte"
-import { authClient } from "$lib/auth-client"
 import { browser } from "$app/environment"
 import { page } from "$app/state"
+import LoginPattern from "$lib/assets/LoginPattern.svelte"
+import { authClient } from "$lib/auth-client"
+import ProviderIcons from "./ProviderIcons.svelte"
 
 const session = authClient.useSession()
 

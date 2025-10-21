@@ -1,4 +1,4 @@
-import { type RequestEvent, error, fail } from "@sveltejs/kit"
+import { error, fail, type RequestEvent } from "@sveltejs/kit"
 import type { Session } from "$lib/auth-client"
 
 export const isAuthenticated = (event: RequestEvent): Session | never => {

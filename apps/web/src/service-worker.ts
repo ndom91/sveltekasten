@@ -5,9 +5,9 @@
 
 const sw = self as unknown as ServiceWorkerGlobalScope
 
-import { CacheFirst } from "workbox-strategies"
-import { registerRoute, Route } from "workbox-routing"
 import { ExpirationPlugin } from "workbox-expiration"
+import { Route, registerRoute } from "workbox-routing"
+import { CacheFirst } from "workbox-strategies"
 import { postMessageTypes } from "./lib/constants"
 
 // Special fetch handler for song file sharing.
@@ -23,7 +23,7 @@ sw.addEventListener("fetch", (event: FetchEvent) => {
   event.respondWith(Response.redirect("./?shared=true"))
 
   event.waitUntil(
-    (async function () {
+    (async () => {
       const textParam = url.searchParams.get("text")
       const urlParam = url.searchParams.get("link")
 

@@ -1,8 +1,8 @@
 <script>
 import { ModeWatcher } from "mode-watcher"
+import { page } from "$app/stores"
 import Logo from "$lib/assets/Logo.svelte"
 import { Button } from "$lib/components/ui/button"
-import { page } from "$app/stores"
 </script>
 
 <ModeWatcher />

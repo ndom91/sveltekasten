@@ -1,16 +1,16 @@
 <script lang="ts">
 import { format } from "@formkit/tempo"
-import BookmarkActions from "./BookmarkActions.svelte"
-import DeleteDialog from "./DeleteDialog.svelte"
-import MobileBookmarkActions from "./MobileBookmarkActions.svelte"
-import type { Category } from "$lib/types/zod.js"
 import { invalidateAll } from "$app/navigation"
 import { page } from "$app/state"
 import { PUBLIC_WORKER_URL } from "$env/static/public"
-import MediaQuery from "$lib/components/MediaQuery.svelte"
 import { Image } from "$lib/components/image"
+import MediaQuery from "$lib/components/MediaQuery.svelte"
 import { Badge } from "$lib/components/ui/badge"
 import { useInterface } from "$lib/state/ui.svelte"
+import type { Category } from "$lib/types/zod.js"
+import BookmarkActions from "./BookmarkActions.svelte"
+import DeleteDialog from "./DeleteDialog.svelte"
+import MobileBookmarkActions from "./MobileBookmarkActions.svelte"
 
 type CategoryVisible = Category & { visible: boolean }
 

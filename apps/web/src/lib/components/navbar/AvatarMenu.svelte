@@ -2,12 +2,12 @@
 import { signOut } from "@auth/sveltekit/client"
 import { mode, toggleMode } from "mode-watcher"
 import { onMount } from "svelte"
+import { version } from "$app/environment"
+import { page } from "$app/state"
 import KeyboardShortcutsHelp from "$lib/components/KeyboardShortcutsHelp.svelte"
 import * as Avatar from "$lib/components/ui/avatar"
 import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
 import { Skeleton } from "$lib/components/ui/skeleton"
-import { version } from "$app/environment"
-import { page } from "$app/state"
 
 const isDarkMode = $derived(mode.current === "dark")
 let element = $state<HTMLDialogElement | undefined>()

@@ -1,9 +1,9 @@
 <script lang="ts">
-import BookmarkContent from "./BookmarkContent.svelte"
-import FeedContent from "./FeedContent.svelte"
+import { page } from "$app/state"
 import { useInterface } from "$lib/state/ui.svelte"
 import { cn } from "$lib/utils"
-import { page } from "$app/state"
+import BookmarkContent from "./BookmarkContent.svelte"
+import FeedContent from "./FeedContent.svelte"
 
 const ui = useInterface()
 let metadataSidebarElement = $state<HTMLElement>()!

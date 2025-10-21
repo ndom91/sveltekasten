@@ -1,21 +1,19 @@
 <script lang="ts">
-import { type Snippet, onMount, setContext } from "svelte"
+import { onMount, type Snippet, setContext } from "svelte"
 import { toast } from "svelte-sonner"
 import * as Tooltip from "$/lib/components/ui/tooltip"
-import DragAdd from "$lib/components/DragAdd.svelte"
-import Sidebar from "$lib/components/NavigationSidebar.svelte"
+import { browser, dev } from "$app/environment"
+import { invalidateAll, onNavigate } from "$app/navigation"
+import { page } from "$app/state"
 import { CommandBar } from "$lib/components/command-bar"
+import DragAdd from "$lib/components/DragAdd.svelte"
 import { MetadataSidebar } from "$lib/components/metadata-sidebar"
+import Sidebar from "$lib/components/NavigationSidebar.svelte"
 import { postMessageTypes } from "$lib/constants"
 import { BookmarksService } from "$lib/state/bookmarks.svelte"
 import { FeedEntriesService } from "$lib/state/feedEntries.svelte"
 import { FeedsService } from "$lib/state/feeds.svelte"
 import { defaultAISettings, useInterface } from "$lib/state/ui.svelte"
-
-import { dev } from "$app/environment"
-import { browser } from "$app/environment"
-import { invalidateAll, onNavigate } from "$app/navigation"
-import { page } from "$app/state"
 
 const { children }: { children: Snippet } = $props()
 

@@ -1,11 +1,11 @@
 <script lang="ts">
+import { goto } from "$app/navigation"
+import { page } from "$app/state"
 import { AvatarMenu } from "$lib/components/navbar"
 import { Button } from "$lib/components/ui/button"
 import * as Tooltip from "$lib/components/ui/tooltip"
 import { useInterface } from "$lib/state/ui.svelte"
 import { cn } from "$lib/utils"
-import { goto } from "$app/navigation"
-import { page } from "$app/state"
 
 const ui = useInterface()
 

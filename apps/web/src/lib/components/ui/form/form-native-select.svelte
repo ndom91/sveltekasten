@@ -1,12 +1,12 @@
 <script lang="ts">
 import { Form as FormPrimitive } from "formsnap"
+import type { HTMLSelectAttributes } from "svelte/elements"
 import { buttonVariants } from "$lib/components/ui/button"
 import { cn } from "$lib/utils"
-import type { HTMLSelectAttributes } from "svelte/elements"
 
 type $$Props = HTMLSelectAttributes
 
-let className: string | undefined | null = undefined
+let className: string | undefined | null
 export { className as class }
 </script>
 

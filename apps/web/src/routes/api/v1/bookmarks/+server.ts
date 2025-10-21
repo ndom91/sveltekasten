@@ -1,11 +1,11 @@
 import { json, text } from "@sveltejs/kit"
 import z from "zod"
+import { PUBLIC_WORKER_URL } from "$env/static/public"
 import { isAuthenticated } from "$lib/auth"
 import { db } from "$lib/prisma"
 import { fetchBookmarkMetadata } from "$lib/server/fetchBookmarkMetadata"
 import { BookmarkUncheckedCreateInputSchema } from "$lib/types/zod.js"
 import type { RequestHandler } from "./$types"
-import { PUBLIC_WORKER_URL } from "$env/static/public"
 
 // Get more Bookmarks
 export const GET: RequestHandler = async (event) => {

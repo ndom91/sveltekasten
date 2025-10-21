@@ -1,8 +1,8 @@
 import { fail, redirect } from "@sveltejs/kit"
 import { isAuthenticated } from "$/lib/auth"
+import { PUBLIC_WORKER_URL } from "$env/static/public"
 import { db } from "$lib/prisma"
 import type { Actions, PageServerLoad } from "./$types"
-import { PUBLIC_WORKER_URL } from "$env/static/public"
 
 export const actions: Actions = {
   deleteFeed: async (event) => {

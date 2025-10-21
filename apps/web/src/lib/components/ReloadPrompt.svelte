@@ -1,6 +1,6 @@
 <script lang="ts">
-import { toast } from "svelte-sonner"
 import { useRegisterSW } from "virtual:pwa-register/svelte"
+import { toast } from "svelte-sonner"
 
 const { needRefresh, updateServiceWorker, offlineReady } = useRegisterSW({
   onRegistered(r: TODO) {

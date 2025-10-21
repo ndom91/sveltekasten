@@ -1,13 +1,13 @@
 <script lang="ts">
 import { onMount } from "svelte"
+import { goto } from "$app/navigation"
+import { page } from "$app/stores"
 import { HomeScroller } from "$lib/components/home-scroller"
 import { Navbar } from "$lib/components/navbar"
 import { BookmarksService } from "$lib/state/bookmarks.svelte"
 import { FeedEntriesService } from "$lib/state/feedEntries.svelte"
 import { ScrollerTypes } from "$lib/types"
 import { getContext } from "$lib/utils/context"
-import { goto } from "$app/navigation"
-import { page } from "$app/stores"
 
 onMount(async () => {
   // Share Target Redirect

@@ -1,6 +1,6 @@
-import { StaticShadows } from "open-props/src/shadows";
-import tailwindcssAnimate from "tailwindcss-animate";
-import type { Config } from "tailwindcss";
+import { StaticShadows } from "open-props/src/shadows"
+import type { Config } from "tailwindcss"
+import tailwindcssAnimate from "tailwindcss-animate"
 
 const config: Config = {
   content: ["./src/**/*.{html,js,svelte,ts}"],
@@ -26,6 +26,6 @@ const config: Config = {
       },
     },
   },
-};
+}
 
-export default config;
+export default config

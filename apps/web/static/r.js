@@ -1,5 +1,5 @@
 // Rybbit Script
-;(function () {
+;(() => {
   const scriptTag = document.currentScript
   const ANALYTICS_HOST = "https://stats.ndo.dev/api"
 
@@ -52,7 +52,7 @@
     const SINGLE_WILDCARD_TOKEN = "__SINGLE_ASTERISK_TOKEN__"
 
     // Replace wildcards with tokens
-    let tokenized = pattern
+    const tokenized = pattern
       .replace(/\*\*/g, DOUBLE_WILDCARD_TOKEN)
       .replace(/\*/g, SINGLE_WILDCARD_TOKEN)
 
@@ -63,7 +63,7 @@
     escaped = escaped.replace(/\//g, "\\/")
 
     // Replace tokens with appropriate regex patterns
-    let regexPattern = escaped
+    const regexPattern = escaped
       .replace(new RegExp(DOUBLE_WILDCARD_TOKEN, "g"), ".*")
       .replace(new RegExp(SINGLE_WILDCARD_TOKEN, "g"), "[^/]+")
 
@@ -157,7 +157,7 @@
 
   // Track outbound link clicks
   if (trackOutbound) {
-    document.addEventListener("click", function (e) {
+    document.addEventListener("click", (e) => {
       const link = e.target.closest("a")
       if (!link || !link.href) return
 

@@ -1,11 +1,11 @@
 <script lang="ts">
 import { DateFormatter, getLocalTimeZone, today } from "@internationalized/date"
+import type { DateRange } from "bits-ui"
 import { Button } from "$lib/components/ui/button/index.js"
 import * as Popover from "$lib/components/ui/popover/index.js"
 import { RangeCalendar } from "$lib/components/ui/range-calendar/index.js"
 import * as Select from "$lib/components/ui/select/index.js"
 import { cn } from "$lib/utils"
-import type { DateRange } from "bits-ui"
 
 const df = new DateFormatter("en-US", {
   dateStyle: "medium",

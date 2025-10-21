@@ -6,7 +6,7 @@
 // The functions below just give us a nicer way to express the lookups.
 
 import { setContext, getContext as svelteGetContext } from "svelte"
-import { writable, type Readable, type Writable } from "svelte/store"
+import { type Readable, type Writable, writable } from "svelte/store"
 
 type Class = new (...args: any) => any
 

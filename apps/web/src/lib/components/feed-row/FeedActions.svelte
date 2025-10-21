@@ -1,11 +1,11 @@
 <script lang="ts">
+import { page } from "$app/state"
 import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
 import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
 import { Button } from "$lib/components/ui/button"
 import * as Tooltip from "$lib/components/ui/tooltip"
 import { useInterface } from "$lib/state/ui.svelte"
 import { cn } from "$lib/utils"
-import { page } from "$app/state"
 
 const ui = useInterface()
 

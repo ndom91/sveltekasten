@@ -1,9 +1,9 @@
 <script lang="ts">
 import { watch } from "runed"
 import { tick } from "svelte"
-import AudioVisualizer from "./AudioVisualizer.svelte"
 import { cn } from "$/lib/utils"
 import { useInterface } from "$lib/state/ui.svelte"
+import AudioVisualizer from "./AudioVisualizer.svelte"
 
 const { src }: { src: string } = $props()
 

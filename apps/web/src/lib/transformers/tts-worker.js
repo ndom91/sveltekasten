@@ -1,9 +1,9 @@
 import {
-  env,
-  Tensor,
   AutoTokenizer,
+  env,
   SpeechT5ForTextToSpeech,
   SpeechT5HifiGan,
+  Tensor,
 } from "@xenova/transformers"
 import { encodeWAV } from "./utils"
 
@@ -23,26 +23,39 @@ class MyTextToSpeechPipeline {
   static vocoder_instance = undefined
 
   static async getInstance(progress_callback = undefined) {
-    if (this.tokenizer_instance === null) {
-      this.tokenizer = AutoTokenizer.from_pretrained(this.model_id, { progress_callback })
+    if (MyTextToSpeechPipeline.tokenizer_instance === null) {
+      MyTextToSpeechPipeline.tokenizer = AutoTokenizer.from_pretrained(
+        MyTextToSpeechPipeline.model_id,
+        { progress_callback }
+      )
     }
 
-    if (this.model_instance === undefined) {
-      this.model_instance = SpeechT5ForTextToSpeech.from_pretrained(this.model_id, {
-        quantized: false,
-        progress_callback,
-      })
+    if (MyTextToSpeechPipeline.model_instance === undefined) {
+      MyTextToSpeechPipeline.model_instance = SpeechT5ForTextToSpeech.from_pretrained(
+        MyTextToSpeechPipeline.model_id,
+        {
+          quantized: false,
+          progress_callback,
+        }
+      )
     }
 
-    if (this.vocoder_instance === undefined) {
-      this.vocoder_instance = SpeechT5HifiGan.from_pretrained(this.vocoder_id, {
-        quantized: false,
-        progress_callback,
-      })
+    if (MyTextToSpeechPipeline.vocoder_instance === undefined) {
+      MyTextToSpeechPipeline.vocoder_instance = SpeechT5HifiGan.from_pretrained(
+        MyTextToSpeechPipeline.vocoder_id,
+        {
+          quantized: false,
+          progress_callback,
+        }
+      )
     }
 
     return new Promise(async (resolve) => {
-      const result = await Promise.all([this.tokenizer, this.model_instance, this.vocoder_instance])
+      const result = await Promise.all([
+        MyTextToSpeechPipeline.tokenizer,
+        MyTextToSpeechPipeline.model_instance,
+        MyTextToSpeechPipeline.vocoder_instance,
+      ])
       self.postMessage({
         status: "ready",
       })
