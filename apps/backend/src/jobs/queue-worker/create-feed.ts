@@ -45,7 +45,7 @@ export const createFeed = async (data: CreateFeedData) => {
             return 1
           })
           .slice(0, INITIAL_ITEMS_TO_FETCH)
-          .map(item => ({
+          .map((item) => ({
             title: item.title ?? "",
             guid: item.id,
             link: item.url ?? "",
@@ -54,23 +54,27 @@ export const createFeed = async (data: CreateFeedData) => {
             contentSnippet: item.description,
             ingested: new Date().toISOString(),
             published: item.published,
-            categories: item.categories.map(category => category.label).filter((label) => !label?.includes('|')).filter(Boolean) as string[],
+            categories: item.categories
+              .map((category) => category.label)
+              .filter((label) => !label?.includes("|"))
+              .filter(Boolean) as string[],
             user: {
               connect: {
                 id: data.userId,
               },
             },
             feedMedia: {
-              create: item.media?.filter(media => media.type === "image" && !!media.title && !!media.url).map(media => ({
-                href: media.url,
-                title: media.title,
-                user: {
-                  connect: {
-                    id: data.userId,
+              create: item.media
+                ?.filter((media) => media.type === "image" && !!media.title && !!media.url)
+                .map((media) => ({
+                  href: media.url,
+                  title: media.title,
+                  user: {
+                    connect: {
+                      id: data.userId,
+                    },
                   },
-                },
-              }),
-              ),
+                })),
             },
           })),
       },

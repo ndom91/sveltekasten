@@ -1,8 +1,8 @@
+import type { Context } from "hono"
 import { getCookie } from "hono/cookie"
 import { HTTPException } from "hono/http-exception"
-import debugFactory from "./log.js"
 import { db } from "../plugins/prisma.js"
-import type { Context } from "hono"
+import debugFactory from "./log.js"
 
 const getSession = async (sessionToken: string) => {
   return db.session.findFirst({

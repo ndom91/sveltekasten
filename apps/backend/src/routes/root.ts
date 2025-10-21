@@ -1,5 +1,5 @@
-import { Hono } from "hono"
 import type { HttpBindings } from "@hono/node-server"
+import { Hono } from "hono"
 
 const api = new Hono<{ Bindings: HttpBindings }>()
 

@@ -3,7 +3,7 @@ import { type HttpBindings, serve } from "@hono/node-server"
 import { Hono } from "hono"
 import { logger } from "hono/logger"
 import { prettyJSON } from "hono/pretty-json"
-import { rateLimiter } from "hono-rate-limiter";
+import { rateLimiter } from "hono-rate-limiter"
 
 import { updateJob } from "./jobs/cron-update.js"
 import { imageProxyHandler } from "./lib/imageProxy.js"
@@ -14,19 +14,26 @@ const img = new Hono<{ Bindings: HttpBindings }>()
 img.use("/*", imageProxyHandler)
 
 const app = new Hono<{ Bindings: HttpBindings }>()
-app.route('/img', img)
+app.route("/img", img)
 
 app.use(logger())
 app.use(prettyJSON())
 if (process.env.NODE_ENV === "production") {
-  app.use(rateLimiter({
-    windowMs: 1 * 60 * 1000, // 1 minutes
-    limit: 250,
-    standardHeaders: "draft-6",
-    keyGenerator: (c) => {
-      return c.req.header('X-Forwarded-For') || c.req.header('X-Real-IP') || c.req.header('CF-Connecting-IP') || '127.0.0.1'
-    }
-  }))
+  app.use(
+    rateLimiter({
+      windowMs: 1 * 60 * 1000, // 1 minutes
+      limit: 250,
+      standardHeaders: "draft-6",
+      keyGenerator: (c) => {
+        return (
+          c.req.header("X-Forwarded-For") ||
+          c.req.header("X-Real-IP") ||
+          c.req.header("CF-Connecting-IP") ||
+          "127.0.0.1"
+        )
+      },
+    })
+  )
 }
 
 const BASE_PATH = "/v1"

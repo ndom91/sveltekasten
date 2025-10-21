@@ -1,7 +1,7 @@
+import process from "node:process"
 import { PrismaNeon } from "@prisma/adapter-neon"
 import debugFactory from "../lib/log.js"
 import { PrismaClient } from "../prisma-client/client.js"
-import process from "node:process"
 
 const debug = debugFactory("backend:db")
 

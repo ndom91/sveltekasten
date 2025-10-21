@@ -6,10 +6,7 @@
     "skipLibCheck": true,
     "noUncheckedIndexedAccess": true,
 
-    "lib": [
-      "es2022",
-      "dom"
-    ],
+    "lib": ["es2022", "dom"],
     "target": "es2022",
     "module": "NodeNext",
     "moduleDetection": "force",
@@ -18,15 +15,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
 
-    "types": [
-      "node"
-    ]
+    "types": ["node"]
   },
-  "include": [
-    "src/**/*.ts",
-    "prisma.d.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*.ts", "prisma.d.ts"],
+  "exclude": ["node_modules"]
 }

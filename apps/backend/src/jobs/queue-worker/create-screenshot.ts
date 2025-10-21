@@ -1,13 +1,13 @@
+import type { Buffer } from "node:buffer"
+import { existsSync } from "node:fs"
+import { readFile } from "node:fs/promises"
+import { userInfo } from "node:os"
+import { join } from "node:path"
 import { chromium } from "playwright-chromium"
 import { getThumbhash } from "../../lib/blurhash.js"
 import debugFactory from "../../lib/log.js"
 import { db } from "../../plugins/prisma.js"
 import { uploadImage } from "../../plugins/storage.js"
-import { existsSync } from "node:fs"
-import { readFile } from "node:fs/promises"
-import { userInfo } from "node:os"
-import { join } from "node:path"
-import type { Buffer } from "node:buffer"
 
 const debug = debugFactory("backend:create-screenshot")
 
@@ -29,10 +29,10 @@ export interface CreateScreenshot {
 
 export const createScreenshot = async (data: CreateScreenshot) => {
   if (
-    !process.env.BUCKET_PUBLIC_URL
-    || !process.env.BUCKET_SECRET_KEY
-    || !process.env.BUCKET_ACCESS_KEY
-    || !process.env.BUCKET_URL
+    !process.env.BUCKET_PUBLIC_URL ||
+    !process.env.BUCKET_SECRET_KEY ||
+    !process.env.BUCKET_ACCESS_KEY ||
+    !process.env.BUCKET_URL
   ) {
     console.error("Cannot take screenshot, missing object store credentials")
     return
@@ -58,12 +58,7 @@ export const createScreenshot = async (data: CreateScreenshot) => {
   await updateImageUrl({ image, imageUrl: publicImageUrl, url, userId })
 }
 
-const updateImageUrl = async ({
-  image,
-  imageUrl,
-  url,
-  userId,
-}: UpdateImageUrlArgs) => {
+const updateImageUrl = async ({ image, imageUrl, url, userId }: UpdateImageUrlArgs) => {
   // Generate thumbhash b64 string from image
   const imageBlur = await getThumbhash(image)
 
@@ -85,9 +80,7 @@ const screenshotUrl = async ({ url }: ScreenshotArgs) => {
   const localChromiumPath = await getLocalChromiumPath()
   const browser = await chromium.launch({
     executablePath:
-      process.env.NODE_ENV !== "development"
-        ? chromium.executablePath()
-        : localChromiumPath,
+      process.env.NODE_ENV !== "development" ? chromium.executablePath() : localChromiumPath,
     headless: true,
   })
 
@@ -112,7 +105,7 @@ const screenshotUrl = async ({ url }: ScreenshotArgs) => {
 
   const btnRegex = new RegExp(
     /(Accept all|Accept all cookies|I agree|Accept|Agree|Agree all|Ich stimme zu|Okay|OK)/,
-    "gi",
+    "gi"
   )
   const cookieBtnLocator = page.getByRole("button", { name: btnRegex })
 
@@ -123,11 +116,11 @@ const screenshotUrl = async ({ url }: ScreenshotArgs) => {
 
   // Screenshot
   let buffer
-  if (url.includes('x.com') || url.includes('twitter.com')) {
-    await page.getByTestId('xMigrationBottomBar').click();
-    await page.waitForTimeout(2500);
+  if (url.includes("x.com") || url.includes("twitter.com")) {
+    await page.getByTestId("xMigrationBottomBar").click()
+    await page.waitForTimeout(2500)
 
-    const tweetElement = page.getByTestId('tweet')
+    const tweetElement = page.getByTestId("tweet")
     if (tweetElement) {
       buffer = await tweetElement.screenshot({ type: "png", scale: "css" })
     }
@@ -148,12 +141,7 @@ const getLocalChromiumPath = async () => {
   if (isNix) {
     const user = userInfo()
 
-    const chromiumBinPath = join(
-      user.homedir,
-      ".nix-profile",
-      "bin",
-      "chromium",
-    )
+    const chromiumBinPath = join(user.homedir, ".nix-profile", "bin", "chromium")
     if (existsSync(chromiumBinPath)) {
       return chromiumBinPath
     }

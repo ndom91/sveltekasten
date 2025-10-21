@@ -11,14 +11,12 @@ const bookmarkImageSchema = z.object({
           })
           .url(),
       })
-      .passthrough(),
+      .passthrough()
   ),
 })
 
-const cookieName
-  = process.env.NODE_ENV !== "production"
-    ? "authjs.session-token"
-    : "__Secure-authjs.session-token"
+const cookieName =
+  process.env.NODE_ENV !== "production" ? "authjs.session-token" : "__Secure-authjs.session-token"
 
 const bookmarkCookieSchema = z.object({
   [cookieName]: z.string({
@@ -26,12 +24,6 @@ const bookmarkCookieSchema = z.object({
   }),
 })
 
-export const bookmarkImageCookieValidator = zValidator(
-  "cookie",
-  bookmarkCookieSchema,
-)
+export const bookmarkImageCookieValidator = zValidator("cookie", bookmarkCookieSchema)
 
-export const bookmarkImageBodyValidator = zValidator(
-  "json",
-  bookmarkImageSchema,
-)
+export const bookmarkImageBodyValidator = zValidator("json", bookmarkImageSchema)

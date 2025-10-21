@@ -1,8 +1,8 @@
+import process from "node:process"
 import fastq from "fastq"
 import { feedWorker, screenshotWorker } from "../jobs/queue-worker/index.js"
-import debugFactory from "../lib/log.js"
-import process from "node:process"
 import type { actions } from "../lib/constants.js"
+import debugFactory from "../lib/log.js"
 
 const debug = debugFactory("backend:queue")
 

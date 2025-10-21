@@ -1,4 +1,4 @@
-import { type Context } from "hono"
+import type { Context } from "hono"
 import { createIPX, createIPXWebServer, ipxFSStorage, ipxHttpStorage } from "ipx"
 import { LRUCache } from "lru-cache"
 

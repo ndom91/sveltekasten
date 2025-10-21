@@ -1,6 +1,6 @@
+import type { Buffer } from "node:buffer"
 import sharp from "sharp"
 import * as Thumbhash from "thumbhash"
-import type { Buffer } from "node:buffer"
 
 const binaryToBase64 = (binary: Uint8Array) => btoa(String.fromCharCode(...binary))
 

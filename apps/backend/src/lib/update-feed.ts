@@ -1,6 +1,6 @@
+import { db } from "../plugins/prisma.js"
 import { fetchFeed } from "./feed.js"
 import debugFactory from "./log.js"
-import { db } from "../plugins/prisma.js"
 import type { Feed } from "./types/zod.js"
 
 interface MatchedFeedEntries {
