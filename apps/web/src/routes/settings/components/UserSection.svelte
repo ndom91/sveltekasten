@@ -23,13 +23,20 @@ import {
 
 let exportLoading = $state(false)
 let importLoading = $state(false)
-let {
+
+const userSettings = page.data.user?.settings ?? {
   ai: {
-    tts: { enabled: ttsEnabled, speaker: ttsSpeaker, location: ttsLocation },
-    summarization: { enabled: summarizationEnabled },
+    tts: defaultAISettings?.tts,
+    summarization: defaultAISettings?.summarization,
   },
-  personal: personalSettings,
-} = $state(page.data.user?.settings ?? { ai: { defaultAISettings } })
+  personal: {},
+}
+
+let ttsEnabled = $state(userSettings.ai?.tts.enabled)
+let ttsSpeaker = $state(userSettings.ai?.tts.speaker)
+let ttsLocation = $state(userSettings.ai?.tts.location)
+let summarizationEnabled = $state(userSettings.ai?.summarization.enabled)
+let personalSettings = $state(userSettings.personal)
 
 type UpdateUserSettingsArgs = {
   ttsEnabled: boolean

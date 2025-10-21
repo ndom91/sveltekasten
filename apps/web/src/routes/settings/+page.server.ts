@@ -52,7 +52,7 @@ export const actions: Actions = {
 
       return { type: "success", message: "Adding Feed" }
     } catch (error) {
-      console.error(String(error))
+      console.error("Error:", String(error))
 
       return {
         type: "error",
@@ -134,7 +134,7 @@ export const load: PageServerLoad = async (event) => {
       },
     }
   } catch (error) {
-    console.error(String(error))
+    console.error("Err: ", String(error))
 
     return {
       bookmarks: { count: 0, data: [] },

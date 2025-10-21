@@ -1,6 +1,6 @@
 <script lang="ts">
 import { goto } from "$app/navigation"
-import { page } from "$app/stores"
+import { page } from "$app/state"
 import { CommandBar } from "$lib/components/command-bar"
 import Sidebar from "$lib/components/NavigationSidebar.svelte"
 import { Navbar } from "$lib/components/navbar"
@@ -9,7 +9,7 @@ import AboutSection from "./components/AboutSection.svelte"
 import FeedsSection from "./components/FeedsSection.svelte"
 import UserSection from "./components/UserSection.svelte"
 
-const tab = $derived($page.url.searchParams.get("tab"))
+const tab = $derived(page.url.searchParams.get("tab"))
 
 const handleTabChange = (data: string | undefined) => {
   goto(`?tab=${data}`)
