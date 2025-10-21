@@ -3,18 +3,18 @@ import { watch } from "runed"
 import { onDestroy, onMount } from "svelte"
 import { InfiniteLoader, LoaderState } from "svelte-infinite"
 import { toast } from "svelte-sonner"
-import FilterBar from "./FilterBar.svelte"
+import { goto } from "$app/navigation"
+import { resolve } from "$app/paths"
+import { page } from "$app/state"
+import { BookmarkRow } from "$lib/components/bookmark-row"
 import EmptyState from "$lib/components/EmptyState.svelte"
 import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
-import { BookmarkRow } from "$lib/components/bookmark-row"
 import { Navbar } from "$lib/components/navbar"
 import { BookmarksService } from "$lib/state/bookmarks.svelte"
 import { useInterface } from "$lib/state/ui.svelte"
 import { getContext } from "$lib/utils/context"
 import { Logger, loggerLevels } from "$lib/utils/logger"
-import { goto } from "$app/navigation"
-import { resolve } from "$app/paths"
-import { page } from "$app/state"
+import FilterBar from "./FilterBar.svelte"
 
 const ui = useInterface()
 const bookmarkService = getContext(BookmarksService)
@@ -205,8 +205,8 @@ onDestroy(() => {
   class="align-start flex flex-col justify-start gap-2 overflow-y-scroll outline-none"
   bind:this={rootElement}
 >
-  <FilterBar />
   {#if bookmarkService.bookmarks?.length}
+    <FilterBar />
     <InfiniteLoader {loaderState} triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
       {#each bookmarkService.bookmarks as item (item.id)}
         <BookmarkRow bookmark={item} />
