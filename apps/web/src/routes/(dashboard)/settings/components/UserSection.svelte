@@ -192,8 +192,8 @@ async function toggleSetting(setting: string) {
 </script>
 
 <div class="flex h-full flex-col items-start justify-start gap-2">
-  <Card.Root class="w-full rounded-md bg-transparent shadow-none">
-    <Card.Header class="rounded-t-md bg-neutral-100 dark:bg-neutral-800">
+  <Card.Root class="w-full rounded-md shadow-none bg-neutral-100 dark:bg-neutral-800">
+    <Card.Header class="rounded-t-md">
       <Card.Title class="flex w-full items-center justify-between">
         <span class="font-normal">General</span>
       </Card.Title>
@@ -259,8 +259,8 @@ async function toggleSetting(setting: string) {
       </div>
     </Card.Content>
   </Card.Root>
-  <Card.Root class="w-full rounded-md bg-transparent shadow-none">
-    <Card.Header class="rounded-t-md bg-neutral-100 dark:bg-neutral-800">
+  <Card.Root class="w-full rounded-md shadow-none bg-neutral-100 dark:bg-neutral-800">
+    <Card.Header class="rounded-t-md">
       <Card.Title class="flex w-full items-center justify-between">
         <span class="font-normal">AI Settings</span>
         <Badge class="text-sm">Experimental</Badge>
@@ -427,8 +427,8 @@ async function toggleSetting(setting: string) {
       </div>
     </Card.Content>
   </Card.Root>
-  <Card.Root class="w-full rounded-md bg-transparent shadow-none">
-    <Card.Header class="rounded-t-md bg-neutral-100 dark:bg-neutral-800">
+  <Card.Root class="w-full rounded-md bg-neutral-100 dark:bg-neutral-800 shadow-none">
+    <Card.Header class="rounded-t-md">
       <Card.Title class="flex w-full items-center justify-between">
         <span class="font-normal">Import</span>
       </Card.Title>
@@ -485,8 +485,8 @@ async function toggleSetting(setting: string) {
       {/if}
     </Card.Content>
   </Card.Root>
-  <Card.Root class="w-full rounded-md bg-transparent shadow-none">
-    <Card.Header class="rounded-t-md bg-neutral-100 dark:bg-neutral-800">
+  <Card.Root class="w-full rounded-md  bg-neutral-100 dark:bg-neutral-800 shadow-none">
+    <Card.Header class="rounded-t-md">
       <Card.Title class="flex w-full items-center justify-between">
         <span>Export</span>
       </Card.Title>

@@ -8,7 +8,7 @@ import { useInterface } from "$lib/state/ui.svelte"
 import { cn } from "$lib/utils"
 
 const ui = useInterface()
-let userSidebarElement = $state<HTMLElement>()!
+let userSidebarElement = $state<HTMLElement>()
 
 const handleKeyDown = (event: KeyboardEvent) => {
   if (event.repeat || event.target instanceof HTMLInputElement) {
@@ -20,6 +20,7 @@ const handleKeyDown = (event: KeyboardEvent) => {
 }
 
 const mutate = () => {
+  if (!userSidebarElement) return
   if (ui.userSidebarOpen) {
     userSidebarElement.style.minWidth = "210px"
   } else {
@@ -48,7 +49,7 @@ let windowWidth: number = $state(1000)
 {:else}
   <aside
     bind:this={userSidebarElement}
-    class="flex h-full flex-col justify-start border-r border-r-neutral-200 bg-neutral-50 transition-all duration-100 dark:border-r-neutral-800/60 dark:bg-neutral-900"
+    class="flex flex-col justify-start border-r border-r-neutral-200 bg-neutral-50 transition-all duration-100 dark:border-r-neutral-800/60 dark:bg-neutral-900"
   >
     <div class="m-4 flex items-center justify-center">
       <Button
