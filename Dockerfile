@@ -29,8 +29,8 @@ RUN cd apps/backend && pnpm exec prisma generate
 RUN cd apps/web && pnpm exec prisma generate
 
 RUN pnpm run -r build \
-  && pnpm deploy --filter=sveltekasten-web --prod /prod/web \
-  && pnpm deploy --filter=sveltekasten-backend --prod /prod/backend
+  && pnpm deploy --legacy --filter=sveltekasten-web --prod /prod/web \
+  && pnpm deploy --legacy --filter=sveltekasten-backend --prod /prod/backend
 
 ###########################
 #      WEB CONTAINER      #
