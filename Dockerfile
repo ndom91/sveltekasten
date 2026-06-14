@@ -46,8 +46,11 @@ RUN apt-get update -qq \
 COPY --chown=node:node --from=build /prod/web /prod/web
 
 # Generate prisma client and push db schema
+# Pin to the project's prisma version - bare `pnpm dlx prisma` fetches an
+# unpinned version whose engine mismatches @prisma/client (missing field
+# `enableTracing` panic at runtime).
 RUN cd /prod/web \
-  && pnpm dlx prisma generate
+  && pnpm dlx prisma@7.8.0 generate
 
 WORKDIR /prod/web
 EXPOSE ${PORT:-3000}
@@ -68,7 +71,7 @@ COPY --chown=node:node --from=build /prod/backend /prod/backend
 
 # Generate prisma client and install playwright chromium + deps
 RUN cd /prod/backend \
-  && pnpm dlx prisma generate \
+  && pnpm dlx prisma@7.8.0 generate \
   && pnpm exec playwright install --with-deps chromium
 
 WORKDIR /prod/backend
