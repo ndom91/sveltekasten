@@ -67,12 +67,13 @@ RUN apt-get update -qq \
 
 COPY --chown=node:node --from=build /prod/backend /prod/backend
 
-# No prisma generate here: the build stage already generated the client (with
-# engineType = "client") and tsc compiled it into dist/. The prod deploy
-# excludes devDeps (prisma + prisma-zod-generator), so regenerating would fail.
-# Only install the Playwright browser the backend needs at runtime.
+# Install the Playwright browser the backend needs at runtime.
+# Call the binary directly, NOT via `pnpm exec` - `pnpm exec` runs a deps-status
+# check that re-installs in /prod/backend (re-pulling devDeps and failing on
+# ERR_PNPM_IGNORED_BUILDS, since the allowBuilds config lives in the workspace
+# root which isn't part of the deployed single package).
 RUN cd /prod/backend \
-  && pnpm exec playwright install --with-deps chromium
+  && node_modules/.bin/playwright install --with-deps chromium
 
 WORKDIR /prod/backend
 EXPOSE ${PORT:-8000}
