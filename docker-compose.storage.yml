@@ -47,7 +47,9 @@ services:
       timeout: 20s
       retries: 3
     volumes:
-      - database:/var/lib/postgresql/data
+      # Postgres 18+ images store data in a version-specific subdirectory, so the
+      # mount must be at /var/lib/postgresql (not /var/lib/postgresql/data).
+      - database:/var/lib/postgresql
 
 volumes:
   database:
