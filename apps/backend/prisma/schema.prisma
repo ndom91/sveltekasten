@@ -2,6 +2,10 @@ generator client {
   provider        = "prisma-client"
   previewFeatures = ["fullTextSearchPostgres"]
   output          = "../src/prisma-client"
+  // Rust-free client engine - required with driver adapters (PrismaPg).
+  // Without it the runtime loads the node-api engine and panics with
+  // "missing field enableTracing".
+  engineType      = "client"
 }
 
 datasource db {
