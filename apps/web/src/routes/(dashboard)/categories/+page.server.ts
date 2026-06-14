@@ -1,6 +1,6 @@
 import { fail, redirect } from "@sveltejs/kit"
 import { db } from "$lib/prisma"
-import { CategoryCreateInputSchema } from "$lib/types/zod.js"
+import { CategoryCreateInputObjectSchema } from "$lib/types/zod.js"
 import { Prisma } from "../../../prisma-client/client.js"
 import type { Actions, PageServerLoad } from "./$types"
 
@@ -38,7 +38,7 @@ export const actions: Actions = {
     }
 
     try {
-      CategoryCreateInputSchema.parse(formData)
+      CategoryCreateInputObjectSchema.parse(formData)
 
       await db.category.create({
         data: {

@@ -22,10 +22,10 @@
     "db:push": "pnpm run --filter sveltekasten-web db:push"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.2.6",
+    "@biomejs/biome": "2.5.0",
     "jiti": "^2.6.1",
-    "typescript": "5.9.3",
-    "vite": "7.1.10"
+    "typescript": "6.0.3",
+    "vite": "8.0.16"
   },
   "engines": {
     "node": ">=20.11"

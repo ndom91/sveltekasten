@@ -4,7 +4,7 @@ import { PUBLIC_WORKER_URL } from "$env/static/public"
 import { isAuthenticated } from "$lib/auth"
 import { db } from "$lib/prisma"
 import { fetchBookmarkMetadata } from "$lib/server/fetchBookmarkMetadata"
-import { BookmarkUncheckedCreateInputSchema } from "$lib/types/zod.js"
+import { BookmarkUncheckedCreateInputObjectSchema } from "$lib/types/zod.js"
 import type { RequestHandler } from "./$types"
 
 // Get more Bookmarks
@@ -73,7 +73,7 @@ export const POST: RequestHandler = async (event) => {
   try {
     const { session } = isAuthenticated(event)
     const inputData = await event.request.json()
-    const data = z.array(BookmarkUncheckedCreateInputSchema).parse(inputData)
+    const data = z.array(BookmarkUncheckedCreateInputObjectSchema).parse(inputData)
 
     const bookmarkData = await Promise.all(
       data.map(async (bookmark) => {

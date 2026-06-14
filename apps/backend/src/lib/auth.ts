@@ -7,8 +7,8 @@ import debugFactory from "./log.js"
 const getSession = async (sessionToken: string) => {
   return db.session.findFirst({
     where: {
-      sessionToken,
-      expires: {
+      token: sessionToken,
+      expiresAt: {
         gte: new Date(),
       },
     },

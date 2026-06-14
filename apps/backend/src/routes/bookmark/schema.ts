@@ -7,7 +7,7 @@ const bookmarkImageSchema = z.object({
       .object({
         url: z
           .string({
-            required_error: "URL is required.",
+            error: "URL is required.",
           })
           .url(),
       })
@@ -20,7 +20,7 @@ const cookieName =
 
 const bookmarkCookieSchema = z.object({
   [cookieName]: z.string({
-    required_error: "Authentication required",
+    error: "Authentication required",
   }),
 })
 

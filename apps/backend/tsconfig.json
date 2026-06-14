@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
+    "rootDir": "./src",
     "strict": true,
     "strictNullChecks": true,
     "skipLibCheck": true,
@@ -17,6 +18,6 @@
 
     "types": ["node"]
   },
-  "include": ["src/**/*.ts", "prisma.d.ts"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
 }

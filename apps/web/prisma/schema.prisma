@@ -2,7 +2,10 @@ generator client {
   provider        = "prisma-client"
   previewFeatures = ["fullTextSearchPostgres"]
   output          = "../src/prisma-client"
-  engineType      = "client"
+}
+
+datasource db {
+  provider = "postgresql"
 }
 
 generator zod {

@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   sveltekasten-web:
     build:

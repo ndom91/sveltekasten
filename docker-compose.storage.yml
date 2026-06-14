@@ -1,42 +1,40 @@
-version: "3.8"
 services:
-  minio:
-    image: minio/minio
-    command: server --console-address ":9001" /data
+  rustfs:
+    image: rustfs/rustfs:1.0.0-alpha.89
+    command: server /data
     networks:
       - briefkasten
     ports:
       - 9000:9000
       - 9001:9001
     environment:
-      - MINIO_ROOT_USER=${MINIO_ROOT_USER:-AKIAIOSFODNN7EXAMPLE}
-      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:-wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY}
-      - MINIO_BUCKET=${BUCKET_NAME:-briefkasten}
+      - RUSTFS_VOLUMES=/data
+      - RUSTFS_ADDRESS=0.0.0.0:9000
+      - RUSTFS_CONSOLE_ADDRESS=0.0.0.0:9001
+      - RUSTFS_CONSOLE_ENABLE=true
+      - RUSTFS_ACCESS_KEY=${BUCKET_ACCESS_KEY:-AKIAIOSFODNN7EXAMPLE}
+      - RUSTFS_SECRET_KEY=${BUCKET_SECRET_KEY:-wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY}
     volumes:
+      # RustFS runs as UID/GID 10001 - the host ./data dir must be writable by it
       - ./data:/data
-    healthcheck:
-      test: ["CMD", "mc", "ready", "local"]
-      interval: 30s
-      timeout: 20s
-      retries: 3
   mc:
     image: minio/mc:latest
     networks:
       - briefkasten
     depends_on:
-      - minio
+      - rustfs
     environment:
-      - MINIO_ROOT_USER=${MINIO_ROOT_USER:-AKIAIOSFODNN7EXAMPLE}
-      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:-wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY}
-      - MINIO_BUCKET=${BUCKET_NAME:-briefkasten}
+      - BUCKET_ACCESS_KEY=${BUCKET_ACCESS_KEY:-AKIAIOSFODNN7EXAMPLE}
+      - BUCKET_SECRET_KEY=${BUCKET_SECRET_KEY:-wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY}
+      - BUCKET_NAME=${BUCKET_NAME:-briefkasten}
     entrypoint: >
       /bin/sh -c "
-      /usr/bin/mc alias set local http://minio:9000 $${MINIO_ROOT_USER} $${MINIO_ROOT_PASSWORD};
-      /usr/bin/mc mb local/$${MINIO_BUCKET};
-      /usr/bin/mc anonymous set download local/$${MINIO_BUCKET};
+      until /usr/bin/mc alias set local http://rustfs:9000 $${BUCKET_ACCESS_KEY} $${BUCKET_SECRET_KEY}; do sleep 1; done;
+      /usr/bin/mc mb --ignore-existing local/$${BUCKET_NAME};
+      /usr/bin/mc anonymous set download local/$${BUCKET_NAME};
       "
   database:
-    image: postgres:15
+    image: postgres:18
     networks:
       - briefkasten
     environment:
