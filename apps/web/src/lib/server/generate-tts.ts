@@ -65,7 +65,7 @@ export const createEdgeSpeech = async ({
       ws.send(content)
     }
     let audioData = new ArrayBuffer(0)
-    const onMessage = async (event: MessageEvent<any>) => {
+    const onMessage = async (event: WebSocket.MessageEvent) => {
       if (typeof event.data === "string") {
         const { headers } = getHeadersAndData(event.data)
         switch (headers.Path) {
@@ -106,7 +106,7 @@ export const getHeadersAndData = (data: string) => {
   const headers: { [key: string]: string } = {}
   for (const line of data.slice(0, data.indexOf("\r\n\r\n")).split("\r\n")) {
     const [key, value] = line.split(":", 2)
-    headers[key] = value
+    if (key) headers[key] = value ?? ""
   }
   return { data: data.slice(data.indexOf("\r\n\r\n") + 4), headers }
 }

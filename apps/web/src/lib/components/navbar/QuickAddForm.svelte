@@ -1,7 +1,7 @@
 <script lang="ts">
 import { toast } from "svelte-sonner"
 import SuperDebug, { fieldProxy, superForm } from "sveltekit-superforms"
-import { zodClient } from "sveltekit-superforms/adapters"
+import { zod4Client } from "sveltekit-superforms/adapters"
 import { dev } from "$app/environment"
 import { page } from "$app/state"
 import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
@@ -18,7 +18,7 @@ const ui = useInterface()
 const form = superForm(page.data.quickAddForm, {
   dataType: "json",
   customValidity: true,
-  validators: zodClient(formSchema),
+  validators: zod4Client(formSchema),
   onUpdated: ({ form }) => {
     if (form.valid) {
       toast.success("Bookmark Added")

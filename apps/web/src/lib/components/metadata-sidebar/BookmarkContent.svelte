@@ -2,7 +2,7 @@
 import { format } from "@formkit/tempo"
 import { toast } from "svelte-sonner"
 import SuperDebug, { defaults, superForm } from "sveltekit-superforms"
-import { zodClient } from "sveltekit-superforms/adapters"
+import { zod4Client } from "sveltekit-superforms/adapters"
 import { dev } from "$app/environment"
 import { invalidateAll } from "$app/navigation"
 import { page } from "$app/state"
@@ -34,10 +34,10 @@ const defaultData = {
 }
 
 // @ts-expect-error TODO figure out wtf this default fn wants as arg
-const superformInstance = superForm(defaults(defaultData, zodClient(metadataSchema)), {
+const superformInstance = superForm(defaults(defaultData, zod4Client(metadataSchema)), {
   resetForm: false,
   dataType: "json",
-  validators: zodClient(metadataSchema),
+  validators: zod4Client(metadataSchema),
   onUpdated: async ({ form }) => {
     if (form.valid) {
       await invalidateAll()

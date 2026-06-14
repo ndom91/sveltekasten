@@ -6,7 +6,7 @@ import * as AlertDialog from "$lib/components/ui/alert-dialog"
 import { buttonVariants } from "$lib/components/ui/button"
 import type { Feed } from "$lib/types/zod.js"
 import { handleActionResults } from "$lib/utils/form-action"
-import type { ActionData } from "./$types"
+import type { ActionData } from "../$types"
 
 let {
   form,
@@ -28,7 +28,7 @@ $effect(() => {
 })
 </script>
 
-<AlertDialog.Root bind:open closeOnOutsideClick closeOnEscape>
+<AlertDialog.Root bind:open>
   <AlertDialog.Content class="w-[calc(100%-2rem)]">
     <AlertDialog.Header>
       <AlertDialog.Title class="text-left md:text-center">Are you sure?</AlertDialog.Title>
@@ -40,13 +40,19 @@ $effect(() => {
     </AlertDialog.Header>
     <AlertDialog.Footer>
       <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-      <AlertDialog.Action asChild>
-        <form action="?/deleteFeed" method="post" use:enhance={handleActionResults()}>
-          <input type="hidden" name="feedId" value={feed.id} />
-          <button class={cn(buttonVariants({ variant: "destructive" }), "w-full")} type="submit">
-            Continue
-          </button>
-        </form>
+      <AlertDialog.Action>
+        {#snippet child({ props })}
+          <form action="?/deleteFeed" method="post" use:enhance={handleActionResults()}>
+            <input type="hidden" name="feedId" value={feed.id} />
+            <button
+              {...props}
+              class={cn(buttonVariants({ variant: "destructive" }), "w-full")}
+              type="submit"
+            >
+              Continue
+            </button>
+          </form>
+        {/snippet}
       </AlertDialog.Action>
     </AlertDialog.Footer>
   </AlertDialog.Content>

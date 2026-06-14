@@ -48,7 +48,7 @@ const toggleDrawer = () => {
             class="flex justify-start transition focus:outline-none focus:ring-2 focus:dark:ring-neutral-700"
             size="icon"
             variant="link"
-            on:click={ui.toggleUserSidebar}
+            onclick={ui.toggleUserSidebar}
           >
             <Logo class="size-10!" />
           </Button>

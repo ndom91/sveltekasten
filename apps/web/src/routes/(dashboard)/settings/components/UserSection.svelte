@@ -107,8 +107,8 @@ $effect(() => {
   }
   const fileReader = new FileReader()
   fileReader.readAsText(importFile[0])
-  fileReader.onloadend = (e) => {
-    const htmlFile = e?.currentTarget?.result
+  fileReader.onloadend = () => {
+    const htmlFile = fileReader.result as string | null
     if (!htmlFile) {
       return
     }
@@ -119,10 +119,14 @@ $effect(() => {
     }
 
     if (parsedFile.type === bookmarkTypes.POCKET) {
-      parsedBookmarks = parsePocketBookmarks(parsedFile.doc)
+      parsedBookmarks = parsePocketBookmarks(parsedFile.doc).filter(
+        (b): b is NonNullable<typeof b> => b != null
+      )
     } else if (parsedFile.type === bookmarkTypes.CHROME) {
       // Default Chrome format
-      const chromeBookmarks = parseChromeBookmarks(parsedFile.doc)
+      const chromeBookmarks = parseChromeBookmarks(parsedFile.doc).filter(
+        (b): b is NonNullable<typeof b> => b != null
+      )
       if (!chromeBookmarks?.[0]?.title) {
         return
       }

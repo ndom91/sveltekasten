@@ -104,7 +104,7 @@ const items = [
         }}
       >
         <Select.Trigger>
-          {items[0].label}
+          {items[0]?.label}
         </Select.Trigger>
         <Select.Content>
           {#each items as item}
@@ -112,7 +112,7 @@ const items = [
           {/each}
         </Select.Content>
       </Select.Root>
-      <RangeCalendar locale={userLocale} bind:value={dateRange} initialFocus />
+      <RangeCalendar locale={userLocale} bind:value={dateRange} />
     </Popover.Content>
   </Popover.Root>
 </div>

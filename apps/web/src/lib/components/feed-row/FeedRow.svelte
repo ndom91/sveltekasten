@@ -121,10 +121,9 @@ const hideUnread = $derived.by(() => {
   return false
 })
 
-const feedCategories: string[] =
-  typeof feedEntry.categories === "string"
-    ? feedEntry.categories.replaceAll(" ", "").split(",")
-    : feedEntry.categories
+const feedCategories: string[] = Array.isArray(feedEntry.categories)
+  ? feedEntry.categories
+  : String(feedEntry.categories).replaceAll(" ", "").split(",")
 </script>
 
 <svelte:window onkeydown={handleKeyDown} />

@@ -14,7 +14,6 @@ export const registerTtsWorker = () => {
       return
     }
     if (!ttsWorker) {
-      // @ts-expect-error - This will never be compiled to CJS
       ttsWorker = new Worker(new URL(ttsWorkerUrl, import.meta.url), {
         type: "module",
       })

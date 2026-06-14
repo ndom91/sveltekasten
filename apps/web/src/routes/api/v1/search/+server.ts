@@ -30,7 +30,6 @@ export const POST: RequestHandler = async (event) => {
       return new Response(null, { status: 401, statusText: "Missing 'type' parameter" })
     }
 
-    // @ts-expect-error Method exists on all valid 'type's
     const [data, count] = await db[type].findManyAndCount({
       take: limit,
       skip,
@@ -44,7 +43,7 @@ export const POST: RequestHandler = async (event) => {
 
     if (type === "bookmark") {
       returnData = data.map((bookmark: LoadBookmark) => {
-        return { ...bookmark, tags: bookmark.tags?.map((tag) => tag.tag) }
+        return { ...bookmark, tags: bookmark.tags?.map((tag: LoadBookmark["tags"][number]) => tag.tag) }
       }) as LoadBookmarkFlatTags[]
     } else {
       returnData = data

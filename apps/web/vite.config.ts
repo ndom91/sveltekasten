@@ -11,7 +11,6 @@ function bumpManifestPlugin() {
   return {
     name: "bump-manifest",
     outputOptions(options: Rollup.OutputOptions) {
-      // @ts-expect-error vite.config never built into CJS
       const cwd = import.meta.dirname
       const version = execSync("git rev-parse HEAD").toString().trim().substring(0, 7)
       const manifestPath = join(cwd, "static", "manifest.webmanifest")

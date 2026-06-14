@@ -26,8 +26,8 @@ export type Tag = {
 
   let inputValue = $state("")
   const { form: formInstance } = form
-  let selectedValues = $state<Tag[]>(
-    ($formInstance.tags as RawTag[])?.map((tag) => ({ value: tag.id, label: tag.name })) ?? [],
+  let selectedIds = $state<string[]>(
+    ($formInstance.tags as RawTag[])?.map((tag) => tag.id) ?? [],
   )
 
   const tagValues = $derived(tags.map((tag: RawTag) => ({ value: tag.id, label: tag.name })))
@@ -38,29 +38,27 @@ export type Tag = {
       : tagValues,
   )
 
+  const selectedValues = $derived(
+    selectedIds
+      .map((id) => tagValues.find((tag) => tag.value === id))
+      .filter((tag): tag is Tag => tag !== undefined),
+  )
+
   const { value, errors } = formFieldProxy(form, field)
 
   $effect(() => {
-    if (selectedValues.length > 0) {
-      const mappedValues = selectedValues
-        .map((t: { value: string }) => {
-          return tags.find((tag) => tag.id === t.value)
-        })
-        .filter((tag): tag is RawTag => tag !== undefined)
-      $value = mappedValues as typeof $value
-    }
+    const mappedValues = selectedIds
+      .map((id) => tags.find((tag) => tag.id === id))
+      .filter((tag): tag is RawTag => tag !== undefined)
+    $value = mappedValues as typeof $value
   })
 </script>
 
 <Combobox.Root
+  type="multiple"
   {disabled}
-  inputValue={inputValue}
+  bind:value={selectedIds}
   items={filteredTags}
-  selected={selectedValues}
-  onInputValueChange={(v: string) => (inputValue = v)}
-  onSelectedChange={(v: Tag[] | undefined) => {
-    if (v) selectedValues = v
-  }}
 >
   <div class="relative">
     <svg
@@ -87,6 +85,7 @@ export type Tag = {
       placeholder="Select a tag"
       aria-label="Select a tag"
       aria-invalid={$errors ? "true" : undefined}
+      oninput={(e) => (inputValue = e.currentTarget.value)}
     />
     <svg
       class="absolute top-1/2 -translate-y-1/2 end-[0.6rem] size-5 text-neutral-50/50"

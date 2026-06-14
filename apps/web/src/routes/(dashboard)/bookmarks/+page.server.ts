@@ -1,6 +1,6 @@
 import { fail, redirect } from "@sveltejs/kit"
 import { message, superValidate } from "sveltekit-superforms"
-import { zod } from "sveltekit-superforms/adapters"
+import { zod4 } from "sveltekit-superforms/adapters"
 import type { z } from "zod"
 import { PUBLIC_WORKER_URL } from "$env/static/public"
 import { isAuthenticated } from "$lib/auth"
@@ -36,7 +36,7 @@ export const actions: Actions = {
     return { type: "success", message: "Deleted Bookmark" }
   },
   saveMetadata: async (event) => {
-    const form = await superValidate(event.request, zod(metadataSchema), {
+    const form = await superValidate(event.request, zod4(metadataSchema), {
       id: "saveMetadataForm",
     })
 
@@ -106,7 +106,7 @@ export const actions: Actions = {
     }
   },
   quickAdd: async (event) => {
-    const form = await superValidate(event.request, zod(quickAddSchema))
+    const form = await superValidate(event.request, zod4(quickAddSchema))
     if (!form.valid) {
       return fail(400, {
         form,

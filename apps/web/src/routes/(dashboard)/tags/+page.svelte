@@ -35,22 +35,25 @@ const sortedTags = $derived(() => {
     return tags
   }
 
+  const col = sortColumn
+  const dir = sortDirection
+
   return [...tags].sort((a, b) => {
-    const aVal = a[sortColumn]
-    const bVal = b[sortColumn]
+    const aVal = a[col]
+    const bVal = b[col]
 
     if (aVal == null && bVal == null) return 0
-    if (aVal == null) return sortDirection === "asc" ? 1 : -1
-    if (bVal == null) return sortDirection === "asc" ? -1 : 1
+    if (aVal == null) return dir === "asc" ? 1 : -1
+    if (bVal == null) return dir === "asc" ? -1 : 1
 
     let comparison = 0
-    if (sortColumn === "createdAt") {
+    if (col === "createdAt") {
       comparison = new Date(aVal).getTime() - new Date(bVal).getTime()
     } else {
       comparison = String(aVal).localeCompare(String(bVal))
     }
 
-    return sortDirection === "asc" ? comparison : -comparison
+    return dir === "asc" ? comparison : -comparison
   })
 })
 

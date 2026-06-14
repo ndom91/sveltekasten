@@ -6,11 +6,12 @@ import { Button } from "$lib/components/ui/button"
 import { Checkbox } from "$lib/components/ui/checkbox"
 import { useInterface } from "$lib/state/ui.svelte"
 import type { Feed } from "$lib/types/zod.js"
-import type { PageServerLoad } from "./$types"
 
 const ui = useInterface()
 
-const { data: feeds } = page.data.feeds as PageServerLoad.feeds.data
+const { data: feeds } = page.data.feeds as {
+  data: (Feed & { visible: boolean; _count: { feedEntries: number } })[]
+}
 
 const handleMarkAllRead = async (feed: Feed) => {
   await fetch("/api/v1/feeds/mark-all-read", {

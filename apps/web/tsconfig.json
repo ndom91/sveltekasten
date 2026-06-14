@@ -13,7 +13,8 @@
     "noUncheckedIndexedAccess": true,
     "forceConsistentCasingInFileNames": true,
     "useUnknownInCatchVariables": true,
-    "module": "NodeNext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "lib": ["dom", "dom.iterable", "es2022", "webworker"]
   },
   "include": [

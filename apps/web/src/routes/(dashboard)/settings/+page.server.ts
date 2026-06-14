@@ -103,7 +103,7 @@ export const load: PageServerLoad = async (event) => {
     })) as unknown as [LoadBookmark[], number]
 
     const bookmarksFlatTags = bookmarkData.map((bookmark) => {
-      return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) }
+      return { ...bookmark, tags: bookmark.tags.map((tag: LoadBookmark["tags"][number]) => tag.tag) }
     })
 
     const user = await db.user.findUnique({

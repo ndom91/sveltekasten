@@ -2,12 +2,13 @@
 import { RangeCalendar as RangeCalendarPrimitive } from "bits-ui"
 import { cn } from "$lib/utils"
 
-type $$Props = RangeCalendarPrimitive.GridBodyProps
-
-let className: $$Props["class"]
-export { className as class }
+let {
+	class: className,
+	children,
+	...restProps
+}: RangeCalendarPrimitive.GridBodyProps = $props()
 </script>
 
-<RangeCalendarPrimitive.GridBody class={cn(className)} {...$$restProps}>
-	<slot />
+<RangeCalendarPrimitive.GridBody class={cn(className)} {...restProps}>
+	{@render children?.()}
 </RangeCalendarPrimitive.GridBody>

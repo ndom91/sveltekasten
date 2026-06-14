@@ -31,7 +31,7 @@ function closeAndFocusTrigger() {
 <Popover.Root bind:open>
   <Popover.Trigger>
     <Button
-      bind:element={triggerElement}
+      bind:ref={triggerElement}
       variant="outline"
       role="combobox"
       aria-expanded={open}
