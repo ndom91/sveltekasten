@@ -17,22 +17,6 @@ services:
     volumes:
       # RustFS runs as UID/GID 10001 - the host ./data dir must be writable by it
       - ./data:/data
-  mc:
-    image: minio/mc:latest
-    networks:
-      - briefkasten
-    depends_on:
-      - rustfs
-    environment:
-      - BUCKET_ACCESS_KEY=${BUCKET_ACCESS_KEY:-AKIAIOSFODNN7EXAMPLE}
-      - BUCKET_SECRET_KEY=${BUCKET_SECRET_KEY:-wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY}
-      - BUCKET_NAME=${BUCKET_NAME:-briefkasten}
-    entrypoint: >
-      /bin/sh -c "
-      until /usr/bin/mc alias set local http://rustfs:9000 $${BUCKET_ACCESS_KEY} $${BUCKET_SECRET_KEY}; do sleep 1; done;
-      /usr/bin/mc mb --ignore-existing local/$${BUCKET_NAME};
-      /usr/bin/mc anonymous set download local/$${BUCKET_NAME};
-      "
   database:
     image: postgres:18
     networks:

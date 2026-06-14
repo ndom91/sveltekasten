@@ -7,6 +7,7 @@ import { rateLimiter } from "hono-rate-limiter"
 
 import { updateJob } from "./jobs/cron-update.js"
 import { imageProxyHandler } from "./lib/imageProxy.js"
+import { ensureBucket } from "./plugins/storage.js"
 import bookmark from "./routes/bookmark/index.js"
 import feed from "./routes/feed/index.js"
 
@@ -46,6 +47,8 @@ console.log(`
 🚀 Server ready at: http://0.0.0.0:${port}
 ⌛ Next cron run at: ${format(updateJob.nextRun() ?? "", { date: "medium", time: "long" })}
 `)
+
+await ensureBucket()
 
 serve({
   fetch: app.fetch,
