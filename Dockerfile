@@ -45,12 +45,10 @@ RUN apt-get update -qq \
 
 COPY --chown=node:node --from=build /prod/web /prod/web
 
-# Generate prisma client and push db schema
-# Pin to the project's prisma version - bare `pnpm dlx prisma` fetches an
-# unpinned version whose engine mismatches @prisma/client (missing field
-# `enableTracing` panic at runtime).
-RUN cd /prod/web \
-  && pnpm dlx prisma@7.8.0 generate
+# No prisma generate here: the build stage already generated the client (with
+# engineType = "client", Rust-free) and vite bundled it into build/. The prod
+# deploy excludes devDeps (prisma + prisma-zod-generator), so regenerating here
+# would fail ("prisma-zod-generator: not found") and is unnecessary.
 
 WORKDIR /prod/web
 EXPOSE ${PORT:-3000}
@@ -69,9 +67,11 @@ RUN apt-get update -qq \
 
 COPY --chown=node:node --from=build /prod/backend /prod/backend
 
-# Generate prisma client and install playwright chromium + deps
+# No prisma generate here: the build stage already generated the client (with
+# engineType = "client") and tsc compiled it into dist/. The prod deploy
+# excludes devDeps (prisma + prisma-zod-generator), so regenerating would fail.
+# Only install the Playwright browser the backend needs at runtime.
 RUN cd /prod/backend \
-  && pnpm dlx prisma@7.8.0 generate \
   && pnpm exec playwright install --with-deps chromium
 
 WORKDIR /prod/backend
