@@ -15,8 +15,9 @@ services:
       - RUSTFS_ACCESS_KEY=${BUCKET_ACCESS_KEY:-AKIAIOSFODNN7EXAMPLE}
       - RUSTFS_SECRET_KEY=${BUCKET_SECRET_KEY:-wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY}
     volumes:
-      # RustFS runs as UID/GID 10001 - the host ./data dir must be writable by it
-      - ./data:/data
+      # RustFS runs as UID/GID 10001. A named volume inherits the image's /data
+      # ownership (10001), avoiding the permission-denied a host bind-mount hits.
+      - rustfs:/data
   database:
     image: postgres:18
     networks:
@@ -37,6 +38,7 @@ services:
 
 volumes:
   database:
+  rustfs:
 
 networks:
   briefkasten:
