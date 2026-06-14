@@ -52,7 +52,11 @@ COPY --chown=node:node --from=build /prod/web /prod/web
 
 WORKDIR /prod/web
 EXPOSE ${PORT:-3000}
-CMD [ "pnpm", "start" ]
+# Run node directly, not `pnpm start`: pnpm would run a deps-status check that
+# reinstalls + triggers the `prepare` (svelte-kit sync) script, which needs
+# devDeps (vite) and git that aren't in the prod image. Env is injected by
+# compose `env_file:`.
+CMD [ "node", "build/index.js" ]
 
 ###########################
 #    BACKEND CONTAINER    #
@@ -77,4 +81,6 @@ RUN cd /prod/backend \
 
 WORKDIR /prod/backend
 EXPOSE ${PORT:-8000}
-CMD [ "pnpm", "start" ]
+# Run node directly, not `pnpm start` (avoids pnpm's runtime deps-status check /
+# reinstall). Env is injected by compose `env_file:`.
+CMD [ "node", "dist/index.js" ]
