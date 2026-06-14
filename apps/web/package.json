@@ -52,7 +52,6 @@
     "@builder.io/partytown": "^0.10.2",
     "@formkit/tempo": "^0.1.2",
     "@internationalized/date": "^3.12.2",
-    "@prisma/adapter-neon": "7.8.0",
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "7.8.0",
     "@xenova/transformers": "^2.17.2",

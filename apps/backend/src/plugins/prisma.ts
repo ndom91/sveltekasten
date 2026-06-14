@@ -1,12 +1,12 @@
 import process from "node:process"
-import { PrismaNeon } from "@prisma/adapter-neon"
+import { PrismaPg } from "@prisma/adapter-pg"
 import debugFactory from "../lib/log.js"
 import { PrismaClient } from "../prisma-client/client.js"
 
 const debug = debugFactory("backend:db")
 
 const prismaClientSingleton = () => {
-  const adapter = new PrismaNeon({
+  const adapter = new PrismaPg({
     connectionString: process.env.DATABASE_URL,
   })
 

@@ -1,8 +1,8 @@
-import { PrismaNeon } from "@prisma/adapter-neon"
+import { PrismaPg } from "@prisma/adapter-pg"
 import { env } from "$env/dynamic/private"
 import { Prisma, PrismaClient } from "../prisma-client/client.js"
 
-const adapter = new PrismaNeon({ connectionString: env.DATABASE_URL })
+const adapter = new PrismaPg({ connectionString: env.DATABASE_URL })
 
 // TODO: Reimplement singleton for prod
 const db = new PrismaClient({ adapter }).$extends({
