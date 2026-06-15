@@ -10,9 +10,16 @@ type Props = {
   handleMetadataSidebarOpen: () => void
   handleDeleteDialogOpen: () => void
   handleArchive: () => void
+  archiveActionLabel?: string
 }
 
-const { url, handleMetadataSidebarOpen, handleDeleteDialogOpen, handleArchive }: Props = $props()
+const {
+  url,
+  handleMetadataSidebarOpen,
+  handleDeleteDialogOpen,
+  handleArchive,
+  archiveActionLabel = "Archive",
+}: Props = $props()
 
 const id = crypto.randomUUID()
 
@@ -143,7 +150,7 @@ const handleClickOutside = (e: MouseEvent) => {
             d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"
           ></path>
         </svg>
-        <span class="font-light">Archive</span>
+        <span class="font-light">{archiveActionLabel}</span>
       </button>
       <Separator />
       <button class="grid items-center grid-cols-[28px_1fr]" onclick={handleDeleteDialogOpen}>

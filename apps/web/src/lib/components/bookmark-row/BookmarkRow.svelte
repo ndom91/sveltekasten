@@ -29,6 +29,7 @@ const {
 } = $props()
 
 let isOptionsOpen = $state(false)
+const archiveActionLabel = $derived(bookmark.archived ? "Restore" : "Archive")
 
 const handleMetadataSidebarOpen = () => {
   ui.setMetadataSidebarData({
@@ -41,6 +42,7 @@ const handleMetadataSidebarOpen = () => {
 }
 
 const handleArchive = async () => {
+  const nextArchived = !bookmark.archived
   const response = await fetch(`/api/v1/bookmarks`, {
     method: "PUT",
     headers: {
@@ -48,7 +50,7 @@ const handleArchive = async () => {
     },
     body: JSON.stringify({
       id: bookmark.id,
-      update: { archived: true },
+      update: { archived: nextArchived },
     }),
   })
   if (response.ok) {
@@ -136,6 +138,7 @@ $effect(() => {
             {handleMetadataSidebarOpen}
             handleDeleteDialogOpen={() => deleteElement?.showModal()}
             {handleArchive}
+            {archiveActionLabel}
           />
         {:else}
           <BookmarkActions
@@ -144,6 +147,7 @@ $effect(() => {
             handleDeleteDialogOpen={() => deleteElement?.showModal()}
             {isOptionsOpen}
             {handleArchive}
+            {archiveActionLabel}
           />
         {/if}
       {/snippet}

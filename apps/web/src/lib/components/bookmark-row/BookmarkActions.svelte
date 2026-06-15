@@ -10,6 +10,7 @@ type Props = {
   handleMetadataSidebarOpen: () => void
   handleDeleteDialogOpen: () => void
   handleArchive: () => void
+  archiveActionLabel?: string
 }
 
 const {
@@ -18,6 +19,7 @@ const {
   handleMetadataSidebarOpen,
   handleDeleteDialogOpen,
   handleArchive,
+  archiveActionLabel = "Archive",
 }: Props = $props()
 </script>
 
@@ -121,7 +123,7 @@ const {
       </Button>
     </Tooltip.Trigger>
     <Tooltip.Content side="top">
-      <p>Archive</p>
+      <p>{archiveActionLabel}</p>
     </Tooltip.Content>
   </Tooltip.Root>
   <Tooltip.Root>
