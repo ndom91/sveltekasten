@@ -1,5 +1,5 @@
 <script lang="ts">
-import { onMount, type Snippet, setContext } from "svelte"
+import { onMount, type Snippet, setContext, untrack } from "svelte"
 import { toast } from "svelte-sonner"
 import { browser, dev } from "$app/environment"
 import { invalidateAll, onNavigate } from "$app/navigation"
@@ -28,9 +28,15 @@ setContext(FeedEntriesService, feedEntriesService)
 setContext(BookmarksService, bookmarksService)
 
 $effect(() => {
-  bookmarksService.mergePage(page.data.bookmarks?.data ?? [])
-  feedEntriesService.mergePage(page.data.feedEntries?.data ?? [])
-  feedsService.replace(page.data.feeds?.data ?? [])
+  const bookmarks = page.data.bookmarks?.data ?? []
+  const feedEntries = page.data.feedEntries?.data ?? []
+  const feeds = page.data.feeds?.data ?? []
+
+  untrack(() => {
+    bookmarksService.mergePage(bookmarks)
+    feedEntriesService.mergePage(feedEntries)
+    feedsService.replace(feeds)
+  })
 })
 
 const ui = useInterface()
