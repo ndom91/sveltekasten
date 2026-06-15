@@ -14,6 +14,46 @@ import type { Actions, PageServerLoad } from "./$types"
 type MetadataFormData = z.infer<typeof metadataSchema>
 type QuickAddFormData = z.infer<typeof quickAddSchema>
 
+const validateBookmarkRelations = async ({
+  categoryId,
+  tags,
+  userId,
+}: {
+  categoryId?: string
+  tags: Tag[]
+  userId: string
+}) => {
+  if (categoryId) {
+    const category = await db.category.findFirst({
+      where: {
+        id: categoryId,
+        userId,
+      },
+      select: {
+        id: true,
+      },
+    })
+
+    if (!category) {
+      return false
+    }
+  }
+
+  const tagIds = Array.from(new Set(tags.map((tag) => tag.id)))
+  if (!tagIds.length) {
+    return true
+  }
+
+  const tagCount = await db.tag.count({
+    where: {
+      id: { in: tagIds },
+      userId,
+    },
+  })
+
+  return tagCount === tagIds.length
+}
+
 export const actions: Actions = {
   deleteBookmark: async (event) => {
     const userId = getUserId(event.locals)
@@ -58,6 +98,20 @@ export const actions: Actions = {
       }
 
       const formData = form.data as MetadataFormData
+
+      const validRelations = await validateBookmarkRelations({
+        categoryId: formData.category,
+        tags: formData.tags,
+        userId,
+      })
+
+      if (!validRelations) {
+        return fail(400, {
+          type: "error",
+          message: "Invalid category or tag",
+          metadataForm: form,
+        })
+      }
 
       const bookmark = await db.bookmark.update({
         data: {
@@ -140,6 +194,16 @@ export const actions: Actions = {
       }
       const formData = form.data as QuickAddFormData
       const { title, url, description, categoryId, tags } = formData
+
+      const validRelations = await validateBookmarkRelations({
+        categoryId,
+        tags,
+        userId,
+      })
+
+      if (!validRelations) {
+        return fail(400, { type: "error", message: "Invalid category or tag", form })
+      }
 
       const bookmarkMetadata = await fetchBookmarkMetadata(url)
 
