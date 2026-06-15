@@ -12,9 +12,11 @@ const bookmarksService = getContext(BookmarksService)
 let {
   dialogElement = $bindable(),
   bookmarkId,
+  onDeleted,
 }: {
   dialogElement: HTMLDialogElement | undefined
   bookmarkId: string
+  onDeleted?: (bookmarkId: string) => void
 } = $props()
 
 const bookmark = $derived(bookmarksService.find(bookmarkId))
@@ -40,7 +42,11 @@ const bookmark = $derived(bookmarksService.find(bookmarkId))
       method="post"
       use:enhance={handleActionResults(() => {
         dialogElement?.close()
-        bookmarksService.remove(bookmarkId)
+        if (onDeleted) {
+          onDeleted(bookmarkId)
+        } else {
+          bookmarksService.remove(bookmarkId)
+        }
       })}
     >
       <input type="hidden" name="bookmarkId" value={bookmarkId} />

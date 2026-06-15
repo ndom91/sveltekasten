@@ -8,11 +8,10 @@ import EmptyState from "$lib/components/EmptyState.svelte"
 import { Navbar } from "$lib/components/navbar"
 import { BookmarksService } from "$lib/state/bookmarks.svelte"
 import { useInterface } from "$lib/state/ui.svelte"
-import { getContext } from "$lib/utils/context"
 import { Logger, loggerLevels } from "$lib/utils/logger"
 
 const ui = useInterface()
-const bookmarksService = getContext(BookmarksService)
+const bookmarksService = new BookmarksService(page.data.bookmarks?.data ?? [])
 const loaderState = new LoaderState()
 
 let pageNumber = $state(0)
@@ -182,7 +181,7 @@ onDestroy(() => {
     <div class="h-full">
       <InfiniteLoader {loaderState} triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
         {#each bookmarksService.bookmarks as item (item.id)}
-          <BookmarkRow bookmark={item} />
+          <BookmarkRow bookmark={item} onDelete={(bookmarkId) => bookmarksService.remove(bookmarkId)} />
         {/each}
         {#snippet noData()}
           {#if bookmarksService.bookmarks.length >= 10}

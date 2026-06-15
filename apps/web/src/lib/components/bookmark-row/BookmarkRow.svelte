@@ -18,7 +18,10 @@ let deleteElement = $state<HTMLDialogElement>()
 
 const ui = useInterface()
 
-const { bookmark = $bindable() }: { bookmark: LoadBookmarkFlatTags } = $props()
+const {
+  bookmark = $bindable(),
+  onDelete,
+}: { bookmark: LoadBookmarkFlatTags; onDelete?: (bookmarkId: string) => void } = $props()
 
 let isOptionsOpen = $state(false)
 
@@ -73,7 +76,7 @@ $effect(() => {
   onpointerleave={() => (isOptionsOpen = false)}
   onpointerenter={() => (isOptionsOpen = true)}
 >
-  <DeleteDialog bind:dialogElement={deleteElement} bookmarkId={bookmark.id} />
+  <DeleteDialog bind:dialogElement={deleteElement} bookmarkId={bookmark.id} onDeleted={onDelete} />
   <Image
     thumbhash={bookmark.imageBlur ?? ""}
     src={imageUrl}
