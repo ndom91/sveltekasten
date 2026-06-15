@@ -1,5 +1,4 @@
 import { Hono } from "hono"
-import { HTTPException } from "hono/http-exception"
 import { getUserId } from "../../lib/auth.js"
 import { actions } from "../../lib/constants.js"
 import { feedQueue } from "../../plugins/queue.js"
@@ -28,12 +27,6 @@ api.post("/", feedBodySchema, async (c) => {
   try {
     const userId = c.get("userId")
     const { feedUrl } = c.req.valid("json")
-
-    if (!feedUrl || !userId) {
-      throw new HTTPException(500, {
-        message: "Failed to add feed, missing inputs",
-      })
-    }
 
     void feedQueue
       .push({

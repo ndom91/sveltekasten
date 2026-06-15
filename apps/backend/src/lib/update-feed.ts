@@ -1,4 +1,5 @@
 import { db } from "../plugins/prisma.js"
+import { createFeedEntryBaseData } from "./feed-entry-data.js"
 import { fetchFeed } from "./feed.js"
 import debugFactory from "./log.js"
 import type { Feed } from "./types/zod.js"
@@ -47,54 +48,34 @@ export const updateFeed = async (feed: Feed) => {
   debug(`${newItems.length} new items ${feed.url}`)
 
   // If we have new items to insert, insert their FeedEntry and FeedEntryMedia
+  const ingestedAt = new Date()
   const results = await Promise.allSettled(
     newItems.map((item) => {
       debug(`Inserting ${item.url}`)
       return db.feedEntry.create({
         data: {
-          title: item.title ?? "",
-          guid: item.id,
-          link: item.url ?? "",
-          author: item.authors?.[0]?.name,
-          content: item.content ?? item.description,
-          contentSnippet: item.description,
-          ingested: new Date().toISOString(),
-          published: item.published,
-          categories: (item.categories ?? [])
-            .map((category) => category.label)
-            .filter((label) => !label?.includes("|"))
-            .filter(Boolean) as string[],
-          user: {
-            connect: {
-              id: feed.userId,
-            },
-          },
+          ...createFeedEntryBaseData({ ingestedAt, item, userId: feed.userId }),
           feed: {
             connect: {
               id: feed.id,
             },
-          },
-          feedMedia: {
-            create: item.media
-              ?.filter((media) => media.type === "image" && !!media.title && !!media.url)
-              .map((media) => ({
-                href: media.url,
-                title: media.title,
-                user: {
-                  connect: {
-                    id: feed.userId,
-                  },
-                },
-              })),
           },
         },
       })
     })
   )
 
-  for (const result of results) {
-    if (result.status === "rejected") {
-      console.error(result.reason)
-    }
+  const rejectedResults = results.filter(
+    (result): result is PromiseRejectedResult => result.status === "rejected"
+  )
+  for (const result of rejectedResults) {
+    console.error(result.reason)
+  }
+
+  if (rejectedResults.length) {
+    throw new AggregateError(
+      rejectedResults.map((result) => result.reason),
+      `Failed to insert ${rejectedResults.length} feed entries for ${feed.url}`
+    )
   }
 }

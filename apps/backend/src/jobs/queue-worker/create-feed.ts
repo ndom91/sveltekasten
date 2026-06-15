@@ -1,4 +1,5 @@
 import { fetchFeed } from "../../lib/feed.js"
+import { createFeedEntryBaseData } from "../../lib/feed-entry-data.js"
 import debugFactory from "../../lib/log.js"
 import { db } from "../../plugins/prisma.js"
 
@@ -19,6 +20,8 @@ export const createFeed = async (data: CreateFeedData) => {
   }
 
   debug(`Inserting feed: ${feed.self}`)
+
+  const ingestedAt = new Date()
 
   await db.feed.create({
     data: {
@@ -45,38 +48,7 @@ export const createFeed = async (data: CreateFeedData) => {
             return 1
           })
           .slice(0, INITIAL_ITEMS_TO_FETCH)
-          .map((item) => ({
-            title: item.title ?? "",
-            guid: item.id,
-            link: item.url ?? "",
-            author: item.authors?.[0]?.name,
-            content: item.content ?? item.description,
-            contentSnippet: item.description,
-            ingested: new Date().toISOString(),
-            published: item.published,
-            categories: (item.categories ?? [])
-              .map((category) => category.label)
-              .filter((label) => !label?.includes("|"))
-              .filter(Boolean) as string[],
-            user: {
-              connect: {
-                id: data.userId,
-              },
-            },
-            feedMedia: {
-              create: item.media
-                ?.filter((media) => media.type === "image" && !!media.title && !!media.url)
-                .map((media) => ({
-                  href: media.url,
-                  title: media.title,
-                  user: {
-                    connect: {
-                      id: data.userId,
-                    },
-                  },
-                })),
-            },
-          })),
+          .map((item) => createFeedEntryBaseData({ ingestedAt, item, userId: data.userId })),
       },
     },
   })
