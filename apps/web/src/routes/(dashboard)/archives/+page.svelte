@@ -14,6 +14,7 @@ import { Logger, loggerLevels } from "$lib/utils/logger"
 const ui = useInterface()
 const bookmarksService = new BookmarksService(page.data.bookmarks?.data ?? [])
 const loaderState = new LoaderState()
+const isSearching = $derived(ui.searchQuery.trim().length > 0)
 
 const rootElement = $state<HTMLElement>()
 
@@ -135,6 +136,10 @@ onDestroy(() => {
     ui.searchQuery = ""
   }
 })
+
+const clearSearch = () => {
+  ui.searchQuery = ""
+}
 </script>
 
 <svelte:head>
@@ -158,6 +163,18 @@ onDestroy(() => {
           {/if}
         {/snippet}
       </InfiniteLoader>
+    </div>
+  {:else if isSearching}
+    <EmptyState showArrow={false} />
+    <div class="text-muted-foreground mx-auto flex w-full max-w-md flex-col items-center gap-3 text-center">
+      <p>No archived bookmarks found for "{ui.searchQuery}".</p>
+      <button
+        type="button"
+        class="text-foreground rounded-md border px-3 py-2 text-sm hover:bg-muted"
+        onclick={clearSearch}
+      >
+        Clear search
+      </button>
     </div>
   {:else}
     <EmptyState showArrow={false} />

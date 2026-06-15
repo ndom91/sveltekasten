@@ -29,6 +29,7 @@ onMount(async () => {
 
 const loaderState = new LoaderState()
 let rootElement = $state<HTMLElement>()
+const isSearching = $derived(ui.searchQuery.trim().length > 0)
 
 const limitLoadCount = 20
 const logger = new Logger({ level: loggerLevels.DEBUG })
@@ -155,6 +156,10 @@ onDestroy(() => {
     ui.searchQuery = ""
   }
 })
+
+const clearSearch = () => {
+  ui.searchQuery = ""
+}
 </script>
 
 <svelte:head>
@@ -181,6 +186,18 @@ onDestroy(() => {
         {/if}
       {/snippet}
     </InfiniteLoader>
+  {:else if isSearching}
+    <EmptyState showArrow={false} />
+    <div class="text-muted-foreground mx-auto flex w-full max-w-md flex-col items-center gap-3 text-center">
+      <p>No bookmarks found for "{ui.searchQuery}".</p>
+      <button
+        type="button"
+        class="text-foreground rounded-md border px-3 py-2 text-sm hover:bg-muted"
+        onclick={clearSearch}
+      >
+        Clear search
+      </button>
+    </div>
   {:else}
     <EmptyState />
     <ul
