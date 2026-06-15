@@ -11,6 +11,8 @@ import * as Avatar from "$lib/components/ui/avatar"
 import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
 import { Skeleton } from "$lib/components/ui/skeleton"
 
+const userEmail = $derived(page.data?.user?.email)
+const userName = $derived(page.data?.user?.name ?? userEmail)
 const isDarkMode = $derived(mode.current === "dark")
 let element = $state<HTMLDialogElement | undefined>()
 let installPrompt: Event | null = $state(null)
@@ -47,8 +49,6 @@ async function handleInstall() {
   installPrompt = null
   offerInstall = false
 }
-
-$inspect(page.data)
 </script>
 
 <DropdownMenu.Root>
@@ -71,8 +71,11 @@ $inspect(page.data)
     <DropdownMenu.Group>
       <DropdownMenu.Label class="max-w-32 w-full justify-start">
         <div class="truncate">
-          {page.data?.user?.name ?? page.data?.user?.email}
+          {userName}
         </div>
+        {#if userEmail && userEmail !== userName}
+          <div class="truncate font-light text-neutral-400 dark:text-neutral-600">{userEmail}</div>
+        {/if}
         <div class="font-light text-neutral-400 dark:text-neutral-600">{version}</div>
       </DropdownMenu.Label>
       <DropdownMenu.Separator class="bg-neutral-100 dark:bg-neutral-800" />
