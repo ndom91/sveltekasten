@@ -5,7 +5,7 @@ export class BookmarksService {
 
   constructor(initial?: Bookmark[]) {
     if (initial) {
-      initial.forEach((bk) => this.bookmarks.push(bk))
+      this.bookmarks.push(...initial)
     }
   }
 
@@ -35,19 +35,20 @@ export class BookmarksService {
 
   remove(bookmarkId: string) {
     const bookmarkIndex = this.bookmarks.findIndex((bk) => bk.id === bookmarkId)
+    if (bookmarkIndex === -1) return
     this.bookmarks.splice(bookmarkIndex, 1)
   }
 
   update(bookmark: Bookmark) {
     const bookmarkIndex = this.bookmarks.findIndex((bk) => bk.id === bookmark.id)
-    if (bookmarkIndex) {
+    if (bookmarkIndex !== -1) {
       this.bookmarks[bookmarkIndex] = bookmark
     }
   }
 
   upsert(bookmark: Bookmark) {
     const bookmarkIndex = this.bookmarks.findIndex((bk) => bk.id === bookmark.id)
-    if (bookmarkIndex) {
+    if (bookmarkIndex !== -1) {
       this.bookmarks[bookmarkIndex] = bookmark
     } else {
       this.bookmarks.push(bookmark)

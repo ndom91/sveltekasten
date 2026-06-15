@@ -5,7 +5,7 @@ export class FeedsService {
 
   constructor(initial?: Feed[]) {
     if (initial) {
-      initial.forEach((feed) => this.feeds.push(feed))
+      this.feeds.push(...initial)
     }
   }
 
@@ -35,12 +35,13 @@ export class FeedsService {
 
   remove(feedId: string) {
     const feedIndex = this.feeds.findIndex((feed) => feed.id === feedId)
+    if (feedIndex === -1) return
     this.feeds.splice(feedIndex, 1)
   }
 
   update(feed: Feed) {
     const feedIndex = this.feeds.findIndex((savedFeed) => savedFeed.id === feed.id)
-    if (feedIndex) {
+    if (feedIndex !== -1) {
       this.feeds[feedIndex] = feed
     }
   }
