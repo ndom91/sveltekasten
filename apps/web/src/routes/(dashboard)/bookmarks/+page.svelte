@@ -107,6 +107,10 @@ const loadMore = async () => {
     const skip = limitLoadCount * pageNumber
 
     const searchResults = await fetchSearchResults({ limit, skip })
+    // eslint-disable-next-line no-console
+    console.log(
+      `[dbg loadMore] skip=${skip} got=${searchResults?.data?.length} count=${searchResults?.count} serviceLen=${bookmarkService.bookmarks.length}`
+    )
     if (!searchResults?.data) {
       pageNumber -= 1
       return

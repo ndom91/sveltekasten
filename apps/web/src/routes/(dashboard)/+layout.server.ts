@@ -77,6 +77,9 @@ export const load: LayoutServerLoad = async ({ locals }) => {
       orderBy: { createdAt: "desc" },
     })
 
+    console.log(
+      `[dbg layout-load] path=ok bookmarks=${bookmarks.length} count=${bookmarkCount} user=${session?.userId}`
+    )
     return {
       bookmarks: {
         data: bookmarks,
