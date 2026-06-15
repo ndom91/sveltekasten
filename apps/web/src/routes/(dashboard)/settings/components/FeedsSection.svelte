@@ -88,7 +88,7 @@ const checkQueueResults = () => {
   void tick().then(() =>
     toast.promise(invalidateAll, {
       loading: "Loading..",
-      success: "Feed Added",
+      success: "Feed queue refreshed",
       error: "Error adding feed, please try again",
     })
   )
