@@ -171,7 +171,7 @@ const clearSearch = () => {
 
 <Navbar />
 <main
-  class="align-start flex flex-col justify-start gap-2 overflow-y-scroll outline-none"
+  class="align-start flex max-h-[calc(100vh-4rem)] w-full min-w-0 flex-col justify-start gap-2 overflow-y-scroll outline-none"
   bind:this={rootElement}
 >
   {#if bookmarkService.bookmarks?.length}

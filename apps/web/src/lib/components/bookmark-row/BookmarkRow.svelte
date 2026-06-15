@@ -81,7 +81,7 @@ $effect(() => {
   tabindex={0}
   data-id={bookmark.id}
   role="row"
-  class="bookmark-row relative mx-2 flex max-w-full gap-4 rounded-lg rounded-l-none border-l-4 border-transparent p-4 outline-none transition-all duration-500 ease-(--ease-spring-3) focus:border-zinc-500 focus:bg-neutral-100 dark:focus:bg-neutral-800/40 md:mx-4 starting:-translate-y-2 starting:opacity-0;"
+  class="bookmark-row relative mx-2 flex min-w-0 max-w-full gap-4 rounded-lg rounded-l-none border-l-4 border-transparent p-4 outline-none transition-all duration-500 ease-(--ease-spring-3) focus:border-zinc-500 focus:bg-neutral-100 dark:focus:bg-neutral-800/40 md:mx-4 starting:-translate-y-2 starting:opacity-0;"
   class:hidden={isBookmarkCategoryHidden}
   onpointerleave={() => (isOptionsOpen = false)}
   onpointerenter={() => (isOptionsOpen = true)}

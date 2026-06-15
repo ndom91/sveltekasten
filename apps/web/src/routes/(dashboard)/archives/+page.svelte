@@ -150,7 +150,9 @@ const clearSearch = () => {
 <svelte:window onkeydown={handleKeyDown} />
 
 <Navbar />
-<main class="align-start flex flex-col justify-start gap-2 overflow-y-scroll outline-none">
+<main
+  class="align-start flex max-h-[calc(100vh-4rem)] w-full min-w-0 flex-col justify-start gap-2 overflow-y-scroll outline-none"
+>
   {#if bookmarksService.bookmarks?.length}
     <div class="h-full">
       <InfiniteLoader {loaderState} triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
