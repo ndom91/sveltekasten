@@ -145,13 +145,17 @@ const modalSizeWidths = {
     --scale: 0.95;
     --blur: 6;
     --translate: 6;
+    position: fixed;
+    inset: 0;
+    margin: auto;
     outline: none;
     view-transition-name: dialog;
     scale: calc(var(--scale) + ((1 - var(--scale)) * var(--present)));
     opacity: var(--present);
     filter: blur(calc((var(--blur) * (1 - var(--present))) * 1px));
     translate: 0 calc(calc(var(--translate) * 1lh) * (1 - var(--present)));
-    width: 80ch;
+    width: min(80ch, calc(100vw - 2rem));
+    max-height: calc(100dvh - 2rem);
     box-shadow:
       0 0 0 1px rgba(0, 0, 0, 0.08),
       0px 1px 1px rgba(0, 0, 0, 0.02),
