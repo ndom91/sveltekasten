@@ -31,7 +31,8 @@ const {
 >
   <Tooltip.Root>
     <Tooltip.Trigger class="outline-none">
-      <Button variant="ghost" size="icon" href={url} target="_blank">
+      {#snippet child({ props })}
+      <Button {...props} variant="ghost" size="icon" href={url} target="_blank">
         <svg
           class="size-5 text-neutral-900 dark:text-neutral-100"
           xmlns="http://www.w3.org/2000/svg"
@@ -64,6 +65,7 @@ const {
           /></svg
         >
       </Button>
+      {/snippet}
     </Tooltip.Trigger>
     <Tooltip.Content side="top">
       <p>
@@ -74,7 +76,9 @@ const {
   </Tooltip.Root>
   <Tooltip.Root>
     <Tooltip.Trigger class="outline-none">
+      {#snippet child({ props })}
       <Button
+        {...props}
         variant="ghost"
         size="icon"
         onclick={handleMetadataSidebarOpen}
@@ -96,6 +100,7 @@ const {
           ></path>
         </svg>
       </Button>
+      {/snippet}
     </Tooltip.Trigger>
     <Tooltip.Content side="top">
       <p>Edit</p>
@@ -103,7 +108,8 @@ const {
   </Tooltip.Root>
   <Tooltip.Root>
     <Tooltip.Trigger class="outline-none">
-      <Button variant="ghost" size="icon" onclick={handleArchive}>
+      {#snippet child({ props })}
+      <Button {...props} variant="ghost" size="icon" onclick={handleArchive}>
         <svg
           class="size-5 text-neutral-900 dark:text-neutral-100"
           data-slot="icon"
@@ -121,6 +127,7 @@ const {
           ></path>
         </svg>
       </Button>
+      {/snippet}
     </Tooltip.Trigger>
     <Tooltip.Content side="top">
       <p>{archiveActionLabel}</p>
@@ -128,7 +135,9 @@ const {
   </Tooltip.Root>
   <Tooltip.Root>
     <Tooltip.Trigger class="outline-none">
+      {#snippet child({ props })}
       <Button
+        {...props}
         variant="ghost"
         size="icon"
         onclick={handleDeleteDialogOpen}
@@ -150,6 +159,7 @@ const {
           ></path>
         </svg>
       </Button>
+      {/snippet}
     </Tooltip.Trigger>
     <Tooltip.Content side="top">
       <p>Delete</p>

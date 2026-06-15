@@ -37,7 +37,9 @@ const {
 >
   <Tooltip.Root>
     <Tooltip.Trigger class="outline-none">
+      {#snippet child({ props })}
       <Button
+        {...props}
         variant="ghost"
         size="icon"
         onclick={handleToggleCardOpen}
@@ -94,6 +96,7 @@ const {
           /></svg
         >
       </Button>
+      {/snippet}
     </Tooltip.Trigger>
     <Tooltip.Content side="top">
       <p>
@@ -104,7 +107,9 @@ const {
   </Tooltip.Root>
   <Tooltip.Root>
     <Tooltip.Trigger class="outline-none">
+      {#snippet child({ props })}
       <Button
+        {...props}
         variant="ghost"
         size="icon"
         onclick={() => handleMarkAsUnread()}
@@ -126,6 +131,7 @@ const {
           ></path>
         </svg>
       </Button>
+      {/snippet}
     </Tooltip.Trigger>
     <Tooltip.Content side="top">
       <p>
@@ -137,7 +143,9 @@ const {
   {#if enableSummary}
     <Tooltip.Root>
       <Tooltip.Trigger class="outline-none">
+        {#snippet child({ props })}
         <Button
+          {...props}
           variant="ghost"
           size="icon"
           disabled={ui.summarizationLoading}
@@ -196,6 +204,7 @@ const {
             >
           {/if}
         </Button>
+        {/snippet}
       </Tooltip.Trigger>
       <Tooltip.Content side="top">
         <p>Summarize Article</p>
@@ -205,7 +214,9 @@ const {
   {#if enableTTS}
     <Tooltip.Root>
       <Tooltip.Trigger class="outline-none">
+        {#snippet child({ props })}
         <Button
+          {...props}
           variant="ghost"
           size="icon"
           disabled={ui.textToSpeechLoading}
@@ -250,6 +261,7 @@ const {
             >
           {/if}
         </Button>
+        {/snippet}
       </Tooltip.Trigger>
       <Tooltip.Content side="top">
         <p>Listen to Article</p>
@@ -258,7 +270,8 @@ const {
   {/if}
   <Tooltip.Root>
     <Tooltip.Trigger class="outline-none">
-      <Button variant="ghost" size="icon" href={url} target="_blank">
+      {#snippet child({ props })}
+      <Button {...props} variant="ghost" size="icon" href={url} target="_blank">
         <svg
           class="size-5 text-neutral-900 dark:text-neutral-100"
           xmlns="http://www.w3.org/2000/svg"
@@ -291,6 +304,7 @@ const {
           /></svg
         >
       </Button>
+      {/snippet}
     </Tooltip.Trigger>
     <Tooltip.Content side="top">
       <p>

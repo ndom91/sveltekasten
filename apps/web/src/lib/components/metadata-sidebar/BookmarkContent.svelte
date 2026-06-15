@@ -88,7 +88,9 @@ const faviconUrl = $derived.by(() => {
       <h2>Metadata</h2>
       <Tooltip.Root>
         <Tooltip.Trigger>
+          {#snippet child({ props })}
           <Button
+            {...props}
             variant="outline"
             disabled={!ui.metadataSidebarData.bookmark}
             size="icon"
@@ -111,6 +113,7 @@ const faviconUrl = $derived.by(() => {
               ></path>
             </svg>
           </Button>
+          {/snippet}
         </Tooltip.Trigger>
         <Tooltip.Content side="left">
           <p>Toggle Edit Mode</p>
