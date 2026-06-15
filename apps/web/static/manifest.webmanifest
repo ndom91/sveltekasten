@@ -14,7 +14,8 @@
   "start_url": "/",
   "share_target": {
     "action": "/api/v1/bookmarks/share",
-    "method": "GET",
+    "method": "POST",
+    "enctype": "application/x-www-form-urlencoded",
     "params": {
       "title": "name",
       "text": "text",

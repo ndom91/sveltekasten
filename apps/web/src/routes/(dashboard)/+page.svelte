@@ -1,5 +1,6 @@
 <script lang="ts">
 import { onMount } from "svelte"
+import { toast } from "svelte-sonner"
 import { goto } from "$app/navigation"
 import { page } from "$app/stores"
 import { HomeScroller } from "$lib/components/home-scroller"
@@ -11,9 +12,19 @@ import { getContext } from "$lib/utils/context"
 
 onMount(async () => {
   // Share Target Redirect
-  const sharedSuccess = $page.url.searchParams.get("shared")
-  if (sharedSuccess === "true") {
-    await goto("/")
+  const sharedStatus = $page.url.searchParams.get("shared")
+  if (sharedStatus === "true") {
+    toast.success("Bookmark Added")
+    await goto("/", { replaceState: true })
+  } else if (sharedStatus === "auth-required") {
+    toast.error("Sign in to save shared bookmarks")
+    await goto("/", { replaceState: true })
+  } else if (sharedStatus === "missing-url") {
+    toast.error("Shared item did not include a URL")
+    await goto("/", { replaceState: true })
+  } else if (sharedStatus) {
+    toast.error("Could not add shared bookmark")
+    await goto("/", { replaceState: true })
   }
 })
 

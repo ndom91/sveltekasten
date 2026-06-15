@@ -1,14 +1,12 @@
 <script lang="ts">
 import { onMount, type Snippet, setContext, untrack } from "svelte"
-import { toast } from "svelte-sonner"
 import { browser, dev } from "$app/environment"
-import { invalidateAll, onNavigate } from "$app/navigation"
+import { onNavigate } from "$app/navigation"
 import { page } from "$app/state"
 import { CommandBar } from "$lib/components/command-bar"
 import DragAdd from "$lib/components/DragAdd.svelte"
 import { MetadataSidebar } from "$lib/components/metadata-sidebar"
 import Sidebar from "$lib/components/NavigationSidebar.svelte"
-import { postMessageTypes } from "$lib/constants"
 import { BookmarksService } from "$lib/state/bookmarks.svelte"
 import { FeedEntriesService } from "$lib/state/feedEntries.svelte"
 import { FeedsService } from "$lib/state/feeds.svelte"
@@ -64,16 +62,6 @@ onMount(() => {
     void navigator.serviceWorker.register("/service-worker.js", {
       type: dev ? "module" : "classic",
     })
-  }
-
-  if (navigator.serviceWorker.controller) {
-    navigator.serviceWorker.startMessages()
-    navigator.serviceWorker.onmessage = async (event) => {
-      if (event.data.type === postMessageTypes.SHARE_SUCCESS) {
-        toast.success(event.data.payload.message)
-        await invalidateAll()
-      }
-    }
   }
 })
 </script>
