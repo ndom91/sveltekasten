@@ -7,12 +7,21 @@ import { env } from "$env/dynamic/private"
 import { db } from "$lib/prisma"
 
 export const auth = betterAuth({
+  // Must be the exact public URL the browser uses (https://<domain> behind
+  // Cloudflare/traefik). OAuth redirect_uri and the state cookie derive from it.
+  baseURL: env.BETTER_AUTH_URL,
+  trustedOrigins: env.BETTER_AUTH_URL ? [env.BETTER_AUTH_URL] : [],
   database: prismaAdapter(db, {
     provider: "postgresql",
   }),
   plugins: [username(), sveltekitCookies(getRequestEvent)],
   emailAndPassword: {
     enabled: true,
+  },
+  advanced: {
+    // Secure cookies when served over https (the public scheme behind the
+    // proxy). Tied to the scheme so plain-http local runs still work.
+    useSecureCookies: env.BETTER_AUTH_URL?.startsWith("https://") ?? false,
   },
   socialProviders: {
     google: {
