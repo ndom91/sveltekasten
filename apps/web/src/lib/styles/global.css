@@ -155,6 +155,10 @@
   body {
     @apply bg-background text-foreground
   }
+
+  :where(a[href], button, [role="button"], summary):not(:disabled):not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
 }
 
 /* 2024 Reset */
