@@ -93,7 +93,13 @@ const handleBetterAuth: Handle = async ({ event, resolve }) => {
     event.locals.session = session.session
     event.locals.user = session.user
   }
-  return handleAuth({ event, resolve, auth, building })
+  const response = await handleAuth({ event, resolve, auth, building })
+
+  if (event.locals.session?.userId || event.url.pathname.startsWith("/api/v1/")) {
+    response.headers.set("cache-control", "private, no-store, max-age=0")
+  }
+
+  return response
 }
 
 export const handle = sequence(logger, handleRateLimit, handleEmailVerifyRedirect, handleBetterAuth)

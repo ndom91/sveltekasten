@@ -3,6 +3,8 @@ import { db } from "$/lib/prisma"
 import type { PageServerLoad } from "./$types"
 
 export const load: PageServerLoad = async (event) => {
+  event.depends("app:feeds")
+
   const { userId } = requireUser(event, { redirectToLogin: true })
 
   try {
@@ -20,28 +22,10 @@ export const load: PageServerLoad = async (event) => {
       orderBy: { createdAt: "desc" },
     })
 
-    const [bookmarkData, bookmarkCount] = (await db.bookmark.findManyAndCount({
-      take: 10,
-      skip: 0,
-      where: {
-        userId,
-        archived: false,
-      },
-      include: {
-        category: true,
-        tags: { include: { tag: true } },
-      },
-      orderBy: { createdAt: "desc" },
-    })) as unknown as [LoadBookmark[], number]
-
     return {
       feedEntries: {
         data: feedData,
         count: feedCount,
-      },
-      bookmarks: {
-        data: bookmarkData,
-        count: bookmarkCount,
       },
     }
   } catch (error) {
@@ -50,6 +34,6 @@ export const load: PageServerLoad = async (event) => {
     } else {
       console.error(error)
     }
-    return { bookmarks: [], count: 0, error }
+    return { feedEntries: { data: [], count: 0 }, error }
   }
 }

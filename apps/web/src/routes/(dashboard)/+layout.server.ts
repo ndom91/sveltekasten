@@ -7,6 +7,8 @@ import { formSchema } from "$schemas/quick-add"
 import type { LayoutServerLoad } from "./$types"
 
 export const load: LayoutServerLoad = async (event) => {
+  event.depends("app:bookmarks", "app:feeds")
+
   // Auth guard MUST be outside the try/catch: redirect() throws, and a catch
   // would swallow it, letting the load fall through to queries with
   // userId=undefined (Prisma drops the filter and returns every user's data).
