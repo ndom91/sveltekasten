@@ -1,5 +1,4 @@
 <script lang="ts">
-import { watch } from "runed"
 import Bell from "$lib/assets/bell.png"
 import Browser from "$lib/assets/browser.png"
 import { ScrollerTypes } from "$lib/types"
@@ -16,13 +15,24 @@ type Props = {
 const { type, items, count }: Props = $props()
 
 let element = $state<HTMLElement | undefined>()
+let previousFirstItemId = $state<string | undefined>()
+let hasInitialFirstItemId = $state(false)
 
-watch(
-  () => items,
-  () => {
-    element?.scrollTo(0, 0)
+$effect(() => {
+  const firstItemId = items[0]?.id
+  if (!hasInitialFirstItemId) {
+    previousFirstItemId = firstItemId
+    hasInitialFirstItemId = true
+    return
   }
-)
+
+  if (!firstItemId || firstItemId === previousFirstItemId) {
+    return
+  }
+
+  previousFirstItemId = firstItemId
+  element?.scrollTo({ left: 0, behavior: "smooth" })
+})
 </script>
 
 <section
