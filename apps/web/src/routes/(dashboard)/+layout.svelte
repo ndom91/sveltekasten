@@ -1,7 +1,6 @@
 <script lang="ts">
 import { onMount, type Snippet, setContext } from "svelte"
 import { toast } from "svelte-sonner"
-import * as Tooltip from "$/lib/components/ui/tooltip"
 import { browser, dev } from "$app/environment"
 import { invalidateAll, onNavigate } from "$app/navigation"
 import { page } from "$app/state"
@@ -82,17 +81,15 @@ onMount(() => {
 })
 </script>
 
-<Tooltip.Provider>
-  <div class="flex h-screen max-w-full">
-    <CommandBar />
-    <Sidebar />
-    <div class="flex w-full min-w-0 flex-col">
-      {@render children()}
-    </div>
-    {#if metadataEnabled()}
-      <MetadataSidebar />
-    {/if}
+<div class="flex h-screen max-w-full">
+  <CommandBar />
+  <Sidebar />
+  <div class="flex w-full min-w-0 flex-col">
+    {@render children()}
   </div>
+  {#if metadataEnabled()}
+    <MetadataSidebar />
+  {/if}
+</div>
 
-  <DragAdd />
-</Tooltip.Provider>
+<DragAdd />
