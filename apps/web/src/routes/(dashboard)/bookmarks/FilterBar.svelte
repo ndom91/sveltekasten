@@ -14,30 +14,33 @@ const categories = $state(page.data.categories)
 <section class="p-4 border-l-4 md:px-8 border-l-transparent">
   <Popover.Root bind:open>
     <Popover.Trigger>
-      <Button
-        variant="outline"
-        role="combobox"
-        aria-expanded={open}
-        class="justify-between w-[200px] bg-neutral-100 dark:bg-neutral-900"
-      >
-        Categories
-        <svg
-          class="ml-2 w-4 h-4 opacity-50 shrink-0"
-          data-slot="icon"
-          fill="none"
-          stroke-width="1.5"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
+      {#snippet child({ props })}
+        <Button
+          {...props}
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          class="justify-between w-[200px] bg-neutral-100 dark:bg-neutral-900"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
-          ></path>
-        </svg>
-      </Button>
+          Categories
+          <svg
+            class="ml-2 w-4 h-4 opacity-50 shrink-0"
+            data-slot="icon"
+            fill="none"
+            stroke-width="1.5"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
+            ></path>
+          </svg>
+        </Button>
+      {/snippet}
     </Popover.Trigger>
     <Popover.Content class="p-0 w-[200px]">
       <Command.Root>
