@@ -170,7 +170,7 @@ onDestroy(() => {
 </script>
 
 <svelte:head>
-  <title>BriefButler | Archives</title>
+  <title>Briefkasten | Archives</title>
   <meta name="description" content="RSS Feeds, Bookmarks and more!" />
 </svelte:head>
 

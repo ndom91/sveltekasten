@@ -66,7 +66,7 @@ let windowWidth: number = $state(1000)
           ui.userSidebarOpen ? "opacity-100" : "hidden",
         )}
       >
-        BriefButler
+        Briefkasten
       </span>
     </div>
     <SidebarContent />

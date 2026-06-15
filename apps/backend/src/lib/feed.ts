@@ -17,7 +17,7 @@ export const fetchFeed = async ({
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
 
   const headers: Record<string, string> = {
-    "User-Agent": "BriefButler/1.0 (+https://github.com/ndom91/briefkastenhq)",
+    "User-Agent": "Briefkasten/1.0 (+https://github.com/ndom91/briefkastenhq)",
     "Accept-Encoding": "gzip",
   }
 

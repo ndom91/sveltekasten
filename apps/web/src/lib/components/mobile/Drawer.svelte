@@ -52,7 +52,7 @@ const toggleDrawer = () => {
           >
             <Logo class="size-10!" />
           </Button>
-          <span class="mx-auto text-xl font-light opacity-100 transition-all"> BriefButler </span>
+          <span class="mx-auto text-xl font-light opacity-100 transition-all"> Briefkasten </span>
         </div>
         <SidebarContent open={true} {toggleDrawer} />
       </div>

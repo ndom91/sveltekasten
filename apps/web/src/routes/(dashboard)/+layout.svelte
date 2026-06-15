@@ -22,8 +22,6 @@ const metadataEnabled = $derived(() => !DISABLED_PATHS.includes(page.url.pathnam
 const feedsService = new FeedsService(page.data.feeds.data)
 const feedEntriesService = new FeedEntriesService(page.data.feedEntries.data)
 const bookmarksService = new BookmarksService(page.data.bookmarks.data)
-// eslint-disable-next-line no-console
-console.log("[dbg layout] seed bookmarks =", page.data.bookmarks?.data?.length)
 
 setContext(FeedsService, feedsService)
 setContext(FeedEntriesService, feedEntriesService)

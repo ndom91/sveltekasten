@@ -1,4 +1,4 @@
-import { fail } from "@sveltejs/kit"
+import { redirect } from "@sveltejs/kit"
 import { superValidate } from "sveltekit-superforms"
 import { zod4 } from "sveltekit-superforms/adapters"
 import type { Tag } from "$/prisma-client/client"
@@ -7,14 +7,18 @@ import { formSchema } from "$schemas/quick-add"
 import type { LayoutServerLoad } from "./$types"
 
 export const load: LayoutServerLoad = async ({ locals }) => {
+  // Auth guard MUST be outside the try/catch: redirect() throws, and a catch
+  // would swallow it, letting the load fall through to queries with
+  // userId=undefined (Prisma drops the filter and returns every user's data).
+  const session = locals.session
+  if (!session?.userId) {
+    redirect(303, "/login")
+  }
+
   try {
     const quickAddForm = await superValidate(zod4(formSchema), {
       id: "quickAddForm",
     })
-    const session = locals.session
-    if (!session?.userId) {
-      fail(401, { type: "error", error: "Unauthenticated" })
-    }
     const [categories, tags] = await db.$transaction([
       db.category.findMany({
         where: { userId: session?.userId },
@@ -77,9 +81,6 @@ export const load: LayoutServerLoad = async ({ locals }) => {
       orderBy: { createdAt: "desc" },
     })
 
-    console.log(
-      `[dbg layout-load] path=ok bookmarks=${bookmarks.length} count=${bookmarkCount} user=${session?.userId}`
-    )
     return {
       bookmarks: {
         data: bookmarks,

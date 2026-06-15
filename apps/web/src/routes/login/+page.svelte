@@ -80,7 +80,7 @@
             fill="white"
           />
         </svg>
-        <span class="text-4xl font-medium text-white">BriefButler</span>
+        <span class="text-4xl font-medium text-white">Briefkasten</span>
       </h2>
       <div class="flip-card m-8 w-full">
         <div class="flip-card-inner" class:flipped={isSignUp}>

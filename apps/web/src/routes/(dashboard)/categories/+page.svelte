@@ -69,7 +69,7 @@ const toggleSort = (column: SortColumn) => {
 </script>
 
 <svelte:head>
-  <title>BriefButler | Categories</title>
+  <title>Briefkasten | Categories</title>
   <meta name="description" content="RSS Feeds, Bookmarks and more!" />
 </svelte:head>
 

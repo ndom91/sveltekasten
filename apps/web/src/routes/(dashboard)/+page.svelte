@@ -26,7 +26,7 @@ const feedEntriesService = getContext(FeedEntriesService)
 </script>
 
 <svelte:head>
-  <title>BriefButler</title>
+  <title>Briefkasten</title>
   <meta name="description" content="RSS Feeds, Bookmarks, and more!" />
 </svelte:head>
 

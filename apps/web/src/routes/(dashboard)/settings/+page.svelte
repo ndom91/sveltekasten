@@ -15,7 +15,7 @@ const handleTabChange = (data: string | undefined) => {
 </script>
 
 <svelte:head>
-  <title>BriefButler | Settings</title>
+  <title>Briefkasten | Settings</title>
   <meta name="description" content="RSS Feeds, Bookmarks and more!" />
 </svelte:head>
 
