@@ -7,8 +7,6 @@ import { env } from "$env/dynamic/private"
 import { db } from "$lib/prisma"
 
 export const auth = betterAuth({
-  // TEMP DEBUG: verbose better-auth logging while diagnosing OAuth callback.
-  logger: { level: "debug" },
   // Must be the exact public URL the browser uses (https://<domain> behind
   // Cloudflare/traefik). OAuth redirect_uri and the state cookie derive from it.
   baseURL: env.BETTER_AUTH_URL,
@@ -37,9 +35,7 @@ export const auth = betterAuth({
   },
   session: {
     cookieCache: {
-      // TEMP: disabled to test whether the large session-data cookie on the
-      // OAuth callback 302 is what the proxy (CF/traefik) rejects as a 500.
-      enabled: false,
+      enabled: true,
       maxAge: 5 * 60, // Cache duration in seconds
     },
   },

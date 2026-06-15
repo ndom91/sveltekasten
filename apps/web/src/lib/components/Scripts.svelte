@@ -1,4 +1,5 @@
 <script lang="ts">
+// @ts-expect-error partytown 0.10.3 ships no .d.ts for the /integration subpath
 import { partytownSnippet } from "@builder.io/partytown/integration"
 import { onMount } from "svelte"
 import { dev } from "$app/environment"

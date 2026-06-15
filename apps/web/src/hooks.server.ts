@@ -1,4 +1,4 @@
-import type { Handle, HandleServerError } from "@sveltejs/kit"
+import type { Handle } from "@sveltejs/kit"
 import { sequence } from "@sveltejs/kit/hooks"
 import { svelteKitHandler as handleAuth } from "better-auth/svelte-kit"
 import { building, dev } from "$app/environment"
@@ -19,13 +19,10 @@ function getStatusColor(statusCode: string): string {
   }
 }
 
-// TEMP DEBUG: surface server-side errors (e.g. OAuth callback 500s) in prod.
-export const handleError: HandleServerError = ({ error, event }) => {
-  console.error(`[handleError] ${event.request.method} ${event.url.pathname}`, error)
-  return { message: "Internal Server Error" }
-}
-
 const logger: Handle = async ({ event, resolve }) => {
+  if (!dev) {
+    return resolve(event)
+  }
   const start_time = Date.now()
 
   // Wait on response, run other hooks and load
@@ -40,17 +37,6 @@ const logger: Handle = async ({ event, resolve }) => {
   console.log(
     `${statusColor}${response.status}\x1B[0m ${event.request.method} \x1B[1m${event.url.pathname}\x1B[0m (\x1B[90m${Date.now() - start_time}ms\x1B[0m)`
   )
-
-  // TEMP DEBUG: dump the raw response headers for the OAuth callback so we can
-  // see what traefik chokes on (oversized Set-Cookie, bad Location, etc.).
-  if (event.url.pathname.startsWith("/api/auth/callback")) {
-    let totalHeaderBytes = 0
-    for (const [k, v] of response.headers) {
-      totalHeaderBytes += k.length + v.length
-      console.log(`[cb-hdr] ${k}: len=${v.length} ${k === "location" ? v : ""}`)
-    }
-    console.log(`[cb-hdr] TOTAL header bytes=${totalHeaderBytes}`)
-  }
 
   return response
 }

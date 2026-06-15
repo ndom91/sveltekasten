@@ -43,6 +43,3 @@ declare global {
     startViewTransition: (updateCallback: () => Promise<void>) => ViewTransition
   }
 }
-
-// partytown 0.10.3 ships this subpath without type declarations
-declare module "@builder.io/partytown/integration"
