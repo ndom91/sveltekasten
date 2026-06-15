@@ -5,11 +5,18 @@ import { actions } from "../../lib/constants.js"
 import { feedQueue } from "../../plugins/queue.js"
 import { feedBodySchema } from "./schema.js"
 
-const api = new Hono()
+const api = new Hono<{
+  Variables: {
+    userId: string
+  }
+}>()
 
-api.get("/", async (c) => {
-  await getUserId(c)
+api.use("*", async (c, next) => {
+  c.set("userId", await getUserId(c))
+  await next()
+})
 
+api.get("/", (c) => {
   try {
     return c.json({ queueLength: feedQueue.length() })
   } catch (error) {
@@ -18,8 +25,8 @@ api.get("/", async (c) => {
 })
 
 api.post("/", feedBodySchema, async (c) => {
-  const userId = await getUserId(c)
   try {
+    const userId = c.get("userId")
     const { feedUrl } = c.req.valid("json")
 
     if (!feedUrl || !userId) {

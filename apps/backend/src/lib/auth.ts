@@ -1,45 +1,46 @@
 import type { Context } from "hono"
-import { getCookie } from "hono/cookie"
 import { HTTPException } from "hono/http-exception"
+import { betterAuth } from "better-auth"
+import { prismaAdapter } from "better-auth/adapters/prisma"
 import { db } from "../plugins/prisma.js"
 import debugFactory from "./log.js"
 
-const getSession = async (sessionToken: string) => {
-  return db.session.findFirst({
-    where: {
-      token: sessionToken,
-      expiresAt: {
-        gte: new Date(),
-      },
-    },
-    select: {
-      userId: true,
-    },
-  })
-}
-
 const debug = debugFactory("backend:auth")
 
-export async function getUserId(c: Context) {
-  try {
-    const cookieName =
-      process.env.NODE_ENV !== "production"
-        ? "authjs.session-token"
-        : "__Secure-authjs.session-token"
+export const auth = betterAuth({
+  baseURL: process.env.BETTER_AUTH_URL,
+  trustedOrigins: process.env.BETTER_AUTH_URL ? [process.env.BETTER_AUTH_URL] : [],
+  secret: process.env.BETTER_AUTH_SECRET,
+  database: prismaAdapter(db, {
+    provider: "postgresql",
+  }),
+  emailAndPassword: {
+    enabled: true,
+  },
+  advanced: {
+    useSecureCookies: process.env.BETTER_AUTH_URL?.startsWith("https://") ?? false,
+  },
+})
 
-    const cookieValue = getCookie(c, cookieName)
-    if (!cookieValue) {
+export async function getSession(c: Context) {
+  try {
+    const session = await auth.api.getSession({
+      headers: c.req.raw.headers,
+      query: { disableCookieCache: true },
+    })
+    if (!session) {
       throw new HTTPException(401, { message: "Unauthorized" })
     }
 
-    debug("Parsing cookies", { cookieName })
-
-    const session = await getSession(cookieValue)
-    if (!session) return null
-
-    return session.userId
+    debug("Validated Better Auth session", { userId: session.session.userId })
+    return session
   } catch (error) {
     console.error(error)
     throw new HTTPException(401, { message: "Unauthorized" })
   }
+}
+
+export async function getUserId(c: Context) {
+  const session = await getSession(c)
+  return session.session.userId
 }

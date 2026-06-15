@@ -3,14 +3,22 @@ import { HTTPException } from "hono/http-exception"
 import { getUserId } from "../../lib/auth.js"
 import { actions } from "../../lib/constants.js"
 import { screenshotQueue } from "../../plugins/queue.js"
-import { bookmarkImageBodyValidator, bookmarkImageCookieValidator } from "./schema.js"
+import { bookmarkImageBodyValidator } from "./schema.js"
 
-const api = new Hono()
+const api = new Hono<{
+  Variables: {
+    userId: string
+  }
+}>()
 
-api.post("/", bookmarkImageCookieValidator, bookmarkImageBodyValidator, async (c) => {
-  const userId = await getUserId(c)
+api.use("*", async (c, next) => {
+  c.set("userId", await getUserId(c))
+  await next()
+})
 
+api.post("/", bookmarkImageBodyValidator, async (c) => {
   try {
+    const userId = c.get("userId")
     const body = c.req.valid("json")
 
     for (const bookmark of body.data) {

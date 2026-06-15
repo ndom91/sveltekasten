@@ -188,6 +188,7 @@ export const actions: Actions = {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            cookie: event.request.headers.get("cookie") ?? "",
           },
           body: JSON.stringify({ data: [{ url }] }),
         })

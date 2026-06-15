@@ -15,15 +15,4 @@ const bookmarkImageSchema = z.object({
   ),
 })
 
-const cookieName =
-  process.env.NODE_ENV !== "production" ? "authjs.session-token" : "__Secure-authjs.session-token"
-
-const bookmarkCookieSchema = z.object({
-  [cookieName]: z.string({
-    error: "Authentication required",
-  }),
-})
-
-export const bookmarkImageCookieValidator = zValidator("cookie", bookmarkCookieSchema)
-
 export const bookmarkImageBodyValidator = zValidator("json", bookmarkImageSchema)
