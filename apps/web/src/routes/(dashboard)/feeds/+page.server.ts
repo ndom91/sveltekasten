@@ -1,17 +1,14 @@
-import { redirect } from "@sveltejs/kit"
+import { requireUser } from "$lib/auth"
 import type { PageServerLoad } from "./$types"
 // import { fail, redirect } from "@sveltejs/kit"
 // import type { Feed } from "$lib/types/zod.js"
 // import { db } from "$lib/prisma"
 
-export const load: PageServerLoad = async ({ locals, url, depends }) => {
-  depends("app:feeds")
-  const session = locals.session
+export const load: PageServerLoad = async (event) => {
+  const { session } = requireUser(event, { redirectToLogin: true })
+  const { depends } = event
 
-  if (!session && url.pathname !== "/login") {
-    const fromUrl = url.pathname + url.search
-    redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
-  }
+  depends("app:feeds")
 
   try {
     // const skip = Number(url.searchParams.get("skip") ?? "0")
