@@ -25,6 +25,16 @@ export class FeedEntriesService {
     this.feedEntries.splice(0)
   }
 
+  replace(feedEntries: FeedEntry[]) {
+    this.feedEntries.splice(0, this.feedEntries.length, ...feedEntries)
+  }
+
+  mergePage(feedEntries: FeedEntry[]) {
+    const feedEntryIds = new Set(feedEntries.map((feedEntry) => feedEntry.id))
+    const preservedTail = this.feedEntries.filter((feedEntry) => !feedEntryIds.has(feedEntry.id))
+    this.feedEntries.splice(0, this.feedEntries.length, ...feedEntries, ...preservedTail)
+  }
+
   remove(feedEntryId: string) {
     const feedEntryIndex = this.feedEntries.findIndex((feedEntry) => feedEntry.id === feedEntryId)
     if (feedEntryIndex === -1) return

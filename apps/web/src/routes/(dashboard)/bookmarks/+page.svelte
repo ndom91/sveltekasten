@@ -33,14 +33,6 @@ let rootElement = $state<HTMLElement>()
 const limitLoadCount = 20
 const logger = new Logger({ level: loggerLevels.DEBUG })
 
-// $effect(() => {
-//   if ($page.data.bookmarks.data.length) {
-//     $page.data.bookmarks.data.forEach((bk: LoadBookmarkFlatTags) => {
-//       bookmarkService.update(bk)
-//     })
-//   }
-// })
-
 if (page.data.error) {
   logger.error(String(page.data.error))
 }
@@ -181,7 +173,7 @@ onDestroy(() => {
     <FilterBar />
     <InfiniteLoader {loaderState} triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
       {#each bookmarkService.bookmarks as item (item.id)}
-        <BookmarkRow bookmark={item} />
+        <BookmarkRow bookmark={item} onArchived={(bookmarkId) => bookmarkService.remove(bookmarkId)} />
       {/each}
       {#snippet noData()}
         {#if bookmarkService.bookmarks.length >= 10}

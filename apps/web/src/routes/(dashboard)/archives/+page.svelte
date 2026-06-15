@@ -20,10 +20,6 @@ const rootElement = $state<HTMLElement>()
 const limitLoadCount = 20
 const logger = new Logger({ level: loggerLevels.DEBUG })
 
-// $effect(() => {
-//   bookmarkStore.bookmarks = $page.data.bookmarks.data
-// })
-
 if (page.data.error) {
   logger.error(String(page.data.error))
 }

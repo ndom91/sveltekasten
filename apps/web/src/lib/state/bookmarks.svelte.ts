@@ -37,6 +37,16 @@ export class BookmarksService {
     this.bookmarks.splice(0)
   }
 
+  replace(bookmarks: Bookmark[]) {
+    this.bookmarks.splice(0, this.bookmarks.length, ...bookmarks)
+  }
+
+  mergePage(bookmarks: Bookmark[]) {
+    const bookmarkIds = new Set(bookmarks.map((bookmark) => bookmark.id))
+    const preservedTail = this.bookmarks.filter((bookmark) => !bookmarkIds.has(bookmark.id))
+    this.bookmarks.splice(0, this.bookmarks.length, ...bookmarks, ...preservedTail)
+  }
+
   remove(bookmarkId: string) {
     const bookmarkIndex = this.bookmarks.findIndex((bk) => bk.id === bookmarkId)
     if (bookmarkIndex === -1) return

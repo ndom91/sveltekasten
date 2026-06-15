@@ -18,6 +18,7 @@ let {
   feedEntry,
   handleGenerateSpeech,
   handleSummarizeText,
+  onUpdate,
 }: {
   feedEntry: FeedEntry & {
     feedMedia: FeedEntryMedia[]
@@ -25,6 +26,7 @@ let {
   }
   handleGenerateSpeech: (text: string) => Promise<void>
   handleSummarizeText: (text: string) => void
+  onUpdate?: (feedEntry: FeedEntry & { feedMedia: FeedEntryMedia[]; feed: Feed }) => void
 } = $props()
 
 let showFeedActions = $state(false)
@@ -41,17 +43,24 @@ const imageUrl = $derived.by(() => {
 })
 
 const handleMarkAsUnread = async (target: boolean | null = null) => {
-  feedEntry = {
+  const nextFeedEntry = {
     ...feedEntry,
     unread: target ?? !feedEntry.unread,
   }
-  await fetch("/api/v1/feeds", {
+  feedEntry = nextFeedEntry
+
+  const response = await fetch("/api/v1/feeds", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ feedEntry }),
+    body: JSON.stringify({ feedEntry: nextFeedEntry }),
   })
+  if (response.ok) {
+    const { data } = await response.json()
+    feedEntry = data
+    onUpdate?.(data)
+  }
 }
 
 const handleToggleCardOpen = async () => {

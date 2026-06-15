@@ -33,6 +33,10 @@ export class FeedsService {
     }
   }
 
+  replace(feeds: Feed[]) {
+    this.feeds.splice(0, this.feeds.length, ...feeds)
+  }
+
   remove(feedId: string) {
     const feedIndex = this.feeds.findIndex((feed) => feed.id === feedId)
     if (feedIndex === -1) return

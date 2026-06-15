@@ -4,17 +4,22 @@ import { PUBLIC_WORKER_URL } from "$env/static/public"
 import { Badge } from "$lib/components/ui/badge"
 import { Button } from "$lib/components/ui/button"
 import { Checkbox } from "$lib/components/ui/checkbox"
+import { FeedEntriesService } from "$lib/state/feedEntries.svelte"
 import { useInterface } from "$lib/state/ui.svelte"
 import type { Feed } from "$lib/types/zod.js"
+import { getContext } from "$lib/utils/context"
 
 const ui = useInterface()
+const feedEntriesService = getContext(FeedEntriesService)
+
+type FeedWithCount = Feed & { visible: boolean; _count: { feedEntries: number } }
 
 const { data: feeds } = page.data.feeds as {
-  data: (Feed & { visible: boolean; _count: { feedEntries: number } })[]
+  data: FeedWithCount[]
 }
 
-const handleMarkAllRead = async (feed: Feed) => {
-  await fetch("/api/v1/feeds/mark-all-read", {
+const handleMarkAllRead = async (feed: FeedWithCount) => {
+  const response = await fetch("/api/v1/feeds/mark-all-read", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -23,6 +28,14 @@ const handleMarkAllRead = async (feed: Feed) => {
       feedId: feed.id,
     }),
   })
+  if (response.ok) {
+    for (const feedEntry of feedEntriesService.feedEntries.filter(
+      (feedEntry) => feedEntry.feedId === feed.id
+    )) {
+      feedEntriesService.update({ ...feedEntry, unread: false })
+    }
+    feed._count.feedEntries = 0
+  }
 }
 </script>
 

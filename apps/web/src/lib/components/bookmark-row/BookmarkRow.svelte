@@ -21,7 +21,12 @@ const ui = useInterface()
 const {
   bookmark = $bindable(),
   onDelete,
-}: { bookmark: LoadBookmarkFlatTags; onDelete?: (bookmarkId: string) => void } = $props()
+  onArchived,
+}: {
+  bookmark: LoadBookmarkFlatTags
+  onDelete?: (bookmarkId: string) => void
+  onArchived?: (bookmarkId: string) => void
+} = $props()
 
 let isOptionsOpen = $state(false)
 
@@ -36,7 +41,7 @@ const handleMetadataSidebarOpen = () => {
 }
 
 const handleArchive = async () => {
-  await fetch(`/api/v1/bookmarks`, {
+  const response = await fetch(`/api/v1/bookmarks`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -46,6 +51,9 @@ const handleArchive = async () => {
       update: { archived: true },
     }),
   })
+  if (response.ok) {
+    onArchived?.(bookmark.id)
+  }
   await invalidateAll()
 }
 

@@ -33,15 +33,6 @@ const loaderState = new LoaderState()
 let rootElement = $state<HTMLElement>()
 const limitLoadCount = 20
 
-// Reset feed items on load invalidation
-// $effect(() => {
-//   if ($page.data.feedEntries.data.length) {
-//     $page.data.feedEntries.data.forEach((feedEntry: LoadFeedEntry) => {
-//       feedEntriesService.update(feedEntry)
-//     })
-//   }
-// })
-
 registerTtsWorker()
 registerSummarizationWorker()
 
@@ -192,7 +183,12 @@ onDestroy(() => {
     <FilterBar />
     <InfiniteLoader {loaderState} triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
       {#each feedEntriesService.feedEntries as feedEntry (feedEntry.id)}
-        <FeedRow {feedEntry} {handleSummarizeText} {handleGenerateSpeech} />
+        <FeedRow
+          {feedEntry}
+          {handleSummarizeText}
+          {handleGenerateSpeech}
+          onUpdate={(updatedFeedEntry) => feedEntriesService.update(updatedFeedEntry)}
+        />
       {/each}
       {#snippet noData()}
         {#if feedEntriesService.feedEntries.length >= 10}
