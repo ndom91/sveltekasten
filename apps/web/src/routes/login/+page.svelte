@@ -3,6 +3,7 @@
   import { toast } from "svelte-sonner";
   import { twJoin } from "tailwind-merge";
   import { browser } from "$app/environment";
+  import { goto } from "$app/navigation";
   import { page } from "$app/state";
   import LoginPattern from "$lib/assets/LoginPattern.svelte";
   import { authClient } from "$lib/auth-client";
@@ -112,10 +113,15 @@
                 <button
                   class="flex overflow-hidden justify-center items-center px-4 space-x-2 w-full h-10 text-sm font-light text-white rounded-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 bg-neutral-700 ring-offset-background focus-visible:ring-zinc-300 hover:cursor-pointer"
                   onclick={async () => {
-                    await authClient.signIn.email({
-                      email,
-                      password,
-                    });
+                    await authClient.signIn.email(
+                      {
+                        email,
+                        password,
+                      },
+                      {
+                        onSuccess: () => goto(page.data.redirectTo ?? "/"),
+                      },
+                    );
                   }}
                 >
                   Continue
@@ -133,6 +139,7 @@
                 onclick={async () => {
                   await authClient.signIn.social({
                     provider: "github",
+                    callbackURL: page.data.redirectTo ?? "/",
                   });
                 }}
                 class="w-full *:w-full [&>button]:transition focus:[&>button]:outline-none focus:[&>button]:ring-2 focus:[&>button]:ring-offset-2 focus:[&>button]:ring-zinc-300 [&>button]:rounded-sm"
@@ -181,6 +188,7 @@
                 onclick={async () => {
                   await authClient.signIn.social({
                     provider: "google",
+                    callbackURL: page.data.redirectTo ?? "/",
                   });
                 }}
                 class="w-full *:w-full [&>button]:transition focus:[&>button]:outline-none focus:[&>button]:ring-2 focus:[&>button]:ring-offset-2 focus:[&>button]:ring-zinc-300 [&>button]:rounded-sm"
@@ -290,11 +298,16 @@
                 <button
                   class="flex overflow-hidden justify-center items-center px-4 space-x-2 w-full h-10 text-sm font-light text-white rounded-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 bg-neutral-700 ring-offset-background focus-visible:ring-zinc-300 hover:cursor-pointer"
                   onclick={async () => {
-                    await authClient.signUp.email({
-                      name,
-                      email,
-                      password,
-                    });
+                    await authClient.signUp.email(
+                      {
+                        name,
+                        email,
+                        password,
+                      },
+                      {
+                        onSuccess: () => goto(page.data.redirectTo ?? "/"),
+                      },
+                    );
                   }}
                 >
                   Sign Up

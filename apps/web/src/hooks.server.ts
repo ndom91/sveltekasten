@@ -1,4 +1,4 @@
-import type { Handle } from "@sveltejs/kit"
+import type { Handle, HandleServerError } from "@sveltejs/kit"
 import { sequence } from "@sveltejs/kit/hooks"
 import { svelteKitHandler as handleAuth } from "better-auth/svelte-kit"
 import { building, dev } from "$app/environment"
@@ -19,10 +19,13 @@ function getStatusColor(statusCode: string): string {
   }
 }
 
+// TEMP DEBUG: surface server-side errors (e.g. OAuth callback 500s) in prod.
+export const handleError: HandleServerError = ({ error, event }) => {
+  console.error(`[handleError] ${event.request.method} ${event.url.pathname}`, error)
+  return { message: "Internal Server Error" }
+}
+
 const logger: Handle = async ({ event, resolve }) => {
-  if (!dev) {
-    return resolve(event)
-  }
   const start_time = Date.now()
 
   // Wait on response, run other hooks and load

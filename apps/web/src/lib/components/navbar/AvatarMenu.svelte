@@ -1,5 +1,4 @@
 <script lang="ts">
-import { redirect } from "@sveltejs/kit"
 import { mode, toggleMode } from "mode-watcher"
 import { onMount } from "svelte"
 import { version } from "$app/environment"
@@ -108,7 +107,7 @@ $inspect(page.data)
         onclick={() => authClient.signOut({
           fetchOptions: {
             onSuccess: () => {
-              redirect(303, "/login");
+              goto("/login");
             },
           }
         })}
