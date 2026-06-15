@@ -9,6 +9,7 @@ import EmptyState from "$lib/components/EmptyState.svelte"
 import { Navbar } from "$lib/components/navbar"
 import { BookmarksService } from "$lib/state/bookmarks.svelte"
 import { useInterface } from "$lib/state/ui.svelte"
+import { isEditableTarget } from "$lib/utils/keyboard"
 import { Logger, loggerLevels } from "$lib/utils/logger"
 
 const ui = useInterface()
@@ -83,7 +84,7 @@ const loadMore = async () => {
 }
 
 const handleKeyDown = (e: KeyboardEvent) => {
-  if (e.target instanceof HTMLInputElement) {
+  if (isEditableTarget(e.target)) {
     return
   }
   if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "j" || e.key === "k") {

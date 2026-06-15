@@ -3,8 +3,9 @@ import { toast } from "svelte-sonner"
 import { z } from "zod"
 import { cn } from "$/lib/utils"
 import ConfirmAddDialog from "$lib/components/ConfirmAddDialog.svelte"
+import { isEditableTarget } from "$lib/utils/keyboard"
 
-const parseData = (text: string | undefined): string | void => {
+const parseData = (text: string | undefined): string | undefined => {
   try {
     const rawUrl = z.string().url().parse(text)
     return rawUrl
@@ -18,6 +19,10 @@ let showConfirmAddDialog: HTMLDialogElement | undefined = $state()
 let url = $state("")
 
 const handleDragEnter = (e: DragEvent) => {
+  if (isEditableTarget(e.target)) {
+    return
+  }
+
   e.preventDefault()
   e.stopPropagation()
 
@@ -28,6 +33,10 @@ const handleDragEnter = (e: DragEvent) => {
 }
 
 const handleDrop = (e: DragEvent) => {
+  if (isEditableTarget(e.target)) {
+    return
+  }
+
   e.preventDefault()
   e.stopPropagation()
   isDragOver = false
@@ -51,7 +60,7 @@ const handleDrop = (e: DragEvent) => {
 }
 
 const handlePaste = (e: ClipboardEvent) => {
-  if (e.target instanceof HTMLInputElement) {
+  if (isEditableTarget(e.target)) {
     return
   }
   const text = e.clipboardData?.getData("text/plain")
@@ -64,13 +73,21 @@ const handlePaste = (e: ClipboardEvent) => {
 
 // Allow closing dropover backdrop with ESC
 const handleKeyDown = (e: KeyboardEvent) => {
-  if (e.repeat || e.target instanceof HTMLInputElement) {
+  if (e.repeat || isEditableTarget(e.target)) {
     return
   }
   if (e.key === "Escape" && showConfirmAddDialog) {
     e.preventDefault()
     showConfirmAddDialog.close()
   }
+}
+
+const handleDragOver = (e: DragEvent) => {
+  if (isEditableTarget(e.target)) {
+    return
+  }
+
+  e.preventDefault()
 }
 
 // Hide drop backdrop after 4s
@@ -88,7 +105,7 @@ $effect(() => {
 <svelte:body
   onpaste={handlePaste}
   ondragenter={handleDragEnter}
-  ondragover={(e) => e.preventDefault()}
+  ondragover={handleDragOver}
 />
 
 <ConfirmAddDialog {url} bind:dialogElement={showConfirmAddDialog} />

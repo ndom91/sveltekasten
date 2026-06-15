@@ -10,13 +10,14 @@ import * as Popover from "$lib/components/ui/popover"
 import * as Tooltip from "$lib/components/ui/tooltip"
 import { useInterface } from "$lib/state/ui.svelte"
 import { cn } from "$lib/utils"
+import { isEditableTarget } from "$lib/utils/keyboard"
 
 const { showSearch = true, showQuickAdd = true, showSidebar = true } = $props()
 const ui = useInterface()
 let searchInputEl = $state<HTMLInputElement>()
 
 const handleKeyDown = (event: KeyboardEvent) => {
-  if (event.repeat || event.target instanceof HTMLInputElement) {
+  if (event.repeat || isEditableTarget(event.target)) {
     return
   }
 

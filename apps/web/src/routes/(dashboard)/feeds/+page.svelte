@@ -13,6 +13,7 @@ import { FeedEntriesService } from "$lib/state/feedEntries.svelte"
 import { useInterface } from "$lib/state/ui.svelte"
 import { getContext } from "$lib/utils/context"
 import { documentVisibilityStore } from "$lib/utils/documentVisibility"
+import { isEditableTarget } from "$lib/utils/keyboard"
 import FilterBar from "./FilterBar.svelte"
 import { handleSummarizeText, registerSummarizationWorker } from "./summarization.svelte"
 import { handleGenerateSpeech, registerTtsWorker } from "./tts.svelte"
@@ -120,7 +121,7 @@ watch.pre(
 
 // Handle keyboard navigation of items
 const handleKeyDown = (e: KeyboardEvent) => {
-  if (e.target instanceof HTMLInputElement) {
+  if (isEditableTarget(e.target)) {
     return
   }
   if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "j" || e.key === "k") {

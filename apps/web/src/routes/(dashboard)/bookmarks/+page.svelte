@@ -13,6 +13,7 @@ import { Navbar } from "$lib/components/navbar"
 import { BookmarksService } from "$lib/state/bookmarks.svelte"
 import { useInterface } from "$lib/state/ui.svelte"
 import { getContext } from "$lib/utils/context"
+import { isEditableTarget } from "$lib/utils/keyboard"
 import { Logger, loggerLevels } from "$lib/utils/logger"
 import FilterBar from "./FilterBar.svelte"
 
@@ -108,7 +109,7 @@ watch.pre(
 
 // Handle keyboard navigation of items
 const handleKeyDown = (e: KeyboardEvent) => {
-  if (e.target instanceof HTMLInputElement) {
+  if (isEditableTarget(e.target)) {
     return
   }
 

@@ -9,6 +9,7 @@ import { Badge } from "$lib/components/ui/badge"
 import { useInterface } from "$lib/state/ui.svelte"
 import type { Feed, FeedEntry, FeedEntryMedia } from "$lib/types/zod.js"
 import { cn } from "$lib/utils"
+import { isEditableTarget } from "$lib/utils/keyboard"
 import FeedActions from "./FeedActions.svelte"
 import MobileFeedActions from "./MobileFeedActions.svelte"
 
@@ -72,7 +73,7 @@ const handleToggleCardOpen = async () => {
 }
 
 const handleKeyDown = async (e: KeyboardEvent) => {
-  if (e.repeat || e.target instanceof HTMLInputElement) {
+  if (e.repeat || isEditableTarget(e.target)) {
     return
   }
   if (e.key === "\\" && e.target === card) {

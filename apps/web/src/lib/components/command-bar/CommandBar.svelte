@@ -4,6 +4,7 @@ import { goto } from "$app/navigation"
 import Kbd from "$lib/components/KeyboardIndicator.svelte"
 import * as Command from "$lib/components/ui/command"
 import { useInterface } from "$lib/state/ui.svelte"
+import { isEditableTarget } from "$lib/utils/keyboard"
 
 function findNextItem(
   currentElement: Element | HTMLElement,
@@ -31,7 +32,7 @@ let element: HTMLDialogElement = $state()
 let value: string = $state("")
 
 const handleKeyDown = (event: KeyboardEvent) => {
-  if (event.repeat) {
+  if (event.repeat || isEditableTarget(event.target)) {
     return
   }
   if ((event.ctrlKey || event.metaKey) && event.code === "KeyK") {

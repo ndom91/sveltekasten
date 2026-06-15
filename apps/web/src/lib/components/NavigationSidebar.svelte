@@ -6,12 +6,13 @@ import SidebarContent from "$lib/components/SidebarContent.svelte"
 import { Button } from "$lib/components/ui/button"
 import { useInterface } from "$lib/state/ui.svelte"
 import { cn } from "$lib/utils"
+import { isEditableTarget } from "$lib/utils/keyboard"
 
 const ui = useInterface()
 let userSidebarElement = $state<HTMLElement>()
 
 const handleKeyDown = (event: KeyboardEvent) => {
-  if (event.repeat || event.target instanceof HTMLInputElement) {
+  if (event.repeat || isEditableTarget(event.target)) {
     return
   }
   if (event.code === "BracketLeft") {

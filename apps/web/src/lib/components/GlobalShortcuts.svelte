@@ -1,11 +1,12 @@
 <script lang="ts">
 import { goto } from "$app/navigation"
 import KeyboardShortcutsHelp from "$lib/components/KeyboardShortcutsHelp.svelte"
+import { isEditableTarget } from "$lib/utils/keyboard"
 
 let element = $state<HTMLDialogElement | undefined>()
 
 const handleKeyDown = (e: KeyboardEvent) => {
-  if (e.repeat || e.target instanceof HTMLInputElement) {
+  if (e.repeat || isEditableTarget(e.target)) {
     return
   }
   if (e.key === "Escape" && element) {
