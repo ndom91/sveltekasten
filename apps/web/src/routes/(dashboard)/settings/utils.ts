@@ -65,7 +65,7 @@ export const parseImportFile = (file: string) => {
   }
 }
 
-export const importBookmarks = async (bookmarks: ParsedBookmark[], userId: string) => {
+export const importBookmarks = async (bookmarks: ParsedBookmark[]) => {
   try {
     const bulkCreateDataResponse = await fetch("/api/v1/bookmarks", {
       method: "POST",
@@ -74,55 +74,34 @@ export const importBookmarks = async (bookmarks: ParsedBookmark[], userId: strin
       },
       body: JSON.stringify(
         bookmarks.map((importedBookmarks) => {
-          const tags = importedBookmarks.tags?.length
-            ? importedBookmarks.tags.map((tag) => ({
-                create: {
-                  tag: {
-                    connectOrCreate: {
-                      where: {
-                        name_userId: {
-                          name: tag,
-                          userId,
-                        },
-                      },
-                      data: {
-                        name: tag,
-                        userId,
-                      },
-                    },
-                  },
-                },
-                skipDuplicates: true,
-              }))
-            : undefined
-
           return {
             title: importedBookmarks.title,
             url: importedBookmarks.url,
             createdAt: importedBookmarks.createdAt,
-            userId,
-            ...(tags ? { tags } : {}),
+            ...(importedBookmarks.tags?.length ? { tags: importedBookmarks.tags } : {}),
           }
         })
       ),
     })
 
-    const bulkCreateDataJson = await bulkCreateDataResponse.json()
+    if (!bulkCreateDataResponse.ok) {
+      throw new Error(await bulkCreateDataResponse.text())
+    }
 
-    if (bulkCreateDataJson.count === bookmarks.length) {
-      toast.success(`Successfully imported ${bookmarks.length} bookmarks`)
+    const bulkCreateDataJson = await bulkCreateDataResponse.json()
+    const uniqueUrlCount = new Set(bookmarks.map((bookmark) => bookmark.url)).size
+
+    if (bulkCreateDataJson.count === uniqueUrlCount) {
+      toast.success(`Successfully imported ${bulkCreateDataJson.count} bookmarks`)
     } else if (bulkCreateDataJson.count) {
       console.warn(bulkCreateDataResponse)
-      toast.error(`Successfully imported only ${bookmarks.length} bookmarks`)
+      toast.error(`Successfully imported only ${bulkCreateDataJson.count} bookmarks`)
     } else {
       console.error(bulkCreateDataResponse)
       toast.error(`Error importing bookmarks`)
     }
-  } catch (error: any) {
-    if (error.data.code === "P2002") {
-      toast.error(`Error saving imported bookmarks\nURL already exists`)
-      return
-    }
+  } catch (error) {
+    console.error(error)
     toast.error(`Error saving imported bookmarks`)
   }
 }

@@ -142,7 +142,7 @@ const handleImport = async () => {
       toast.error(`No bookmarks successfully parsed. See console for any potential errors.`)
       return
     }
-    await importBookmarks(parsedBookmarks, page.data.session?.userId as string)
+    await importBookmarks(parsedBookmarks)
     parsedBookmarks = []
   } catch (error) {
     console.error(error)

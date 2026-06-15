@@ -1,9 +1,12 @@
 <script lang="ts">
 import { toast } from "svelte-sonner"
-import { invalidateAll } from "$app/navigation"
-import { page } from "$app/stores"
+import { invalidate } from "$app/navigation"
 import Dialog from "$lib/components/Dialog.svelte"
 import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
+import { BookmarksService } from "$lib/state/bookmarks.svelte"
+import { getContext } from "$lib/utils/context"
+
+const bookmarksService = getContext(BookmarksService)
 
 let {
   dialogElement = $bindable(),
@@ -26,15 +29,21 @@ const handleConfirm = async (): Promise<void> => {
       body: JSON.stringify([
         {
           url,
-          userId: $page.data.session?.user?.id,
         },
       ]),
     })
 
-    if (res.ok) {
-      await invalidateAll()
-      toast.success(`Added "${url}"`)
+    if (!res.ok) {
+      throw new Error(await res.text())
     }
+
+    const { data } = (await res.json()) as { data?: LoadBookmarkFlatTags[] }
+    if (data?.length) {
+      bookmarksService.add(data)
+    }
+
+    await invalidate("app:bookmarks")
+    toast.success(`Added "${url}"`)
   } catch (error) {
     console.error(error)
     toast.error(String(error))

@@ -1,11 +1,21 @@
-import { json, text } from "@sveltejs/kit"
+import { error as kitError, isHttpError, json, text } from "@sveltejs/kit"
 import z from "zod"
 import { PUBLIC_WORKER_URL } from "$env/static/public"
 import { requireUser } from "$lib/auth"
 import { db } from "$lib/prisma"
 import { fetchBookmarkMetadata } from "$lib/server/fetchBookmarkMetadata"
-import { BookmarkUncheckedCreateInputObjectSchema } from "$lib/types/zod.js"
 import type { RequestHandler } from "./$types"
+
+const bookmarkCreateInputSchema = z
+  .object({
+    title: z.string().optional().nullable(),
+    url: z.string().url(),
+    desc: z.string().optional().nullable(),
+    categoryId: z.string().optional().nullable(),
+    createdAt: z.coerce.date().optional(),
+    tags: z.array(z.string().min(1)).optional(),
+  })
+  .strict()
 
 // Get more Bookmarks
 export const GET: RequestHandler = async (event) => {
@@ -33,11 +43,7 @@ export const GET: RequestHandler = async (event) => {
         archived,
         ...(search
           ? {
-              OR: [
-                { title: { search } },
-                { url: { search } },
-                { desc: { search } },
-              ],
+              OR: [{ title: { search } }, { url: { search } }, { desc: { search } }],
             }
           : {}),
       },
@@ -49,7 +55,10 @@ export const GET: RequestHandler = async (event) => {
     })) as unknown as [LoadBookmark[], number]
 
     const bookmarks = data.map((bookmark) => {
-      return { ...bookmark, tags: bookmark.tags.map((tag: LoadBookmark["tags"][number]) => tag.tag) }
+      return {
+        ...bookmark,
+        tags: bookmark.tags.map((tag: LoadBookmark["tags"][number]) => tag.tag),
+      }
     }) as LoadBookmarkFlatTags[]
 
     return json({
@@ -94,27 +103,112 @@ export const POST: RequestHandler = async (event) => {
   try {
     const { userId } = requireUser(event)
     const inputData = await event.request.json()
-    const data = z.array(BookmarkUncheckedCreateInputObjectSchema).parse(inputData)
+    const data = z.array(bookmarkCreateInputSchema).parse(inputData)
 
     const bookmarkData = await Promise.all(
       data.map(async (bookmark) => {
+        if (bookmark.categoryId) {
+          const category = await db.category.findFirst({
+            where: {
+              id: bookmark.categoryId,
+              userId,
+            },
+            select: {
+              id: true,
+            },
+          })
+
+          if (!category) {
+            kitError(400, { message: "Invalid category" })
+          }
+        }
+
         const { imageUrl, imageBlur, metadata } = await fetchBookmarkMetadata(bookmark.url)
+        const tagNames = Array.from(
+          new Set(bookmark.tags?.map((tag) => tag.trim()).filter(Boolean))
+        )
+
         return {
           ...bookmark,
+          tags: tagNames,
           userId,
           image: imageUrl,
           imageBlur,
-          desc: metadata.description,
-          title: metadata.title ?? metadata.description,
+          desc: bookmark.desc ?? metadata.description,
+          title: bookmark.title ?? metadata.title ?? metadata.description,
           metadata,
         }
       })
     )
 
-    const upsertResponse = await db.bookmark.createManyAndReturn({
-      data: bookmarkData,
-      skipDuplicates: true,
-    })
+    const bookmarksByUrl = new Map<string, (typeof bookmarkData)[number]>()
+    for (const bookmark of bookmarkData) {
+      const existingBookmark = bookmarksByUrl.get(bookmark.url)
+      bookmarksByUrl.set(
+        bookmark.url,
+        existingBookmark
+          ? {
+              ...existingBookmark,
+              tags: Array.from(new Set([...existingBookmark.tags, ...bookmark.tags])),
+            }
+          : bookmark
+      )
+    }
+
+    const uniqueBookmarkData = Array.from(bookmarksByUrl.values())
+    const requestTagNames = Array.from(
+      new Set(uniqueBookmarkData.flatMap((bookmark) => bookmark.tags))
+    )
+    if (requestTagNames.length) {
+      await db.tag.createMany({
+        data: requestTagNames.map((name) => ({
+          name,
+          userId,
+        })),
+        skipDuplicates: true,
+      })
+    }
+
+    const upsertResponse = await Promise.all(
+      uniqueBookmarkData.map(({ tags, ...bookmark }) => {
+        return db.bookmark.upsert({
+          where: {
+            url_userId: {
+              url: bookmark.url,
+              userId,
+            },
+          },
+          create: {
+            ...bookmark,
+            tags: tags.length
+              ? {
+                  create: tags.map((name) => ({
+                    tag: {
+                      connect: {
+                        name_userId: {
+                          name,
+                          userId,
+                        },
+                      },
+                    },
+                  })),
+                }
+              : undefined,
+          },
+          update: {
+            archived: false,
+          },
+          include: {
+            category: true,
+            tags: { include: { tag: true } },
+          },
+        })
+      })
+    )
+
+    const bookmarks = upsertResponse.map((bookmark) => {
+      return { ...bookmark, tags: bookmark.tags.map((tag) => tag.tag) }
+    }) as LoadBookmarkFlatTags[]
 
     // Add bookmark to queue for fetching screenshot
     if (PUBLIC_WORKER_URL) {
@@ -125,15 +219,21 @@ export const POST: RequestHandler = async (event) => {
           cookie: event.request.headers.get("cookie") ?? "",
         },
         body: JSON.stringify({
-          data: bookmarkData.filter((bookmark) => !bookmark.image),
+          data: upsertResponse
+            .filter((bookmark) => !bookmark.image)
+            .map((bookmark) => ({ url: bookmark.url })),
         }),
       })
     }
 
-    return json({ data: upsertResponse, bookmarkData, count: upsertResponse.length })
+    return json({ data: bookmarks, count: bookmarks.length })
   } catch (error) {
     console.error(String(error))
-    return new Response(String(error))
+    if (isHttpError(error)) {
+      return new Response(error.body.message, { status: error.status })
+    }
+
+    return new Response(String(error), { status: error instanceof z.ZodError ? 400 : 500 })
   }
 }
 
