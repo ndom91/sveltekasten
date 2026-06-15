@@ -86,18 +86,16 @@ const handleSearchInput = async (event: KeyboardEvent) => {
       </div>
     {/if}
     {#if showQuickAdd}
-        <Tooltip.Provider>
       <Popover.Root bind:open={ui.quickAddOpen}>
-
-        <Tooltip.Root>
-          <Tooltip.Trigger >
+        <Popover.Trigger>
           {#snippet child({ props })}
-          <Popover.Trigger tabindex={-1} {...props}>
             <div
               class="rounded-full transition duration-300 focus-within:rounded-full focus-within:outline-none focus-within:ring-2 focus-within:ring-zinc-300 dark:focus-within:ring-zinc-800"
             >
               <Button
-                onclick={() => ui.toggleQuickAdd()}
+                {...props}
+                aria-label="Quick add bookmark"
+                title="Quick add bookmark"
                 variant="outline"
                 class={cn(
                   ui.quickAddOpen ? "ring-2 ring-zinc-400" : "",
@@ -123,23 +121,12 @@ const handleSearchInput = async (event: KeyboardEvent) => {
                 </svg>
               </Button>
             </div>
-            </Popover.Trigger>
-            {/snippet}
-          </Tooltip.Trigger>
-          <Tooltip.Content>
-            <p class="flex items-center justify-center">
-              Quick add Bookmark <KeyboardIndicator key="Alt N" class="ml-2 text-xs" />
-            </p>
-          </Tooltip.Content>
-          <Popover.Content
-            sideOffset={30}
-            class="w-[calc(100%-16px)] sm:w-auto"
-          >
-            <QuickAddForm />
-          </Popover.Content>
-        </Tooltip.Root>
+          {/snippet}
+        </Popover.Trigger>
+        <Popover.Content sideOffset={30} class="w-[calc(100%-16px)] sm:w-auto">
+          <QuickAddForm />
+        </Popover.Content>
       </Popover.Root>
-        </Tooltip.Provider>
     {/if}
     {#if showSidebar}
       <div
