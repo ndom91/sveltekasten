@@ -1,12 +1,47 @@
 import { json, text } from "@sveltejs/kit"
+import z from "zod"
 import { requireUser } from "$/lib/auth"
 import { db } from "$lib/prisma"
 import type { RequestHandler } from "./$types"
 
+const userSettingsSchema = z
+  .object({
+    data: z
+      .object({
+        settings: z
+          .object({
+            personal: z
+              .object({
+                compact: z.boolean().optional(),
+              })
+              .strict(),
+            ai: z
+              .object({
+                tts: z
+                  .object({
+                    enabled: z.boolean(),
+                    speaker: z.string(),
+                    location: z.enum(["Browser", "Server"]),
+                  })
+                  .strict(),
+                summarization: z
+                  .object({
+                    enabled: z.boolean(),
+                  })
+                  .strict(),
+              })
+              .strict(),
+          })
+          .strict(),
+      })
+      .strict(),
+  })
+  .strict()
+
 export const PUT: RequestHandler = async (event) => {
   try {
     const { userId } = requireUser(event)
-    const { data } = await event.request.json()
+    const { data } = userSettingsSchema.parse(await event.request.json())
 
     const prismaResult = await db.user.update({
       data: {
@@ -24,7 +59,7 @@ export const PUT: RequestHandler = async (event) => {
     } else {
       console.error(error)
     }
-    return new Response(String(error), { status: 401 })
+    return new Response(String(error), { status: error instanceof z.ZodError ? 400 : 401 })
   }
 }
 

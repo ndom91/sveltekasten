@@ -48,7 +48,7 @@ type UpdateUserSettingsArgs = {
 }
 
 const updateUser = async (userSettings: UpdateUserSettingsArgs) => {
-  await fetch("/api/v1/user", {
+  const response = await fetch("/api/v1/user", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -76,6 +76,11 @@ const updateUser = async (userSettings: UpdateUserSettingsArgs) => {
       },
     }),
   })
+  if (!response.ok) {
+    toast.error(`Settings update failed: ${await response.text()}`)
+    return
+  }
+
   // TODO: Reenable when not running onMount
   toast.success("Settings updated")
 }
