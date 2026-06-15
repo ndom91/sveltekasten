@@ -24,10 +24,7 @@ export const GET: RequestHandler = async (event) => {
         userId,
         ...(search
           ? {
-              OR: [
-                { title: { search } },
-                { contentSnippet: { search } },
-              ],
+              OR: [{ title: { search } }, { contentSnippet: { search } }],
             }
           : {}),
       },
@@ -84,5 +81,5 @@ export const PUT: RequestHandler = async (event) => {
 }
 
 export const fallback: RequestHandler = async ({ request }) => {
-  return text(`Invalid method ${request.method}`)
+  return text(`Invalid method ${request.method}`, { status: 405 })
 }

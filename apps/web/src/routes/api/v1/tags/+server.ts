@@ -53,5 +53,5 @@ export const DELETE: RequestHandler = async (event) => {
 }
 
 export const fallback: RequestHandler = ({ request }) => {
-  return text(`Invalid method ${request.method}`)
+  return text(`Invalid method ${request.method}`, { status: 405 })
 }
