@@ -82,15 +82,17 @@ onMount(() => {
 })
 </script>
 
-<div class="flex h-screen max-w-full">
-  <CommandBar />
-  <Sidebar />
-  <div class="flex w-full min-w-0 flex-col">
-    {@render children()}
+<Tooltip.Provider>
+  <div class="flex h-screen max-w-full">
+    <CommandBar />
+    <Sidebar />
+    <div class="flex w-full min-w-0 flex-col">
+      {@render children()}
+    </div>
+    {#if metadataEnabled()}
+      <MetadataSidebar />
+    {/if}
   </div>
-  {#if metadataEnabled()}
-    <MetadataSidebar />
-  {/if}
-</div>
 
-<DragAdd />
+  <DragAdd />
+</Tooltip.Provider>
