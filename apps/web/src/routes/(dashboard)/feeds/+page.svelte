@@ -65,34 +65,16 @@ const fetchSearchResults = async ({
   skip?: number
 }) => {
   try {
-    const body = {
-      type: "feedEntry",
-      skip,
-      limit,
-      include: {
-        feed: true,
-        feedMedia: true,
-      },
-      orderBy: { published: "desc" },
-      where: {},
-    }
-    if (ui.searchQuery) {
-      body.where = {
-        title: {
-          search: ui.searchQuery.split(" ").join(" & "),
-        },
-        contentSnippet: {
-          search: ui.searchQuery.split(" ").join(" & "),
-        },
-      }
-    }
-    const searchResponse = await fetch("/api/v1/search", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
+    const searchParams = new URLSearchParams({
+      skip: String(skip),
+      limit: String(limit),
     })
+
+    if (ui.searchQuery) {
+      searchParams.set("q", ui.searchQuery)
+    }
+
+    const searchResponse = await fetch(`/api/v1/feeds?${searchParams}`)
     const { data, count } = await searchResponse.json()
     return {
       data,

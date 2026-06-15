@@ -32,12 +32,6 @@ let rootElement = $state<HTMLElement>()
 
 const limitLoadCount = 20
 const logger = new Logger({ level: loggerLevels.DEBUG })
-type BookmarkSearchWhere = {
-  archived: boolean
-  title?: { search: string }
-  url?: { search: string }
-  desc?: { search: string }
-}
 
 // $effect(() => {
 //   if ($page.data.bookmarks.data.length) {
@@ -59,50 +53,17 @@ const fetchSearchResults = async ({
   skip?: number
 }) => {
   try {
-    const body: {
-      type: "bookmark"
-      skip: number
-      limit: number
-      orderBy: { createdAt: "desc" }
-      include: {
-        category: true
-        tags: { include: { tag: true } }
-      }
-      where: BookmarkSearchWhere
-    } = {
-      type: "bookmark",
-      skip,
-      limit,
-      orderBy: { createdAt: "desc" },
-      include: {
-        category: true,
-        tags: { include: { tag: true } },
-      },
-      where: {
-        archived: false,
-      },
-    }
-    if (ui.searchQuery) {
-      body.where = {
-        archived: false,
-        title: {
-          search: ui.searchQuery.split(" ").join(" & "),
-        },
-        url: {
-          search: ui.searchQuery.split(" ").join(" & "),
-        },
-        desc: {
-          search: ui.searchQuery.split(" ").join(" & "),
-        },
-      }
-    }
-    const searchResponse = await fetch("/api/v1/search", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
+    const searchParams = new URLSearchParams({
+      archived: "false",
+      skip: String(skip),
+      limit: String(limit),
     })
+
+    if (ui.searchQuery) {
+      searchParams.set("q", ui.searchQuery)
+    }
+
+    const searchResponse = await fetch(`/api/v1/bookmarks?${searchParams}`)
     const { data, count } = await searchResponse.json()
     return {
       data,

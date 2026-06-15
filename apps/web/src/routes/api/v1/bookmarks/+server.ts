@@ -13,6 +13,8 @@ export const GET: RequestHandler = async (event) => {
     const { userId } = isAuthenticated(event)
     const skip = Number(event.url.searchParams.get("skip") ?? "0")
     const limit = Number(event.url.searchParams.get("limit") ?? "10")
+    const archived = event.url.searchParams.get("archived") === "true"
+    const query = event.url.searchParams.get("q")?.trim()
 
     if (limit > 100) {
       return new Response(null, {
@@ -21,19 +23,38 @@ export const GET: RequestHandler = async (event) => {
       })
     }
 
-    const data = await db.bookmark.findMany({
+    const search = query ? query.split(/\s+/).join(" & ") : undefined
+
+    const [data, count] = (await db.bookmark.findManyAndCount({
       take: limit,
       skip,
-      where: { userId },
+      where: {
+        userId,
+        archived,
+        ...(search
+          ? {
+              OR: [
+                { title: { search } },
+                { url: { search } },
+                { desc: { search } },
+              ],
+            }
+          : {}),
+      },
       include: {
         category: true,
         tags: { include: { tag: true } },
       },
       orderBy: { createdAt: "desc" },
-    })
+    })) as unknown as [LoadBookmark[], number]
+
+    const bookmarks = data.map((bookmark) => {
+      return { ...bookmark, tags: bookmark.tags.map((tag: LoadBookmark["tags"][number]) => tag.tag) }
+    }) as LoadBookmarkFlatTags[]
 
     return json({
-      data,
+      data: bookmarks,
+      count,
     })
   } catch (error) {
     console.error(String(error))

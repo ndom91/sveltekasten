@@ -9,15 +9,28 @@ export const GET: RequestHandler = async (event) => {
     const { userId } = isAuthenticated(event)
     const skip = Number(event.url.searchParams.get("skip") ?? "0")
     const limit = Number(event.url.searchParams.get("limit") ?? "10")
+    const query = event.url.searchParams.get("q")?.trim()
 
     if (limit > 100) {
       return new Response(null, { status: 401, statusText: "Attempted to load too many items" })
     }
 
-    const data = await db.feedEntry.findMany({
+    const search = query ? query.split(/\s+/).join(" & ") : undefined
+
+    const [data, count] = await db.feedEntry.findManyAndCount({
       take: limit,
       skip,
-      where: { userId },
+      where: {
+        userId,
+        ...(search
+          ? {
+              OR: [
+                { title: { search } },
+                { contentSnippet: { search } },
+              ],
+            }
+          : {}),
+      },
       include: {
         feed: true,
         feedMedia: true,
@@ -27,6 +40,7 @@ export const GET: RequestHandler = async (event) => {
 
     return json({
       data,
+      count,
     })
   } catch (error) {
     if (error instanceof Error) {

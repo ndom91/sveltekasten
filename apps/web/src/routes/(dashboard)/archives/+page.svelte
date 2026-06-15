@@ -36,40 +36,17 @@ const fetchSearchResults = async ({
   skip?: number
 }) => {
   try {
-    const body = {
-      type: "bookmark",
-      skip,
-      limit,
-      orderBy: { createdAt: "desc" },
-      include: {
-        category: true,
-        tags: { include: { tag: true } },
-      },
-      where: {
-        archived: true,
-      } as Record<string, unknown>,
-    }
-    if (ui.searchQuery) {
-      body.where = {
-        archived: true,
-        title: {
-          search: ui.searchQuery.split(" ").join(" & "),
-        },
-        url: {
-          search: ui.searchQuery.split(" ").join(" & "),
-        },
-        desc: {
-          search: ui.searchQuery.split(" ").join(" & "),
-        },
-      }
-    }
-    const searchResponse = await fetch("/api/v1/search", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
+    const searchParams = new URLSearchParams({
+      archived: "true",
+      skip: String(skip),
+      limit: String(limit),
     })
+
+    if (ui.searchQuery) {
+      searchParams.set("q", ui.searchQuery)
+    }
+
+    const searchResponse = await fetch(`/api/v1/bookmarks?${searchParams}`)
     const { data, count } = await searchResponse.json()
     return {
       data,
