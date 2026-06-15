@@ -32,7 +32,7 @@ let {
 let showFeedActions = $state(false)
 let card = $state<HTMLElement>()
 let cardOpen = $state(false)
-let feedBodyElement = $state<HTMLElement>()!
+let feedBodyElement = $state<HTMLElement>()
 
 const imageUrl = $derived.by(() => {
   if (feedEntry.feedMedia?.[0]?.href) {
@@ -89,7 +89,7 @@ const handleSetTextToSpeechContent = async () => {
   ui.textToSpeechAudioBlob = ""
   // Hack to quickly get text content from HTML String
   const tmp = document.createElement("div")
-  tmp.innerHTML = feedEntry.content!
+  tmp.innerHTML = feedEntry.content ?? ""
   await handleGenerateSpeech(tmp.textContent)
 }
 
@@ -99,6 +99,11 @@ const handleStartTextSummarization = () => {
 
 const mutate = () => {
   return new Promise<void>((resolve) => {
+    if (!feedBodyElement) {
+      resolve()
+      return
+    }
+
     if (cardOpen) {
       feedBodyElement.style.opacity = "1.0"
       feedBodyElement.style.height = "fit-content"
@@ -130,9 +135,13 @@ const hideUnread = $derived.by(() => {
   return false
 })
 
-const feedCategories: string[] = Array.isArray(feedEntry.categories)
-  ? feedEntry.categories
-  : String(feedEntry.categories).replaceAll(" ", "").split(",")
+const feedCategories = $derived.by(() => {
+  if (Array.isArray(feedEntry.categories)) {
+    return feedEntry.categories
+  }
+
+  return String(feedEntry.categories).replaceAll(" ", "").split(",")
+})
 </script>
 
 <svelte:window onkeydown={handleKeyDown} />
