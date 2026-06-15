@@ -41,6 +41,17 @@ const logger: Handle = async ({ event, resolve }) => {
     `${statusColor}${response.status}\x1B[0m ${event.request.method} \x1B[1m${event.url.pathname}\x1B[0m (\x1B[90m${Date.now() - start_time}ms\x1B[0m)`
   )
 
+  // TEMP DEBUG: dump the raw response headers for the OAuth callback so we can
+  // see what traefik chokes on (oversized Set-Cookie, bad Location, etc.).
+  if (event.url.pathname.startsWith("/api/auth/callback")) {
+    let totalHeaderBytes = 0
+    for (const [k, v] of response.headers) {
+      totalHeaderBytes += k.length + v.length
+      console.log(`[cb-hdr] ${k}: len=${v.length} ${k === "location" ? v : ""}`)
+    }
+    console.log(`[cb-hdr] TOTAL header bytes=${totalHeaderBytes}`)
+  }
+
   return response
 }
 
