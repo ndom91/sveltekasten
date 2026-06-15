@@ -54,7 +54,7 @@ export const createFeed = async (data: CreateFeedData) => {
             contentSnippet: item.description,
             ingested: new Date().toISOString(),
             published: item.published,
-            categories: item.categories
+            categories: (item.categories ?? [])
               .map((category) => category.label)
               .filter((label) => !label?.includes("|"))
               .filter(Boolean) as string[],

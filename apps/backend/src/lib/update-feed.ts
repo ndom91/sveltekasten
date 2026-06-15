@@ -47,7 +47,7 @@ export const updateFeed = async (feed: Feed) => {
   debug(`${newItems.length} new items ${feed.url}`)
 
   // If we have new items to insert, insert their FeedEntry and FeedEntryMedia
-  await Promise.allSettled(
+  const results = await Promise.allSettled(
     newItems.map((item) => {
       debug(`Inserting ${item.url}`)
       return db.feedEntry.create({
@@ -60,7 +60,7 @@ export const updateFeed = async (feed: Feed) => {
           contentSnippet: item.description,
           ingested: new Date().toISOString(),
           published: item.published,
-          categories: item.categories
+          categories: (item.categories ?? [])
             .map((category) => category.label)
             .filter((label) => !label?.includes("|"))
             .filter(Boolean) as string[],
@@ -91,4 +91,10 @@ export const updateFeed = async (feed: Feed) => {
       })
     })
   )
+
+  for (const result of results) {
+    if (result.status === "rejected") {
+      console.error(result.reason)
+    }
+  }
 }

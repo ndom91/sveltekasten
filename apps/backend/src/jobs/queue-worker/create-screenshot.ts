@@ -143,7 +143,11 @@ const screenshotUrl = async ({ url }: ScreenshotArgs) => {
 
 // Workaround for NixOS Local Chromium Path
 const getLocalChromiumPath = async () => {
-  const osRelease = await readFile("/etc/os-release")
+  const osRelease = await readFile("/etc/os-release").catch(() => null)
+  if (!osRelease) {
+    return chromium.executablePath()
+  }
+
   const isNix = osRelease.includes("ID=nixos")
   if (isNix) {
     const user = userInfo()

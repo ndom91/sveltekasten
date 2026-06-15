@@ -32,6 +32,10 @@ export const fetchFeed = async ({
     return
   }
 
+  if (!response.ok) {
+    throw new Error(`Failed to fetch feed ${url}: ${response.status} ${response.statusText}`)
+  }
+
   const xml = await response.text()
   return parseFeed(xml)
 }

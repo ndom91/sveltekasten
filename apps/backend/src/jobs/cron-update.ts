@@ -9,7 +9,7 @@ const debug = debugFactory("backend:cron")
 
 // Run every 10 min
 export const updateJob = new Cron(
-  "* */10 * * * *",
+  "0 */10 * * * *",
   {
     timezone: "Europe/London",
     name: "refreshFeeds",
@@ -37,7 +37,7 @@ export const updateJob = new Cron(
 
       debug(`${feeds.length} feeds to refresh`)
 
-      await Promise.allSettled(
+      const results = await Promise.allSettled(
         feeds.map(async (feed) => {
           debug(`Updating feed - ${feed.url}`)
           await updateFeed(feed)
@@ -53,6 +53,12 @@ export const updateJob = new Cron(
           })
         })
       )
+
+      for (const result of results) {
+        if (result.status === "rejected") {
+          console.error(result.reason)
+        }
+      }
       debug(`Next run: ${format(cron.nextRun() ?? "", { date: "medium", time: "long" })}`)
     } catch (error) {
       console.error(error)
