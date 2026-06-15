@@ -84,54 +84,61 @@ const screenshotUrl = async ({ url }: ScreenshotArgs) => {
     headless: true,
   })
 
-  const page = await browser.newPage({
-    locale: "en-US",
-    viewport: { width: 960, height: 540 },
-    deviceScaleFactor: 1,
-    userAgent:
-      "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-  })
-  await page.goto(url)
+  try {
+    const page = await browser.newPage({
+      locale: "en-US",
+      viewport: { width: 960, height: 540 },
+      deviceScaleFactor: 1,
+      userAgent:
+        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    })
+    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 15000 })
 
-  // Finding and clicking away cookie banners
-  const selectors = [
-    "[id*=cookie] a",
-    "[class*=consent] button",
-    "[class*=cookie] a",
-    "[id*=cookie] button",
-    "[class*=cookie] button",
-  ]
-  const cookieSelectors = page.locator(selectors.join(", "))
+    // Finding and clicking away cookie banners
+    const selectors = [
+      "[id*=cookie] a",
+      "[class*=consent] button",
+      "[class*=cookie] a",
+      "[id*=cookie] button",
+      "[class*=cookie] button",
+    ]
+    const cookieSelectors = page.locator(selectors.join(", "))
 
-  const btnRegex = new RegExp(
-    /(Accept all|Accept all cookies|I agree|Accept|Agree|Agree all|Ich stimme zu|Okay|OK)/,
-    "gi"
-  )
-  const cookieBtnLocator = page.getByRole("button", { name: btnRegex })
+    const btnRegex = new RegExp(
+      /(Accept all|Accept all cookies|I agree|Accept|Agree|Agree all|Ich stimme zu|Okay|OK)/,
+      "gi"
+    )
+    const cookieBtnLocator = page.getByRole("button", { name: btnRegex })
 
-  await cookieBtnLocator.first().click()
-  await page.addLocatorHandler(cookieSelectors, async (locator) => {
-    await locator.first().click()
-  })
+    await cookieBtnLocator
+      .first()
+      .click({ timeout: 1000 })
+      .catch(() => undefined)
+    await page.addLocatorHandler(cookieSelectors, async (locator) => {
+      await locator
+        .first()
+        .click({ timeout: 1000 })
+        .catch(() => undefined)
+    })
 
-  // Screenshot
-  let buffer
-  if (url.includes("x.com") || url.includes("twitter.com")) {
-    await page.getByTestId("xMigrationBottomBar").click()
-    await page.waitForTimeout(2500)
+    // Screenshot
+    if (url.includes("x.com") || url.includes("twitter.com")) {
+      await page
+        .getByTestId("xMigrationBottomBar")
+        .click({ timeout: 1000 })
+        .catch(() => undefined)
+      await page.waitForTimeout(2500)
 
-    const tweetElement = page.getByTestId("tweet")
-    if (tweetElement) {
-      buffer = await tweetElement.screenshot({ type: "png", scale: "css" })
+      const tweetElement = page.getByTestId("tweet")
+      if ((await tweetElement.count()) > 0) {
+        return await tweetElement.first().screenshot({ type: "png", scale: "css" })
+      }
     }
-  } else {
-    buffer = await page.screenshot({ type: "png", scale: "css" })
+
+    return await page.screenshot({ type: "png", scale: "css" })
+  } finally {
+    await browser.close()
   }
-
-  await page.close()
-  await browser.close()
-
-  return buffer
 }
 
 // Workaround for NixOS Local Chromium Path

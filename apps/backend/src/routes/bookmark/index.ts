@@ -13,19 +13,19 @@ api.post("/", bookmarkImageCookieValidator, bookmarkImageBodyValidator, async (c
   try {
     const body = c.req.valid("json")
 
-    await Promise.all(
-      body.data.map((bookmark) => {
-        return screenshotQueue.push({
+    for (const bookmark of body.data) {
+      void screenshotQueue
+        .push({
           action: actions.ADD_SCREENSHOT,
           data: {
             url: bookmark.url,
             userId,
           },
         })
-      })
-    )
+        .catch((error) => console.error(error))
+    }
 
-    return c.text("Success")
+    return c.text("Queued", 202)
   } catch (error) {
     console.error(error)
     throw new HTTPException(500, { message: String(error) })

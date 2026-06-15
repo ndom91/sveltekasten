@@ -13,9 +13,6 @@ export const fetchFeed = async ({
   url,
   lastFetched = null,
 }: FetchFeed): Promise<Feed | undefined> => {
-  // Disable TLS verification for RSS feeds that changed domains and redirect
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
-
   const headers: Record<string, string> = {
     "User-Agent": "Briefkasten/1.0 (+https://github.com/ndom91/briefkastenhq)",
     "Accept-Encoding": "gzip",
@@ -27,9 +24,8 @@ export const fetchFeed = async ({
 
   const response = await fetch(url, {
     headers,
+    signal: AbortSignal.timeout(15000),
   })
-
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "1"
 
   if (response.status === 304) {
     debug(`Feed not modified since last fetch - ${url}`)

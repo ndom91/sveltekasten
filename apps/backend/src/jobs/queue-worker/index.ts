@@ -12,6 +12,7 @@ export async function feedWorker(arg: Task): Promise<void> {
     await createFeed(arg.data as unknown as CreateFeedData)
   } catch (error) {
     debugFeed("Error creating Feed", error)
+    throw error
   }
 }
 
@@ -20,5 +21,6 @@ export async function screenshotWorker(arg: Task): Promise<void> {
     await createScreenshot(arg.data as unknown as CreateScreenshot)
   } catch (error) {
     debugScreenshot("Error creating Screenshot", error)
+    throw error
   }
 }

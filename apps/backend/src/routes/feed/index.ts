@@ -7,11 +7,11 @@ import { feedBodySchema } from "./schema.js"
 
 const api = new Hono()
 
-api.get("/", (c) => {
-  try {
-    const queueList = feedQueue.getQueue()
+api.get("/", async (c) => {
+  await getUserId(c)
 
-    return c.json({ queueList })
+  try {
+    return c.json({ queueLength: feedQueue.length() })
   } catch (error) {
     return c.json({ error }, 500)
   }
@@ -28,16 +28,17 @@ api.post("/", feedBodySchema, async (c) => {
       })
     }
 
-    await feedQueue.push({
-      action: actions.ADD_FEED,
-      data: {
-        feedUrl,
-        userId,
-      },
-    })
-    return c.json({
-      feedUrl,
-    })
+    void feedQueue
+      .push({
+        action: actions.ADD_FEED,
+        data: {
+          feedUrl,
+          userId,
+        },
+      })
+      .catch((error) => console.error(error))
+
+    return c.json({ feedUrl }, 202)
   } catch (error) {
     console.error(error)
     return c.json({ error }, 500)

@@ -27,9 +27,12 @@ export async function getUserId(c: Context) {
         ? "authjs.session-token"
         : "__Secure-authjs.session-token"
 
-    const cookieValue = getCookie(c, cookieName)!
+    const cookieValue = getCookie(c, cookieName)
+    if (!cookieValue) {
+      throw new HTTPException(401, { message: "Unauthorized" })
+    }
 
-    debug("Parsing cookies", { cookieName, cookieValue })
+    debug("Parsing cookies", { cookieName })
 
     const session = await getSession(cookieValue)
     if (!session) return null
