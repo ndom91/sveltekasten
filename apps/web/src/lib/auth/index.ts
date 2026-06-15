@@ -30,5 +30,3 @@ export const requireUser = (
     userId: session.userId,
   }
 }
-
-export const isAuthenticated = (event: AuthEvent): AuthenticatedUser | never => requireUser(event)

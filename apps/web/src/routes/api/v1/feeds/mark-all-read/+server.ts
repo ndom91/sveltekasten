@@ -1,12 +1,12 @@
 import { json, text } from "@sveltejs/kit"
-import { isAuthenticated } from "$lib/auth"
+import { requireUser } from "$lib/auth"
 import { db } from "$lib/prisma"
 import type { RequestHandler } from "./$types"
 
 // Mark all FeedEntries as read
 export const POST: RequestHandler = async (event) => {
   try {
-    const { userId } = isAuthenticated(event)
+    const { userId } = requireUser(event)
     const { feedId } = await event.request.json()
 
     const data = await db.feedEntry.updateMany({

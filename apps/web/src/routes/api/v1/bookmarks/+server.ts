@@ -1,7 +1,7 @@
 import { json, text } from "@sveltejs/kit"
 import z from "zod"
 import { PUBLIC_WORKER_URL } from "$env/static/public"
-import { isAuthenticated } from "$lib/auth"
+import { requireUser } from "$lib/auth"
 import { db } from "$lib/prisma"
 import { fetchBookmarkMetadata } from "$lib/server/fetchBookmarkMetadata"
 import { BookmarkUncheckedCreateInputObjectSchema } from "$lib/types/zod.js"
@@ -10,7 +10,7 @@ import type { RequestHandler } from "./$types"
 // Get more Bookmarks
 export const GET: RequestHandler = async (event) => {
   try {
-    const { userId } = isAuthenticated(event)
+    const { userId } = requireUser(event)
     const skip = Number(event.url.searchParams.get("skip") ?? "0")
     const limit = Number(event.url.searchParams.get("limit") ?? "10")
     const archived = event.url.searchParams.get("archived") === "true"
@@ -65,7 +65,7 @@ export const GET: RequestHandler = async (event) => {
 // Update Bookmark
 export const PUT: RequestHandler = async (event) => {
   try {
-    const { userId } = isAuthenticated(event)
+    const { userId } = requireUser(event)
     const { id, update } = await event.request.json()
 
     const data = await db.bookmark.update({
@@ -92,7 +92,7 @@ export const PUT: RequestHandler = async (event) => {
 // Create Bookmark(s)
 export const POST: RequestHandler = async (event) => {
   try {
-    const { userId } = isAuthenticated(event)
+    const { userId } = requireUser(event)
     const inputData = await event.request.json()
     const data = z.array(BookmarkUncheckedCreateInputObjectSchema).parse(inputData)
 

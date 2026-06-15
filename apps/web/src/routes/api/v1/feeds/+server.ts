@@ -1,12 +1,12 @@
 import { json, text } from "@sveltejs/kit"
-import { isAuthenticated } from "$/lib/auth"
+import { requireUser } from "$/lib/auth"
 import { db } from "$lib/prisma"
 import type { RequestHandler } from "./$types"
 
 // Get FeedEntries
 export const GET: RequestHandler = async (event) => {
   try {
-    const { userId } = isAuthenticated(event)
+    const { userId } = requireUser(event)
     const skip = Number(event.url.searchParams.get("skip") ?? "0")
     const limit = Number(event.url.searchParams.get("limit") ?? "10")
     const query = event.url.searchParams.get("q")?.trim()
@@ -55,7 +55,7 @@ export const GET: RequestHandler = async (event) => {
 // Update FeedEntry
 export const PUT: RequestHandler = async (event) => {
   try {
-    const { userId } = isAuthenticated(event)
+    const { userId } = requireUser(event)
     const { feedEntry } = await event.request.json()
 
     const data = await db.feedEntry.update({

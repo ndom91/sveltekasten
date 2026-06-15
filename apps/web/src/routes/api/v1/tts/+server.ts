@@ -1,11 +1,11 @@
 import { text } from "@sveltejs/kit"
-import { isAuthenticated } from "$/lib/auth"
+import { requireUser } from "$/lib/auth"
 import { createEdgeSpeech } from "$lib/server/generate-tts"
 import type { RequestHandler } from "./$types"
 
 export const POST: RequestHandler = async (event) => {
   try {
-    await isAuthenticated(event)
+    requireUser(event)
 
     const { text, speaker } = await event.request.json()
 

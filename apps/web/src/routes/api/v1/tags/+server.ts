@@ -1,11 +1,11 @@
 import { json, text } from "@sveltejs/kit"
-import { isAuthenticated } from "$/lib/auth"
+import { requireUser } from "$/lib/auth"
 import { db } from "$lib/prisma"
 import type { RequestHandler } from "./$types"
 
 export const PUT: RequestHandler = async (event) => {
   try {
-    const { userId } = isAuthenticated(event)
+    const { userId } = requireUser(event)
     const { data } = await event.request.json()
 
     const prismaResult = await db.tag.update({
@@ -31,7 +31,7 @@ export const PUT: RequestHandler = async (event) => {
 
 export const DELETE: RequestHandler = async (event) => {
   try {
-    const { userId } = isAuthenticated(event)
+    const { userId } = requireUser(event)
     const { data } = await event.request.json()
 
     const prismaResult = await db.tag.delete({
