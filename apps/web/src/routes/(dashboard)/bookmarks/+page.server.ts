@@ -59,7 +59,7 @@ export const actions: Actions = {
 
       const formData = form.data as MetadataFormData
 
-      await db.bookmark.update({
+      const bookmark = await db.bookmark.update({
         data: {
           title: formData.title,
           desc: formData.description,
@@ -97,9 +97,19 @@ export const actions: Actions = {
           id: formData.id,
           userId,
         },
+        include: {
+          category: true,
+          tags: { include: { tag: true } },
+        },
       })
 
+      const flattenedBookmark = {
+        ...bookmark,
+        tags: bookmark.tags.map((tag) => tag.tag),
+      } as LoadBookmarkFlatTags
+
       return message(form, {
+        bookmark: flattenedBookmark,
         text: "Bookmark Updated",
       })
     } catch (error) {

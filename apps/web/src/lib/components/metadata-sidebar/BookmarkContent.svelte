@@ -4,7 +4,6 @@ import { toast } from "svelte-sonner"
 import SuperDebug, { defaults, superForm } from "sveltekit-superforms"
 import { zod4Client } from "sveltekit-superforms/adapters"
 import { dev } from "$app/environment"
-import { invalidateAll } from "$app/navigation"
 import { page } from "$app/state"
 import { PUBLIC_WORKER_URL } from "$env/static/public"
 import LoadingIndicator from "$lib/components/LoadingIndicator.svelte"
@@ -14,12 +13,15 @@ import * as Command from "$lib/components/ui/command"
 import { Label } from "$lib/components/ui/label"
 import * as Popover from "$lib/components/ui/popover"
 import * as Tooltip from "$lib/components/ui/tooltip"
+import { BookmarksService } from "$lib/state/bookmarks.svelte"
 import { useInterface } from "$lib/state/ui.svelte"
 import { cn } from "$lib/utils"
+import { getContext } from "$lib/utils/context"
 import { countryMaps } from "$lib/utils/countries"
 import { formSchema as metadataSchema } from "$schemas/metadata-sidebar"
 
 const ui = useInterface()
+const bookmarksService = getContext(BookmarksService)
 
 const isEditMode = $derived(ui.metadataSidebarEditMode === true)
 
@@ -40,7 +42,16 @@ const superformInstance = superForm(defaults(defaultData, zod4Client(metadataSch
   validators: zod4Client(metadataSchema),
   onUpdated: async ({ form }) => {
     if (form.valid) {
-      await invalidateAll()
+      const actionMessage = form.message as
+        | { bookmark?: LoadBookmarkFlatTags; text?: string }
+        | undefined
+      if (actionMessage?.bookmark) {
+        bookmarksService.update(actionMessage.bookmark)
+        ui.setMetadataSidebarData({
+          ...ui.metadataSidebarData,
+          bookmark: actionMessage.bookmark,
+        })
+      }
       toast.success("Bookmark Updated")
       ui.toggleMetadataSidebarEditMode()
     }
