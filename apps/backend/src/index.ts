@@ -41,7 +41,7 @@ const BASE_PATH = "/v1"
 app.route(`${BASE_PATH}/bookmark`, bookmark)
 app.route(`${BASE_PATH}/feed`, feed)
 
-const port = process.env.PORT ? Number.parseInt(process.env.PORT) : 8001
+const port = process.env.PORT ? Number.parseInt(process.env.PORT, 10) : 8001
 
 console.log(`
 🚀 Server ready at: http://0.0.0.0:${port}
