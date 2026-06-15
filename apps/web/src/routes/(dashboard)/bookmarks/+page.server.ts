@@ -118,7 +118,11 @@ export const actions: Actions = {
       } else {
         console.error(error)
       }
-      return { form, type: "error", error }
+      return fail(500, {
+        type: "error",
+        message: "Failed to update bookmark",
+        metadataForm: form,
+      })
     }
   },
   quickAdd: async (event) => {
@@ -200,7 +204,7 @@ export const actions: Actions = {
       })
     } catch (error) {
       console.error(String(error))
-      fail(500, { type: "error", message: "Failed to add bookmark" })
+      return fail(500, { type: "error", message: "Failed to add bookmark" })
     }
   },
 }

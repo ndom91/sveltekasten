@@ -29,9 +29,9 @@ const form = superForm(page.data.quickAddForm, {
         | undefined
       if (actionMessage?.bookmark) {
         bookmarksService.add(actionMessage.bookmark)
+        toast.success("Bookmark Added")
+        ui.toggleMetadataSidebarEditMode()
       }
-      toast.success("Bookmark Added")
-      ui.toggleMetadataSidebarEditMode()
     }
   },
   onError: ({ result }) => {

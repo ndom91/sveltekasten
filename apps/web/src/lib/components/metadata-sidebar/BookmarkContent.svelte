@@ -51,9 +51,9 @@ const superformInstance = superForm(defaults(defaultData, zod4Client(metadataSch
           ...ui.metadataSidebarData,
           bookmark: actionMessage.bookmark,
         })
+        toast.success("Bookmark Updated")
+        ui.toggleMetadataSidebarEditMode()
       }
-      toast.success("Bookmark Updated")
-      ui.toggleMetadataSidebarEditMode()
     }
   },
   onError: ({ result }) => {
