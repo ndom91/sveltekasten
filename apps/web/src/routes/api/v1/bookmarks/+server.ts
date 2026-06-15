@@ -17,6 +17,17 @@ const bookmarkCreateInputSchema = z
   })
   .strict()
 
+const bookmarkUpdateInputSchema = z
+  .object({
+    id: z.string().cuid(),
+    update: z
+      .object({
+        archived: z.boolean(),
+      })
+      .strict(),
+  })
+  .strict()
+
 // Get more Bookmarks
 export const GET: RequestHandler = async (event) => {
   try {
@@ -75,11 +86,11 @@ export const GET: RequestHandler = async (event) => {
 export const PUT: RequestHandler = async (event) => {
   try {
     const { userId } = requireUser(event)
-    const { id, update } = await event.request.json()
+    const { id, update } = bookmarkUpdateInputSchema.parse(await event.request.json())
 
     const data = await db.bookmark.update({
       data: {
-        ...update,
+        archived: update.archived,
       },
       where: {
         id,
@@ -94,7 +105,7 @@ export const PUT: RequestHandler = async (event) => {
     return json({ data })
   } catch (error) {
     console.error(String(error))
-    return new Response(String(error), { status: 401 })
+    return new Response(String(error), { status: error instanceof z.ZodError ? 400 : 401 })
   }
 }
 
