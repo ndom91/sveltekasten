@@ -30,7 +30,6 @@ if ($page.data.error) {
 }
 
 const loaderState = new LoaderState()
-let pageNumber = $state(0)
 let rootElement = $state<HTMLElement>()
 const limitLoadCount = 20
 
@@ -54,7 +53,6 @@ let prevVisibility: DocumentVisibilityState = "visible"
 $effect(() => {
   if (prevVisibility === "hidden" && $visibility === "visible") {
     void invalidateAll()
-    pageNumber = 1
   }
   prevVisibility = $visibility
 })
@@ -109,13 +107,11 @@ const fetchSearchResults = async ({
 // Load more items on infinite scroll
 const loadMore = async () => {
   try {
-    pageNumber += 1
     const limit = limitLoadCount
-    const skip = limitLoadCount * pageNumber
+    const skip = feedEntriesService.feedEntries.length
 
     const searchResults = await fetchSearchResults({ limit, skip })
     if (!searchResults?.data) {
-      pageNumber -= 1
       return
     }
 
@@ -132,7 +128,6 @@ const loadMore = async () => {
     console.error(String(error))
 
     loaderState.error()
-    pageNumber -= 1
   }
 }
 
@@ -143,9 +138,8 @@ watch.pre(
   () => {
     if (!loaderState.isFirstLoad) {
       loaderState.reset()
-      pageNumber = -1
-      // allItems = []
-      loadMore()
+      feedEntriesService.clear()
+      void loadMore()
     }
   }
 )

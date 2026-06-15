@@ -28,11 +28,16 @@ onMount(async () => {
 })
 
 const loaderState = new LoaderState()
-let pageNumber = $state(0)
 let rootElement = $state<HTMLElement>()
 
 const limitLoadCount = 20
 const logger = new Logger({ level: loggerLevels.DEBUG })
+type BookmarkSearchWhere = {
+  archived: boolean
+  title?: { search: string }
+  url?: { search: string }
+  desc?: { search: string }
+}
 
 // $effect(() => {
 //   if ($page.data.bookmarks.data.length) {
@@ -54,7 +59,17 @@ const fetchSearchResults = async ({
   skip?: number
 }) => {
   try {
-    const body = {
+    const body: {
+      type: "bookmark"
+      skip: number
+      limit: number
+      orderBy: { createdAt: "desc" }
+      include: {
+        category: true
+        tags: { include: { tag: true } }
+      }
+      where: BookmarkSearchWhere
+    } = {
       type: "bookmark",
       skip,
       limit,
@@ -79,7 +94,7 @@ const fetchSearchResults = async ({
         desc: {
           search: ui.searchQuery.split(" ").join(" & "),
         },
-      } as { archived: boolean } & Record<string, any>
+      }
     }
     const searchResponse = await fetch("/api/v1/search", {
       method: "POST",
@@ -102,13 +117,11 @@ const fetchSearchResults = async ({
 // Load more items on infinite scroll
 const loadMore = async () => {
   try {
-    pageNumber += 1
     const limit = limitLoadCount
-    const skip = limitLoadCount * pageNumber
+    const skip = bookmarkService.bookmarks.length
 
     const searchResults = await fetchSearchResults({ limit, skip })
     if (!searchResults?.data) {
-      pageNumber -= 1
       return
     }
 
@@ -125,7 +138,6 @@ const loadMore = async () => {
     console.error(String(error))
 
     loaderState.error()
-    pageNumber -= 1
   }
 }
 
@@ -135,8 +147,7 @@ watch.pre(
   () => ui.searchQuery,
   () => {
     loaderState.reset()
-    pageNumber = -1
-    // bookmarkStore.bookmarks = []
+    bookmarkService.clear()
     void loadMore()
   }
 )

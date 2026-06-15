@@ -33,6 +33,10 @@ export class BookmarksService {
     }
   }
 
+  clear() {
+    this.bookmarks.splice(0)
+  }
+
   remove(bookmarkId: string) {
     const bookmarkIndex = this.bookmarks.findIndex((bk) => bk.id === bookmarkId)
     if (bookmarkIndex === -1) return

@@ -21,6 +21,10 @@ export class FeedEntriesService {
     }
   }
 
+  clear() {
+    this.feedEntries.splice(0)
+  }
+
   remove(feedEntryId: string) {
     const feedEntryIndex = this.feedEntries.findIndex((feedEntry) => feedEntry.id === feedEntryId)
     if (feedEntryIndex === -1) return

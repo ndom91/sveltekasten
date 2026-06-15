@@ -1,5 +1,6 @@
 <script lang="ts">
 import { onDestroy } from "svelte"
+import { watch } from "runed"
 import { InfiniteLoader, LoaderState } from "svelte-infinite"
 import { toast } from "svelte-sonner"
 import { page } from "$app/state"
@@ -14,7 +15,6 @@ const ui = useInterface()
 const bookmarksService = new BookmarksService(page.data.bookmarks?.data ?? [])
 const loaderState = new LoaderState()
 
-let pageNumber = $state(0)
 const rootElement = $state<HTMLElement>()
 
 const limitLoadCount = 20
@@ -84,13 +84,11 @@ const fetchSearchResults = async ({
 // Load more items on infinite scroll
 const loadMore = async () => {
   try {
-    pageNumber += 1
     const limit = limitLoadCount
-    const skip = limitLoadCount * pageNumber
+    const skip = bookmarksService.bookmarks.length
 
     const searchResults = await fetchSearchResults({ limit, skip })
     if (!searchResults?.data) {
-      pageNumber -= 1
       return
     }
 
@@ -107,7 +105,6 @@ const loadMore = async () => {
     console.error(String(error))
 
     loaderState.error()
-    pageNumber -= 1
   }
 }
 
@@ -150,15 +147,14 @@ const handleKeyDown = (e: KeyboardEvent) => {
 
 // Handle search input changes
 // Reset and execute first search for new query
-// watch.pre(
-//   () => ui.searchQuery,
-//   () => {
-//     loaderState.reset()
-//     pageNumber = -1
-//     allItems = []
-//     loadMore()
-//   },
-// )
+watch.pre(
+  () => ui.searchQuery,
+  () => {
+    loaderState.reset()
+    bookmarksService.clear()
+    void loadMore()
+  }
+)
 
 // Reset state on unmount
 onDestroy(() => {
