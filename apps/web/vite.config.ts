@@ -1,7 +1,6 @@
 import { execSync } from "node:child_process"
 import { readFileSync, writeFileSync } from "node:fs"
 import { join } from "node:path"
-import { partytownVite } from "@builder.io/partytown/utils"
 import { sveltekit } from "@sveltejs/kit/vite"
 import tailwindcss from "@tailwindcss/vite"
 import { defineConfig, type Rollup } from "vite"
@@ -25,14 +24,7 @@ function bumpManifestPlugin() {
 }
 
 export default defineConfig({
-  plugins: [
-    sveltekit(),
-    partytownVite({
-      dest: join(import.meta.dirname, "build", "client", "~partytown"),
-    }),
-    tailwindcss(),
-    devtoolsJson(),
-  ],
+  plugins: [sveltekit(), tailwindcss(), devtoolsJson()],
   server: { host: "0.0.0.0" },
   build: {
     rollupOptions: { plugins: [bumpManifestPlugin()] },

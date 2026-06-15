@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "vite dev --port 3000",
     "clean": "rm -rf build || true",
-    "build": "pnpm clean && vite build && pnpm copy:partytown",
+    "build": "pnpm clean && vite build",
     "start": "PORT=8000 node build/index.js",
     "preview": "vite preview",
     "lint": "biome format --write src/**",
@@ -12,7 +12,6 @@
     "format": "biome format src/**",
     "format:fix": "biome format --write src/**",
     "test:e2e": "playwright test",
-    "copy:partytown": "pnpm exec partytown copylib build/client/~partytown",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "pnpm check --watch",
     "db:push": "prisma db push",
@@ -49,7 +48,6 @@
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.1",
     "@auth/sveltekit": "^1.11.1",
-    "@builder.io/partytown": "^0.10.2",
     "@formkit/tempo": "^0.1.2",
     "@internationalized/date": "^3.12.2",
     "@prisma/adapter-pg": "^7.8.0",
