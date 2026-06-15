@@ -15,7 +15,8 @@ const handleEdit = async () => {
 <div class="flex gap-2">
   <Tooltip.Root>
     <Tooltip.Trigger class="outline-none">
-      <Button onclick={handleEdit} variant="ghost" size="icon">
+      {#snippet child({ props })}
+      <Button {...props} onclick={handleEdit} variant="ghost" size="icon">
         <svg
           class="size-5 text-neutral-600 dark:text-neutral-500"
           xmlns="http://www.w3.org/2000/svg"
@@ -40,16 +41,18 @@ const handleEdit = async () => {
         /></svg
         >
       </Button>
+      {/snippet}
     </Tooltip.Trigger>
     <Tooltip.Content side="right" sideOffset={8}>
       <p>Edit</p>
     </Tooltip.Content>
   </Tooltip.Root>
-  <Tooltip.Root>
-    <Tooltip.Trigger class="outline-none">
-      <form action="?/deleteTag" method="post" use:enhance={handleActionResults()}>
-        <input type="hidden" name="id" value={id} />
-        <Button type="submit" variant="ghost" size="icon">
+  <form action="?/deleteTag" method="post" use:enhance={handleActionResults()}>
+    <input type="hidden" name="id" value={id} />
+    <Tooltip.Root>
+      <Tooltip.Trigger class="outline-none">
+        {#snippet child({ props })}
+        <Button {...props} type="submit" variant="ghost" size="icon">
           <svg
             class="text-red-600 size-5 dark:text-red-400/50"
             xmlns="http://www.w3.org/2000/svg"
@@ -101,10 +104,11 @@ const handleEdit = async () => {
           /></svg
           >
         </Button>
-      </form>
-    </Tooltip.Trigger>
-    <Tooltip.Content side="right" sideOffset={8}>
-      <p>Delete</p>
-    </Tooltip.Content>
-  </Tooltip.Root>
+        {/snippet}
+      </Tooltip.Trigger>
+      <Tooltip.Content side="right" sideOffset={8}>
+        <p>Delete</p>
+      </Tooltip.Content>
+    </Tooltip.Root>
+  </form>
 </div>
