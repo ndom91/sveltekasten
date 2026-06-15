@@ -9,11 +9,14 @@ import TagInput from "$lib/components/TagInput.svelte"
 import { Button } from "$lib/components/ui/button"
 import { Label } from "$lib/components/ui/label"
 import * as Select from "$lib/components/ui/select"
+import { BookmarksService } from "$lib/state/bookmarks.svelte"
 import { useInterface } from "$lib/state/ui.svelte"
 import { cn } from "$lib/utils"
+import { getContext } from "$lib/utils/context"
 import { formSchema } from "$schemas/quick-add"
 
 const ui = useInterface()
+const bookmarksService = getContext(BookmarksService)
 
 const form = superForm(page.data.quickAddForm, {
   dataType: "json",
@@ -21,6 +24,12 @@ const form = superForm(page.data.quickAddForm, {
   validators: zod4Client(formSchema),
   onUpdated: ({ form }) => {
     if (form.valid) {
+      const actionMessage = form.message as
+        | { bookmark?: LoadBookmarkFlatTags; text?: string }
+        | undefined
+      if (actionMessage?.bookmark) {
+        bookmarksService.add(actionMessage.bookmark)
+      }
       toast.success("Bookmark Added")
       ui.toggleMetadataSidebarEditMode()
     }

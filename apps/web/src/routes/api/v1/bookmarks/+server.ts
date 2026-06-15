@@ -130,7 +130,7 @@ export const POST: RequestHandler = async (event) => {
       })
     }
 
-    return json({ data: upsertResponse, bookmarkData })
+    return json({ data: upsertResponse, bookmarkData, count: upsertResponse.length })
   } catch (error) {
     console.error(String(error))
     return new Response(String(error))

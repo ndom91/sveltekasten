@@ -171,7 +171,16 @@ export const actions: Actions = {
               }
             : {},
         },
+        include: {
+          category: true,
+          tags: { include: { tag: true } },
+        },
       })
+
+      const flattenedBookmark = {
+        ...bookmark,
+        tags: bookmark.tags.map((tag) => tag.tag),
+      } as LoadBookmarkFlatTags
 
       // Add bookmark to queue for fetching screenshot
       if (PUBLIC_WORKER_URL) {
@@ -185,7 +194,7 @@ export const actions: Actions = {
       }
 
       return message(form, {
-        bookmark,
+        bookmark: flattenedBookmark,
         text: "Bookmark Added!",
       })
     } catch (error) {
