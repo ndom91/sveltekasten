@@ -1,15 +1,16 @@
-import { fail, redirect } from "@sveltejs/kit"
+import { fail } from "@sveltejs/kit"
+import { getUserId, requireUser } from "$lib/auth"
 import { db } from "$lib/prisma"
 import type { Actions, PageServerLoad } from "./$types"
 import type { Tag } from "$/prisma-client/client"
 
 export const actions: Actions = {
-  deleteBookmark: async ({ request, locals }) => {
-    const { session } = locals
-    if (!session?.userId) {
+  deleteBookmark: async (event) => {
+    const userId = getUserId(event.locals)
+    if (!userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
-    const data = await request.formData()
+    const data = await event.request.formData()
     const bookmarkId = data.get("bookmarkId")?.toString() || ""
 
     if (!bookmarkId) {
@@ -19,7 +20,7 @@ export const actions: Actions = {
     await db.bookmark.delete({
       where: {
         id: bookmarkId,
-        userId: session.userId,
+        userId,
       },
     })
     return { type: "success", message: "Deleted Bookmark" }
@@ -27,25 +28,16 @@ export const actions: Actions = {
 }
 
 export const load: PageServerLoad = async (event) => {
-  const { session } = event.locals
-
-  if (!session && event.url.pathname !== "/login") {
-    const fromUrl = event.url.pathname + event.url.search
-    redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
-  }
+  const { session, userId } = requireUser(event, { redirectToLogin: true })
   try {
     const skip = Number(event.url.searchParams.get("skip") ?? "0")
     const limit = Number(event.url.searchParams.get("limit") ?? "20")
-
-    if (!session?.userId) {
-      return fail(401, { type: "error", error: "Unauthenticated" })
-    }
 
     const [data, count] = (await db.bookmark.findManyAndCount({
       take: limit + skip,
       skip,
       where: {
-        userId: session?.userId,
+        userId,
         archived: true,
       },
       include: {

@@ -5,7 +5,7 @@ import type { RequestHandler } from "./$types"
 
 export const PUT: RequestHandler = async (event) => {
   try {
-    const { session } = isAuthenticated(event)
+    const { userId } = isAuthenticated(event)
     const { data } = await event.request.json()
 
     const prismaResult = await db.tag.update({
@@ -13,7 +13,7 @@ export const PUT: RequestHandler = async (event) => {
         name: data.name,
       },
       where: {
-        userId: session.userId,
+        userId,
         id: data.id,
       },
     })
@@ -31,12 +31,12 @@ export const PUT: RequestHandler = async (event) => {
 
 export const DELETE: RequestHandler = async (event) => {
   try {
-    const { session } = isAuthenticated(event)
+    const { userId } = isAuthenticated(event)
     const { data } = await event.request.json()
 
     const prismaResult = await db.tag.delete({
       where: {
-        userId: session.userId,
+        userId,
         id: data.id,
       },
     })

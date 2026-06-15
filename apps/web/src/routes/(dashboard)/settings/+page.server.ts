@@ -1,12 +1,15 @@
-import { fail, redirect } from "@sveltejs/kit"
-import { isAuthenticated } from "$/lib/auth"
+import { fail } from "@sveltejs/kit"
+import { getUserId, requireUser } from "$/lib/auth"
 import { PUBLIC_WORKER_URL } from "$env/static/public"
 import { db } from "$lib/prisma"
 import type { Actions, PageServerLoad } from "./$types"
 
 export const actions: Actions = {
   deleteFeed: async (event) => {
-    const { session } = isAuthenticated(event)
+    const userId = getUserId(event.locals)
+    if (!userId) {
+      return fail(401, { type: "error", error: "Unauthenticated" })
+    }
 
     const data = await event.request.formData()
     const feedId = String(data.get("feedId"))
@@ -18,7 +21,7 @@ export const actions: Actions = {
     await db.feed.delete({
       where: {
         id: feedId,
-        userId: session.userId,
+        userId,
       },
     })
     return { type: "success", message: "Deleted Feed" }
@@ -27,8 +30,12 @@ export const actions: Actions = {
     if (!PUBLIC_WORKER_URL) {
       return fail(500, { type: "error", error: "Worker URL Not Configured!" })
     }
+    const userId = getUserId(event.locals)
+    if (!userId) {
+      return fail(401, { type: "error", error: "Unauthenticated" })
+    }
+
     try {
-      isAuthenticated(event)
       const data = await event.request.formData()
       const feedUrl = String(data.get("feedUrl"))
 
@@ -63,15 +70,11 @@ export const actions: Actions = {
 }
 
 export const load: PageServerLoad = async (event) => {
-  try {
-    const session = isAuthenticated(event)
-    if (!session && event.url.pathname !== "/login") {
-      const fromUrl = event.url.pathname + event.url.search
-      redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
-    }
+  const { session, userId } = requireUser(event, { redirectToLogin: true })
 
+  try {
     const [feedData, feedCount] = await db.feed.findManyAndCount({
-      where: { userId: session?.user?.id },
+      where: { userId },
       select: {
         id: true,
         name: true,
@@ -93,7 +96,7 @@ export const load: PageServerLoad = async (event) => {
 
     const [bookmarkData, bookmarkCount] = (await db.bookmark.findManyAndCount({
       where: {
-        userId: session?.user?.id,
+        userId,
       },
       include: {
         category: true,
@@ -117,7 +120,7 @@ export const load: PageServerLoad = async (event) => {
         createdAt: true,
       },
       where: {
-        id: session?.user?.id,
+        id: userId,
       },
     })
 

@@ -1,21 +1,34 @@
-import { error, fail, type RequestEvent } from "@sveltejs/kit"
+import { error, redirect, type RequestEvent } from "@sveltejs/kit"
 import type { Session } from "$lib/auth-client"
 
-export const isAuthenticated = (event: RequestEvent): Session | never => {
+type AuthEvent = Pick<RequestEvent, "locals" | "url">
+
+type AuthenticatedUser = Session & {
+  userId: string
+}
+
+export const getUserId = (locals: App.Locals): string | undefined => locals.session?.userId
+
+export const requireUser = (
+  event: AuthEvent,
+  options: { redirectToLogin?: boolean } = {}
+): AuthenticatedUser => {
   const { session, user } = event.locals
 
-  if (session === null || session.userId === undefined) {
-    if (event.request.formData === undefined) {
-      // For form actions
-      error(401, { message: "You are not logged in." })
-    } else {
-      // For API handlers
-      fail(401, { message: "You are not logged in." })
+  if (!session?.userId) {
+    if (options.redirectToLogin) {
+      const fromUrl = event.url.pathname + event.url.search
+      redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
     }
+
+    error(401, { message: "You are not logged in." })
   }
 
   return {
     session,
     user,
+    userId: session.userId,
   }
 }
+
+export const isAuthenticated = (event: AuthEvent): AuthenticatedUser | never => requireUser(event)

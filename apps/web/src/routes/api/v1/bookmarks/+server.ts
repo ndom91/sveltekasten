@@ -10,7 +10,7 @@ import type { RequestHandler } from "./$types"
 // Get more Bookmarks
 export const GET: RequestHandler = async (event) => {
   try {
-    const { session } = isAuthenticated(event)
+    const { userId } = isAuthenticated(event)
     const skip = Number(event.url.searchParams.get("skip") ?? "0")
     const limit = Number(event.url.searchParams.get("limit") ?? "10")
 
@@ -24,7 +24,7 @@ export const GET: RequestHandler = async (event) => {
     const data = await db.bookmark.findMany({
       take: limit,
       skip,
-      where: { userId: session?.userId },
+      where: { userId },
       include: {
         category: true,
         tags: { include: { tag: true } },
@@ -44,7 +44,7 @@ export const GET: RequestHandler = async (event) => {
 // Update Bookmark
 export const PUT: RequestHandler = async (event) => {
   try {
-    const { session } = isAuthenticated(event)
+    const { userId } = isAuthenticated(event)
     const { id, update } = await event.request.json()
 
     const data = await db.bookmark.update({
@@ -53,7 +53,7 @@ export const PUT: RequestHandler = async (event) => {
       },
       where: {
         id,
-        userId: session?.userId,
+        userId,
       },
       include: {
         category: true,
@@ -71,7 +71,7 @@ export const PUT: RequestHandler = async (event) => {
 // Create Bookmark(s)
 export const POST: RequestHandler = async (event) => {
   try {
-    const { session } = isAuthenticated(event)
+    const { userId } = isAuthenticated(event)
     const inputData = await event.request.json()
     const data = z.array(BookmarkUncheckedCreateInputObjectSchema).parse(inputData)
 
@@ -80,7 +80,7 @@ export const POST: RequestHandler = async (event) => {
         const { imageUrl, imageBlur, metadata } = await fetchBookmarkMetadata(bookmark.url)
         return {
           ...bookmark,
-          userId: session.userId,
+          userId,
           image: imageUrl,
           imageBlur,
           desc: metadata.description,

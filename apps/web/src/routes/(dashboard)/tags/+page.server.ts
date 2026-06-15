@@ -1,19 +1,15 @@
-import { fail, redirect } from "@sveltejs/kit"
+import { fail } from "@sveltejs/kit"
 import { Prisma } from "$/prisma-client/client.js"
+import { getUserId, requireUser } from "$/lib/auth"
 import { db } from "$lib/prisma"
 import { TagCreateOneSchema } from "$lib/types/zod.js"
 import type { Actions, PageServerLoad } from "./$types"
 
-export const load: PageServerLoad = async ({ url, locals }) => {
-  const { session } = locals
-
-  if (!session && url.pathname !== "/login") {
-    const fromUrl = url.pathname + url.search
-    redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
-  }
+export const load: PageServerLoad = async (event) => {
+  const { userId } = requireUser(event, { redirectToLogin: true })
 
   const response = await db.tag.findMany({
-    where: { userId: session.userId },
+    where: { userId },
   })
 
   return {
@@ -22,12 +18,12 @@ export const load: PageServerLoad = async ({ url, locals }) => {
 }
 
 export const actions: Actions = {
-  createTag: async ({ request, locals }) => {
-    const { session } = locals
-    if (!session?.user?.id) {
+  createTag: async (event) => {
+    const userId = getUserId(event.locals)
+    if (!userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
-    const formData = await request.formData()
+    const formData = await event.request.formData()
     const dataEntries = Object.fromEntries(formData.entries())
 
     try {
@@ -36,7 +32,7 @@ export const actions: Actions = {
       await db.tag.create({
         data: {
           name: parsedData.data.name,
-          userId: session.userId,
+          userId,
         },
       })
 
@@ -58,13 +54,13 @@ export const actions: Actions = {
       })
     }
   },
-  deleteTag: async ({ request, locals }) => {
+  deleteTag: async (event) => {
     try {
-      const { session } = locals
-      if (!session?.user?.id) {
+      const userId = getUserId(event.locals)
+      if (!userId) {
         return fail(401, { type: "error", error: "Unauthenticated" })
       }
-      const formData = await request.formData()
+      const formData = await event.request.formData()
 
       const tagId = formData.get("id")
       if (!tagId) {
@@ -74,7 +70,7 @@ export const actions: Actions = {
       await db.tag.delete({
         where: {
           id: String(tagId),
-          userId: session.userId,
+          userId,
         },
       })
 

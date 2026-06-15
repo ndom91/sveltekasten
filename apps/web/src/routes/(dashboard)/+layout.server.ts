@@ -1,19 +1,16 @@
-import { redirect } from "@sveltejs/kit"
 import { superValidate } from "sveltekit-superforms"
 import { zod4 } from "sveltekit-superforms/adapters"
 import type { Tag } from "$/prisma-client/client"
+import { requireUser } from "$/lib/auth"
 import { db } from "$lib/prisma"
 import { formSchema } from "$schemas/quick-add"
 import type { LayoutServerLoad } from "./$types"
 
-export const load: LayoutServerLoad = async ({ locals }) => {
+export const load: LayoutServerLoad = async (event) => {
   // Auth guard MUST be outside the try/catch: redirect() throws, and a catch
   // would swallow it, letting the load fall through to queries with
   // userId=undefined (Prisma drops the filter and returns every user's data).
-  const session = locals.session
-  if (!session?.userId) {
-    redirect(303, "/login")
-  }
+  const { userId } = requireUser(event, { redirectToLogin: true })
 
   try {
     const quickAddForm = await superValidate(zod4(formSchema), {
@@ -21,10 +18,10 @@ export const load: LayoutServerLoad = async ({ locals }) => {
     })
     const [categories, tags] = await db.$transaction([
       db.category.findMany({
-        where: { userId: session?.userId },
+        where: { userId },
       }),
       db.tag.findMany({
-        where: { userId: session?.userId },
+        where: { userId },
       }),
     ])
 
@@ -32,7 +29,7 @@ export const load: LayoutServerLoad = async ({ locals }) => {
       take: 10,
       skip: 0,
       where: {
-        userId: session?.userId,
+        userId,
         archived: false,
       },
       include: {
@@ -52,7 +49,7 @@ export const load: LayoutServerLoad = async ({ locals }) => {
     const [feedEntryData, feedEntryCount] = await db.feedEntry.findManyAndCount({
       take: 10,
       skip: 0,
-      where: { userId: session?.userId },
+      where: { userId },
       include: {
         feed: true,
         feedMedia: true,
@@ -61,7 +58,7 @@ export const load: LayoutServerLoad = async ({ locals }) => {
     })
 
     const [feedData, feedCount] = await db.feed.findManyAndCount({
-      where: { userId: session?.userId },
+      where: { userId },
       select: {
         id: true,
         name: true,

@@ -6,7 +6,7 @@ import type { RequestHandler } from "./$types"
 // Get FeedEntries
 export const GET: RequestHandler = async (event) => {
   try {
-    const session = await isAuthenticated(event)
+    const { userId } = isAuthenticated(event)
     const skip = Number(event.url.searchParams.get("skip") ?? "0")
     const limit = Number(event.url.searchParams.get("limit") ?? "10")
 
@@ -17,7 +17,7 @@ export const GET: RequestHandler = async (event) => {
     const data = await db.feedEntry.findMany({
       take: limit,
       skip,
-      where: { userId: session?.user?.id },
+      where: { userId },
       include: {
         feed: true,
         feedMedia: true,
@@ -41,7 +41,7 @@ export const GET: RequestHandler = async (event) => {
 // Update FeedEntry
 export const PUT: RequestHandler = async (event) => {
   try {
-    const session = await isAuthenticated(event)
+    const { userId } = isAuthenticated(event)
     const { feedEntry } = await event.request.json()
 
     const data = await db.feedEntry.update({
@@ -50,7 +50,7 @@ export const PUT: RequestHandler = async (event) => {
       },
       where: {
         id: feedEntry.id,
-        userId: session?.user?.id,
+        userId,
       },
       include: {
         feed: true,

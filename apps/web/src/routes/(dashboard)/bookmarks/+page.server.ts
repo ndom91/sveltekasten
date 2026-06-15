@@ -3,7 +3,7 @@ import { message, superValidate } from "sveltekit-superforms"
 import { zod4 } from "sveltekit-superforms/adapters"
 import type { z } from "zod"
 import { PUBLIC_WORKER_URL } from "$env/static/public"
-import { isAuthenticated } from "$lib/auth"
+import { getUserId } from "$lib/auth"
 import { db } from "$lib/prisma"
 import { fetchBookmarkMetadata } from "$lib/server/fetchBookmarkMetadata"
 import type { Tag } from "$lib/types/zod.js"
@@ -16,7 +16,10 @@ type QuickAddFormData = z.infer<typeof quickAddSchema>
 
 export const actions: Actions = {
   deleteBookmark: async (event) => {
-    const { session } = isAuthenticated(event)
+    const userId = getUserId(event.locals)
+    if (!userId) {
+      return fail(401, { type: "error", error: "Unauthenticated" })
+    }
     const data = await event.request.formData()
     const bookmarkId = data.get("bookmarkId")?.toString() || ""
 
@@ -27,7 +30,7 @@ export const actions: Actions = {
     await db.bookmark.delete({
       where: {
         id: bookmarkId,
-        userId: session.userId,
+        userId,
       },
     })
 
@@ -41,7 +44,10 @@ export const actions: Actions = {
     })
 
     try {
-      const { session } = isAuthenticated(event)
+      const userId = getUserId(event.locals)
+      if (!userId) {
+        return fail(401, { type: "error", error: "Unauthenticated" })
+      }
 
       if (!form.valid) {
         return fail(400, {
@@ -89,7 +95,7 @@ export const actions: Actions = {
         },
         where: {
           id: formData.id,
-          userId: session.userId,
+          userId,
         },
       })
 
@@ -114,8 +120,8 @@ export const actions: Actions = {
     }
 
     try {
-      const session = event.locals.session
-      if (!session?.userId) {
+      const userId = getUserId(event.locals)
+      if (!userId) {
         return fail(401, { type: "error", error: "Unauthenticated" })
       }
       const formData = form.data as QuickAddFormData
@@ -133,7 +139,7 @@ export const actions: Actions = {
           metadata: bookmarkMetadata.metadata,
           user: {
             connect: {
-              id: session.userId,
+              id: userId,
             },
           },
           tags: tags

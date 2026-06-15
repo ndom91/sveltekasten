@@ -1,24 +1,16 @@
-import { fail, redirect } from "@sveltejs/kit"
+import { requireUser } from "$/lib/auth"
 import { db } from "$/lib/prisma"
 import type { PageServerLoad } from "./$types"
 
-export const load: PageServerLoad = async ({ locals, url }) => {
-  const session = locals.session
-  if (!session?.userId) {
-    return fail(401, { type: "error", error: "Unauthenticated" })
-  }
-
-  if (!session && url.pathname !== "/login") {
-    const fromUrl = url.pathname + url.search
-    redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
-  }
+export const load: PageServerLoad = async (event) => {
+  const { userId } = requireUser(event, { redirectToLogin: true })
 
   try {
     const [feedData, feedCount] = await db.feedEntry.findManyAndCount({
       take: 10,
       skip: 0,
       where: {
-        userId: session?.user?.id,
+        userId,
         unread: true,
       },
       include: {
@@ -32,7 +24,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
       take: 10,
       skip: 0,
       where: {
-        userId: session?.user?.id,
+        userId,
         archived: false,
       },
       include: {

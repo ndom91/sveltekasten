@@ -13,9 +13,8 @@ interface RequestBody {
 }
 
 export const POST: RequestHandler = async (event) => {
-  let returnData
   try {
-    const session = await isAuthenticated(event)
+    const { userId } = isAuthenticated(event)
 
     const {
       include,
@@ -35,19 +34,17 @@ export const POST: RequestHandler = async (event) => {
       skip,
       where: {
         ...where,
-        userId: session?.user?.id,
+        userId,
       },
       include,
       orderBy,
     })
 
-    if (type === "bookmark") {
-      returnData = data.map((bookmark: LoadBookmark) => {
+    const returnData = type === "bookmark"
+      ? data.map((bookmark: LoadBookmark) => {
         return { ...bookmark, tags: bookmark.tags?.map((tag: LoadBookmark["tags"][number]) => tag.tag) }
       }) as LoadBookmarkFlatTags[]
-    } else {
-      returnData = data
-    }
+      : data
 
     return json({ data: returnData, count })
   } catch (error) {

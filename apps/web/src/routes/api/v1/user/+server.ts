@@ -5,7 +5,7 @@ import type { RequestHandler } from "./$types"
 
 export const PUT: RequestHandler = async (event) => {
   try {
-    const { session } = isAuthenticated(event)
+    const { userId } = isAuthenticated(event)
     const { data } = await event.request.json()
 
     const prismaResult = await db.user.update({
@@ -13,7 +13,7 @@ export const PUT: RequestHandler = async (event) => {
         settings: data.settings,
       },
       where: {
-        id: session.userId,
+        id: userId,
       },
     })
 

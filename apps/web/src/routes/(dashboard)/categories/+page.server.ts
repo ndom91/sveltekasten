@@ -1,21 +1,15 @@
-import { fail, redirect } from "@sveltejs/kit"
+import { fail } from "@sveltejs/kit"
+import { getUserId, requireUser } from "$/lib/auth"
 import { db } from "$lib/prisma"
 import { CategoryCreateInputObjectSchema } from "$lib/types/zod.js"
 import { Prisma } from "../../../prisma-client/client.js"
 import type { Actions, PageServerLoad } from "./$types"
 
-export const load: PageServerLoad = async ({ locals, url }) => {
-  const session = locals.session
-  if (!session && url.pathname !== "/login") {
-    const fromUrl = url.pathname + url.search
-    redirect(303, `/login?redirectTo=${encodeURIComponent(fromUrl)}`)
-  }
-  if (!session?.userId) {
-    return fail(401, { type: "error", error: "Unauthenticated" })
-  }
+export const load: PageServerLoad = async (event) => {
+  const { userId, session } = requireUser(event, { redirectToLogin: true })
 
   const response = await db.category.findMany({
-    where: { userId: session?.userId },
+    where: { userId },
   })
 
   return {
@@ -25,13 +19,12 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 }
 
 export const actions: Actions = {
-  createCategory: async ({ request, locals }) => {
-    const session = locals.session
-
-    if (!session?.userId) {
+  createCategory: async (event) => {
+    const userId = getUserId(event.locals)
+    if (!userId) {
       return fail(401, { type: "error", error: "Unauthenticated" })
     }
-    const formData = Object.fromEntries(await request.formData())
+    const formData = Object.fromEntries(await event.request.formData())
     const { name, description } = formData as {
       name: string
       description: string
@@ -44,7 +37,7 @@ export const actions: Actions = {
         data: {
           name,
           description,
-          userId: session.userId,
+          userId,
         },
       })
 
@@ -67,13 +60,13 @@ export const actions: Actions = {
       })
     }
   },
-  deleteCategory: async ({ request, locals }) => {
+  deleteCategory: async (event) => {
     try {
-      const session = locals.session
-      if (!session?.userId) {
+      const userId = getUserId(event.locals)
+      if (!userId) {
         return fail(401, { type: "error", error: "Unauthenticated" })
       }
-      const formData = await request.formData()
+      const formData = await event.request.formData()
 
       const categoryId = formData.get("id")
       if (!categoryId) {
@@ -83,7 +76,7 @@ export const actions: Actions = {
       await db.category.delete({
         where: {
           id: String(categoryId),
-          userId: session.userId,
+          userId,
         },
       })
 

@@ -6,7 +6,7 @@ import type { RequestHandler } from "./$types"
 // Mark all FeedEntries as read
 export const POST: RequestHandler = async (event) => {
   try {
-    const session = await isAuthenticated(event)
+    const { userId } = isAuthenticated(event)
     const { feedId } = await event.request.json()
 
     const data = await db.feedEntry.updateMany({
@@ -15,7 +15,7 @@ export const POST: RequestHandler = async (event) => {
       },
       where: {
         feedId,
-        userId: session?.user?.id,
+        userId,
       },
     })
 
