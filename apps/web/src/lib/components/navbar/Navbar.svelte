@@ -135,7 +135,9 @@ const handleSearchInput = async (event: KeyboardEvent) => {
         <Tooltip.Provider>
         <Tooltip.Root>
           <Tooltip.Trigger>
+            {#snippet child({ props })}
             <Button
+              {...props}
               variant="outline"
               class={cn(
                 ui.metadataSidebarOpen ? "ring-2 ring-zinc-400" : "",
@@ -180,6 +182,7 @@ const handleSearchInput = async (event: KeyboardEvent) => {
                 </svg>
               {/if}
             </Button>
+            {/snippet}
           </Tooltip.Trigger>
           <Tooltip.Content>
             <p class="flex items-center justify-center">

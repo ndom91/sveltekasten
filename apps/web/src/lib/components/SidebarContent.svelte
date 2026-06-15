@@ -23,8 +23,10 @@ const activePath = $derived(page.url.pathname)
 <div class="grow p-4">
   <nav class="flex flex-col items-start gap-2">
     <Tooltip.Root>
-      <Tooltip.Trigger   class="outline-none">
+      <Tooltip.Trigger class="outline-none">
+        {#snippet child({ props })}
         <Button
+          {...props}
           variant="ghost"
           data-sveltekit-preload-data="hover"
           class={cn(
@@ -61,6 +63,7 @@ const activePath = $derived(page.url.pathname)
             Home
           </span>
         </Button>
+        {/snippet}
       </Tooltip.Trigger>
       <Tooltip.Content
         side="right"
@@ -70,8 +73,10 @@ const activePath = $derived(page.url.pathname)
       </Tooltip.Content>
     </Tooltip.Root>
     <Tooltip.Root>
-      <Tooltip.Trigger   class="outline-none">
+      <Tooltip.Trigger class="outline-none">
+        {#snippet child({ props })}
         <Button
+          {...props}
           variant="ghost"
           data-sveltekit-preload-data="hover"
           class={cn(
@@ -107,6 +112,7 @@ const activePath = $derived(page.url.pathname)
             Bookmarks
           </span>
         </Button>
+        {/snippet}
       </Tooltip.Trigger>
       <Tooltip.Content
         side="right"
@@ -116,8 +122,10 @@ const activePath = $derived(page.url.pathname)
       </Tooltip.Content>
     </Tooltip.Root>
     <Tooltip.Root>
-      <Tooltip.Trigger  class="outline-none">
+      <Tooltip.Trigger class="outline-none">
+        {#snippet child({ props })}
         <Button
+          {...props}
           variant="ghost"
           data-sveltekit-preload-data="hover"
           class={cn(
@@ -154,6 +162,7 @@ const activePath = $derived(page.url.pathname)
             Feeds
           </span>
         </Button>
+        {/snippet}
       </Tooltip.Trigger>
       <Tooltip.Content
         side="right"
@@ -163,8 +172,10 @@ const activePath = $derived(page.url.pathname)
       </Tooltip.Content>
     </Tooltip.Root>
     <Tooltip.Root>
-      <Tooltip.Trigger  class="outline-none">
+      <Tooltip.Trigger class="outline-none">
+        {#snippet child({ props })}
         <Button
+          {...props}
           variant="ghost"
           data-sveltekit-preload-data="hover"
           class={cn(
@@ -200,6 +211,7 @@ const activePath = $derived(page.url.pathname)
             Archive
           </span>
         </Button>
+        {/snippet}
       </Tooltip.Trigger>
       <Tooltip.Content
         side="right"
@@ -210,7 +222,9 @@ const activePath = $derived(page.url.pathname)
     </Tooltip.Root>
     <Tooltip.Root>
       <Tooltip.Trigger class="outline-none">
+        {#snippet child({ props })}
         <Button
+          {...props}
           variant="ghost"
           data-sveltekit-preload-data="hover"
           class={cn(
@@ -247,6 +261,7 @@ const activePath = $derived(page.url.pathname)
             Categories
           </span>
         </Button>
+        {/snippet}
       </Tooltip.Trigger>
       <Tooltip.Content
         side="right"
@@ -257,7 +272,9 @@ const activePath = $derived(page.url.pathname)
     </Tooltip.Root>
     <Tooltip.Root>
       <Tooltip.Trigger class="outline-none">
+        {#snippet child({ props })}
         <Button
+          {...props}
           variant="ghost"
           data-sveltekit-preload-data="hover"
           class={cn(
@@ -295,6 +312,7 @@ const activePath = $derived(page.url.pathname)
             Tags
           </span>
         </Button>
+        {/snippet}
       </Tooltip.Trigger>
       <Tooltip.Content
         side="right"
