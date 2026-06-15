@@ -15,6 +15,8 @@ const repairCache = new LRUCache<string, true>({
   ttl: 30 * 60 * 1000,
 })
 
+const bookmarkIdPattern = /^[a-z0-9]{16,40}$/
+
 interface BookmarkRepairTarget {
   id: string
   url: string
@@ -54,14 +56,14 @@ const queueBookmarkScreenshotRepair = (bookmark: BookmarkRepairTarget, reason: s
     return false
   }
 
+  repairCache.set(bookmark.id, true)
+
   if (!canQueueScreenshotRepair()) {
     debug("Skipping screenshot repair because the queue is backed up", {
       queueLength: screenshotQueue.length(),
     })
     return false
   }
-
-  repairCache.set(bookmark.id, true)
 
   debug("Queueing bookmark screenshot repair", {
     bookmarkId: bookmark.id,
@@ -108,4 +110,37 @@ export const enqueueScreenshotRepairsForImageUrls = async (imageUrls: string[], 
   }
 
   return bookmarks.filter((bookmark) => queueBookmarkScreenshotRepair(bookmark, reason)).length
+}
+
+export const enqueueScreenshotRepairForBookmarkId = async (bookmarkId: string, reason: string) => {
+  if (!bookmarkIdPattern.test(bookmarkId) || repairCache.has(bookmarkId)) {
+    return false
+  }
+
+  const bookmark = await db.bookmark.findFirst({
+    where: {
+      id: bookmarkId,
+      OR: [
+        { image: null },
+        { image: "" },
+        ...STALE_IMAGE_PATTERNS.map((pattern) => ({
+          image: {
+            contains: pattern,
+          },
+        })),
+      ],
+    },
+    select: {
+      id: true,
+      url: true,
+      userId: true,
+    },
+  })
+
+  if (!bookmark) {
+    repairCache.set(bookmarkId, true)
+    return false
+  }
+
+  return queueBookmarkScreenshotRepair(bookmark, reason)
 }

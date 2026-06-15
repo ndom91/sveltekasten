@@ -2,6 +2,7 @@ import type { Context } from "hono"
 import { createIPX, createIPXWebServer, ipxFSStorage, ipxHttpStorage } from "ipx"
 import { LRUCache } from "lru-cache"
 import {
+  enqueueScreenshotRepairForBookmarkId,
   enqueueScreenshotRepairsForImageUrls,
   getSourceImageUrlsFromProxyTarget,
   hasStaleSavedImageUrl,
@@ -27,6 +28,17 @@ const getProxyModifier = (targetUrl: string) => {
 
 const isSavedImageRequest = (targetUrl: string) => getProxyModifier(targetUrl) !== "_"
 
+const getProxyRequest = (requestUrl: string) => {
+  const url = new URL(requestUrl, "http://localhost")
+  const repairBookmarkId = url.searchParams.get("bookmarkId")
+  url.searchParams.delete("bookmarkId")
+
+  return {
+    repairBookmarkId,
+    targetUrl: url.toString().replace(/\/img/, ""),
+  }
+}
+
 const queueImageRepair = (imageUrls: string[], reason: string) => {
   void enqueueScreenshotRepairsForImageUrls(imageUrls, reason).catch((error) => {
     console.error(error)
@@ -34,9 +46,15 @@ const queueImageRepair = (imageUrls: string[], reason: string) => {
 }
 
 export const imageProxyHandler = async (c: Context) => {
-  const targetUrl = c.req.raw.url.replace(/\/img/, "")
+  const { repairBookmarkId, targetUrl } = getProxyRequest(c.req.raw.url)
   const sourceImageUrls = getSourceImageUrlsFromProxyTarget(targetUrl)
   const shouldRepairRequest = isSavedImageRequest(targetUrl)
+
+  if (repairBookmarkId) {
+    void enqueueScreenshotRepairForBookmarkId(repairBookmarkId, "fallback-image-request").catch(
+      (error) => console.error(error)
+    )
+  }
 
   if (shouldRepairRequest && hasStaleSavedImageUrl(sourceImageUrls)) {
     queueImageRepair(sourceImageUrls, "stale-saved-image-url")

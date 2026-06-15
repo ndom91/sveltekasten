@@ -66,7 +66,7 @@ const imageUrl = $derived.by(() => {
   if (bookmark.image) {
     return `${PUBLIC_WORKER_URL}/img/s_260x144,pos_top/${bookmark.image}`
   } else {
-    return `${PUBLIC_WORKER_URL}/img/_/https://picsum.photos/seed/${btoa(bookmark.url).substring(bookmark.url.length - 32, bookmark.url.length)}/256/144.webp`
+    return `${PUBLIC_WORKER_URL}/img/_/https://picsum.photos/seed/${btoa(bookmark.url).substring(bookmark.url.length - 32, bookmark.url.length)}/256/144.webp?bookmarkId=${bookmark.id}`
   }
 })
 
