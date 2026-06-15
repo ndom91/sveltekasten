@@ -37,7 +37,9 @@ export const auth = betterAuth({
   },
   session: {
     cookieCache: {
-      enabled: true,
+      // TEMP: disabled to test whether the large session-data cookie on the
+      // OAuth callback 302 is what the proxy (CF/traefik) rejects as a 500.
+      enabled: false,
       maxAge: 5 * 60, // Cache duration in seconds
     },
   },
