@@ -17,11 +17,16 @@ const toggleAndNavigate = async (target: string) => {
 }
 
 const activePath = $derived(page.url.pathname)
+const navButtonClass =
+  "group relative flex w-full items-center rounded-lg border border-transparent px-2 py-2 text-neutral-600 transition-[background-color,border-color,color,box-shadow] duration-200 hover:bg-neutral-100 hover:text-neutral-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 dark:text-neutral-400 dark:hover:bg-neutral-800/70 dark:hover:text-neutral-50 dark:focus-visible:ring-neutral-700"
+const activeNavButtonClass =
+  "active border-neutral-200 bg-white text-neutral-950 shadow-sm dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-50"
+const navLabelClass = "truncate text-sm font-medium transition-[opacity,width,margin] duration-200"
 </script>
 
 <Tooltip.Provider>
-<div class="grow p-4">
-  <nav class="flex flex-col items-start gap-2">
+<div class="grow p-3">
+  <nav class="flex flex-col items-stretch gap-1.5" aria-label="Primary">
     <Tooltip.Root>
       <Tooltip.Trigger class="outline-none">
         {#snippet child({ props })}
@@ -29,9 +34,11 @@ const activePath = $derived(page.url.pathname)
           {...props}
           variant="ghost"
           data-sveltekit-preload-data="hover"
+          aria-label="Home"
+          aria-current={activePath === "/" ? "page" : undefined}
           class={cn(
-            "relative flex align-center rounded-md border-0 p-2 font-semibold outline-none transition duration-500 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:ring-offset-0 dark:focus:ring-neutral-800",
-            activePath === "/" && "active",
+            navButtonClass,
+            activePath === "/" && activeNavButtonClass,
           )}
           onclickcapture={() => toggleAndNavigate("/")}
         >
@@ -54,9 +61,9 @@ const activePath = $derived(page.url.pathname)
           </svg>
           <span
             class={cn(
-              "text-lg font-normal transition-all",
+              navLabelClass,
               ui.userSidebarOpen || open
-                ? "opacity-100 w-min ml-4"
+                ? "opacity-100 w-min ml-3"
                 : "hidden",
             )}
           >
@@ -79,9 +86,11 @@ const activePath = $derived(page.url.pathname)
           {...props}
           variant="ghost"
           data-sveltekit-preload-data="hover"
+          aria-label="Bookmarks"
+          aria-current={activePath === "/bookmarks" ? "page" : undefined}
           class={cn(
-            "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
-            activePath === "/bookmarks" && "active",
+            navButtonClass,
+            activePath === "/bookmarks" && activeNavButtonClass,
           )}
           onclickcapture={() => toggleAndNavigate("/bookmarks")}
         >
@@ -103,10 +112,8 @@ const activePath = $derived(page.url.pathname)
           </svg>
           <span
             class={cn(
-              "text-lg font-normal transition-all",
-              ui.userSidebarOpen || open
-                ? "opacity-100 ml-4"
-                : "hidden",
+              navLabelClass,
+              ui.userSidebarOpen || open ? "opacity-100 ml-3" : "hidden",
             )}
           >
             Bookmarks
@@ -128,9 +135,11 @@ const activePath = $derived(page.url.pathname)
           {...props}
           variant="ghost"
           data-sveltekit-preload-data="hover"
+          aria-label="RSS feeds"
+          aria-current={activePath === "/feeds" ? "page" : undefined}
           class={cn(
-            "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
-            activePath === "/feeds" && "active",
+            navButtonClass,
+            activePath === "/feeds" && activeNavButtonClass,
           )}
           onclickcapture={() => toggleAndNavigate("/feeds")}
         >
@@ -153,10 +162,8 @@ const activePath = $derived(page.url.pathname)
           </svg>
           <span
             class={cn(
-              "text-lg font-normal transition-all",
-              ui.userSidebarOpen || open
-                ? "opacity-100 ml-4"
-                : "hidden",
+              navLabelClass,
+              ui.userSidebarOpen || open ? "opacity-100 ml-3" : "hidden",
             )}
           >
             Feeds
@@ -178,9 +185,11 @@ const activePath = $derived(page.url.pathname)
           {...props}
           variant="ghost"
           data-sveltekit-preload-data="hover"
+          aria-label="Archives"
+          aria-current={activePath === "/archives" ? "page" : undefined}
           class={cn(
-            "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
-            activePath === "/archives" && "active",
+            navButtonClass,
+            activePath === "/archives" && activeNavButtonClass,
           )}
           onclickcapture={() => toggleAndNavigate("/archives")}
         >
@@ -202,10 +211,8 @@ const activePath = $derived(page.url.pathname)
           </svg>
           <span
             class={cn(
-              "text-lg font-normal transition-all",
-              ui.userSidebarOpen || open
-                ? "opacity-100 ml-4"
-                : "hidden",
+              navLabelClass,
+              ui.userSidebarOpen || open ? "opacity-100 ml-3" : "hidden",
             )}
           >
             Archive
@@ -227,9 +234,11 @@ const activePath = $derived(page.url.pathname)
           {...props}
           variant="ghost"
           data-sveltekit-preload-data="hover"
+          aria-label="Categories"
+          aria-current={activePath === "/categories" ? "page" : undefined}
           class={cn(
-            "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
-            activePath === "/categories" && "active",
+            navButtonClass,
+            activePath === "/categories" && activeNavButtonClass,
           )}
           onclickcapture={() => toggleAndNavigate("/categories")}
         >
@@ -252,10 +261,8 @@ const activePath = $derived(page.url.pathname)
           </svg>
           <span
             class={cn(
-              "text-lg font-normal transition-all",
-              ui.userSidebarOpen || open
-                ? "opacity-100 ml-4"
-                : "hidden",
+              navLabelClass,
+              ui.userSidebarOpen || open ? "opacity-100 ml-3" : "hidden",
             )}
           >
             Categories
@@ -277,9 +284,11 @@ const activePath = $derived(page.url.pathname)
           {...props}
           variant="ghost"
           data-sveltekit-preload-data="hover"
+          aria-label="Tags"
+          aria-current={activePath === "/tags" ? "page" : undefined}
           class={cn(
-            "flex relative items-center p-2 font-semibold rounded-md border-0 transition duration-500 outline-none focus:rounded-md focus:ring-2 focus:ring-offset-0 focus:outline-none dark:focus:ring-neutral-800 focus:ring-neutral-300",
-            activePath === "/tags" && "active",
+            navButtonClass,
+            activePath === "/tags" && activeNavButtonClass,
           )}
           onclickcapture={() => toggleAndNavigate("/tags")}
         >
@@ -303,10 +312,8 @@ const activePath = $derived(page.url.pathname)
           </svg>
           <span
             class={cn(
-              "text-lg font-normal transition-all",
-              ui.userSidebarOpen || open
-                ? "opacity-100 ml-4"
-                : "hidden",
+              navLabelClass,
+              ui.userSidebarOpen || open ? "opacity-100 ml-3" : "hidden",
             )}
           >
             Tags
@@ -324,12 +331,12 @@ const activePath = $derived(page.url.pathname)
   </nav>
 </div>
 </Tooltip.Provider>
-<div class="flex w-full flex-col items-start justify-center self-end p-4">
-  <div class="flex w-full items-center justify-center">
+<div class="flex w-full flex-col items-start justify-center self-end border-t border-neutral-200/70 p-3 dark:border-neutral-800/80">
+  <div class="flex w-full items-center justify-center gap-3 rounded-lg p-1">
     <AvatarMenu />
     <span
       class={cn(
-        "transition-all mx-auto text-md truncate",
+        "min-w-0 truncate text-sm font-medium text-neutral-700 transition-[opacity] dark:text-neutral-300",
         ui.userSidebarOpen || open ? "opacity-100" : "hidden",
       )}
     >

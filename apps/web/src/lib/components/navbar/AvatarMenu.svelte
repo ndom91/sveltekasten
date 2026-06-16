@@ -27,13 +27,11 @@ onMount(() => {
     event.preventDefault()
     installPrompt = event
     offerInstall = true
-    console.log("beforeinstallprompt", { offerInstall })
   })
 
   window.addEventListener("appinstalled", () => {
     installPrompt = null
     offerInstall = false
-    console.log("appinstalled", { offerInstall })
   })
 })
 
@@ -43,8 +41,7 @@ async function handleInstall() {
   }
 
   // @ts-expect-error TODO: find exact type for beforeinstallprompt Event
-  const result = await installPrompt.prompt()
-  console.log("prompt.result", result.outcome)
+  await installPrompt.prompt()
 
   installPrompt = null
   offerInstall = false
@@ -53,13 +50,13 @@ async function handleInstall() {
 
 <DropdownMenu.Root>
   <DropdownMenu.Trigger
-    class="rounded-full outline-none transition duration-300 focus:outline-none focus:ring-2 focus:ring-zinc-200 dark:focus:ring-zinc-500"
+    class="rounded-full outline-none transition-[box-shadow,transform] duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-300 dark:focus-visible:ring-zinc-600"
   >
     <Avatar.Root>
       <Avatar.Image
         src={page.data?.user?.image ||
           `https://unavatar.io/${page.data?.user?.email}?fallback=https://source.boringavatars.com/marble/120/${page.data?.user?.email}?colors=264653r,2a9d8f,e9c46a,f4a261,e76f51`}
-        class="rounded"
+        class="rounded-full ring-1 ring-neutral-200 dark:ring-neutral-800"
         alt="User Avatar"
       />
       <Avatar.Fallback><Skeleton class="h-full w-full rounded-full" /></Avatar.Fallback>
@@ -93,7 +90,7 @@ async function handleInstall() {
       >
         Show Shortcuts
       </DropdownMenu.Item>
-      <DropdownMenu.Item class="justify-start hover:cursor-pointer" onclick={() => goto(resolve('/settings'))}>
+      <DropdownMenu.Item class="justify-start hover:cursor-pointer" onclick={() => goto(resolve("/settings"))}>
         Settings
       </DropdownMenu.Item>
       {#if offerInstall}
@@ -109,12 +106,12 @@ async function handleInstall() {
       <DropdownMenu.Item
         class="justify-start hover:cursor-pointer"
         onclick={() => authClient.signOut({
-          fetchOptions: {
-            onSuccess: () => {
-              goto("/login");
-            },
-          }
-        })}
+              fetchOptions: {
+                onSuccess: () => {
+                  goto("/login")
+                },
+              }
+            })}
       >
         Sign Out
       </DropdownMenu.Item>

@@ -50,13 +50,14 @@ let windowWidth: number = $state(1000)
 {:else}
   <aside
     bind:this={userSidebarElement}
-    class="flex flex-col justify-start border-r border-r-neutral-200 bg-neutral-50 transition-all duration-100 dark:border-r-neutral-800/60 dark:bg-neutral-900"
+    class="flex flex-col justify-start border-r border-r-neutral-200/80 bg-neutral-50/95 shadow-[1px_0_0_rgba(0,0,0,0.02)] transition-[min-width] duration-200 dark:border-r-neutral-800/80 dark:bg-neutral-900/95"
   >
-    <div class="m-4 flex items-center justify-center">
+    <div class="m-3 flex items-center justify-center gap-3">
       <Button
-        class="flex justify-start transition focus:outline-none"
+        class="flex justify-start rounded-lg transition-colors hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 dark:hover:bg-neutral-800 dark:focus-visible:ring-neutral-700"
         size="icon"
         variant="link"
+        aria-label="Toggle navigation sidebar"
         onclick={ui.toggleUserSidebar}
       >
         <Logo class="size-10!" />

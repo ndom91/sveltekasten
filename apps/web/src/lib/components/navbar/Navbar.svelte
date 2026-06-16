@@ -44,7 +44,7 @@ const handleSearchInput = async (event: KeyboardEvent) => {
 
 <svelte:window onkeydown={handleKeyDown} />
 <nav
-  class="border-input mx-auto flex h-16 w-full items-center justify-between border-b p-4 dark:border-b-zinc-800"
+  class="border-input mx-auto flex h-16 w-full items-center justify-between border-b bg-neutral-50/90 px-4 py-3 backdrop-blur-sm dark:border-b-zinc-800 dark:bg-neutral-950/80"
 >
   <ModeWatcher />
   <Breadcrumbs />
@@ -54,7 +54,7 @@ const handleSearchInput = async (event: KeyboardEvent) => {
     {/if}
     {#if showSearch}
       <div
-        class="relative rounded-md transition duration-300 focus-within:rounded-md focus-within:outline-none focus-within:ring-2 focus-within:ring-zinc-300 dark:focus-within:ring-zinc-800"
+        class="relative rounded-lg transition-[box-shadow] duration-200 focus-within:outline-none focus-within:ring-2 focus-within:ring-zinc-300 dark:focus-within:ring-zinc-800"
       >
         <input
           type="text"
@@ -65,7 +65,7 @@ const handleSearchInput = async (event: KeyboardEvent) => {
           onkeyup={useDebounce(handleSearchInput, 500)}
           spellcheck="false"
           aria-label="Search"
-          class="border-input ring-offset-background file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border bg-neutral-100 px-3 py-2 pl-10 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-neutral-900 md:pr-10"
+          class="border-input ring-offset-background file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-lg border bg-neutral-100 px-3 py-2 pl-10 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-neutral-900 dark:hover:bg-neutral-900/80 md:pr-10"
         />
         <svg
           class="size-4 absolute left-3 top-3"
@@ -91,7 +91,7 @@ const handleSearchInput = async (event: KeyboardEvent) => {
         <Popover.Trigger>
           {#snippet child({ props })}
             <div
-              class="rounded-full transition duration-300 focus-within:rounded-full focus-within:outline-none focus-within:ring-2 focus-within:ring-zinc-300 dark:focus-within:ring-zinc-800"
+              class="rounded-full transition-[box-shadow] duration-200 focus-within:outline-none focus-within:ring-2 focus-within:ring-zinc-300 dark:focus-within:ring-zinc-800"
             >
               <Button
                 {...props}
@@ -100,7 +100,7 @@ const handleSearchInput = async (event: KeyboardEvent) => {
                 variant="outline"
                 class={cn(
                   ui.quickAddOpen ? "ring-2 ring-zinc-400" : "",
-                  "p-0 rounded-full size-11 transition",
+                  "p-0 rounded-full size-11 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-900",
                 )}
               >
                 <svg
@@ -131,7 +131,7 @@ const handleSearchInput = async (event: KeyboardEvent) => {
     {/if}
     {#if showSidebar}
       <div
-        class="rounded-full transition duration-300 focus-within:rounded-full focus-within:outline-none focus-within:ring-2 focus-within:ring-zinc-300 dark:focus-within:ring-zinc-800"
+        class="rounded-full transition-[box-shadow] duration-200 focus-within:outline-none focus-within:ring-2 focus-within:ring-zinc-300 dark:focus-within:ring-zinc-800"
       >
         <Tooltip.Provider>
         <Tooltip.Root>
@@ -140,9 +140,11 @@ const handleSearchInput = async (event: KeyboardEvent) => {
             <Button
               {...props}
               variant="outline"
+              aria-label="Toggle metadata sidebar"
+              aria-pressed={ui.metadataSidebarOpen}
               class={cn(
                 ui.metadataSidebarOpen ? "ring-2 ring-zinc-400" : "",
-                "p-0 rounded-full size-11 transition",
+                "p-0 rounded-full size-11 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-900",
               )}
               onclick={() => ui.toggleMetadataSidebar()}
             >
