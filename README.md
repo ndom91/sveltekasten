@@ -1,3 +1,6 @@
+> [!NOTE]
+> This work has been merged into the upstream `ndom91/briefkasten` [repository](https://github.com/ndom91/briefkasten). All further development will take place there.
+
 # 📬 Briefkasten v2
 
 ![GitHub issues](https://img.shields.io/github/issues/ndom91/sveltekasten?style=for-the-badge&labelColor=black&color=black)
