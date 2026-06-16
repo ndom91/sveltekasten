@@ -36,20 +36,21 @@ $effect(() => {
 </script>
 
 <section
-  class="relative mx-4 flex max-w-full flex-col overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-900"
+  class="relative mx-4 flex max-w-full flex-col overflow-hidden rounded-xl border border-neutral-200/70 bg-neutral-100/80 shadow-sm dark:border-neutral-800/80 dark:bg-neutral-900/80"
 >
-  <div class="z-10 mx-4 mt-3 flex grow justify-between">
-    <h2 class="text-xl font-thin">
+  <div class="z-10 mx-4 mt-3 flex grow items-center justify-between gap-4">
+    <h2 class="text-xl font-medium tracking-tight text-neutral-900 text-balance dark:text-neutral-100">
       {type === ScrollerTypes.FEEDS ? `Unread Feed Items (${count})` : capitalize(type)}
     </h2>
     {#if items.length}
       <a
-        class="flex items-center gap-2 rounded-md p-1 transition focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:dark:ring-neutral-700"
+        class="flex shrink-0 items-center gap-2 rounded-md px-2 py-1 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-200/70 hover:text-neutral-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100 dark:focus-visible:ring-neutral-700"
         data-sveltekit-preload-data="hover"
         href={`/${type.toLowerCase()}`}
       >
         <svg
-          class="size-5 text-neutral-700 dark:text-neutral-400"
+          class="size-5"
+          aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 256 256"
         >
@@ -109,13 +110,13 @@ $effect(() => {
             stroke-width="16"
           />
         </svg>
-        <span class="truncate text-neutral-700 dark:text-neutral-400">See more</span>
+        <span class="truncate">See more</span>
       </a>
     {/if}
   </div>
   <div
     bind:this={element}
-    class="flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-scroll scroll-smooth px-4 py-4 after:pointer-events-none after:absolute after:bottom-0 after:right-0 after:h-full after:w-24 after:rounded-r-lg after:shadow-[inset_-100px_0px_65px_-65px_#ddd] dark:after:shadow-[inset_-100px_0px_45px_-65px_#141414]"
+    class="flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-scroll overscroll-x-contain scroll-smooth px-4 py-4 after:pointer-events-none after:absolute after:bottom-0 after:right-0 after:h-full after:w-24 after:rounded-r-xl after:shadow-[inset_-100px_0px_65px_-65px_#ddd] dark:after:shadow-[inset_-100px_0px_45px_-65px_#141414]"
   >
     {#each items as item (item.id)}
       {#if type === ScrollerTypes.BOOKMARKS}

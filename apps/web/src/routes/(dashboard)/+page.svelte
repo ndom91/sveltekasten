@@ -42,7 +42,11 @@ const feedEntriesService = getContext(FeedEntriesService)
 </svelte:head>
 
 <Navbar showSearch={false} showQuickAdd={false} showSidebar={false} />
-<main class="align-start flex flex-col justify-start gap-6 overflow-y-scroll py-4">
+<main
+  id="content"
+  tabindex="-1"
+  class="align-start flex flex-col justify-start gap-6 overflow-y-scroll py-4 focus:outline-none"
+>
   <HomeScroller
     items={bookmarkService.bookmarks}
     count={bookmarkService.bookmarks.length}

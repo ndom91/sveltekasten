@@ -32,15 +32,16 @@ const imageUrl = $derived.by(() => {
 </script>
 
 <div
-  id="dashboard-feed-row"
-  class="max-w-72 group relative flex snap-start flex-col gap-2 rounded-md bg-neutral-200 p-4 dark:bg-neutral-800"
+  data-dashboard-card="feed"
+  class="group relative flex w-72 shrink-0 snap-start flex-col gap-3 rounded-lg border border-neutral-200/80 bg-white/80 p-4 shadow-sm transition-[border-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900/80 dark:hover:border-neutral-700"
 >
   <Tooltip.Root>
     <Tooltip.Trigger class="outline-none">
       {#snippet child({ props })}
       <Button
         {...props}
-        class="absolute right-4 top-4 rounded-full border border-gray-300/40 border-neutral-100 bg-neutral-50 p-2 opacity-0 shadow-[0_4px_20px_rgba(0,0,0,0.1)] backdrop-blur-[6px] transition duration-300 ease-in-out focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-0 group-hover:opacity-100 dark:border-gray-600/10 dark:border-neutral-800 dark:bg-neutral-900/50 dark:bg-neutral-950 focus:dark:ring-neutral-700"
+        aria-label="Mark feed item as read"
+        class="absolute right-4 top-4 rounded-full border border-neutral-200/80 bg-white/90 p-2 opacity-0 shadow-sm backdrop-blur-sm transition-opacity duration-200 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 group-hover:opacity-100 dark:border-neutral-800 dark:bg-neutral-950/90 dark:focus-visible:ring-neutral-700"
         variant="ghost"
         size="icon"
         onclick={handleMarkAsRead}
@@ -71,16 +72,23 @@ const imageUrl = $derived.by(() => {
   <img
     src={imageUrl}
     alt={item.title}
-    class="mb-1 aspect-video rounded-sm object-cover object-center"
+    width="256"
+    height="144"
+    decoding="async"
+    class="aspect-video w-64 rounded-sm bg-neutral-200 object-cover object-center dark:bg-neutral-800"
   />
-  <div class="flex w-64 flex-col gap-1 overflow-hidden">
-    <div class="flex justify-between">
+  <div class="flex w-64 min-w-0 flex-col gap-1 overflow-hidden">
+    <div class="flex items-center justify-between gap-3">
       <img
         src={`${PUBLIC_WORKER_URL}/img/_/https://favicon.controld.com/${new URL(item.link).hostname}`}
-        alt="URL Favicon"
+        alt=""
+        width="20"
+        height="20"
+        loading="lazy"
+        decoding="async"
         class="size-5 rounded-full"
       />
-      <span class="dark:text-neutral-400">
+      <span class="shrink-0 text-sm tabular-nums text-neutral-500 dark:text-neutral-400">
         {format(item.published instanceof Date ? item.published : new Date(), {
           date: "medium",
           time: "short",
@@ -90,7 +98,8 @@ const imageUrl = $derived.by(() => {
     <a
       href={item.link}
       target="_blank"
-      class="line-clamp-2 transition focus:underline focus:outline-none focus:outline-offset-2"
+      rel="noreferrer"
+      class="line-clamp-2 rounded-sm font-medium leading-snug text-neutral-950 transition-colors hover:text-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 dark:text-neutral-100 dark:hover:text-neutral-300 dark:focus-visible:ring-neutral-700"
       title={item.title}
     >
       {item.title}

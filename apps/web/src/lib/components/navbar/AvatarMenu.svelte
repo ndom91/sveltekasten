@@ -67,16 +67,17 @@ async function handleInstall() {
   </DropdownMenu.Trigger>
   <DropdownMenu.Content
     sideOffset={8}
+    class="w-64"
   >
     <DropdownMenu.Group>
-      <DropdownMenu.Label class="max-w-32 w-full justify-start">
-        <div class="truncate">
+      <DropdownMenu.Label class="w-full justify-start px-3 py-2">
+        <div class="truncate font-semibold text-neutral-950 dark:text-neutral-50">
           {userName}
         </div>
         {#if userEmail && userEmail !== userName}
-          <div class="truncate font-light text-neutral-400 dark:text-neutral-600">{userEmail}</div>
+          <div class="truncate text-sm font-normal text-neutral-500 dark:text-neutral-400">{userEmail}</div>
         {/if}
-        <div class="font-light text-neutral-400 dark:text-neutral-600">{version}</div>
+        <div class="font-mono text-xs text-neutral-400 dark:text-neutral-600">{version}</div>
       </DropdownMenu.Label>
       <DropdownMenu.Separator class="bg-neutral-100 dark:bg-neutral-800" />
       <DropdownMenu.CheckboxItem
